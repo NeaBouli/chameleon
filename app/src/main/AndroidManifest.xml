@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        CHAMELEON MANIFEST
+        ==================
+        Internet permission is NOT declared here by default.
+        IFR verification uses WalletConnect Intent delegation.
+        The external Wallet app performs the Ethereum RPC call.
+
+        If optional sync is ever added, it must be declared
+        with required="false" and gated behind explicit user consent.
+    -->
+
+    <!-- Overlay for encrypted text display -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- Accessibility Service binding -->
+    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+
+    <!-- Biometric authentication -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
+    <!-- Vibration for security alerts -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- Receive boot for rule engine restart -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- Camera for QR code scanning (key exchange) -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- NFC for key exchange (optional) -->
+    <uses-permission android:name="android.permission.NFC" />
+
+    <!-- Location for geofencing (Elite tier, runtime requested) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    <!-- Foreground service for geofencing worker -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+
+    <application
+        android:name=".ChameleonApplication"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Chameleon"
+        android:usesCleartextTraffic="false">
+
+        <!-- Main Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Accessibility Service — NOT exported, system-bound only -->
+        <service
+            android:name="com.stealthx.core.accessibility.ChameleonAccessibilityService"
+            android:exported="false"
+            android:label="@string/accessibility_service_label"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+
+        <!-- Crypto Service — isolated process, NOT exported -->
+        <service
+            android:name="com.stealthx.core.accessibility.CryptoService"
+            android:exported="false"
+            android:process=":crypto" />
+
+        <!-- Boot receiver for rule engine -->
+        <receiver
+            android:name="com.stealthx.core.BootReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

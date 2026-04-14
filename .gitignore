@@ -1,0 +1,65 @@
+# Android
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+*.apk
+*.aab
+*.ap_
+
+# CRITICAL — NEVER COMMIT THESE
+*.jks
+*.keystore
+*.p12
+*.pfx
+keystore/
+secrets/
+.env
+.env.*
+local.properties
+google-services.json
+firebase.json
+
+# Signing configs
+signing.properties
+release.properties
+
+# Sensitive docs
+SIGNING_KEY_POLICY.md
+
+# Kotlin
+*.class
+*.kotlin_module
+
+# Gradle
+.gradle/
+build/
+gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Test reports (generated)
+**/build/reports/
+**/build/test-results/
+
+# ProGuard
+**/mapping.txt
+**/seeds.txt
+**/usage.txt

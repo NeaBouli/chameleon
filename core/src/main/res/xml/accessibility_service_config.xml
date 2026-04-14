@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    CHAMELEON ACCESSIBILITY SERVICE CONFIG
+    =======================================
+    CRITICAL SECURITY RULES:
+    1. packageNames MUST be a specific whitelist — NO wildcards, NO empty string
+    2. accessibilityEventTypes must be minimal — only what is needed
+    3. canRetrieveWindowContent="true" is required for text reading
+    4. This list MUST be reviewed before each release
+
+    Adding a package to this whitelist is a SECURITY DECISION.
+    It grants Chameleon read access to that app's text.
+    Never add packages without explicit user awareness.
+-->
+<accessibility-service
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:accessibilityEventTypes="typeViewTextChanged|typeViewFocused|typeWindowContentChanged"
+
+    android:accessibilityFeedbackType="feedbackGeneric"
+
+    android:accessibilityFlags="flagRetrieveInteractiveWindows|flagReportViewIds"
+
+    android:canRetrieveWindowContent="true"
+
+    android:description="@string/accessibility_service_description"
+
+    android:notificationTimeout="100"
+
+    android:packageNames="
+        org.thoughtcrime.securesms,
+        org.telegram.messenger,
+        com.whatsapp,
+        com.whatsapp.w4b,
+        com.viber.voip,
+        com.discord,
+        org.signal.qr,
+        com.wire,
+        im.vector.app,
+        ch.threema.app,
+        com.skype.raider,
+        com.facebook.orca,
+        com.instagram.android,
+        com.google.android.gm,
+        com.microsoft.office.outlook
+    "
+
+    android:settingsActivity="com.stealthx.presentation.ui.SettingsActivity" />
+<!--
+    INSTRUCTIONS FOR ADDING NEW PACKAGES:
+    1. Add to this whitelist
+    2. Add to CHANGELOG.md explaining why
+    3. Notify users in release notes
+    4. Consider privacy implications for that app's users
+-->
