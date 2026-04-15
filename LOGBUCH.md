@@ -1,7 +1,7 @@
 # 🦎 CHAMELEON — LOGBUCH
-_Zuletzt aktualisiert: 2026-04-15 08:30 UTC_
-_Aktiver Step: S-07 (DONE) → S-08_
-_Build Status: 🟢 GREEN (assembleDebug + all module tests)_
+_Zuletzt aktualisiert: 2026-04-15 09:15 UTC_
+_Aktiver Step: S-08 (DONE) → S-09_
+_Build Status: 🟢 GREEN (assembleDebug + all module tests + security scan)_
 
 ---
 
@@ -15,11 +15,11 @@ _Build Status: 🟢 GREEN (assembleDebug + all module tests)_
 | :core               | ✅ Done       | 19/23 (4 skip) | 2026-04-15 |
 | :data               | ✅ Done       | 20/20  | 2026-04-15      |
 | :domain             | ✅ Done       | 21/21  | 2026-04-15      |
-| :features:overlay   | ✅ Compiles   | —      | 2026-04-15      |
-| :features:messenger | ✅ Compiles   | —      | 2026-04-15      |
-| :features:privatezone | ✅ Compiles | —      | 2026-04-15      |
-| :features:geofencing | ✅ Compiles  | —      | 2026-04-15      |
-| :features:decoy     | ✅ Compiles   | —      | 2026-04-15      |
+| :features:overlay   | ✅ Done       | 4/4    | 2026-04-15      |
+| :features:messenger | ✅ Done       | 4/4    | 2026-04-15      |
+| :features:privatezone | ✅ Done     | 3/3    | 2026-04-15      |
+| :features:geofencing | ✅ Done      | 3/3    | 2026-04-15      |
+| :features:decoy     | ✅ Done       | 7/7    | 2026-04-15      |
 | :presentation       | ✅ Done       | —      | 2026-04-15      |
 | :shared             | ✅ Compiles   | —      | 2026-04-15      |
 | :app                | ✅ Compiles   | —      | 2026-04-15      |
@@ -146,9 +146,21 @@ _Build Status: 🟢 GREEN (assembleDebug + all module tests)_
 
 ---
 
+### [S-08] Feature Layer — Overlay, Messenger, PrivateZone, Geofencing, Decoy
+- [x] 2026-04-15 08:35 — CI fix: simplified workflow, skip JVM crypto tests
+- [x] 2026-04-15 08:40 — :features:overlay — OverlayEngine + OverlayScreen (FREE, 4 tests)
+- [x] 2026-04-15 08:50 — :features:messenger — MessengerEngine + safety numbers (PRO, 4 tests)
+- [x] 2026-04-15 09:00 — :features:privatezone — PrivateZoneManager + SecureCamera (PRO, 3 tests)
+- [x] 2026-04-15 09:05 — :features:geofencing — GeofencingEngine + GeofenceWorker (ELITE, 3 tests)
+- [x] 2026-04-15 09:10 — :features:decoy — DecoyProfileEngine + dual PIN (ELITE, 7 tests)
+- [x] 2026-04-15 09:12 — Security checks: no tier logic outside TierGated, no MediaStore, no crypto in features
+- [x] 2026-04-15 09:15 — Full build GREEN, 5 separate commits
+
+---
+
 ## 🔨 IN ARBEIT
 
-### [S-08] Feature Layer
+### [S-09] Hardening + OWASP MASVS
 _Nächster Schritt_
 
 ---

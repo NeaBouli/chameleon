@@ -91,7 +91,7 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 | S-05 | ✅ Done | Domain Layer (XChaCha20, Double Ratchet HKDF, TierGate, RuleEngine) |
 | S-06 | ✅ Done | IFR Module (WalletConnect, IFRLockVerifier, TierActivator) |
 | S-07 | ✅ Done | Compose UI (StealthX Design System, Navigation, Screens) |
-| S-08 | ⏳ Pending | Feature Layer (Overlay, Messenger, PrivateZone, Geofencing, Decoy) |
+| S-08 | ✅ Done | Feature Layer (Overlay, Messenger, PrivateZone, Geofencing, Decoy) |
 | S-09 | ⏳ Pending | Security Hardening + OWASP MASVS Audit |
 | S-10 | ⏳ Pending | F-Droid + Play Store Release |
 
