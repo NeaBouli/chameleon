@@ -29,6 +29,8 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)
+    implementation(libs.play.services.location)
+    implementation(libs.androidx.work)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit5.api)
