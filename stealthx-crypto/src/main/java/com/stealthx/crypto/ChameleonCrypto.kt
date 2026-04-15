@@ -236,6 +236,52 @@ object ChameleonCrypto {
         return sodium.cryptoSignVerifyDetached(signature, message, message.size, publicKey)
     }
 
+    // ── HKDF-SHA256 ──────────────────────────────────────────────
+
+    /**
+     * HKDF-SHA256 Extract + Expand (RFC 5869).
+     * Used by Double Ratchet for root key and chain key derivation.
+     *
+     * @param ikm   Input keying material
+     * @param salt  Optional salt (if null, uses zero-filled key)
+     * @param info  Context info string
+     * @param length Output length in bytes (max 255 * 32)
+     * @return Derived key bytes
+     */
+    fun hkdf(ikm: ByteArray, salt: ByteArray?, info: ByteArray, length: Int = KEY_BYTES): ByteArray {
+        val mac = javax.crypto.Mac.getInstance("HmacSHA256")
+
+        // Extract: PRK = HMAC-SHA256(salt, IKM)
+        val extractKey = javax.crypto.spec.SecretKeySpec(
+            salt ?: ByteArray(32), "HmacSHA256"
+        )
+        mac.init(extractKey)
+        val prk = mac.doFinal(ikm)
+
+        // Expand: OKM = T(1) || T(2) || ...
+        val output = ByteArray(length)
+        var t = ByteArray(0)
+        var offset = 0
+        var counter: Byte = 1
+
+        while (offset < length) {
+            val expandKey = javax.crypto.spec.SecretKeySpec(prk, "HmacSHA256")
+            mac.init(expandKey)
+            mac.update(t)
+            mac.update(info)
+            mac.update(byteArrayOf(counter))
+            t = mac.doFinal()
+
+            val copyLen = minOf(t.size, length - offset)
+            System.arraycopy(t, 0, output, offset, copyLen)
+            offset += copyLen
+            counter++
+        }
+
+        wipeBytes(prk)
+        return output
+    }
+
     // ── Random ───────────────────────────────────────────────────
 
     fun randomBytes(size: Int): ByteArray = sodium.randomBytesBuf(size)

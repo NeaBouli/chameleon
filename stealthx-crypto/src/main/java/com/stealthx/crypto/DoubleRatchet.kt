@@ -89,21 +89,24 @@ class DoubleRatchet private constructor(
             )
         }
 
-        // KDF for root key + chain key derivation
+        // KDF for root key + chain key derivation via HKDF-SHA256
         private fun kdfRootKey(
             rootKey: ByteArray,
             dhKeyPair: Pair<ByteArray, ByteArray>,
             theirPublicKey: ByteArray
         ): Pair<ByteArray, ByteArray> {
             val dhOutput = ChameleonCrypto.computeSharedSecret(dhKeyPair.second, theirPublicKey)
-            // Derive new root key and chain key via HKDF
-            // TODO: implement HKDF via sodium.cryptoKdfDeriveFromKey
-            // For now: naive split (replace with proper HKDF in S-05)
-            val combined = rootKey + dhOutput
-            val newRootKey  = combined.copyOfRange(0, 32)
-            val chainKey    = combined.copyOfRange(32, 64)
+            // HKDF-SHA256: salt=rootKey, ikm=dhOutput, info=INFO_ROOT, len=64
+            val derived = ChameleonCrypto.hkdf(
+                ikm = dhOutput,
+                salt = rootKey,
+                info = INFO_ROOT.toByteArray(),
+                length = 64
+            )
+            val newRootKey = derived.copyOfRange(0, 32)
+            val chainKey   = derived.copyOfRange(32, 64)
             ChameleonCrypto.wipeBytes(dhOutput)
-            ChameleonCrypto.wipeBytes(combined)
+            ChameleonCrypto.wipeBytes(derived)
             return Pair(newRootKey, chainKey)
         }
     }
@@ -213,10 +216,19 @@ class DoubleRatchet private constructor(
     // ── Chain Key KDF ─────────────────────────────────────────────
 
     private fun kdfChainKey(chainKey: ByteArray): Pair<ByteArray, ByteArray> {
-        // TODO: Replace with proper HKDF in S-05 implementation
-        // Placeholder: split derived bytes (functional but not spec-compliant)
-        val msgKey   = chainKey.copyOfRange(0, minOf(32, chainKey.size))
-        val newChain = ChameleonCrypto.randomKey() // TODO: HKDF(chainKey, "chain")
+        // HKDF-SHA256 chain ratchet: derive message key + next chain key
+        val msgKey = ChameleonCrypto.hkdf(
+            ikm = chainKey,
+            salt = null,
+            info = INFO_MSG.toByteArray(),
+            length = 32
+        )
+        val newChain = ChameleonCrypto.hkdf(
+            ikm = chainKey,
+            salt = null,
+            info = INFO_CHAIN.toByteArray(),
+            length = 32
+        )
         return Pair(msgKey, newChain)
     }
 

@@ -75,16 +75,79 @@ class RuleEngine {
         }
     }
 
+    /**
+     * Check if coordinates are within a geofence radius.
+     * Uses Haversine formula for great-circle distance.
+     *
+     * @param lat      Current latitude
+     * @param lng      Current longitude
+     * @param geoJson  JSON: {"lat":X, "lng":Y, "radius":Z} (radius in meters)
+     */
     private fun isWithinGeofence(lat: Double, lng: Double, geoJson: String): Boolean {
-        // TODO: parse JSON {"lat":X, "lng":Y, "radius":Z} and compute distance
-        // Implement in S-08 Geofencing feature
-        return false
+        return try {
+            val parts = geoJson.replace("{", "").replace("}", "").replace("\"", "")
+            val map = parts.split(",").associate {
+                val (k, v) = it.trim().split(":")
+                k.trim() to v.trim()
+            }
+            val targetLat = map["lat"]?.toDouble() ?: return false
+            val targetLng = map["lng"]?.toDouble() ?: return false
+            val radius = map["radius"]?.toDouble() ?: return false
+
+            haversineDistance(lat, lng, targetLat, targetLng) <= radius
+        } catch (e: Exception) {
+            false
+        }
     }
 
+    /**
+     * Haversine distance between two points in meters.
+     */
+    internal fun haversineDistance(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
+        val r = 6371000.0 // Earth radius in meters
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLng = Math.toRadians(lng2 - lng1)
+        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2)
+        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        return r * c
+    }
+
+    /**
+     * Check if current time is within a time window.
+     *
+     * @param hour     Current hour (0-23)
+     * @param day      Current day of week (1=Mon, 7=Sun)
+     * @param timeJson JSON: {"startHour":X, "endHour":Y, "days":[1,2,3,4,5]}
+     */
     private fun isWithinTimeWindow(hour: Int, day: Int, timeJson: String): Boolean {
-        // TODO: parse JSON {"startHour":X, "endHour":Y, "days":[1,2,3,4,5]}
-        // Implement in S-05
-        return false
+        return try {
+            val clean = timeJson.replace("\"", "").replace(" ", "")
+
+            // Extract days array
+            val daysMatch = Regex("days:\\[([^]]*)]").find(clean)
+            val days = daysMatch?.groupValues?.get(1)
+                ?.split(",")
+                ?.mapNotNull { it.trim().toIntOrNull() }
+                ?: emptyList()
+
+            // Extract startHour and endHour
+            val startMatch = Regex("startHour:(\\d+)").find(clean)
+            val endMatch = Regex("endHour:(\\d+)").find(clean)
+            val startHour = startMatch?.groupValues?.get(1)?.toIntOrNull() ?: return false
+            val endHour = endMatch?.groupValues?.get(1)?.toIntOrNull() ?: return false
+
+            val hourInRange = if (startHour <= endHour) {
+                hour in startHour..endHour
+            } else {
+                hour >= startHour || hour <= endHour
+            }
+
+            hourInRange && (days.isEmpty() || day in days)
+        } catch (e: Exception) {
+            false
+        }
     }
 }
 

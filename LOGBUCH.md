@@ -1,7 +1,7 @@
 # 🦎 CHAMELEON — LOGBUCH
-_Zuletzt aktualisiert: 2026-04-15 07:40 UTC_
-_Aktiver Step: S-04 (DONE) → S-05_
-_Build Status: 🟢 GREEN (assembleDebug + :security:test + :core:test + :data:test)_
+_Zuletzt aktualisiert: 2026-04-15 07:50 UTC_
+_Aktiver Step: S-05 (DONE) → S-06_
+_Build Status: 🟢 GREEN (assembleDebug + :security + :core + :data + :domain tests)_
 
 ---
 
@@ -14,7 +14,7 @@ _Build Status: 🟢 GREEN (assembleDebug + :security:test + :core:test + :data:t
 | :security           | ✅ Done       | 13/21 (8 skip) | 2026-04-15 |
 | :core               | ✅ Done       | 19/23 (4 skip) | 2026-04-15 |
 | :data               | ✅ Done       | 20/20  | 2026-04-15      |
-| :domain             | ✅ Compiles   | —      | 2026-04-15      |
+| :domain             | ✅ Done       | 21/21  | 2026-04-15      |
 | :features:overlay   | ✅ Compiles   | —      | 2026-04-15      |
 | :features:messenger | ✅ Compiles   | —      | 2026-04-15      |
 | :features:privatezone | ✅ Compiles | —      | 2026-04-15      |
@@ -107,9 +107,21 @@ _Build Status: 🟢 GREEN (assembleDebug + :security:test + :core:test + :data:t
 
 ---
 
+### [S-05] Domain Layer — EncryptionEngine + DoubleRatchet HKDF + TierGate + RuleEngine
+- [x] 2026-04-15 07:42 — HKDF-SHA256 in ChameleonCrypto (RFC 5869 Extract+Expand)
+- [x] 2026-04-15 07:43 — DoubleRatchet HKDF TODO aufgelöst: kdfRootKey() + kdfChainKey() spec-konform
+- [x] 2026-04-15 07:44 — EncryptionEngine interface + XChaCha20EncryptionEngine (delegates to :stealthx-crypto)
+- [x] 2026-04-15 07:45 — TierGateImpl: reads IfrTierRepository, StateFlow<IfrTier>, HMAC-mismatch→FREE
+- [x] 2026-04-15 07:46 — RuleEngine: Haversine geofence + TimeWindow JSON parsing
+- [x] 2026-04-15 07:47 — X25519KeyManager: key generation, Ed25519-signed public bundles, session key
+- [x] 2026-04-15 07:48 — Tests: RuleEngine 11/11, TierGate 10/10 = 21/21 passed
+- [x] 2026-04-15 07:49 — Debug-Log Check: 0 Log.d/println in domain/ + stealthx-crypto/
+
+---
+
 ## 🔨 IN ARBEIT
 
-### [S-05] Domain Layer — EncryptionEngine + TierGate
+### [S-06] IFR Modul
 _Nächster Schritt_
 
 ---
@@ -152,7 +164,7 @@ _Nächster Schritt_
 
 ## ⚠️ WARNUNGEN & HINWEISE
 
-- [HINWEIS-001] DoubleRatchet.kt enthält `// TODO: HKDF` Platzhalter → in S-05 auflösen
+- [HINWEIS-001] ~~DoubleRatchet.kt HKDF TODO~~ → ✅ GELÖST in S-05 (HKDF-SHA256 RFC 5869)
 - [HINWEIS-002] SodiumInitializer muss AUCH im `:crypto` Prozess aufgerufen werden ✅ (CryptoService.onCreate)
 - [HINWEIS-003] lazysodium Version 5.1.0 — NICHT 5.0.x (JNA Bug)
 - [HINWEIS-004] StrongBox nur auf physischen Geräten mit Titan M
@@ -203,6 +215,7 @@ ELITE Threshold:  6_000_000_000_000 (6.000 IFR)
 | :security        | 13/21  | 🟢 PASS | 2026-04-15  |
 | :core            | 19/23  | 🟢 PASS | 2026-04-15  |
 | :data            | 20/20  | 🟢 PASS | 2026-04-15  |
+| :domain          | 21/21  | 🟢 PASS | 2026-04-15  |
 
 ---
 
