@@ -12,7 +12,7 @@
 package com.stealthx.chameleon
 
 import android.app.Application
-import com.stealthx.security.SodiumInitializer
+import com.stealthx.crypto.SodiumInitializer
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 

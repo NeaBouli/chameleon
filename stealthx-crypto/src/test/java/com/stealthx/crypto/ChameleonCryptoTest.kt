@@ -62,7 +62,7 @@ class ChameleonCryptoTest {
 
         // Flip a bit in ciphertext
         val tampered = payload.copy(
-            ciphertext = payload.ciphertext.copyOf().also { it[5] = it[5].xor(0xFF.toByte()) }
+            ciphertext = payload.ciphertext.copyOf().also { it[5] = (it[5].toInt() xor 0xFF).toByte() }
         )
 
         assertThrows(SecurityException::class.java) {

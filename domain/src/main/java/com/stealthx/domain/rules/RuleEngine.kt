@@ -7,8 +7,6 @@ package com.stealthx.domain.rules
 
 import com.stealthx.shared.model.SecurityLevel
 import com.stealthx.shared.model.TriggerContext
-import javax.inject.Inject
-
 /**
  * Rule Engine — evaluates active rules against current context.
  *
@@ -19,7 +17,7 @@ import javax.inject.Inject
  *
  * Default: If no rules match → PROTECTED (never PUBLIC by default).
  */
-class RuleEngine @Inject constructor() {
+class RuleEngine {
 
     /**
      * Evaluate a list of active rules against the current context.
@@ -61,12 +59,12 @@ class RuleEngine @Inject constructor() {
                 context.wifiSsid != null &&
                 context.wifiSsid == rule.triggerValue
 
-            TriggerType.LOCATION ->
-                context.latitude != null && context.longitude != null &&
-                isWithinGeofence(
-                    context.latitude, context.longitude,
-                    rule.triggerValue  // JSON: {"lat":..., "lng":..., "radius":...}
-                )
+            TriggerType.LOCATION -> {
+                val lat = context.latitude
+                val lng = context.longitude
+                lat != null && lng != null &&
+                isWithinGeofence(lat, lng, rule.triggerValue)
+            }
 
             TriggerType.TIME ->
                 isWithinTimeWindow(context.hourOfDay, context.dayOfWeek, rule.triggerValue)

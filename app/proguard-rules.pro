@@ -19,9 +19,15 @@
 -keep class com.walletconnect.** { *; }
 -dontwarn com.walletconnect.**
 
-# ── Web3j ─────────────────────────────────────────────────────
+# ── Web3j + transitive deps ──────────────────────────────────
 -keep class org.web3j.** { *; }
 -dontwarn org.web3j.**
+-dontwarn com.google.errorprone.**
+-dontwarn groovy.**
+-dontwarn org.codehaus.groovy.**
+-dontwarn org.apache.tuweni.**
+-dontwarn org.identityconnectors.**
+-dontwarn okhttp3.internal.platform.**
 
 # ── Room ──────────────────────────────────────────────────────
 -keep class * extends androidx.room.RoomDatabase

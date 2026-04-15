@@ -3,7 +3,7 @@
  * Copyright (C) 2026 Vendetta Labs / StealthX Platform
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-package com.stealthx.security
+package com.stealthx.crypto
 
 import com.goterl.lazysodium.SodiumAndroid
 import com.goterl.lazysodium.LazySodiumAndroid

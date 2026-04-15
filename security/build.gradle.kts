@@ -13,13 +13,19 @@ android {
     namespace = "com.stealthx.security"
     compileSdk = 35
     defaultConfig { minSdk = 26 }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
     implementation(project(":shared"))
-    // lazysodium for SodiumInitializer
-    implementation(libs.lazysodium.android)
-    implementation(libs.jna)
     implementation(libs.androidx.biometric)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

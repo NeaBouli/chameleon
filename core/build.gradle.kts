@@ -8,6 +8,16 @@ android {
     namespace = "com.stealthx.core"
     compileSdk = 35
     defaultConfig { minSdk = 26 }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
     buildFeatures { aidl = true }
 }
 dependencies {
@@ -17,6 +27,7 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.timber)
     testImplementation(libs.junit5.api)
     testRuntimeOnly(libs.junit5.engine)
     testImplementation(libs.mockk)

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="accessibility_service_label">Chameleon Privacy Layer</string>
+    <string name="accessibility_service_description">
+        Chameleon encrypts and decrypts text in other apps based on your security rules.
+        It reads text to encrypt it and writes encrypted text back.
+        No text is sent to any server. All processing happens on your device.
+    </string>
+</resources>

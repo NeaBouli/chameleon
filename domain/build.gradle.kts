@@ -1,11 +1,25 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+}
+android {
+    namespace = "com.stealthx.domain"
+    compileSdk = 35
+    defaultConfig { minSdk = 26 }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 dependencies {
     implementation(project(":stealthx-crypto"))
     implementation(project(":shared"))
-    // NO :data, NO :security, NO Android deps
+    // NO :data, NO :security
     implementation(libs.kotlinx.coroutines.android)
     testImplementation(libs.junit5.api)
     testImplementation(libs.junit5.params)

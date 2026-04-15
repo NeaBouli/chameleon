@@ -9,7 +9,7 @@ import com.goterl.lazysodium.interfaces.AEAD
 import com.goterl.lazysodium.interfaces.PwHash
 import com.goterl.lazysodium.interfaces.Sign
 import com.goterl.lazysodium.interfaces.KeyExchange
-import com.stealthx.security.SodiumInitializer
+// SodiumInitializer is in this package — no import needed
 import com.stealthx.shared.model.EncryptedPayload
 import java.util.Arrays
 
@@ -154,16 +154,20 @@ object ChameleonCrypto {
 
         val key = ByteArray(keyLength)
 
+        // Convert CharArray to ByteArray for lazysodium API
+        val passwordBytes = String(password).toByteArray(Charsets.UTF_8)
+
         val success = sodium.cryptoPwHash(
             key, keyLength,
-            password, password.size,
+            passwordBytes, passwordBytes.size,
             salt,
             ARGON2_OPS,
-            ARGON2_MEM_KB * 1024L,
+            com.sun.jna.NativeLong(ARGON2_MEM_KB * 1024L),
             PwHash.Alg.PWHASH_ALG_ARGON2ID13
         )
 
         // CRITICAL: Wipe password from memory immediately
+        wipeBytes(passwordBytes)
         wipeChars(password)
 
         check(success) { "Argon2id key derivation failed" }
@@ -220,8 +224,7 @@ object ChameleonCrypto {
      */
     fun sign(message: ByteArray, privateKey: ByteArray): ByteArray {
         val signature = ByteArray(Sign.BYTES)
-        val sigLen = LongArray(1)
-        sodium.cryptoSignDetached(signature, sigLen, message, message.size.toLong(), privateKey)
+        sodium.cryptoSignDetached(signature, message, message.size.toLong(), privateKey)
         return signature
     }
 
@@ -230,7 +233,7 @@ object ChameleonCrypto {
      * @return true if valid, false if tampered or invalid
      */
     fun verify(message: ByteArray, signature: ByteArray, publicKey: ByteArray): Boolean {
-        return sodium.cryptoSignVerifyDetached(signature, message, message.size.toLong(), publicKey)
+        return sodium.cryptoSignVerifyDetached(signature, message, message.size, publicKey)
     }
 
     // ── Random ───────────────────────────────────────────────────

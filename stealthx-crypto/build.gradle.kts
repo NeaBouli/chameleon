@@ -8,14 +8,35 @@
  * Dependencies: :shared ONLY
  */
 plugins {
-    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+}
+
+android {
+    namespace = "com.stealthx.crypto"
+    compileSdk = 35
+
+    defaultConfig {
+        minSdk = 26
+        ndk {
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86_64")
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
     implementation(project(":shared"))
 
     // THE ONLY CRYPTO LIBRARY — lazysodium wraps libsodium
-    // XChaCha20-Poly1305, X25519, Double Ratchet, Argon2id, Ed25519
     implementation(libs.lazysodium.android)
     implementation(libs.jna)
 
