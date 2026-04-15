@@ -1,7 +1,7 @@
 # 🦎 CHAMELEON — LOGBUCH
-_Zuletzt aktualisiert: 2026-04-15 09:15 UTC_
-_Aktiver Step: S-08 (DONE) → S-09_
-_Build Status: 🟢 GREEN (assembleDebug + all module tests + security scan)_
+_Zuletzt aktualisiert: 2026-04-15 10:00 UTC_
+_Aktiver Step: S-09 (DONE) → S-10_
+_Build Status: 🟢 GREEN (assembleDebug + assembleRelease + all tests + OWASP L2)_
 
 ---
 
@@ -158,9 +158,22 @@ _Build Status: 🟢 GREEN (assembleDebug + all module tests + security scan)_
 
 ---
 
+### [S-09] Security Hardening — OWASP MASVS + ProGuard + Audit Package
+- [x] 2026-04-15 09:20 — ProGuard verified: -keep rules for stealthx, lazysodium, web3j, walletconnect
+- [x] 2026-04-15 09:25 — Manifest hardening: allowBackup=false, cleartext=false, all exported=false
+- [x] 2026-04-15 09:30 — Release build: 17.1 MB (R8 active, minify+shrink)
+- [x] 2026-04-15 09:35 — Security grep suite: all 8 checks CLEAN
+- [x] 2026-04-15 09:40 — OWASP MASVS L2: 17 PASS, 6 PARTIAL, 0 FAIL
+- [x] 2026-04-15 09:45 — Audit Package: 7 docs (Crypto, Threats, Architecture, IFR, Limitations, Deps, OWASP)
+- [x] 2026-04-15 09:50 — BuilderRegistry doc: pending registration
+- [x] 2026-04-15 09:55 — README.md: Security Audit section, Trail of Bits recommendation
+- [x] 2026-04-15 10:00 — Build: assembleDebug + assembleRelease GREEN
+
+---
+
 ## 🔨 IN ARBEIT
 
-### [S-09] Hardening + OWASP MASVS
+### [S-10] Release — F-Droid + Play Store
 _Nächster Schritt_
 
 ---

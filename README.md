@@ -92,7 +92,7 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 | S-06 | ✅ Done | IFR Module (WalletConnect, IFRLockVerifier, TierActivator) |
 | S-07 | ✅ Done | Compose UI (StealthX Design System, Navigation, Screens) |
 | S-08 | ✅ Done | Feature Layer (Overlay, Messenger, PrivateZone, Geofencing, Decoy) |
-| S-09 | ⏳ Pending | Security Hardening + OWASP MASVS Audit |
+| S-09 | ✅ Done | Security Hardening + OWASP MASVS L2 Audit |
 | S-10 | ⏳ Pending | F-Droid + Play Store Release |
 
 ---
@@ -101,6 +101,25 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 
 > Screenshots will be added after S-08 (Feature Layer) completion.
 > FLAG_SECURE is active — screenshots must be taken with developer override.
+
+---
+
+## Security Audit
+
+Chameleon targets **OWASP MASVS Level 2** compliance. The full audit package is in [`docs/AUDIT_PACKAGE/`](docs/AUDIT_PACKAGE/).
+
+| Document | Contents |
+|----------|----------|
+| [Crypto Implementation](docs/AUDIT_PACKAGE/CRYPTO_IMPLEMENTATION.md) | Algorithms, parameters, key management |
+| [Threat Model](docs/AUDIT_PACKAGE/THREAT_MODEL.md) | Assets, threat actors, trust boundaries |
+| [Architecture Overview](docs/AUDIT_PACKAGE/ARCHITECTURE_OVERVIEW.md) | Module layers, AIDL isolation |
+| [OWASP MASVS Compliance](docs/AUDIT_PACKAGE/OWASP_MASVS_COMPLIANCE.md) | Point-by-point compliance matrix |
+| [Known Limitations](docs/AUDIT_PACKAGE/KNOWN_LIMITATIONS.md) | What Chameleon does NOT protect against |
+| [Dependency Audit](docs/AUDIT_PACKAGE/DEPENDENCY_AUDIT.md) | All libraries, versions, CVE status |
+
+**Recommended external auditor:** [Trail of Bits](https://www.trailofbits.com/) — experienced with XChaCha20 + Double Ratchet stacks (audited SimpleX Chat).
+
+**No release without external audit** — this is an architectural principle.
 
 ---
 
@@ -119,5 +138,5 @@ GPL-3.0-or-later. See [LICENSE](LICENSE).
 
 ---
 
-*Chameleon — Privatsphäre, die sich anpasst.*  
+*Chameleon — Privacy that adapts.*
 *Part of the [StealthX Platform](https://stealthx.tech) | [SecureCall](https://stealthx.tech) | [IFR Token](https://ifrunit.tech)*
