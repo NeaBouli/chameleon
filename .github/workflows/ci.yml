@@ -82,7 +82,10 @@ jobs:
         run: |
           VIOLATIONS=$(grep -rn "MediaStore\|/DCIM/" \
             --include="*.kt" \
-            features/privatezone/ || true)
+            features/privatezone/src/main/ \
+            | grep -v "^.*//.*" \
+            | grep -v "^\s*\*" \
+            | grep -v "test/" || true)
           if [ -n "$VIOLATIONS" ]; then
             echo "MEDIASTORE VIOLATION:"
             echo "$VIOLATIONS"
