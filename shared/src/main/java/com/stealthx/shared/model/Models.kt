@@ -123,6 +123,24 @@ data class CachedTierResult(
     val hmac:          ByteArray      // HMAC-SHA256 over all above fields
 )
 
+// ── Unified StealthX Identity ─────────────────────────────────
+
+/**
+ * Cross-app contact identity.
+ * One sx_ID works in SecureCall AND SecureChat.
+ */
+data class StealthXContactId(
+    val rawId: String,          // sx_a7Kx9mPq2nRt
+    val customHandle: String?,  // @username
+    val publicKeyHex: String,
+    val supportsCall: Boolean = false,
+    val supportsChat: Boolean = false
+) {
+    val displayId: String get() = customHandle ?: rawId
+    val hasSecureCall: Boolean get() = supportsCall
+    val hasSecureChat: Boolean get() = supportsChat
+}
+
 // ── Key Type Enums ────────────────────────────────────────────
 
 enum class KeyType    { SYMMETRIC, ASYMMETRIC_PUBLIC, SHARED_SECRET }
