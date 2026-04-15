@@ -1,0 +1,58 @@
+Categories:
+  - Security
+  - Internet
+License: GPL-3.0-or-later
+AuthorName: Vendetta Labs
+AuthorEmail: bergamolia@protonmail.com
+AuthorWebSite: https://stealthx.tech
+SourceCode: https://github.com/NeaBouli/chameleon
+IssueTracker: https://github.com/NeaBouli/chameleon/issues
+
+AutoName: Chameleon
+Summary: Context-aware privacy layer for Android
+
+Description: |
+  Chameleon encrypts your communications automatically based on where you are,
+  which app you use, and who might be watching.
+
+  Unlike standalone messengers, Chameleon is a privacy layer that works on top
+  of any app. It intercepts text via AccessibilityService, encrypts it with
+  XChaCha20-Poly1305, and injects the ciphertext back — transparently.
+
+  Features:
+  * Overlay encryption for any whitelisted app
+  * Rule-based security levels (App, WiFi, Location, Time triggers)
+  * Double Ratchet protocol for forward secrecy
+  * Encrypted file storage (Private Zone)
+  * Local-only encrypted messenger (no server)
+  * IFR Token tier system (no subscriptions)
+
+  Security:
+  * XChaCha20-Poly1305 + X25519 + Argon2id
+  * Hardware Keystore (StrongBox/TEE)
+  * AIDL process isolation for crypto service
+  * No internet permission by default
+  * OWASP MASVS Level 2 compliant
+
+RepoType: git
+Repo: https://github.com/NeaBouli/chameleon.git
+
+Builds:
+  - versionName: 0.1.0-alpha
+    versionCode: 1
+    commit: v0.1.0-alpha
+    subdir: app
+    gradle:
+      - yes
+    build:
+      - cd .. && ./gradlew assembleRelease
+
+AntiFeatures:
+  NonFreeNet:
+    en-US: |
+      Optional IFR Token verification requires a one-time Ethereum RPC call
+      to verify locked token balance. This is user-initiated and opt-in.
+      The app functions fully without internet access.
+
+CurrentVersion: 0.1.0-alpha
+CurrentVersionCode: 1

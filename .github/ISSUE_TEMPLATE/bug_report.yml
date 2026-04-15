@@ -1,0 +1,46 @@
+name: Bug Report
+description: Report a bug in Chameleon
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: What happened? What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this bug?
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Chameleon Version
+      placeholder: "0.1.0-alpha"
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device & Android Version
+      placeholder: "Pixel 7, Android 14"
+    validations:
+      required: true
+  - type: dropdown
+    id: tier
+    attributes:
+      label: IFR Tier
+      options:
+        - FREE
+        - PRO
+        - ELITE
+    validations:
+      required: true

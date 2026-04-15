@@ -93,14 +93,18 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 | S-07 | ✅ Done | Compose UI (StealthX Design System, Navigation, Screens) |
 | S-08 | ✅ Done | Feature Layer (Overlay, Messenger, PrivateZone, Geofencing, Decoy) |
 | S-09 | ✅ Done | Security Hardening + OWASP MASVS L2 Audit |
-| S-10 | ⏳ Pending | F-Droid + Play Store Release |
+| S-10 | ✅ Done | F-Droid + Play Store prep, Release Pipeline, Community |
 
 ---
 
-## Screenshots
+## Download
 
-> Screenshots will be added after S-08 (Feature Layer) completion.
-> FLAG_SECURE is active — screenshots must be taken with developer override.
+**Public Alpha: Q3 2026** — pending external security audit.
+
+- F-Droid: Metadata prepared, submission after audit
+- Play Store: Data Safety Form documented, submission after audit
+- GitHub Releases: APK available with each tagged version
+- Source: `git clone https://github.com/NeaBouli/chameleon.git`
 
 ---
 
@@ -131,9 +135,17 @@ Chameleon targets **OWASP MASVS Level 2** compliance. The full audit package is 
 
 ---
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for code review process and architecture rules.
+
+Security-critical changes (crypto, keystore, AIDL) require additional review.
+
+---
+
 ## License
 
-GPL-3.0-or-later. See [LICENSE](LICENSE).  
+GPL-3.0-or-later. See [LICENSE](LICENSE).
 100% open source. Fork it, audit it, contribute.
 
 ---

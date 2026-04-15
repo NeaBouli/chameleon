@@ -1,7 +1,7 @@
 # 🦎 CHAMELEON — LOGBUCH
-_Zuletzt aktualisiert: 2026-04-15 10:00 UTC_
-_Aktiver Step: S-09 (DONE) → S-10_
-_Build Status: 🟢 GREEN (assembleDebug + assembleRelease + all tests + OWASP L2)_
+_Zuletzt aktualisiert: 2026-04-15 10:30 UTC_
+_Aktiver Step: ALLE STEPS DONE (S-00 bis S-10)_
+_Build Status: 🟢 GREEN — v0.1.0-alpha ready for audit_
 
 ---
 
@@ -171,10 +171,32 @@ _Build Status: 🟢 GREEN (assembleDebug + assembleRelease + all tests + OWASP L
 
 ---
 
-## 🔨 IN ARBEIT
+### [S-10] Release — F-Droid + Play Store + Community
+- [x] 2026-04-15 10:05 — Git author rewrite: all commits → NeaBouli <bergamolia@protonmail.com>
+- [x] 2026-04-15 10:08 — F-Droid metadata: fdroid/metadata/com.stealthx.chameleon.yml
+- [x] 2026-04-15 10:10 — Release pipeline: .github/workflows/release.yml (tag-triggered)
+- [x] 2026-04-15 10:12 — Signing policy: docs/SIGNING_POLICY.md (offline keystore)
+- [x] 2026-04-15 10:15 — Play Store: Data Safety Form documented
+- [x] 2026-04-15 10:17 — F-Droid compatibility: all deps FOSS (except optional Play Services Location)
+- [x] 2026-04-15 10:20 — Community: SECURITY.md (90-day embargo), CONTRIBUTING.md (security review)
+- [x] 2026-04-15 10:22 — Issue templates: bug_report, feature_request, security_vulnerability
+- [x] 2026-04-15 10:25 — Release checklist: docs/RELEASE_CHECKLIST.md
+- [x] 2026-04-15 10:27 — StealthX website integration documented
+- [x] 2026-04-15 10:30 — README.md final, LOGBUCH.md final, all Steps DONE
 
-### [S-10] Release — F-Droid + Play Store
-_Nächster Schritt_
+---
+
+## 🏁 DEVELOPMENT COMPLETE
+
+All 11 Steps (S-00 through S-10) are DONE.
+
+**Next steps before public release:**
+1. External security audit (Trail of Bits recommended)
+2. F-Droid submission after audit approval
+3. Play Store submission after audit approval
+4. stealthx.tech Chameleon page live
+5. IFR BuilderRegistry on-chain registration
+6. GitHub Discussions activation (manual)
 
 ---
 
