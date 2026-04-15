@@ -1,7 +1,7 @@
 # 🦎 CHAMELEON — LOGBUCH
-_Zuletzt aktualisiert: 2026-04-15 03:05 UTC_
-_Aktiver Step: S-01 → S-02_
-_Build Status: 🟢 GREEN (assembleDebug + assembleRelease)_
+_Zuletzt aktualisiert: 2026-04-15 03:40 UTC_
+_Aktiver Step: S-02 (DONE) → S-03_
+_Build Status: 🟢 GREEN (assembleDebug + assembleRelease + :security:test)_
 
 ---
 
@@ -11,7 +11,7 @@ _Build Status: 🟢 GREEN (assembleDebug + assembleRelease)_
 |---------------------|--------------|--------|-----------------|
 | :stealthx-crypto    | ✅ Compiles   | 3/11 JVM* | 2026-04-15 |
 | :stealthx-ifr       | ✅ Compiles   | —      | 2026-04-15      |
-| :security           | ✅ Compiles   | —      | 2026-04-15      |
+| :security           | ✅ Done       | 13/21 (8 skip) | 2026-04-15 |
 | :core               | ✅ Compiles   | —      | 2026-04-15      |
 | :data               | ✅ Compiles   | —      | 2026-04-15      |
 | :domain             | ✅ Compiles   | —      | 2026-04-15      |
@@ -66,9 +66,21 @@ _Build Status: 🟢 GREEN (assembleDebug + assembleRelease)_
 
 ---
 
+### [S-02] Security Layer
+- [x] 2026-04-15 03:10 — SodiumInitializer.kt geprüft — korrekt in :stealthx-crypto
+- [x] 2026-04-15 03:12 — KeystoreManager.kt geprüft — StrongBox via reflection, TEE fallback, per-use auth (-1)
+- [x] 2026-04-15 03:15 — SecureMemoryWipe.kt geprüft — DoD 3-Pass korrekt (zeros, ones, random + sync)
+- [x] 2026-04-15 03:20 — HardwareAttestationVerifier.kt implementiert — ASN.1 parsing, attestation chain, StrongBox/TEE/Software detection
+- [x] 2026-04-15 03:25 — Argon2KeyDerivation — bereits in ChameleonCrypto.deriveKey() (memory=65536KB, iterations=3, via lazysodium, kein BouncyCastle)
+- [x] 2026-04-15 03:30 — Unit Tests: SecureMemoryWipeTest (10/10), KeystoreManagerTest (1+4skip), HardwareAttestationVerifierTest (2+4skip)
+- [x] 2026-04-15 03:35 — Debug-Log Check: 0 Log.d/println in security/ und stealthx-crypto/
+- [x] 2026-04-15 03:38 — Build: assembleDebug + assembleRelease GREEN
+
+---
+
 ## 🔨 IN ARBEIT
 
-### [S-02] Security Layer
+### [S-03] Core Layer — AccessibilityService + AIDL
 _Nächster Schritt_
 
 ---
@@ -159,6 +171,7 @@ ELITE Threshold:  6_000_000_000_000 (6.000 IFR)
 | Modul            | Tests  | Status | Letzter Lauf |
 |------------------|--------|--------|--------------|
 | :stealthx-crypto | 3/11   | 🟡 JVM | 2026-04-15   |
+| :security        | 13/21  | 🟢 PASS | 2026-04-15  |
 
 ---
 
@@ -167,7 +180,8 @@ ELITE Threshold:  6_000_000_000_000 (6.000 IFR)
 | Datum | Hash | Message | Tests |
 |-------|------|---------|-------|
 | 2026-04-15 | 979722f | chore: initial project scaffold | — |
-| 2026-04-15 | TBD | fix: gradle build — all 13 modules compile | 3/11 |
+| 2026-04-15 | 666c190 | fix: gradle build — all 13 modules compile | 3/11 |
+| 2026-04-15 | TBD | feat(security): attestation verifier + tests | 13/21 |
 
 ---
 
