@@ -1,7 +1,7 @@
 # 🦎 CHAMELEON — LOGBUCH
-_Zuletzt aktualisiert: 2026-04-15 07:50 UTC_
-_Aktiver Step: S-05 (DONE) → S-06_
-_Build Status: 🟢 GREEN (assembleDebug + :security + :core + :data + :domain tests)_
+_Zuletzt aktualisiert: 2026-04-15 08:05 UTC_
+_Aktiver Step: S-06 (DONE) → S-07_
+_Build Status: 🟢 GREEN (assembleDebug + all module tests)_
 
 ---
 
@@ -10,7 +10,7 @@ _Build Status: 🟢 GREEN (assembleDebug + :security + :core + :data + :domain t
 | Modul               | Status       | Tests  | Letzte Änderung |
 |---------------------|--------------|--------|-----------------|
 | :stealthx-crypto    | ✅ Compiles   | 3/11 JVM* | 2026-04-15 |
-| :stealthx-ifr       | ✅ Compiles   | —      | 2026-04-15      |
+| :stealthx-ifr       | ✅ Done       | 20/20  | 2026-04-15      |
 | :security           | ✅ Done       | 13/21 (8 skip) | 2026-04-15 |
 | :core               | ✅ Done       | 19/23 (4 skip) | 2026-04-15 |
 | :data               | ✅ Done       | 20/20  | 2026-04-15      |
@@ -119,9 +119,21 @@ _Build Status: 🟢 GREEN (assembleDebug + :security + :core + :data + :domain t
 
 ---
 
+### [S-06] IFR Modul — WalletConnect + IFRLock + Tier Aktivierung
+- [x] 2026-04-15 07:52 — WalletConnectManager: Intent-based deep links, kein direkter HTTP
+- [x] 2026-04-15 07:53 — WalletConnectResult: sealed class (Success, Cancelled, Error)
+- [x] 2026-04-15 07:55 — IFRLockVerifier: web3j eth_call nur, fallback RPC endpoints, 10s timeout
+- [x] 2026-04-15 07:57 — IFRTierActivator: tier from amount, HMAC via repository, cache fallback
+- [x] 2026-04-15 08:00 — Compose UI: TierGatedContent (einziger Guard), TierStatusCard, IFRUnlockSheet
+- [x] 2026-04-15 08:02 — INTERNET check: grep → 0 Treffer in stealthx-ifr/
+- [x] 2026-04-15 08:03 — Tests: IFRConstants 14/14, IFRTierActivator 6/6 = 20/20 passed
+- [x] 2026-04-15 08:05 — Build: assembleDebug GREEN
+
+---
+
 ## 🔨 IN ARBEIT
 
-### [S-06] IFR Modul
+### [S-07] Presentation Layer
 _Nächster Schritt_
 
 ---
@@ -216,6 +228,7 @@ ELITE Threshold:  6_000_000_000_000 (6.000 IFR)
 | :core            | 19/23  | 🟢 PASS | 2026-04-15  |
 | :data            | 20/20  | 🟢 PASS | 2026-04-15  |
 | :domain          | 21/21  | 🟢 PASS | 2026-04-15  |
+| :stealthx-ifr    | 20/20  | 🟢 PASS | 2026-04-15  |
 
 ---
 
