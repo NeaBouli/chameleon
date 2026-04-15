@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.timber)
     testImplementation(libs.junit5.api)
     testRuntimeOnly(libs.junit5.engine)

@@ -1,7 +1,7 @@
 # 🦎 CHAMELEON — LOGBUCH
-_Zuletzt aktualisiert: 2026-04-15 03:40 UTC_
-_Aktiver Step: S-02 (DONE) → S-03_
-_Build Status: 🟢 GREEN (assembleDebug + assembleRelease + :security:test)_
+_Zuletzt aktualisiert: 2026-04-15 07:05 UTC_
+_Aktiver Step: S-03 (DONE) → S-04_
+_Build Status: 🟢 GREEN (assembleDebug + assembleRelease + :security:test + :core:test)_
 
 ---
 
@@ -12,7 +12,7 @@ _Build Status: 🟢 GREEN (assembleDebug + assembleRelease + :security:test)_
 | :stealthx-crypto    | ✅ Compiles   | 3/11 JVM* | 2026-04-15 |
 | :stealthx-ifr       | ✅ Compiles   | —      | 2026-04-15      |
 | :security           | ✅ Done       | 13/21 (8 skip) | 2026-04-15 |
-| :core               | ✅ Compiles   | —      | 2026-04-15      |
+| :core               | ✅ Done       | 19/23 (4 skip) | 2026-04-15 |
 | :data               | ✅ Compiles   | —      | 2026-04-15      |
 | :domain             | ✅ Compiles   | —      | 2026-04-15      |
 | :features:overlay   | ✅ Compiles   | —      | 2026-04-15      |
@@ -78,9 +78,22 @@ _Build Status: 🟢 GREEN (assembleDebug + assembleRelease + :security:test)_
 
 ---
 
+### [S-03] Core Layer — AccessibilityService + AIDL Isolation
+- [x] 2026-04-15 07:00 — Bestehendes geprüft: AIDL, AccessibilityService, CryptoService, ProcessTextResult, BootReceiver alle korrekt
+- [x] 2026-04-15 07:00 — accessibility_service_config.xml: 15 Apps Whitelist, KEINE Wildcards
+- [x] 2026-04-15 07:00 — CryptoService: exported=false, process=":crypto", SodiumInitializer.ensureInit() in onCreate()
+- [x] 2026-04-15 07:00 — AccessibilityService: KEIN Crypto-Code, nur AIDL-Delegation + Text-Injection
+- [x] 2026-04-15 07:01 — OverlayManager.kt: TYPE_APPLICATION_OVERLAY, FLAG_SECURE, kein Lockscreen-Overlay
+- [x] 2026-04-15 07:02 — PermissionManager.kt: Flow<PermissionState>, Accessibility + Overlay Checks, Settings Intents
+- [x] 2026-04-15 07:03 — Tests: 23 total, 19 passed, 4 skipped (JVM), 0 failed
+- [x] 2026-04-15 07:04 — Debug-Log Check: 0 Log.d/println in core/src/main/
+- [x] 2026-04-15 07:05 — Build: assembleDebug + assembleRelease GREEN
+
+---
+
 ## 🔨 IN ARBEIT
 
-### [S-03] Core Layer — AccessibilityService + AIDL
+### [S-04] Data Layer — Room + SQLCipher
 _Nächster Schritt_
 
 ---
@@ -172,6 +185,7 @@ ELITE Threshold:  6_000_000_000_000 (6.000 IFR)
 |------------------|--------|--------|--------------|
 | :stealthx-crypto | 3/11   | 🟡 JVM | 2026-04-15   |
 | :security        | 13/21  | 🟢 PASS | 2026-04-15  |
+| :core            | 19/23  | 🟢 PASS | 2026-04-15  |
 
 ---
 
@@ -181,7 +195,8 @@ ELITE Threshold:  6_000_000_000_000 (6.000 IFR)
 |-------|------|---------|-------|
 | 2026-04-15 | 979722f | chore: initial project scaffold | — |
 | 2026-04-15 | 666c190 | fix: gradle build — all 13 modules compile | 3/11 |
-| 2026-04-15 | TBD | feat(security): attestation verifier + tests | 13/21 |
+| 2026-04-15 | 7a1143c | feat(security): attestation verifier + tests | 13/21 |
+| 2026-04-15 | TBD | feat(core): accessibility service aidl isolation + crypto process | 19/23 |
 
 ---
 
