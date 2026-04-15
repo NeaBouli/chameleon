@@ -1,6 +1,6 @@
 # 🦎 CHAMELEON — LOGBUCH
-_Zuletzt aktualisiert: 2026-04-15 08:05 UTC_
-_Aktiver Step: S-06 (DONE) → S-07_
+_Zuletzt aktualisiert: 2026-04-15 08:30 UTC_
+_Aktiver Step: S-07 (DONE) → S-08_
 _Build Status: 🟢 GREEN (assembleDebug + all module tests)_
 
 ---
@@ -20,7 +20,7 @@ _Build Status: 🟢 GREEN (assembleDebug + all module tests)_
 | :features:privatezone | ✅ Compiles | —      | 2026-04-15      |
 | :features:geofencing | ✅ Compiles  | —      | 2026-04-15      |
 | :features:decoy     | ✅ Compiles   | —      | 2026-04-15      |
-| :presentation       | ✅ Compiles   | —      | 2026-04-15      |
+| :presentation       | ✅ Done       | —      | 2026-04-15      |
 | :shared             | ✅ Compiles   | —      | 2026-04-15      |
 | :app                | ✅ Compiles   | —      | 2026-04-15      |
 
@@ -131,9 +131,24 @@ _Build Status: 🟢 GREEN (assembleDebug + all module tests)_
 
 ---
 
+### [S-07] Presentation Layer — StealthX Design System + Compose UI + Navigation
+- [x] 2026-04-15 08:10 — StealthXTheme (Dark only), StealthXColors, StealthXTypography
+- [x] 2026-04-15 08:12 — Navigation: Screen sealed class, StealthXNavGraph with tier-gated routes
+- [x] 2026-04-15 08:15 — DashboardScreen: SecurityLevelIndicator, TierBadge, Rules LazyColumn
+- [x] 2026-04-15 08:18 — SettingsScreen, KeyExchangeScreen, IFRUnlockScreen
+- [x] 2026-04-15 08:20 — Composables: SecurityLevelIndicator (animated), TierBadge
+- [x] 2026-04-15 08:22 — ViewModels: DashboardViewModel, IFRViewModel (Hilt)
+- [x] 2026-04-15 08:24 — ClipboardCleaner: auto-clear after 60s
+- [x] 2026-04-15 08:25 — MainActivity: StealthXTheme + NavGraph + FLAG_SECURE
+- [x] 2026-04-15 08:26 — AppModule (Hilt): DB, DAOs, TierGate, Repositories DI
+- [x] 2026-04-15 08:28 — README.md aktualisiert (alle Steps S-00 bis S-07 als Done)
+- [x] 2026-04-15 08:30 — Build: assembleDebug GREEN
+
+---
+
 ## 🔨 IN ARBEIT
 
-### [S-07] Presentation Layer
+### [S-08] Feature Layer
 _Nächster Schritt_
 
 ---

@@ -83,17 +83,24 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 
 | Phase | Status | Description |
 |-------|--------|-------------|
-| S-00 | 🔨 Active | Repo init, SecureCall analysis |
-| S-01 | ⏳ Pending | Gradle modules + CI/CD |
-| S-02 | ⏳ Pending | Security Layer (Keystore + Argon2id) |
-| S-03 | ⏳ Pending | AccessibilityService (AIDL) |
-| S-04 | ⏳ Pending | Data Layer (Room + SQLCipher) |
-| S-05 | ⏳ Pending | Domain Layer (XChaCha20 + Double Ratchet) |
-| S-06 | ⏳ Pending | IFR Module (WalletConnect) |
-| S-07 | ⏳ Pending | Compose UI |
-| S-08 | ⏳ Pending | Feature Layer |
-| S-09 | ⏳ Pending | Security Hardening + Audit |
+| S-00 | ✅ Done | Repo init, SecureCall analysis |
+| S-01 | ✅ Done | Gradle modules (13), CI/CD, all compile |
+| S-02 | ✅ Done | Security Layer (Keystore, Attestation, Argon2id) |
+| S-03 | ✅ Done | AccessibilityService (AIDL, CryptoService :crypto process) |
+| S-04 | ✅ Done | Data Layer (Room + SQLCipher + IFR HMAC Cache) |
+| S-05 | ✅ Done | Domain Layer (XChaCha20, Double Ratchet HKDF, TierGate, RuleEngine) |
+| S-06 | ✅ Done | IFR Module (WalletConnect, IFRLockVerifier, TierActivator) |
+| S-07 | ✅ Done | Compose UI (StealthX Design System, Navigation, Screens) |
+| S-08 | ⏳ Pending | Feature Layer (Overlay, Messenger, PrivateZone, Geofencing, Decoy) |
+| S-09 | ⏳ Pending | Security Hardening + OWASP MASVS Audit |
 | S-10 | ⏳ Pending | F-Droid + Play Store Release |
+
+---
+
+## Screenshots
+
+> Screenshots will be added after S-08 (Feature Layer) completion.
+> FLAG_SECURE is active — screenshots must be taken with developer override.
 
 ---
 

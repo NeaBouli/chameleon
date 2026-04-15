@@ -15,6 +15,9 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.navigation.compose.rememberNavController
+import com.stealthx.presentation.nav.StealthXNavGraph
+import com.stealthx.presentation.theme.StealthXTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,7 +32,10 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
-            // TODO S-07: Compose UI + Navigation
+            StealthXTheme {
+                val navController = rememberNavController()
+                StealthXNavGraph(navController = navController)
+            }
         }
     }
 }
