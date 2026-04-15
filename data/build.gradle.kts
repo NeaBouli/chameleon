@@ -13,13 +13,24 @@ android {
             annotationProcessorOptions {
                 arguments["room.schemaLocation"] = "$projectDir/schemas"
                 arguments["room.incremental"]    = "true"
+                arguments["room.expandProjection"] = "true"
             }
         }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
     }
 }
 dependencies {
     implementation(project(":domain"))
     implementation(project(":stealthx-crypto"))
+    implementation(project(":security"))
     implementation(project(":shared"))
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
@@ -28,11 +39,13 @@ dependencies {
     implementation(libs.sqlite.ktx)
     implementation(libs.androidx.security.crypto)
     implementation(libs.androidx.datastore)
+    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit5.api)
     testRuntimeOnly(libs.junit5.engine)
     testImplementation(libs.robolectric)
     testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
 }
 tasks.withType<Test> { useJUnitPlatform() }

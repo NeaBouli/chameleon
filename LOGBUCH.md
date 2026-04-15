@@ -1,7 +1,7 @@
 # 🦎 CHAMELEON — LOGBUCH
-_Zuletzt aktualisiert: 2026-04-15 07:05 UTC_
-_Aktiver Step: S-03 (DONE) → S-04_
-_Build Status: 🟢 GREEN (assembleDebug + assembleRelease + :security:test + :core:test)_
+_Zuletzt aktualisiert: 2026-04-15 07:40 UTC_
+_Aktiver Step: S-04 (DONE) → S-05_
+_Build Status: 🟢 GREEN (assembleDebug + :security:test + :core:test + :data:test)_
 
 ---
 
@@ -13,7 +13,7 @@ _Build Status: 🟢 GREEN (assembleDebug + assembleRelease + :security:test + :c
 | :stealthx-ifr       | ✅ Compiles   | —      | 2026-04-15      |
 | :security           | ✅ Done       | 13/21 (8 skip) | 2026-04-15 |
 | :core               | ✅ Done       | 19/23 (4 skip) | 2026-04-15 |
-| :data               | ✅ Compiles   | —      | 2026-04-15      |
+| :data               | ✅ Done       | 20/20  | 2026-04-15      |
 | :domain             | ✅ Compiles   | —      | 2026-04-15      |
 | :features:overlay   | ✅ Compiles   | —      | 2026-04-15      |
 | :features:messenger | ✅ Compiles   | —      | 2026-04-15      |
@@ -91,9 +91,25 @@ _Build Status: 🟢 GREEN (assembleDebug + assembleRelease + :security:test + :c
 
 ---
 
+### [S-04] Data Layer — Room + SQLCipher + IFR Tier Cache
+- [x] 2026-04-15 07:10 — ChameleonDatabase.kt: Room + SQLCipher, key from Keystore
+- [x] 2026-04-15 07:12 — 5 Entities: SecureRule, CryptoKey, ContactKey, AuditLog, IfrTierCache
+- [x] 2026-04-15 07:15 — 4 DAOs: SecureRuleDao, CryptoKeyDao, AuditLogDao, IfrTierCacheDao
+- [x] 2026-04-15 07:18 — TypeConverters: Instant↔Long, all Enums↔String
+- [x] 2026-04-15 07:20 — IfrTierRepositoryImpl: HMAC-SHA256 over all fields, key from Keystore, mismatch→FREE
+- [x] 2026-04-15 07:22 — AppPreferences: EncryptedSharedPreferences (AES256-SIV/GCM via MasterKey)
+- [x] 2026-04-15 07:25 — SecureFileManager: XChaCha20 per file, SHA-256 hashed filenames
+- [x] 2026-04-15 07:28 — Repository interfaces in :domain (SecureRuleRepository, IfrTierRepository, AuditLogRepository)
+- [x] 2026-04-15 07:30 — Room Schema exported: data/schemas/...ChameleonDatabase/1.json
+- [x] 2026-04-15 07:32 — SQLCipher key: NOT in SharedPreferences, from Keystore only
+- [x] 2026-04-15 07:35 — Tests: 20/20 passed, 0 failed
+- [x] 2026-04-15 07:38 — Build: assembleDebug GREEN
+
+---
+
 ## 🔨 IN ARBEIT
 
-### [S-04] Data Layer — Room + SQLCipher
+### [S-05] Domain Layer — EncryptionEngine + TierGate
 _Nächster Schritt_
 
 ---
@@ -186,6 +202,7 @@ ELITE Threshold:  6_000_000_000_000 (6.000 IFR)
 | :stealthx-crypto | 3/11   | 🟡 JVM | 2026-04-15   |
 | :security        | 13/21  | 🟢 PASS | 2026-04-15  |
 | :core            | 19/23  | 🟢 PASS | 2026-04-15  |
+| :data            | 20/20  | 🟢 PASS | 2026-04-15  |
 
 ---
 
