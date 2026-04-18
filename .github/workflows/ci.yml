@@ -85,6 +85,7 @@ jobs:
             features/privatezone/src/main/ \
             | grep -v "^.*//.*" \
             | grep -v "^\s*\*" \
+            | grep -v ":[0-9]*:\s*\*" \
             | grep -v "test/" || true)
           if [ -n "$VIOLATIONS" ]; then
             echo "MEDIASTORE VIOLATION:"
