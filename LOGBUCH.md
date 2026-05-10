@@ -1,5 +1,5 @@
 # 🦎 CHAMELEON — LOGBUCH
-_Zuletzt aktualisiert: 2026-04-15 10:30 UTC_
+_Zuletzt aktualisiert: 2026-05-10_
 _Aktiver Step: ALLE STEPS DONE (S-00 bis S-10)_
 _Build Status: 🟢 GREEN — v0.1.0-alpha ready for audit_
 
@@ -9,7 +9,7 @@ _Build Status: 🟢 GREEN — v0.1.0-alpha ready for audit_
 
 | Modul               | Status       | Tests  | Letzte Änderung |
 |---------------------|--------------|--------|-----------------|
-| :stealthx-crypto    | ✅ Compiles   | 3/11 JVM* | 2026-04-15 |
+| :stealthx-crypto    | ✅ Compiles   | 24/24 JVM ✅ | 2026-05-10 |
 | :stealthx-ifr       | ✅ Done       | 20/20  | 2026-04-15      |
 | :security           | ✅ Done       | 13/21 (8 skip) | 2026-04-15 |
 | :core               | ✅ Done       | 19/23 (4 skip) | 2026-04-15 |
@@ -24,7 +24,11 @@ _Build Status: 🟢 GREEN — v0.1.0-alpha ready for audit_
 | :shared             | ✅ Compiles   | —      | 2026-04-15      |
 | :app                | ✅ Compiles   | —      | 2026-04-15      |
 
-*Tests: 8/11 JVM-Tests scheitern weil lazysodium-android keine native lib im JVM-Testrunner laden kann. Braucht `lazysodium-java` als testImpl oder Emulator-Tests.
+**:stealthx-crypto Test-Details (2026-05-10):**
+- 11 ChameleonCrypto-Tests (encrypt/decrypt, nonce, tamper, X25519, Ed25519 etc.)
+- 5 Argon2id-Tests (Determinismus, Salt-Uniqueness, Key-Länge, Wipe, KDF→Encrypt)
+- 8 DoubleRatchet-Tests (Signal Protocol: Roundtrip, DH-Ratchet, AAD, PFS, 64KB)
+- BUG-001 FIXED: JVM-Fallback auf LazySodiumJava via Reflection (commit 0438345)
 
 ---
 
