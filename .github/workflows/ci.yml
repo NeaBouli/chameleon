@@ -30,8 +30,8 @@ jobs:
       - name: Build debug APK
         run: ./gradlew assembleDebug
 
-      - name: Run unit tests (skip crypto JVM tests)
-        run: ./gradlew :security:testDebugUnitTest :core:testDebugUnitTest :data:testDebugUnitTest :domain:testDebugUnitTest :stealthx-ifr:testDebugUnitTest
+      - name: Run unit tests
+        run: ./gradlew :security:testDebugUnitTest :core:testDebugUnitTest :data:testDebugUnitTest :domain:testDebugUnitTest :stealthx-ifr:testDebugUnitTest :features:decoy:testDebugUnitTest :features:geofencing:testDebugUnitTest :features:messenger:testDebugUnitTest
         continue-on-error: false
 
       - name: Upload APK

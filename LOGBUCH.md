@@ -213,8 +213,8 @@ All 11 Steps (S-00 through S-10) are DONE.
 - [x] SecureMemoryWipe Integration Tests — DONE (security/src/test/.../SecureMemoryWipeTest.kt)
 
 ### S-03 — Core Layer:
-- [ ] AIDL processText Implementierung in CryptoService
-- [ ] accessibility_service_config.xml Package Whitelist verfeinern
+- [x] AIDL processText Implementierung in CryptoService — DONE (2026-05-10, commit 136f398)
+- [x] accessibility_service_config.xml Package Whitelist verfeinern — DONE (2026-05-10, commit 6ebd3fa, removed org.signal.qr)
 
 ### S-04 bis S-10 — siehe CLAUDE_CODE_START.md
 
