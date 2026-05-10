@@ -90,19 +90,19 @@ class OverlayEngine @Inject constructor(
         fun encodePayload(payload: EncryptedPayload): String {
             val nonceHex = payload.nonce.joinToString("") { "%02x".format(it) }
             val ctHex = payload.ciphertext.joinToString("") { "%02x".format(it) }
-            return "${PAYLOAD_PREFIX}${PAYLOAD_VERSION}:${nonceHex}:${ctHex}]"
+            return "${PAYLOAD_PREFIX}${PAYLOAD_VERSION}:${nonceHex}:${ctHex}:${payload.paddedLength}]"
         }
 
         fun decodePayload(text: String): EncryptedPayload {
             val inner = text.removePrefix(PAYLOAD_PREFIX).removeSuffix("]")
             val parts = inner.split(":")
-            require(parts.size == 3) { "Invalid payload format" }
+            require(parts.size == 4) { "Invalid payload format" }
             val nonce = hexToBytes(parts[1])
             val ciphertext = hexToBytes(parts[2])
             return EncryptedPayload(
                 ciphertext = ciphertext,
                 nonce = nonce,
-                paddedLength = ciphertext.size - 16,
+                paddedLength = parts[3].toInt(),
                 aad = ByteArray(0),
                 algorithm = "XChaCha20-Poly1305",
                 version = 1
