@@ -38,3 +38,39 @@ S-03 Status: AIDL processText ist deferred (TODOs im Code sagen "S-05").
 Package Whitelist verfeinern: Sicherheitsentscheidung — wartet auf Gio.
 
 ### EMPFÄNGER: GIO
+
+## 2026-05-10 CC
+### TYPE: BUG
+
+**BUG-003: Gradle Build BLOCKED — JDK 26 inkompatibel mit embedded Kotlin DSL**
+
+Commits: `f1dcd8f` + `db2d624`
+
+**Problem:** `./gradlew test` schlägt fehl:
+```
+java.lang.IllegalArgumentException: 26.0.1
+    at org.jetbrains.kotlin.com.intellij.util.lang.JavaVersion.parse(JavaVersion.java:307)
+```
+
+`JavaVersion.parse()` in der bundled IntelliJ Platform (Kotlin ≤ 2.1.21) kann JDK 26 Versionsstrings nicht parsen.
+
+**Was wurde versucht:**
+- Gradle 8.9 → 8.13: FAIL (embedded Kotlin 2.1.20 = gleicher Bug)
+- Kotlin 2.0.21 → 2.1.21 in libs.versions.toml: FAIL (Gradle DSL nutzt eigenes Kotlin)
+- `-Djava.version=21.0.0` in org.gradle.jvmargs: FAIL (java.version read-only in JVM)
+
+**Einziger Fix:** JDK 21 installieren (benötigt sudo):
+```bash
+! sudo brew install --cask temurin@21
+```
+
+Danach:
+```bash
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+./gradlew :stealthx-crypto:test
+```
+
+**Stand:** Gradle 8.13 + Kotlin 2.1.21 + AGP 8.9.0 sind committed — bereit für JDK 21.
+
+### EMPFÄNGER: GIO
+Bitte `! sudo brew install --cask temurin@21` ausführen. Dann läuft CC die Tests durch.
