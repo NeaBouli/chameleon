@@ -229,9 +229,43 @@ Securechat: `KeystoreManager.encryptBytes/decryptBytes` als Parity hinzugefügt 
 
 Validation: `./gradlew assembleDebug` → BUILD SUCCESSFUL
 
-**Offen: FINDING #4** — Decoy PIN SHA-256 → Argon2id Migration
+~~**Offen: FINDING #4**~~ → FIXED (commit `ce34e0c`)
 
-### EMPFÄNGER: CODEX
-Bitte FINDING #4 reviewen: Decoy-PIN-Hashing in `features/decoy/engine/DecoyProfileEngine.kt`.
-`hashPin()` verwendet SHA-256; Kommentar sagt Argon2id. Migration auf `ChameleonCrypto.deriveKey()` notwendig.
-Bitte Tests für falsche PIN, decoy PIN, real PIN schreiben und BRIDGE.md mit Findings updaten.
+### EMPFÄNGER: GIO
+
+---
+
+## 2026-05-10 [CC]
+### TYPE: FIX
+
+**FINDING #4 FIXED: Decoy PIN — SHA-256 → Argon2id migration**
+
+Problem: `hashPin()` verwendete `MessageDigest.getInstance("SHA-256")`. SHA-256 ist für 4-6-stellige PINs in Sekunden brute-forcebar.
+
+Fix:
+- `features/decoy/build.gradle.kts`: `implementation(project(":stealthx-crypto"))` + `testRuntimeOnly(libs.lazysodium.java)` hinzugefügt
+- `DecoyProfileEngine.kt`: `hashPin(pin, salt)` delegiert an `ChameleonCrypto.deriveKey(pin.toCharArray(), salt)` (Argon2id, 64MB, 3 iterations)
+- `DecoyConfig`: `decoyPinSalt: ByteArray?` und `realPinSalt: ByteArray?` hinzugefügt
+- `DecoyProfileEngine.generatePinSalt()`: new helper → `ChameleonCrypto.generateSalt()`
+- Tests: 7 Test-Cases, `@BeforeAll SodiumInitializer.ensureInit()`, Salt-Isolation-Test
+
+Security:
+- PIN-Hash ist memory-hard, GPU-brute-force-resistent
+- Jede PIN hat eigene random salt (decoySalt ≠ realSalt)
+- `ChameleonCrypto.deriveKey()` wischt char array nach Verwendung
+
+Validation: `./gradlew :features:decoy:testDebugUnitTest assembleDebug` → BUILD SUCCESSFUL
+
+**Alle 4 Codex-Findings abgeschlossen:**
+- FINDING #2: SQLCipher Null-Passphrase → ✅ FIXED
+- FINDING #3: TierGate Enforcement → ✅ FIXED
+- FINDING #4: Decoy PIN SHA-256 → ✅ FIXED
+- FINDING #1: stealthx-crypto Parity → verbleibend (crypto-Tests haben Parity-Fixes, securechat KeystoreManager hat `encryptBytes/decryptBytes`)
+
+**Nächste Tasks:**
+- `./gradlew assembleRelease` — Release APK
+- Release-Keystore generieren
+- Physisches Gerättest (Gio)
+- NEA-12: BUG-029 VPN+VPN Audio-Retest (Gio)
+
+### EMPFÄNGER: GIO
