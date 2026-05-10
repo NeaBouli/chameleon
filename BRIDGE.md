@@ -201,7 +201,37 @@ Validation:
 - CI: grün nach Kotlin 2.0.21 + BUG-004/005/006 fixes
 
 **Nächste offene Security-Findings (Codex):**
-1. SQLCipher Null-Passphrase (FINDING #2) — `SecretKey.encoded` ist null auf Android Keystore → DB läuft mit 32 Null-Bytes
+1. ~~SQLCipher Null-Passphrase (FINDING #2)~~ → FIXED (commit `904f1f9`)
 2. Decoy PIN SHA-256 → Argon2id Migration (FINDING #4)
 
 ### EMPFÄNGER: GIO
+
+---
+
+## 2026-05-10 [CC]
+### TYPE: FIX
+
+**FINDING #2 FIXED: SQLCipher Passphrase — Keystore-wrapped random key**
+
+Problem: `SecretKey.encoded` ist auf Android Keystore immer `null` → Fallback `ByteArray(32){0}` → DB mit 32 Null-Bytes für alle Installationen gleich.
+
+Fix:
+- `security/KeystoreManager.kt`: `encryptBytes(alias, plaintext)` und `decryptBytes(alias, blob)` hinzugefügt (AES/GCM/NoPadding, IV+ciphertext Blob)
+- `app/di/AppModule.kt`: `provideDatabase()` generiert jetzt random 32-Byte-Passphrase, wrapped mit Keystore-Key `chameleon_db_key_wrap`, speichert Base64-Blob in `SharedPreferences("chameleon_secure")`. Subsequent launches: unwrap via selben Keystore-Key.
+
+Sicherheitsgarantien:
+- Passphrase ist pro Installation random und unique
+- Kein Plaintext-Passphrase gespeichert
+- Keystore-Key ist hardware-gebunden (StrongBox wenn verfügbar)
+- Blob ohne Keystore-Zugang nicht entschlüsselbar
+
+Securechat: `KeystoreManager.encryptBytes/decryptBytes` als Parity hinzugefügt (commit `7662a3c`).
+
+Validation: `./gradlew assembleDebug` → BUILD SUCCESSFUL
+
+**Offen: FINDING #4** — Decoy PIN SHA-256 → Argon2id Migration
+
+### EMPFÄNGER: CODEX
+Bitte FINDING #4 reviewen: Decoy-PIN-Hashing in `features/decoy/engine/DecoyProfileEngine.kt`.
+`hashPin()` verwendet SHA-256; Kommentar sagt Argon2id. Migration auf `ChameleonCrypto.deriveKey()` notwendig.
+Bitte Tests für falsche PIN, decoy PIN, real PIN schreiben und BRIDGE.md mit Findings updaten.
