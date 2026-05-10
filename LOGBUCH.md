@@ -218,13 +218,13 @@ All 11 Steps (S-00 through S-10) are DONE.
 
 ## 🔴 BUGS & KRITISCHE PROBLEME
 
-### [BUG-001] — OFFEN
+### [BUG-001] — BEHOBEN (2026-05-10)
 **Datum:** 2026-04-15
 **Modul:** :stealthx-crypto
 **Beschreibung:** 8/11 Unit Tests scheitern im JVM-Testrunner
 **Ursache:** lazysodium-android kann native lib nicht im JVM laden
-**Fix:** lazysodium-java als testImplementation ODER instrumented Tests
-**Status:** 🟡 LOW — Build ist grün, Tests brauchen Emulator/lazysodium-java
+**Fix:** SodiumInitializer fällt via Reflection auf LazySodiumJava zurück wenn SodiumAndroid JNI fehlt. lazysodium-java als testImplementation. ChameleonCryptoTest.setup() ruft ensureInit() auf.
+**Status:** ✅ FIXED — Commit `0438345`
 
 ### [BUG-002] — DEFERRED (S-06)
 **Datum:** 2026-04-15
