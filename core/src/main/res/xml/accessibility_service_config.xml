@@ -9,8 +9,19 @@
     4. This list MUST be reviewed before each release
 
     Adding a package to this whitelist is a SECURITY DECISION.
-    It grants Chameleon read access to that app's text.
+    It grants Chameleon read access to that app's text content.
     Never add packages without explicit user awareness.
+
+    PACKAGE AUDIT (2026-05-10):
+    - org.signal.qr REMOVED — does not exist as standalone app (Signal QR is part of main app)
+    - All remaining packages verified against Google Play Store package names
+
+    INSTRUCTIONS FOR ADDING NEW PACKAGES:
+    1. Add to this whitelist
+    2. Verify package name against Play Store (adb shell pm list packages | grep <name>)
+    3. Add to CHANGELOG.md explaining why
+    4. Notify users in release notes
+    5. Consider privacy implications for that app's users
 -->
 <accessibility-service
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -34,7 +45,6 @@
         com.whatsapp.w4b,
         com.viber.voip,
         com.discord,
-        org.signal.qr,
         com.wire,
         im.vector.app,
         ch.threema.app,
@@ -46,10 +56,3 @@
     "
 
     android:settingsActivity="com.stealthx.presentation.ui.SettingsActivity" />
-<!--
-    INSTRUCTIONS FOR ADDING NEW PACKAGES:
-    1. Add to this whitelist
-    2. Add to CHANGELOG.md explaining why
-    3. Notify users in release notes
-    4. Consider privacy implications for that app's users
--->
