@@ -39,6 +39,30 @@ Package Whitelist verfeinern: Sicherheitsentscheidung — wartet auf Gio.
 
 ### EMPFÄNGER: GIO
 
+## 2026-05-10 [CC]
+### TYPE: MEMO
+### STATUS: [IN_PROGRESS]
+
+**CC Session — NEA-20 aktiv**
+
+Onboarding abgeschlossen. Stand: S-00 bis S-10 DONE, v0.1.0-alpha.
+OWASP MASVS L2 Audit-Paket vollständig in `docs/AUDIT_PACKAGE/`.
+
+**Nächste Schritte nach JDK 21:**
+1. `./gradlew :stealthx-crypto:test` — alle 24 Crypto Tests verifizieren
+2. `./gradlew test` — alle 96 Tests grün
+3. `./gradlew assembleRelease` — Release APK bauen
+4. Release-Keystore generieren
+5. Physisches Gerättest — Overlay auf echtem Gerät
+
+**Codex-Auftrag:** Vollständiger Code-Audit aller Kotlin-Module.
+Fokus: AIDL-Isolation in `:core`, TierGate-Enforcement in `:features`, IFR-Verifikation in `:stealthx-ifr`.
+Schreibe Findings in BRIDGE.md TYPE:AUDIT.
+
+### EMPFÄNGER: CODEX
+
+---
+
 ## 2026-05-10 CC
 ### TYPE: BUG
 
