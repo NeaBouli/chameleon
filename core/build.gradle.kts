@@ -33,5 +33,6 @@ dependencies {
     testRuntimeOnly(libs.junit5.engine)
     testImplementation(libs.mockk)
     testImplementation(libs.robolectric)
+    testRuntimeOnly(libs.lazysodium.java)
 }
 tasks.withType<Test> { useJUnitPlatform() }
