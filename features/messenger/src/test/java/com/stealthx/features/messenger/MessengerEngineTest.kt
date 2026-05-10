@@ -4,11 +4,23 @@
  */
 package com.stealthx.features.messenger
 
+import com.stealthx.domain.tier.TierGate
 import com.stealthx.features.messenger.engine.MessengerEngine
 import com.stealthx.domain.keys.X25519KeyManager
+import com.stealthx.shared.model.IfrTier
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+
+private val proTierGate = object : TierGate {
+    override val currentTier: Flow<IfrTier> = flowOf(IfrTier.PRO)
+    override fun getTierSync(): IfrTier = IfrTier.PRO
+    override suspend fun getTier(): IfrTier = IfrTier.PRO
+    override suspend fun isCacheValid(): Boolean = true
+    override suspend fun invalidateCache() {}
+}
 
 @DisplayName("MessengerEngine")
 class MessengerEngineTest {
@@ -18,7 +30,7 @@ class MessengerEngineTest {
     @Test
     @DisplayName("Safety number is deterministic for same key pair")
     fun `safety number deterministic`() {
-        val engine = MessengerEngine(keyManager)
+        val engine = MessengerEngine(keyManager, proTierGate)
         val keyA = ByteArray(32) { (it + 1).toByte() }
         val keyB = ByteArray(32) { (it + 33).toByte() }
 
@@ -31,7 +43,7 @@ class MessengerEngineTest {
     @Test
     @DisplayName("Safety number is symmetric (A,B == B,A)")
     fun `safety number symmetric`() {
-        val engine = MessengerEngine(keyManager)
+        val engine = MessengerEngine(keyManager, proTierGate)
         val keyA = ByteArray(32) { (it + 1).toByte() }
         val keyB = ByteArray(32) { (it + 33).toByte() }
 
@@ -44,7 +56,7 @@ class MessengerEngineTest {
     @Test
     @DisplayName("Different keys produce different safety numbers")
     fun `different keys different safety numbers`() {
-        val engine = MessengerEngine(keyManager)
+        val engine = MessengerEngine(keyManager, proTierGate)
         val keyA = ByteArray(32) { 0x01 }
         val keyB = ByteArray(32) { 0x02 }
         val keyC = ByteArray(32) { 0x03 }
