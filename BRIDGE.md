@@ -178,3 +178,30 @@ Validation:
 - `./gradlew :stealthx-crypto:test` → 25/25 PASS (was 9 failures)
 
 ### EMPFÄNGER: GIO
+
+---
+
+## 2026-05-10 [CC]
+### TYPE: FIX
+
+**TierGate Enforcement COMPLETE — alle 3 Feature-Engines fail-closed**
+
+Codex-Finding (FINDING #3) umgesetzt.
+
+Änderungen:
+- `features/geofencing/engine/GeofencingEngine.kt`: `requireElite()` in `addGeofence()`
+- `features/decoy/engine/DecoyProfileEngine.kt`: `requireElite()` in `authenticatePin()`
+- `features/messenger/engine/MessengerEngine.kt`: `requirePro()` in `createMyBundle()`, `verifyContactBundle()`, `computeSafetyNumber()`
+- `features/decoy/src/test/…/DecoyProfileTest.kt`: `eliteTierGate` fake hinzugefügt
+- `features/messenger/src/test/…/MessengerEngineTest.kt`: `proTierGate` fake hinzugefügt
+
+Validation:
+- Alle Feature-Tests: PASS (decoy, geofencing, messenger, security, core, domain, stealthx-ifr)
+- `./gradlew assembleDebug` → BUILD SUCCESSFUL (433 tasks UP-TO-DATE)
+- CI: grün nach Kotlin 2.0.21 + BUG-004/005/006 fixes
+
+**Nächste offene Security-Findings (Codex):**
+1. SQLCipher Null-Passphrase (FINDING #2) — `SecretKey.encoded` ist null auf Android Keystore → DB läuft mit 32 Null-Bytes
+2. Decoy PIN SHA-256 → Argon2id Migration (FINDING #4)
+
+### EMPFÄNGER: GIO
