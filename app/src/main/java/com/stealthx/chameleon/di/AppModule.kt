@@ -6,6 +6,7 @@
 package com.stealthx.chameleon.di
 
 import android.content.Context
+import android.util.Base64
 import com.stealthx.data.ChameleonDatabase
 import com.stealthx.data.dao.AuditLogDao
 import com.stealthx.data.dao.CryptoKeyDao
@@ -37,9 +38,21 @@ object AppModule {
         @ApplicationContext context: Context,
         keystoreManager: KeystoreManager
     ): ChameleonDatabase {
-        // Generate DB passphrase from Keystore AES key
-        val aesKey = keystoreManager.getOrCreateAesKey("chameleon_db_key", requireAuth = false)
-        val passphrase = aesKey.encoded ?: ByteArray(32) { 0 }
+        val prefs = context.getSharedPreferences("chameleon_secure", Context.MODE_PRIVATE)
+        val prefKey = "db_passphrase_enc"
+        val passphrase: ByteArray
+        val stored = prefs.getString(prefKey, null)
+        if (stored == null) {
+            // First launch: generate a random passphrase, wrap it with a Keystore AES-GCM key
+            val raw = ByteArray(32).also { java.security.SecureRandom().nextBytes(it) }
+            val blob = keystoreManager.encryptBytes("chameleon_db_key_wrap", raw)
+            prefs.edit().putString(prefKey, Base64.encodeToString(blob, Base64.NO_WRAP)).apply()
+            passphrase = raw
+        } else {
+            // Subsequent launches: unwrap from Keystore
+            val blob = Base64.decode(stored, Base64.NO_WRAP)
+            passphrase = keystoreManager.decryptBytes("chameleon_db_key_wrap", blob)
+        }
         return ChameleonDatabase.build(context, passphrase)
     }
 
