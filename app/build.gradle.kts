@@ -2,6 +2,8 @@
  * Chameleon — :app module
  * Entry point. DI graph root. No business logic here.
  */
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -10,9 +12,28 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
+val localProps = Properties().also { props ->
+    val f = rootProject.file("local.properties")
+    if (f.exists()) f.inputStream().use { props.load(it) }
+}
+
 android {
     namespace = "com.stealthx.chameleon"
     compileSdk = 35
+
+    signingConfigs {
+        create("release") {
+            val ksPath = localProps["KEYSTORE_PATH"] as? String
+            val ksPass = localProps["KEYSTORE_PASS"] as? String
+            val ksAlias = localProps["KEY_ALIAS"] as? String ?: "chameleon"
+            if (ksPath != null && ksPass != null) {
+                storeFile = file(ksPath)
+                storePassword = ksPass
+                keyAlias = ksAlias
+                keyPassword = ksPass  // PKCS12: store password == key password
+            }
+        }
+    }
 
     defaultConfig {
         applicationId = "com.stealthx.chameleon"
@@ -30,6 +51,7 @@ android {
             isMinifyEnabled = false
         }
         release {
+            signingConfig = signingConfigs.getByName("release")
             isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
