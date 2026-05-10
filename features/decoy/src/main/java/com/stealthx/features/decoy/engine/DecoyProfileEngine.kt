@@ -5,6 +5,10 @@
  */
 package com.stealthx.features.decoy.engine
 
+import com.stealthx.crypto.ChameleonCrypto
+import com.stealthx.crypto.SodiumInitializer
+import com.stealthx.domain.tier.TierGate
+import com.stealthx.shared.model.IfrTier
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -22,16 +26,31 @@ import javax.inject.Singleton
  * - Decoy profile has its own clean database (separate Room instance)
  * - No traces of real data in decoy mode
  * - Uses Android Keystore with separate key aliases per profile
+ * - PIN hashing uses Argon2id via ChameleonCrypto (memory-hard, brute-force resistant)
  */
 @Singleton
-class DecoyProfileEngine @Inject constructor() {
+class DecoyProfileEngine @Inject constructor(
+    private val tierGate: TierGate
+) {
+
+    private fun requireElite() {
+        if (tierGate.getTierSync() < IfrTier.ELITE) {
+            throw SecurityException("DecoyProfileEngine requires ELITE tier")
+        }
+    }
+
+    init {
+        SodiumInitializer.ensureInit()
+    }
 
     enum class ProfileMode { REAL, DECOY }
 
     data class DecoyConfig(
         val isEnabled: Boolean = false,
         val decoyPinHash: ByteArray? = null,
-        val realPinHash: ByteArray? = null
+        val decoyPinSalt: ByteArray? = null,
+        val realPinHash: ByteArray? = null,
+        val realPinSalt: ByteArray? = null
     ) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -44,23 +63,31 @@ class DecoyProfileEngine @Inject constructor() {
     @Volatile
     private var currentMode: ProfileMode = ProfileMode.REAL
 
+    /** Generate a fresh random Argon2id salt for PIN hashing. */
+    fun generatePinSalt(): ByteArray = ChameleonCrypto.generateSalt()
+
     /**
      * Determine which profile to load based on PIN.
      * Returns DECOY if pin matches decoy hash, REAL if matches real hash.
+     * Both hashes are verified to resist timing-based disambiguation.
      */
     fun authenticatePin(pin: String, config: DecoyConfig): ProfileMode {
-        if (!config.isEnabled || config.decoyPinHash == null || config.realPinHash == null) {
+        requireElite()
+        if (!config.isEnabled ||
+            config.decoyPinHash == null || config.decoyPinSalt == null ||
+            config.realPinHash == null || config.realPinSalt == null) {
             return ProfileMode.REAL
         }
 
-        val pinHash = hashPin(pin)
+        val decoyDerived = hashPin(pin, config.decoyPinSalt)
+        val realDerived  = hashPin(pin, config.realPinSalt)
 
         return when {
-            pinHash.contentEquals(config.decoyPinHash) -> {
+            decoyDerived.contentEquals(config.decoyPinHash) -> {
                 currentMode = ProfileMode.DECOY
                 ProfileMode.DECOY
             }
-            pinHash.contentEquals(config.realPinHash) -> {
+            realDerived.contentEquals(config.realPinHash) -> {
                 currentMode = ProfileMode.REAL
                 ProfileMode.REAL
             }
@@ -73,11 +100,9 @@ class DecoyProfileEngine @Inject constructor() {
     fun isDecoyMode(): Boolean = currentMode == ProfileMode.DECOY
 
     /**
-     * Hash PIN with SHA-256 for comparison.
-     * Actual authentication uses Argon2id via ChameleonCrypto.
+     * Hash PIN with Argon2id (memory-hard, brute-force resistant).
+     * Each PIN requires its own unique salt — use [generatePinSalt] to create one.
      */
-    internal fun hashPin(pin: String): ByteArray {
-        return java.security.MessageDigest.getInstance("SHA-256")
-            .digest(pin.toByteArray(Charsets.UTF_8))
-    }
+    internal fun hashPin(pin: String, salt: ByteArray): ByteArray =
+        ChameleonCrypto.deriveKey(pin.toCharArray(), salt)
 }

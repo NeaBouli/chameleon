@@ -4,15 +4,37 @@
  */
 package com.stealthx.features.decoy
 
+import com.stealthx.crypto.SodiumInitializer
+import com.stealthx.domain.tier.TierGate
 import com.stealthx.features.decoy.engine.DecoyProfileEngine
+import com.stealthx.shared.model.IfrTier
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+
+private val eliteTierGate = object : TierGate {
+    override val currentTier: Flow<IfrTier> = flowOf(IfrTier.ELITE)
+    override fun getTierSync(): IfrTier = IfrTier.ELITE
+    override suspend fun getTier(): IfrTier = IfrTier.ELITE
+    override suspend fun isCacheValid(): Boolean = true
+    override suspend fun invalidateCache() {}
+}
 
 @DisplayName("DecoyProfileEngine")
 class DecoyProfileTest {
 
-    private val engine = DecoyProfileEngine()
+    companion object {
+        @BeforeAll
+        @JvmStatic
+        fun setup() {
+            SodiumInitializer.ensureInit()
+        }
+    }
+
+    private val engine = DecoyProfileEngine(eliteTierGate)
 
     @Test
     @DisplayName("Default mode is REAL")
@@ -32,12 +54,16 @@ class DecoyProfileTest {
     @Test
     @DisplayName("Matching decoy PIN returns DECOY mode")
     fun `decoy pin activates decoy`() {
-        val decoyHash = engine.hashPin("9999")
-        val realHash = engine.hashPin("1234")
+        val decoySalt = engine.generatePinSalt()
+        val realSalt  = engine.generatePinSalt()
+        val decoyHash = engine.hashPin("9999", decoySalt)
+        val realHash  = engine.hashPin("1234", realSalt)
         val config = DecoyProfileEngine.DecoyConfig(
-            isEnabled = true,
+            isEnabled    = true,
             decoyPinHash = decoyHash,
-            realPinHash = realHash
+            decoyPinSalt = decoySalt,
+            realPinHash  = realHash,
+            realPinSalt  = realSalt
         )
 
         val result = engine.authenticatePin("9999", config)
@@ -48,12 +74,16 @@ class DecoyProfileTest {
     @Test
     @DisplayName("Matching real PIN returns REAL mode")
     fun `real pin activates real`() {
-        val decoyHash = engine.hashPin("9999")
-        val realHash = engine.hashPin("1234")
+        val decoySalt = engine.generatePinSalt()
+        val realSalt  = engine.generatePinSalt()
+        val decoyHash = engine.hashPin("9999", decoySalt)
+        val realHash  = engine.hashPin("1234", realSalt)
         val config = DecoyProfileEngine.DecoyConfig(
-            isEnabled = true,
+            isEnabled    = true,
             decoyPinHash = decoyHash,
-            realPinHash = realHash
+            decoyPinSalt = decoySalt,
+            realPinHash  = realHash,
+            realPinSalt  = realSalt
         )
 
         val result = engine.authenticatePin("1234", config)
@@ -63,12 +93,16 @@ class DecoyProfileTest {
     @Test
     @DisplayName("Wrong PIN throws SecurityException")
     fun `wrong pin throws`() {
-        val decoyHash = engine.hashPin("9999")
-        val realHash = engine.hashPin("1234")
+        val decoySalt = engine.generatePinSalt()
+        val realSalt  = engine.generatePinSalt()
+        val decoyHash = engine.hashPin("9999", decoySalt)
+        val realHash  = engine.hashPin("1234", realSalt)
         val config = DecoyProfileEngine.DecoyConfig(
-            isEnabled = true,
+            isEnabled    = true,
             decoyPinHash = decoyHash,
-            realPinHash = realHash
+            decoyPinSalt = decoySalt,
+            realPinHash  = realHash,
+            realPinSalt  = realSalt
         )
 
         assertThrows(SecurityException::class.java) {
@@ -77,18 +111,30 @@ class DecoyProfileTest {
     }
 
     @Test
-    @DisplayName("PIN hash is deterministic")
+    @DisplayName("PIN hash is deterministic for same salt")
     fun `pin hash deterministic`() {
-        val h1 = engine.hashPin("test123")
-        val h2 = engine.hashPin("test123")
+        val salt = engine.generatePinSalt()
+        val h1 = engine.hashPin("test123", salt)
+        val h2 = engine.hashPin("test123", salt)
         assertArrayEquals(h1, h2)
     }
 
     @Test
     @DisplayName("Different PINs produce different hashes")
     fun `different pins different hashes`() {
-        val h1 = engine.hashPin("1111")
-        val h2 = engine.hashPin("2222")
+        val salt = engine.generatePinSalt()
+        val h1 = engine.hashPin("1111", salt)
+        val h2 = engine.hashPin("2222", salt)
+        assertFalse(h1.contentEquals(h2))
+    }
+
+    @Test
+    @DisplayName("Different salts produce different hashes for same PIN")
+    fun `different salts different hashes`() {
+        val salt1 = engine.generatePinSalt()
+        val salt2 = engine.generatePinSalt()
+        val h1 = engine.hashPin("1234", salt1)
+        val h2 = engine.hashPin("1234", salt2)
         assertFalse(h1.contentEquals(h2))
     }
 }
