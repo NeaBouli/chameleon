@@ -203,10 +203,10 @@ All 11 Steps (S-00 through S-10) are DONE.
 ## ⏳ TODO — NÄCHSTE SCHRITTE
 
 ### S-02 — Security Layer:
-- [ ] Unit Tests mit lazysodium-java für JVM oder Robolectric
-- [ ] HardwareAttestationVerifier.kt
-- [ ] Argon2KeyDerivation.kt Wrapper
-- [ ] SecureMemoryWipe Integration Tests
+- [x] Unit Tests mit lazysodium-java für JVM oder Robolectric — BUG-001 FIXED (2026-05-10, commit 0438345)
+- [x] HardwareAttestationVerifier.kt — DONE (security/src/main/.../HardwareAttestationVerifier.kt)
+- [x] Argon2KeyDerivation.kt Wrapper — DONE (in ChameleonCrypto.deriveKey(); 5 Argon2id tests added 2026-05-10)
+- [x] SecureMemoryWipe Integration Tests — DONE (security/src/test/.../SecureMemoryWipeTest.kt)
 
 ### S-03 — Core Layer:
 - [ ] AIDL processText Implementierung in CryptoService
