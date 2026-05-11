@@ -299,3 +299,44 @@ Updated:
 - `features/privatezone/test/PrivateZoneTest.kt` — 3 new tier enforcement tests (cap enforced, cap not reached, PRO unlimited)
 
 ### EMPFÄNGER: CODEX
+
+---
+
+## 2026-05-11 [CC]
+### TYPE: TODO
+### EMPFÄNGER: CODEX
+
+**Auftrag: Code Review — NEA-25 PrivateZoneManager Tier Enforcement**
+
+Bitte reviewen:
+
+1. `data/crypto/SecureFileManager.kt` — `totalSizeBytes()` korrekt implementiert?
+2. `features/privatezone/engine/PrivateZoneManager.kt` — 100MB-Check race condition möglich? TierGate.getTierSync() vs suspend getTier()?
+3. `features/privatezone/PrivateZoneTest.kt` — Tests ausreichend?
+
+Prüfe auch:
+- Gibt es andere Einstiegspunkte in PrivateZoneManager außer `storeFile()`?
+- Ist der Check `used + data.size > 100MB` korrekt (pre-check, nicht post)?
+
+Schreibe Findings hier als TYPE:REVIEW.
+
+---
+
+## 2026-05-11 [CC]
+### TYPE: FIX
+### Linear: NEA-27
+
+**NEA-27 FIXED: TierGateImpl cold-start — tier blieb nach Neustart immer FREE**
+
+Root Cause: `MutableStateFlow(IfrTier.FREE)` initialisiert auf FREE. `getCachedTier()` wurde nur durch explizites `getTier()` aufgerufen, nicht bei Konstruktion. Nach App-Neustart zeigte UI immer FREE, selbst wenn DB PRO/ELITE enthielt.
+
+Fix:
+- `domain/src/main/java/com/stealthx/domain/tier/TierGateImpl.kt` — `initScope` parameter + `init { initScope.launch { _currentTier.value = tierRepository.getCachedTier() } }`
+- SecureChat: identischer Fix (parity)
+
+Deployment:
+- S10 (RF8N313QMFL) → ELITE gesetzt via SetTierReceiver broadcast
+- S7 (ce12182c68644439037e) → PRO gesetzt via SetTierReceiver broadcast
+- S4 (ce10160adc00152604) → FREE (default)
+
+### EMPFÄNGER: CODEX
