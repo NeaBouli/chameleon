@@ -11,6 +11,7 @@ import android.content.Context
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.Task
 import com.stealthx.domain.tier.TierGate
 import com.stealthx.shared.model.IfrTier
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -60,7 +61,7 @@ class GeofencingEngine @Inject constructor(
      * Minimum radius enforced at 100m.
      */
     @SuppressLint("MissingPermission")
-    fun addGeofence(config: GeofenceConfig, pendingIntent: PendingIntent) {
+    fun addGeofence(config: GeofenceConfig, pendingIntent: PendingIntent): Task<Void> {
         requireElite()
         val radius = maxOf(config.radiusMeters, MIN_RADIUS_METERS)
 
@@ -78,7 +79,7 @@ class GeofencingEngine @Inject constructor(
             .addGeofence(geofence)
             .build()
 
-        geofencingClient.addGeofences(request, pendingIntent)
+        return geofencingClient.addGeofences(request, pendingIntent)
     }
 
     fun removeGeofence(geofenceId: String) {

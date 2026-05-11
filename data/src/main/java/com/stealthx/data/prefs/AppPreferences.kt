@@ -51,12 +51,21 @@ class AppPreferences @Inject constructor(
         private const val KEY_IFR_WALLET = "ifr_wallet_address"
         private const val KEY_IFR_VERIFICATION_METHOD = "ifr_verification_method"
         private const val KEY_OVERLAY_ENABLED = "overlay_enabled"
+        private const val KEY_OVERLAY_WHITELIST = "overlay_whitelist"
         private const val KEY_PRIVATE_ZONE_KEY = "private_zone_key"
         private const val KEY_DECOY_ENABLED = "decoy_enabled"
         private const val KEY_DECOY_PIN_HASH = "decoy_pin_hash"
         private const val KEY_DECOY_PIN_SALT = "decoy_pin_salt"
         private const val KEY_REAL_PIN_HASH = "real_pin_hash"
         private const val KEY_REAL_PIN_SALT = "real_pin_salt"
+        private const val KEY_GEOFENCE_ZONES = "geofence_zones"
+        private val DEFAULT_OVERLAY_WHITELIST = setOf(
+            "com.whatsapp",
+            "org.telegram.messenger",
+            "org.thoughtcrime.securesms",
+            "com.discord",
+            "com.google.android.gm"
+        )
     }
 
     var isOnboardingDone: Boolean
@@ -78,6 +87,10 @@ class AppPreferences @Inject constructor(
     var overlayEnabled: Boolean
         get() = prefs.getBoolean(KEY_OVERLAY_ENABLED, true)
         set(value) = prefs.edit().putBoolean(KEY_OVERLAY_ENABLED, value).apply()
+
+    var overlayWhitelistPackages: Set<String>
+        get() = prefs.getStringSet(KEY_OVERLAY_WHITELIST, DEFAULT_OVERLAY_WHITELIST) ?: DEFAULT_OVERLAY_WHITELIST
+        set(value) = prefs.edit().putStringSet(KEY_OVERLAY_WHITELIST, value).apply()
 
     var privateZoneKeyBase64: String?
         get() = prefs.getString(KEY_PRIVATE_ZONE_KEY, null)
@@ -103,7 +116,12 @@ class AppPreferences @Inject constructor(
         get() = prefs.getString(KEY_REAL_PIN_SALT, null)
         set(value) = prefs.edit().putString(KEY_REAL_PIN_SALT, value).apply()
 
+    var geofenceZones: Set<String>
+        get() = prefs.getStringSet(KEY_GEOFENCE_ZONES, emptySet()) ?: emptySet()
+        set(value) = prefs.edit().putStringSet(KEY_GEOFENCE_ZONES, value).apply()
+
     fun clear() {
         prefs.edit().clear().apply()
     }
+
 }

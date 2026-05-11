@@ -29,6 +29,8 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)
+    implementation(libs.compose.activity)
+    implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.play.services.location)
     implementation(libs.androidx.work)
     implementation(libs.hilt.android)

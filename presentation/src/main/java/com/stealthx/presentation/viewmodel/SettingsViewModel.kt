@@ -24,10 +24,27 @@ class SettingsViewModel @Inject constructor(
     private val _overlayEnabled = MutableStateFlow(prefs.overlayEnabled)
     val overlayEnabled: StateFlow<Boolean> = _overlayEnabled.asStateFlow()
 
+    private val _overlayWhitelist = MutableStateFlow(prefs.overlayWhitelistPackages)
+    val overlayWhitelist: StateFlow<Set<String>> = _overlayWhitelist.asStateFlow()
+
     fun setOverlayEnabled(enabled: Boolean) {
         _overlayEnabled.value = enabled
         viewModelScope.launch(Dispatchers.IO) {
             prefs.overlayEnabled = enabled
+        }
+    }
+
+    fun setOverlayPackageEnabled(packageName: String, enabled: Boolean) {
+        val normalized = packageName.trim()
+        if (normalized.isBlank()) return
+        val updated = if (enabled) {
+            _overlayWhitelist.value + normalized
+        } else {
+            _overlayWhitelist.value - normalized
+        }
+        _overlayWhitelist.value = updated
+        viewModelScope.launch(Dispatchers.IO) {
+            prefs.overlayWhitelistPackages = updated
         }
     }
 }

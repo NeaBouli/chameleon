@@ -32,6 +32,7 @@ import androidx.navigation.compose.composable
 import com.stealthx.features.decoy.screen.DecoySetupScreen
 import com.stealthx.features.decoy.screen.DecoySetupViewModel
 import com.stealthx.features.geofencing.screen.GeofencingScreen
+import com.stealthx.features.geofencing.screen.GeofencingViewModel
 import com.stealthx.features.messenger.screen.MessengerScreen
 import com.stealthx.features.overlay.screen.OverlayScreen
 import com.stealthx.features.privatezone.screen.PrivateZoneScreen
@@ -57,6 +58,7 @@ fun StealthXNavGraph(navController: NavHostController) {
     val settingsVm: SettingsViewModel = hiltViewModel()
     val currentTier by dashboardVm.currentTier.collectAsState()
     val overlayEnabled by settingsVm.overlayEnabled.collectAsState()
+    val overlayWhitelist by settingsVm.overlayWhitelist.collectAsState()
 
     NavHost(navController = navController, startDestination = Screen.Dashboard.route) {
 
@@ -75,7 +77,9 @@ fun StealthXNavGraph(navController: NavHostController) {
             FeatureScaffold(title = "Overlay", onBack = { navController.popBackStack() }) { modifier ->
                 OverlayScreen(
                     overlayEnabled = overlayEnabled,
+                    overlayWhitelistPackages = overlayWhitelist,
                     onOverlayEnabledChange = settingsVm::setOverlayEnabled,
+                    onPackageEnabledChange = settingsVm::setOverlayPackageEnabled,
                     modifier = modifier
                 )
             }
@@ -147,11 +151,13 @@ fun StealthXNavGraph(navController: NavHostController) {
                 featureName = "Geofencing",
                 onUnlockClicked = { navController.navigate(Screen.IFRUnlock.route) }
             ) {
+                val vm: GeofencingViewModel = hiltViewModel()
+                val state by vm.uiState.collectAsState()
                 FeatureScaffold(title = "Geofencing", onBack = { navController.popBackStack() }) { modifier ->
                     GeofencingScreen(
-                        onAddGeofence = {
-                            Toast.makeText(context, "Geofence setup screen active", Toast.LENGTH_SHORT).show()
-                        },
+                        state = state,
+                        onPermissionResult = vm::refreshPermissionState,
+                        onAddGeofence = vm::addGeofence,
                         modifier = modifier
                     )
                 }

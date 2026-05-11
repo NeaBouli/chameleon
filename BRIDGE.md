@@ -110,6 +110,74 @@ Statischer Review mit `rg`/Dateilekture. Kein Gradle-Lauf in diesem Review-Turn.
 
 ---
 
+## 2026-05-11 [CODEX]
+### TYPE: FIX
+### STATUS: [BUILD_DONE]
+
+**Chameleon HIGH TODO — Overlay Whitelist + AIDL processText Check**
+
+Implemented:
+- `OverlayScreen` no longer renders a hardcoded always-on app list.
+- Added persisted `AppPreferences.overlayWhitelistPackages`.
+- `SettingsViewModel` now exposes the whitelist and writes add/remove changes to encrypted preferences.
+- Overlay UI now supports:
+  - toggling known app packages on/off
+  - adding custom package names
+  - showing custom packages alongside built-in known apps
+- `StealthXNavGraph` wires the persisted whitelist into `OverlayScreen`.
+
+AIDL `processText` status:
+- Checked `CryptoService.processText()` and current implementation is already active, not TODO:
+  - null input -> passthrough
+  - `securityLevel == 0` -> passthrough
+  - plaintext -> `ChameleonCrypto.encrypt()` with package-name AAD
+  - `[CHAM:v1:...]` payload -> decrypt with package-name AAD
+  - `SodiumInitializer.ensureInit()` runs in the isolated service process
+- Existing `CryptoServiceTest` covers payload encode/decode and encryption round-trips.
+
+Validation:
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug --no-parallel --no-daemon` -> BUILD SUCCESSFUL
+
+Remaining:
+- Accessibility XML package list is still static by Android platform design; the editable whitelist is now persisted and visible in app settings, but runtime enforcement must be connected to the accessibility/overlay decision path in a follow-up.
+
+### EMPFÄNGER: GIO / CC
+
+---
+
+## 2026-05-11 [CODEX]
+### TYPE: FIX
+### STATUS: [BUILD_DONE]
+### Linear: NEA-32
+
+**Chameleon Geofencing Screen — Form + Permission + Persisted Zones**
+
+Implemented:
+- `GeofencingScreen` now provides a real Elite geofence form:
+  - zone name
+  - latitude
+  - longitude
+  - radius meters
+  - runtime `ACCESS_FINE_LOCATION` request
+- Added `GeofencingViewModel` with validation for coordinates/radius and permission state.
+- Added encrypted `AppPreferences.geofenceZones` persistence for configured zones.
+- `GeofencingEngine.addGeofence()` now returns the Play Services `Task<Void>` and remains fail-closed via `TierGate` ELITE enforcement.
+- Added `GeofenceTransitionReceiver` and feature manifest receiver registration.
+- Receiver enqueues `GeofenceWorker` with geofence id, transition type, and triggering location.
+- `StealthXNavGraph` now wires Geofencing through the ViewModel instead of a placeholder toast.
+
+Validation:
+- First `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` hit an internal K2/KAPT duplicate-service compiler error in `features:overlay`.
+- Re-run with `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug --no-parallel --no-daemon` -> BUILD SUCCESSFUL.
+
+Remaining:
+- `GeofenceWorker` still has the existing TODO to invoke `RuleEngine` on enter/exit transitions.
+- Android 11+ background-location escalation UX is not yet implemented; current form requests foreground fine location and registers geofences when permission is present.
+
+### EMPFÄNGER: GIO / CC
+
+---
+
 ## 2026-05-10 CC
 ### TYPE: BUG
 
