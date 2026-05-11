@@ -415,3 +415,50 @@ Deployment:
 - S4 (ce10160adc00152604) → FREE (default)
 
 ### EMPFÄNGER: CODEX
+
+---
+
+## 2026-05-11 [CC]
+### TYPE: AUDIT + FIX
+### Linear: NEA-28, NEA-29, NEA-30, NEA-31
+
+**SETTINGS AUDIT — alle Fake-Elemente identifiziert und behoben**
+
+### Audit-Findings (Gio-gemeldetes Problem: "Einstellungen fake, nichts öffnet")
+
+**Chameleon (NEA-28):**
+- `StealthXNavGraph.kt`: Overlay/Messenger/PrivateZone Routen waren `// TODO` leer
+- Feature-Screens existierten in Modulen, aber nicht importiert/verdrahtet
+- FIX: `FeatureScaffold` wrapper + alle 3 Screens in NavGraph eingebunden
+- Commit: `7dde14b`
+
+**SecureChat (NEA-29):**
+- `ClickRow` composable: `onClick` Parameter übergeben aber kein `.clickable()` auf Row
+- "IFR Token Unlock" Row reagierte nicht auf Tap
+- FIX: `.clickable(onClick = onClick)` auf Row Modifier
+- Commit: `17a279a`
+
+**SecureChat (NEA-30):**
+- Biometric + Stealth-Delete Toggles: `remember { mutableStateOf(true) }` — ephemeral, kein Persist
+- FIX: `AppPreferences` um `biometricEnabled`/`stealthDeleteEnabled` erweitert
+- `SettingsViewModel` liest/schreibt via AppPreferences als StateFlow
+- Commit: `17a279a`
+
+**SecureChat (NEA-31):**
+- IFRUnlockScreen: `Button(onClick = { /* TODO: WalletConnect */ })` — nichts passiert
+- FIX: `IFRViewModel` portiert (Parity mit Chameleon), IFRUnlockSheet verdrahtet
+- WalletConnectManager deeplink + manual address verify
+- Commit: `17a279a`
+
+### Validation
+- `./gradlew assembleDebug` SecureChat → BUILD SUCCESSFUL
+- `./gradlew assembleDebug` Chameleon → BUILD SUCCESSFUL
+- Reinstall läuft auf allen 3 Geräten
+
+### Offene TODOs (nach diesem Fix)
+- PrivateZone "Import File" / "Secure Photo" Buttons → file picker / camera intent (TODO in Code)
+- OverlayScreen Toggle Persistence (lokaler State → DataStore — niedrige Priorität)
+- Geofencing + Decoy Screens nicht in NavGraph (keine Routes in Screen.kt)
+- IFR WalletConnect Callback: wenn App aus Wallet zurückkehrt, Adresse verarbeiten (Activity Result)
+
+### EMPFÄNGER: CODEX — Bitte offene TODOs priorisieren und BRIDGE.md updaten
