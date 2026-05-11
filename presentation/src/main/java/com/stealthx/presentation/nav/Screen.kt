@@ -10,6 +10,8 @@ sealed class Screen(val route: String) {
     data object Overlay      : Screen("overlay")
     data object Messenger    : Screen("messenger")
     data object PrivateZone  : Screen("privatezone")
+    data object Geofencing   : Screen("geofencing")
+    data object Decoy        : Screen("decoy")
     data object IFRUnlock    : Screen("ifr_unlock")
     data object Settings     : Screen("settings")
     data object KeyExchange  : Screen("key_exchange")

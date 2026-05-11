@@ -20,10 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,9 +29,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun OverlayScreen(modifier: Modifier = Modifier) {
-    var overlayEnabled by remember { mutableStateOf(true) }
-
+fun OverlayScreen(
+    overlayEnabled: Boolean,
+    onOverlayEnabledChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val whitelistedApps = listOf(
         "WhatsApp" to "com.whatsapp",
         "Telegram" to "org.telegram.messenger",
@@ -61,7 +60,7 @@ fun OverlayScreen(modifier: Modifier = Modifier) {
             )
             Switch(
                 checked = overlayEnabled,
-                onCheckedChange = { overlayEnabled = it },
+                onCheckedChange = onOverlayEnabledChange,
                 modifier = Modifier.semantics { contentDescription = "Toggle overlay" }
             )
         }

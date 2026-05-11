@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun PrivateZoneScreen(
     fileCount: Int = 0,
+    statusMessage: String? = null,
+    errorMessage: String? = null,
     onImportFile: () -> Unit = {},
     onTakePhoto: () -> Unit = {},
     modifier: Modifier = Modifier
@@ -60,6 +62,14 @@ fun PrivateZoneScreen(
             color = Color.Gray,
             textAlign = TextAlign.Center
         )
+        statusMessage?.let {
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(it, color = Color(0xFF00FF88), style = MaterialTheme.typography.bodySmall)
+        }
+        errorMessage?.let {
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(it, color = Color(0xFFFF6B6B), style = MaterialTheme.typography.bodySmall)
+        }
 
         Spacer(modifier = Modifier.height(24.dp))
 

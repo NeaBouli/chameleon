@@ -50,6 +50,8 @@ class AppPreferences @Inject constructor(
         private const val KEY_SECURITY_LEVEL_DEFAULT = "security_level_default"
         private const val KEY_IFR_WALLET = "ifr_wallet_address"
         private const val KEY_IFR_VERIFICATION_METHOD = "ifr_verification_method"
+        private const val KEY_OVERLAY_ENABLED = "overlay_enabled"
+        private const val KEY_PRIVATE_ZONE_KEY = "private_zone_key"
     }
 
     var isOnboardingDone: Boolean
@@ -67,6 +69,14 @@ class AppPreferences @Inject constructor(
     var ifrVerificationMethod: String?
         get() = prefs.getString(KEY_IFR_VERIFICATION_METHOD, null)
         set(value) = prefs.edit().putString(KEY_IFR_VERIFICATION_METHOD, value).apply()
+
+    var overlayEnabled: Boolean
+        get() = prefs.getBoolean(KEY_OVERLAY_ENABLED, true)
+        set(value) = prefs.edit().putBoolean(KEY_OVERLAY_ENABLED, value).apply()
+
+    var privateZoneKeyBase64: String?
+        get() = prefs.getString(KEY_PRIVATE_ZONE_KEY, null)
+        set(value) = prefs.edit().putString(KEY_PRIVATE_ZONE_KEY, value).apply()
 
     fun clear() {
         prefs.edit().clear().apply()

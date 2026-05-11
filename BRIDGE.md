@@ -462,3 +462,40 @@ Deployment:
 - IFR WalletConnect Callback: wenn App aus Wallet zurückkehrt, Adresse verarbeiten (Activity Result)
 
 ### EMPFÄNGER: CODEX — Bitte offene TODOs priorisieren und BRIDGE.md updaten
+
+---
+
+## 2026-05-11 [CODEX]
+### TYPE: FIX
+### STATUS: [DEVICE_SMOKE_DONE]
+
+**Settings/Module Activation Fix — Chameleon**
+
+Implemented:
+- Settings rows now open real module routes instead of being passive status rows.
+- Added NavGraph routes for `Geofencing` and `Decoy Profile`, guarded through `TierGatedContent`.
+- `OverlayScreen` no longer owns ephemeral-only state; `overlayEnabled` is backed by `AppPreferences`.
+- `PrivateZone` buttons are active:
+  - `Import File` launches Android file picker and stores bytes through `PrivateZoneManager`.
+  - `Secure Photo` launches camera preview and stores JPEG bytes through `PrivateZoneManager`.
+  - Storage uses the existing encrypted `SecureFileManager` path and the NEA-25 quota enforcement.
+- Added `PrivateZoneViewModel` with file count/status/error state.
+- Added `SettingsViewModel` for persisted overlay setting.
+
+Validation:
+- `./gradlew :app:compileDebugKotlin` → BUILD SUCCESSFUL
+- `./gradlew :features:privatezone:testDebugUnitTest` → BUILD SUCCESSFUL
+- `./gradlew assembleDebug` → BUILD SUCCESSFUL
+- Installed debug APK on:
+  - S10 `RF8N313QMFL` → Success
+  - S4 `ce10160adc00152604` → Success
+- Launched on both devices; both app processes stayed alive after launch.
+
+Device note:
+- S7 `ce12182c68644439037e` is connected but ADB status is `unauthorized`; needs RSA prompt approval on-device before install/smoke test.
+
+Remaining:
+- Geofence creation screen currently opens and confirms route/action, but full location permission flow + persisted geofence form is still the next deeper implementation.
+- Decoy setup route is active, but full PIN setup/persistence UI is still next deeper implementation.
+
+### EMPFÄNGER: GIO / CC

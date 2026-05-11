@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -54,6 +55,10 @@ import com.stealthx.shared.model.IfrTier
 fun SettingsScreen(
     onBack: () -> Unit,
     onNavigateToIFR: () -> Unit,
+    onNavigateToOverlay: () -> Unit,
+    onNavigateToPrivateZone: () -> Unit,
+    onNavigateToGeofencing: () -> Unit,
+    onNavigateToDecoy: () -> Unit,
     currentTier: IfrTier = IfrTier.FREE
 ) {
     Scaffold(
@@ -92,19 +97,22 @@ fun SettingsScreen(
                     icon = Icons.Default.Shield,
                     title = "Overlay Encryption",
                     subtitle = "Always on — basic protection",
-                    locked = false
+                    locked = false,
+                    onClick = onNavigateToOverlay
                 )
                 FeatureRow(
                     icon = Icons.Default.MyLocation,
                     title = "Manual Geofencing",
                     subtitle = "3 rules max",
-                    locked = false
+                    locked = false,
+                    onClick = onNavigateToGeofencing
                 )
                 FeatureRow(
                     icon = Icons.Default.Storage,
                     title = "Private Zone",
                     subtitle = "100 MB encrypted vault",
-                    locked = false
+                    locked = false,
+                    onClick = onNavigateToPrivateZone
                 )
             }
 
@@ -124,21 +132,24 @@ fun SettingsScreen(
                     title = "Private Zone — Unlimited",
                     subtitle = "No storage cap",
                     locked = currentTier < IfrTier.PRO,
-                    onLockedClick = onNavigateToIFR
+                    onLockedClick = onNavigateToIFR,
+                    onClick = onNavigateToPrivateZone
                 )
                 FeatureRow(
                     icon = Icons.Default.FaceRetouchingNatural,
                     title = "Decoy Profile",
                     subtitle = "Wrong PIN → decoy identity",
-                    locked = currentTier < IfrTier.PRO,
-                    onLockedClick = onNavigateToIFR
+                    locked = currentTier < IfrTier.ELITE,
+                    onLockedClick = onNavigateToIFR,
+                    onClick = onNavigateToDecoy
                 )
                 FeatureRow(
                     icon = Icons.Default.MyLocation,
                     title = "Automatic Geofencing",
                     subtitle = "Location-triggered encryption",
                     locked = currentTier < IfrTier.PRO,
-                    onLockedClick = onNavigateToIFR
+                    onLockedClick = onNavigateToIFR,
+                    onClick = onNavigateToGeofencing
                 )
             }
 
@@ -230,6 +241,7 @@ private fun FeatureRow(
     subtitle: String,
     locked: Boolean,
     onLockedClick: (() -> Unit)? = null,
+    onClick: (() -> Unit)? = null,
     eliteTier: Boolean = false
 ) {
     val tintColor = when {
@@ -240,6 +252,7 @@ private fun FeatureRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .then(if (!locked && onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
             .padding(vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
