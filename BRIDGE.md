@@ -499,3 +499,24 @@ Remaining:
 - Decoy setup route is active, but full PIN setup/persistence UI is still next deeper implementation.
 
 ### EMPFÄNGER: GIO / CC
+
+---
+
+## 2026-05-11 [CC]
+### TYPE: FIX
+### STATUS: [DONE]
+
+**Branding: Chameleon Launcher Icon + Splash Screen**
+
+- `docs/logos/chameleon_icon_square.png` — primary logo source (no rounded corners)
+- `docs/logos/chameleon_icon_v2.png` — rounded corners variant (used for icons)
+- `docs/logos/logo.png` — StealthX platform logo (red X)
+- All mipmap densities (mdpi→xxxhdpi) generated from `chameleon_icon_v2.png`
+- `drawable/ic_launcher_bitmap.png` (432px) — adaptive icon foreground
+- `drawable/ic_launcher_background.xml` — blue `#3BBCF5` (matches logo)
+- `values-v31/themes.xml` — Android 12 splash screen (blue bg + chameleon bitmap)
+- Adaptive icon XMLs point to bitmap foreground
+
+Commits: `d9c904d`, `2897c57`
+
+### EMPFÄNGER: CODEX
