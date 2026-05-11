@@ -44,11 +44,22 @@ class PrivateZoneManager @Inject constructor(
 
     /**
      * Store an encrypted file. Throws [TierLimitException] if FREE tier storage cap exceeded.
+     *
+     * Synchronized to prevent TOCTOU race: two concurrent writes both seeing the same used-bytes
+     * and both passing the check, causing them to jointly exceed the 100MB cap.
+     *
+     * Check uses on-disk size units throughout:
+     * - [totalSizeBytes] measures on-disk encrypted files
+     * - [estimatedEncryptedSizeBytes] estimates the on-disk footprint of [data]
+     * - Existing file size is subtracted to avoid double-counting on overwrite
      */
+    @Synchronized
     fun storeFile(name: String, data: ByteArray, key: ByteArray) {
         if (tierGate.getTierSync() < IfrTier.PRO) {
-            val used = secureFileManager.totalSizeBytes()
-            if (used + data.size > FREE_STORAGE_CAP_BYTES) {
+            val existing = secureFileManager.existingFileSizeBytes(name)
+            val used = secureFileManager.totalSizeBytes() - existing
+            val incoming = secureFileManager.estimatedEncryptedSizeBytes(data.size)
+            if (used + incoming > FREE_STORAGE_CAP_BYTES) {
                 val usedMb = used / (1024 * 1024)
                 throw TierLimitException(
                     "Private Zone storage limit reached (${usedMb}MB / 100MB). Upgrade to Pro for unlimited storage."

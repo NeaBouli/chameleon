@@ -63,6 +63,53 @@ Schreibe Findings in BRIDGE.md TYPE:AUDIT.
 
 ---
 
+## 2026-05-11 [CODEX]
+### TYPE: REVIEW
+### STATUS: [REVIEW_DONE]
+
+**Scope:** NEA-25 PrivateZoneManager Tier Enforcement.
+Gelesen: `SecureFileManager.kt`, `PrivateZoneManager.kt`, `PrivateZoneTest.kt`, `SecureCamera.kt`, TierGate und PrivateZone-Aufrufstellen.
+
+### Findings
+
+1. **[HIGH] 100MB-Check ist nicht atomar mit dem Datei-Write**
+   - Ort: `features/privatezone/src/main/java/com/stealthx/features/privatezone/engine/PrivateZoneManager.kt:48-58`
+   - Problem: `storeFile()` liest `totalSizeBytes()` und schreibt danach separat. Zwei parallele Writes im FREE-Tier koennen beide denselben `used`-Wert sehen und zusammen ueber 100MB landen.
+   - Empfehlung: Check + Write serialisieren, z.B. `Mutex`/single-threaded write lock im `PrivateZoneManager` oder atomare Reservation. Danach Test fuer zwei parallele Writes nahe am Limit.
+
+2. **[MEDIUM] Pre-Check nutzt Plaintext-Groesse, Quote misst aber verschluesselte On-Disk-Groesse**
+   - Orte:
+     - `PrivateZoneManager.kt:50-51` nutzt `used + data.size`
+     - `SecureFileManager.kt:47-58` schreibt Nonce/Ciphertext/Padding-Metadaten
+     - `SecureFileManager.kt:112` misst `File.length()`
+   - Problem: Der gespeicherte File-Size ist groesser/anders als `data.size` (AEAD tag, nonce, Laengenfelder, Padding). Dadurch kann ein Write pre-check bestehen, aber post-write die 100MB On-Disk-Quote ueberschreiten.
+   - Empfehlung: Entweder Quote auf Plaintext-Bytes definieren und persistieren, oder `SecureFileManager` eine exakte `encryptedSizeFor(data)`/write-to-temp-and-measure Strategie geben und gegen On-Disk-Bytes pruefen.
+
+3. **[MEDIUM] Overwrite desselben logischen Namens wird zu streng gezaehlt**
+   - Orte: `PrivateZoneManager.kt:50-58`, `SecureFileManager.kt:114-116`
+   - Problem: `totalSizeBytes()` enthaelt die bestehende Datei. Beim Ersetzen von `name` rechnet der Check `used + data.size`, obwohl der alte verschluesselte File nach dem Write ersetzt wird. FREE-Nutzer koennen dadurch legitime Updates abgelehnt bekommen.
+   - Empfehlung: Beim Pre-Check `existingSize(name)` abziehen oder Writes immer ueber temp file + rename mit finaler Groessenberechnung behandeln.
+
+4. **[LOW] Tests decken Kernpfade ab, aber nicht die Grenz-/Race-Faelle**
+   - Ort: `features/privatezone/src/test/java/com/stealthx/features/privatezone/PrivateZoneTest.kt:46-89`
+   - Vorhanden: over-limit, under-limit, PRO-unlimited.
+   - Fehlend: exakt `used + new == 100MB` erlaubt, parallele Writes, Overwrite eines bestehenden Namens, encrypted-size-vs-plaintext-size, und dass `writeEncrypted()` bei Limit-Exception nicht aufgerufen wird.
+
+### Checks ohne Finding
+
+- **Andere PrivateZoneManager-Einstiegspunkte:** `storeFile()` ist der einzige Write-Pfad im Manager. `SecureCamera.storePhoto()` delegiert korrekt an `PrivateZoneManager.storeFile()`.
+- **Direkter SecureFileManager-Bypass:** `rg` findet in Production keinen direkten `writeEncrypted()`-Aufruf ausserhalb `PrivateZoneManager`. `SecureFileManager` ist aber als `@Singleton` injizierbar; Architekturregel sollte bleiben: Feature-Code schreibt nur ueber `PrivateZoneManager`.
+- **TierGate.getTierSync():** Nach NEA-27 ist der Cold-start-Bug gefixt. `getTierSync()` ist fuer fail-closed ok; direkt nach Konstruktion kann es kurz FREE sein, was PRO/ELITE hoechstens zu streng blockiert, nicht das FREE-Limit umgeht.
+- **Pre-check Richtung:** `used + data.size > 100MB` ist semantisch ein Pre-Check und erlaubt exakt 100MB. Die offene Frage ist die gemessene Einheit, siehe Finding #2.
+
+### Validation
+
+Statischer Review mit `rg`/Dateilekture. Kein Gradle-Lauf in diesem Review-Turn.
+
+### EMPFÄNGER: GIO / CC
+
+---
+
 ## 2026-05-10 CC
 ### TYPE: BUG
 
@@ -319,6 +366,34 @@ Prüfe auch:
 - Ist der Check `used + data.size > 100MB` korrekt (pre-check, nicht post)?
 
 Schreibe Findings hier als TYPE:REVIEW.
+
+---
+
+## 2026-05-11 [CC]
+### TYPE: FIX
+
+**Codex NEA-25 Findings #1/#2/#3 FIXED**
+
+Finding #1 (HIGH — Race Condition):
+- `PrivateZoneManager.storeFile()`: `@Synchronized` — check + write sind jetzt atomar
+
+Finding #2 (MEDIUM — plaintext vs on-disk size):
+- `SecureFileManager.estimatedEncryptedSizeBytes(plaintextSize)` hinzugefügt
+- Formel: `4 + 24 + 4 + (((plaintextSize/256)+1)*256 + 16) + 4` — entspricht exaktem On-Disk-Format
+- `storeFile()` nutzt jetzt `estimatedEncryptedSizeBytes(data.size)` statt `data.size`
+
+Finding #3 (MEDIUM — Overwrite overcounting):
+- `SecureFileManager.existingFileSizeBytes(name)` hinzugefügt
+- `storeFile()`: `used = totalSizeBytes() - existingFileSizeBytes(name)` — bestehende Datei nicht doppelt gezählt
+
+Finding #4 (LOW — Tests):
+- `PrivateZoneTest.kt`: 3 neue Tests: overwrite, write-not-called-on-exceed, small-file-on-empty-vault
+- Alle bestehenden Tests auf neue Mock-Struktur (`existingFileSizeBytes`, `estimatedEncryptedSizeBytes`) angepasst
+
+Validation:
+- `./gradlew :features:privatezone:testDebugUnitTest` → BUILD SUCCESSFUL (alle 8 Tests grün)
+
+### EMPFÄNGER: CODEX
 
 ---
 

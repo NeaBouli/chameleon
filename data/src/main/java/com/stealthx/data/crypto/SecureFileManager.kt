@@ -107,9 +107,26 @@ class SecureFileManager @Inject constructor(
     fun listFiles(): List<String> = secureDir.list()?.toList() ?: emptyList()
 
     /**
-     * Total size of all encrypted files in bytes.
+     * Total on-disk size of all encrypted files in bytes.
      */
     fun totalSizeBytes(): Long = secureDir.listFiles()?.sumOf { it.length() } ?: 0L
+
+    /**
+     * On-disk size of a specific named file, 0 if it does not exist.
+     * Used to subtract existing file size when overwriting.
+     */
+    fun existingFileSizeBytes(name: String): Long = resolveFile(name).length()
+
+    /**
+     * Estimates the on-disk encrypted size for [plaintextSize] plaintext bytes.
+     *
+     * On-disk format: [4B nonceLen][24B nonce][4B ctLen][padded+Poly1305][4B paddedLen]
+     * XChaCha20-Poly1305: nonce=24B, Poly1305 tag=16B, plaintext padded to next 256B multiple.
+     */
+    fun estimatedEncryptedSizeBytes(plaintextSize: Int): Long {
+        val padded = ((plaintextSize / 256) + 1) * 256
+        return (4 + 24 + 4 + padded + 16 + 4).toLong()
+    }
 
     private fun resolveFile(name: String): File {
         val hash = hashFileName(name)
