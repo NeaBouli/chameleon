@@ -4,7 +4,42 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+
+    <!-- Chameleon body (side view, facing right) -->
     <path
-        android:fillColor="#00E5FF"
-        android:pathData="M54,27 L72,54 L54,81 L36,54 Z"/>
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M30,58
+            C25,62 21,60 19,54
+            C17,48 18,40 24,39
+            C28,35 31,38 29,43
+            C27,48 29,52 30,56
+            L30,46
+            C30,39 75,39 75,47
+            L89,39
+            L95,52
+            L89,59
+            L75,59
+            C75,67 30,67 30,58
+            Z" />
+
+    <!-- Eye (white sclera) -->
+    <path
+        android:fillColor="#00D4FF"
+        android:pathData="M86,50 m-5,0 a5,5 0,1 1,10,0 a5,5 0,1 1,-10,0" />
+
+    <!-- Pupil -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M86,50 m-2.5,0 a2.5,2.5 0,1 1,5,0 a2.5,2.5 0,1 1,-5,0" />
+    <path
+        android:fillColor="#1A1A2E"
+        android:pathData="M87,50 m-1.5,0 a1.5,1.5 0,1 1,3,0 a1.5,1.5 0,1 1,-3,0" />
+
+    <!-- Feet -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M40,66 L37,78 M50,68 L47,80 M60,68 L60,80 M70,66 L73,78" />
 </vector>

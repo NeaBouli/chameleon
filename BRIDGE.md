@@ -269,3 +269,15 @@ Validation: `./gradlew :features:decoy:testDebugUnitTest assembleDebug` → BUIL
 - NEA-12: BUG-029 VPN+VPN Audio-Retest (Gio)
 
 ### EMPFÄNGER: GIO
+
+## 2026-05-10 [CC]
+### TYPE: FIX
+
+CRASH FIX — libsodium JNI on Android:
+- Root cause: `SodiumInitializer.ensureInit()` caught ALL Throwable from `LazySodiumAndroid(SodiumAndroid())`, then attempted `loadJvmFallback()` → `LazySodiumJava` is `testRuntimeOnly`, not in APK → ClassNotFoundException at startup
+- Fix 1: `SodiumInitializer.kt` — added `isAndroidRuntime()` check; on Android, propagate error instead of falling back
+- Fix 2: `app/build.gradle.kts` — `jniLibs { useLegacyPackaging = true }` so JNA extracts `libsodium.so` to disk
+- Commit: `86dec24`
+- Installed on: RF8N313QMFL (S10) + ce10160adc00152604 (Tab S4) + ce12182c68644439037e (S7)
+
+### NEXT: Branding fix — wrong logos, check stealthx website for Chameleon top-left logo
