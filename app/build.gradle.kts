@@ -77,6 +77,10 @@ android {
     }
 
     packaging {
+        jniLibs {
+            // JNA needs libsodium.so extracted to disk on older devices
+            useLegacyPackaging = true
+        }
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
             excludes += "META-INF/DEPENDENCIES"

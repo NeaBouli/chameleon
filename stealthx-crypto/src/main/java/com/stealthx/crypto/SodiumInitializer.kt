@@ -43,13 +43,20 @@ object SodiumInitializer {
         if (initialized) return
         _sodium = try {
             LazySodiumAndroid(SodiumAndroid())
-        } catch (_: Throwable) {
-            // JVM test runner: SodiumAndroid cannot load the Android JNI library.
-            // Fall back to LazySodiumJava which bundles desktop libsodium.
-            // lazysodium-java must be on testRuntimeClasspath for this to work.
+        } catch (e: Throwable) {
+            // On Android, libsodium must load via JNI — JVM fallback is not in the APK.
+            // Only attempt JVM fallback in non-Android environments (unit test JVM runner).
+            if (isAndroidRuntime()) throw RuntimeException("libsodium JNI init failed on Android", e)
             loadJvmFallback()
         }
         initialized = true
+    }
+
+    private fun isAndroidRuntime(): Boolean = try {
+        Class.forName("android.os.Build")
+        true
+    } catch (_: ClassNotFoundException) {
+        false
     }
 
     fun isInitialized(): Boolean = initialized
