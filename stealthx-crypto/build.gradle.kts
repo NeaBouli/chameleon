@@ -37,10 +37,16 @@ dependencies {
     implementation(project(":shared"))
 
     // THE ONLY CRYPTO LIBRARY — lazysodium wraps libsodium
-    implementation(libs.lazysodium.android)
+    // Exclude JNA JAR transitive dep — we force the AAR variant below so libjnidispatch.so is
+    // packaged as a proper .so file that Android's linker can load (JAR variant fails on device).
+    implementation(libs.lazysodium.android) {
+        exclude(group = "net.java.dev.jna", module = "jna")
+    }
+    // JNA as AAR: contains libjnidispatch.so in jni/<abi>/ — required by lazysodium on Android
+    implementation("net.java.dev.jna:jna:${libs.versions.jna.get()}@aar")
     // JVM fallback for unit tests: SodiumInitializer auto-detects JVM and uses desktop libsodium
     testImplementation(libs.lazysodium.java)
-    implementation(libs.jna)
+    testImplementation(libs.jna)
 
     implementation(libs.kotlinx.coroutines.android)
 

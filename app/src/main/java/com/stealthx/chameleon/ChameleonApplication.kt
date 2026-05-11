@@ -13,6 +13,7 @@ package com.stealthx.chameleon
 
 import android.app.Application
 import com.stealthx.crypto.SodiumInitializer
+import com.stealthx.data.identity.StealthXIdentity
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -26,7 +27,9 @@ class ChameleonApplication : Application() {
         // Must happen in Application.onCreate(), not lazily.
         SodiumInitializer.ensureInit()
 
-        // Logging — debug builds only. NEVER log in release.
+        // Create per-device identity on first launch — idempotent on subsequent launches
+        StealthXIdentity.getOrCreateWithSeed(this)
+
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
