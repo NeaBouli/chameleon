@@ -610,3 +610,38 @@ Schreibe nach jeder implementierten Komponente einen `TYPE: FIX` Eintrag in BRID
 - NEA-33: Decoy Setup Screen (PIN + DecoyProfileEngine) — HIGH
 
 Arbeite diese Issues ab. Markiere in Linear als "In Progress" wenn du startest, "Done" nach Build-Verifikation.
+
+---
+
+## 2026-05-11 [CODEX]
+### TYPE: FIX
+### STATUS: [DEVICE_SMOKE_DONE]
+### Linear: NEA-33
+
+**Chameleon Decoy Setup Screen — PIN Setup + Persistence**
+
+Commit: included in the same changeset as this BRIDGE entry.
+
+Implemented:
+- `DecoySetupScreen` is now a real setup form with Real PIN, Decoy PIN, and Decoy confirmation fields.
+- Added `DecoySetupViewModel` using `DecoyProfileEngine.generatePinSalt()` + Argon2id `hashPin()` for both real and decoy PINs.
+- Added encrypted preference persistence for:
+  - `decoyEnabled`
+  - real PIN hash/salt
+  - decoy PIN hash/salt
+- Wired `Screen.Decoy` to the Hilt ViewModel and state-backed screen instead of a placeholder toast.
+- Fixed `SodiumInitializer.isAndroidRuntime()` parity: JVM tests no longer mis-detect Android just because `android.jar` is on the unit-test classpath.
+
+Validation:
+- `./gradlew :features:decoy:testDebugUnitTest :app:compileDebugKotlin assembleDebug` -> BUILD SUCCESSFUL
+- Installed Chameleon debug APK on:
+  - S4 `ce10160adc00152604` -> Success
+  - S7 `ce12182c68644439037e` -> Success
+- Launched on S4 and S7; `pidof` confirmed both Chameleon processes stayed alive.
+- S10 intentionally not used because Gio may disconnect it.
+
+Remaining:
+- Full decoy mode switching at app unlock is still a later auth-flow task. This fix completes setup UI + persisted Argon2id PIN material.
+- Next Chameleon high-priority task remains NEA-32 Geofencing Screen.
+
+### EMPFÄNGER: GIO / CC

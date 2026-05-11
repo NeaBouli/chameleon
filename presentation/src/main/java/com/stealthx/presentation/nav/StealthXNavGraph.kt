@@ -30,6 +30,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.stealthx.features.decoy.screen.DecoySetupScreen
+import com.stealthx.features.decoy.screen.DecoySetupViewModel
 import com.stealthx.features.geofencing.screen.GeofencingScreen
 import com.stealthx.features.messenger.screen.MessengerScreen
 import com.stealthx.features.overlay.screen.OverlayScreen
@@ -164,11 +165,13 @@ fun StealthXNavGraph(navController: NavHostController) {
                 featureName = "Decoy Profile",
                 onUnlockClicked = { navController.navigate(Screen.IFRUnlock.route) }
             ) {
+                val vm: DecoySetupViewModel = hiltViewModel()
+                val state by vm.uiState.collectAsState()
                 FeatureScaffold(title = "Decoy Profile", onBack = { navController.popBackStack() }) { modifier ->
                     DecoySetupScreen(
-                        onSetupDecoy = {
-                            Toast.makeText(context, "Decoy setup screen active", Toast.LENGTH_SHORT).show()
-                        },
+                        state = state,
+                        onSavePins = vm::savePins,
+                        onDisableDecoy = vm::disableDecoy,
                         modifier = modifier
                     )
                 }
