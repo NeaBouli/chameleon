@@ -77,7 +77,8 @@ fun StealthXNavGraph(navController: NavHostController) {
         composable(Screen.Settings.route) {
             SettingsScreen(
                 onBack = { navController.popBackStack() },
-                onNavigateToIFR = { navController.navigate(Screen.IFRUnlock.route) }
+                onNavigateToIFR = { navController.navigate(Screen.IFRUnlock.route) },
+                currentTier = currentTier
             )
         }
 
