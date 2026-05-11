@@ -6,6 +6,8 @@
 package com.stealthx.features.messenger.engine
 
 import com.stealthx.domain.keys.X25519KeyManager
+import com.stealthx.domain.tier.TierGate
+import com.stealthx.shared.model.IfrTier
 import com.stealthx.shared.model.PublicKeyBundle
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,8 +21,15 @@ import javax.inject.Singleton
  */
 @Singleton
 class MessengerEngine @Inject constructor(
-    private val keyManager: X25519KeyManager
+    private val keyManager: X25519KeyManager,
+    private val tierGate: TierGate
 ) {
+
+    private fun requirePro() {
+        if (tierGate.getTierSync() < IfrTier.PRO) {
+            throw SecurityException("MessengerEngine requires PRO tier or above")
+        }
+    }
 
     data class Contact(
         val id: String,
@@ -55,6 +64,7 @@ class MessengerEngine @Inject constructor(
         displayName: String,
         identityKeyPair: Pair<ByteArray, ByteArray>
     ): PublicKeyBundle {
+        requirePro()
         val dhKp = keyManager.generateKeyPair()
         return keyManager.createPublicBundle(identityKeyPair, dhKp, displayName)
     }
@@ -63,6 +73,7 @@ class MessengerEngine @Inject constructor(
      * Verify a received contact's key bundle.
      */
     fun verifyContactBundle(bundle: PublicKeyBundle): Boolean {
+        requirePro()
         return keyManager.verifyBundle(bundle)
     }
 
@@ -71,6 +82,7 @@ class MessengerEngine @Inject constructor(
      * Format: 12 groups of 5 digits (like Signal).
      */
     fun computeSafetyNumber(myIdentityKey: ByteArray, theirIdentityKey: ByteArray): String {
+        requirePro()
         val combined = if (myIdentityKey.contentHashCode() < theirIdentityKey.contentHashCode()) {
             myIdentityKey + theirIdentityKey
         } else {

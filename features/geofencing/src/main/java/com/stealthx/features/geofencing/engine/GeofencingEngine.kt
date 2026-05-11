@@ -11,6 +11,8 @@ import android.content.Context
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
+import com.stealthx.domain.tier.TierGate
+import com.stealthx.shared.model.IfrTier
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,8 +28,15 @@ import javax.inject.Singleton
  */
 @Singleton
 class GeofencingEngine @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val tierGate: TierGate
 ) {
+
+    private fun requireElite() {
+        if (tierGate.getTierSync() < IfrTier.ELITE) {
+            throw SecurityException("GeofencingEngine requires ELITE tier")
+        }
+    }
 
     companion object {
         const val MIN_RADIUS_METERS = 100f
@@ -52,6 +61,7 @@ class GeofencingEngine @Inject constructor(
      */
     @SuppressLint("MissingPermission")
     fun addGeofence(config: GeofenceConfig, pendingIntent: PendingIntent) {
+        requireElite()
         val radius = maxOf(config.radiusMeters, MIN_RADIUS_METERS)
 
         val geofence = Geofence.Builder()
