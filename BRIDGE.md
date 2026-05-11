@@ -520,3 +520,81 @@ Remaining:
 Commits: `d9c904d`, `2897c57`
 
 ### EMPFÄNGER: CODEX
+
+---
+
+## 2026-05-11 [CC]
+### TYPE: TODO
+### EMPFÄNGER: CODEX
+
+**Auftrag: Chameleon App Vervollständigung — alle offenen Features implementieren**
+
+Gio hat explizit Codex mit dem Bau und der Vervollständigung beauftragt.
+
+### Build-Umgebung
+```bash
+export JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home
+cd ~/Desktop/repos/chameleon
+./gradlew assembleDebug
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
+
+### Offene Features — Priorität HIGH
+
+**1. Geofencing Screen (Screen.Geofencing — ELITE)**
+- Route: `StealthXNavGraph.kt` verdrahtet, `GeofencingScreen` rendert
+- Fehlt: echtes Formular für Geofence-Definition (Name, Radius, Koordinaten), Location Permission Request, persistierter Geofence-Store via `GeofencingEngine.addGeofence()`
+- `GeofencingEngine` hat `TierGate.requiresElite()` — bereits fail-closed
+- Empfehlung: `GeofencingViewModel`, Location Permission Composable, Room/DataStore für Geofence-Liste
+
+**2. Decoy Setup Screen (Screen.Decoy — ELITE)**
+- Route: verdrahtet, `DecoySetupScreen` rendert
+- Fehlt: echtes PIN-Setup UI (Real PIN + Decoy PIN eingeben), `DecoyProfileEngine.setupDecoy()` aufrufen
+- `DecoyProfileEngine` hat Argon2id PIN-Hashing (NEA-25 Fix) — bereits implementiert
+- Empfehlung: `DecoySetupViewModel`, PIN-Eingabe Composable, `DecoyConfig` persistieren
+
+**3. AIDL CryptoService processText**
+- Deferred aus S-05 — `CryptoService.kt` hat `TODO("processText")`
+- AIDL Overlay-Integration: externe Apps können via AIDL Text zur Verschlüsselung senden
+- Empfehlung: `processText(input: String): String` implementieren via `ChameleonCrypto.encrypt()`
+
+**4. Overlay Package Whitelist**
+- `OverlayScreen` zeigt hardcoded List (WhatsApp, Telegram, Signal, Gmail)
+- Fehlt: User kann Apps zur Whitelist hinzufügen/entfernen
+- Empfehlung: `AppPreferences` um `overlayWhitelist: Set<String>` erweitern, UI in OverlayScreen
+
+### Offene Features — Priorität MEDIUM
+
+**5. IFR WalletConnect Activity Result**
+- `IFRUnlockScreen` triggert WalletConnect Deeplink
+- Fehlt: Activity Result Callback wenn User aus Wallet zurückkehrt mit Adresse
+- Empfehlung: `ActivityResultContracts` in NavGraph oder MainActivity verdrahten
+
+**6. PrivateZone File List**
+- `PrivateZoneScreen` zeigt nur `fileCount`
+- Fehlt: Liste der Dateien mit Name, Größe, Datum; Löschen-Funktion
+- `PrivateZoneViewModel.listFiles()` existiert bereits
+
+**7. stealthx-crypto Parity SecureChat**
+- `ChameleonCrypto.kt` und `DoubleRatchet.kt` haben Bugfixes die SecureChat noch nicht hat
+- Empfehlung: `stealthx-crypto/` Modul zwischen beiden Repos synchronisieren
+
+### Offene Features — Priorität LOW
+
+**8. Release Keystore + assembleRelease**
+- `./gradlew assembleRelease` — noch kein Signing-Config
+- Empfehlung: Keystore generieren, `signingConfigs` in `app/build.gradle.kts`
+
+**9. IFR BuilderRegistry**
+- Dokumentiert als TODO in LOGBUCH
+- Empfehlung: mit Inferno-Repo abgleichen (KEIN CONTEXT-MIX)
+
+### Validation pro Feature
+- `./gradlew assembleDebug` muss grün bleiben
+- `./gradlew test` muss grün bleiben
+- Feature-Test auf physischem Gerät (S10: ELITE, S7: PRO, S4: FREE)
+
+### Bridge-Update nach jedem Feature
+Schreibe nach jeder implementierten Komponente einen `TYPE: FIX` Eintrag in BRIDGE.md.
+
+### EMPFÄNGER: CODEX
