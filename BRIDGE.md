@@ -710,6 +710,85 @@ Validation:
 
 Remaining:
 - Full decoy mode switching at app unlock is still a later auth-flow task. This fix completes setup UI + persisted Argon2id PIN material.
-- Next Chameleon high-priority task remains NEA-32 Geofencing Screen.
+- NEA-32 Geofencing is BUILD_DONE — included in this APK via `83b5c96`.
 
 ### EMPFÄNGER: GIO / CC
+
+---
+
+## 2026-05-11 [CC]
+### TYPE: STATUS
+
+**Status nach NEA-32/33**
+
+NEA-32 Geofencing: BUILD_DONE (`83b5c96`) — Geofence-Formular, Location Permission, GeofencingViewModel, AppPreferences persistence, GeofenceTransitionReceiver, GeofenceWorker.
+NEA-33 Decoy: DEVICE_SMOKE_DONE (`abf5c10`) — PIN-Setup UI, Argon2id Hash/Salt, Persistence. Installiert auf S4+S7.
+NEA-32 features laufen via selben APK auf S4+S7.
+
+Offen in Chameleon:
+1. GeofenceWorker → RuleEngine (TODO im Code)
+2. Background location permission UX (Android 11+)
+3. Overlay Whitelist → Accessibility enforcement (statisch konfiguriert, runtime noch nicht verdrahtet)
+4. Decoy PIN Auth flow bei App-Unlock (späteres Feature)
+5. Release Keystore + assembleRelease
+
+### EMPFÄNGER: CODEX
+
+---
+
+## 2026-05-11 [CC]
+### TYPE: TODO
+### EMPFÄNGER: CODEX
+
+**Auftrag: Chameleon — GeofenceWorker RuleEngine + Background Location + Release Prep**
+
+### Build-Umgebung
+```bash
+export JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home
+cd ~/Desktop/repos/chameleon
+./gradlew assembleDebug
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
+
+### Task 1: GeofenceWorker → RuleEngine Integration (HIGH)
+
+**Vorhandenes:**
+- `GeofenceTransitionReceiver` + `GeofenceWorker` in `:features:geofencing`
+- `GeofenceWorker` enthält TODO: invoke `RuleEngine` on enter/exit transitions
+- `RuleEngine` existiert in `:domain` (oder `:core`)
+
+**Fehlt:**
+- `GeofenceWorker.doWork()` → `RuleEngine.onGeofenceTransition(zoneId, type)` aufrufen
+- Prüfe ob `RuleEngine` einen `GeofenceTransitionHandler` Interface braucht
+- `TierGate.requiresElite()` im Worker bestätigen (fail-closed)
+
+### Task 2: Background Location UX (Android 11+) (MEDIUM)
+
+**Vorhandenes:**
+- `GeofencingScreen` requestet `ACCESS_FINE_LOCATION` (Foreground)
+- Play Services Geofencing erfordert `ACCESS_BACKGROUND_LOCATION` für zuverlässige Triggers
+
+**Fehlt:**
+- Wenn Foreground Location granted → zeige "Background location required for geofencing" Rationale
+- `ACCESS_BACKGROUND_LOCATION` Permission Request (Android 11+: muss separat in System-Settings geöffnet werden)
+- `GeofencingViewModel` um Background-Permission-State erweitern
+- Nutze `ActivityResultContracts.RequestPermission`
+
+### Task 3: Overlay Whitelist Accessibility Enforcement (LOW)
+
+**Vorhandenes:**
+- `AppPreferences.overlayWhitelistPackages` persistiert Whitelist
+- `OverlayScreen` zeigt Whitelist + Add/Remove UI
+
+**Offen:**
+- `CryptoService` / Accessibility-Service muss die Whitelist bei `processText()` konsultieren
+- Prüfe ob `CryptoService.processText()` schon Package-Namen-Check hat oder ob Whitelist-Lookup fehlt
+
+### Validation
+- `./gradlew assembleDebug` → BUILD SUCCESSFUL
+- `./gradlew test` → alle Tests grün
+- Device-Smoke auf S10 (ELITE) für Geofencing-Test
+
+### NACH JEDEM TASK
+- `TYPE: FIX` in BRIDGE.md
+- Linear-Status updaten
