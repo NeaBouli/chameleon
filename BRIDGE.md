@@ -598,3 +598,15 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 Schreibe nach jeder implementierten Komponente einen `TYPE: FIX` Eintrag in BRIDGE.md.
 
 ### EMPFÄNGER: CODEX
+
+---
+
+## 2026-05-11 [CC]
+### TYPE: MEMO
+
+**Linear Issues für Codex-Build-Tasks**
+
+- NEA-32: Geofencing Screen (Form + Location + GeofencingEngine) — HIGH
+- NEA-33: Decoy Setup Screen (PIN + DecoyProfileEngine) — HIGH
+
+Arbeite diese Issues ab. Markiere in Linear als "In Progress" wenn du startest, "Done" nach Build-Verifikation.
