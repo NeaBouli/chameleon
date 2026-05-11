@@ -106,6 +106,11 @@ class SecureFileManager @Inject constructor(
      */
     fun listFiles(): List<String> = secureDir.list()?.toList() ?: emptyList()
 
+    /**
+     * Total size of all encrypted files in bytes.
+     */
+    fun totalSizeBytes(): Long = secureDir.listFiles()?.sumOf { it.length() } ?: 0L
+
     private fun resolveFile(name: String): File {
         val hash = hashFileName(name)
         return File(secureDir, hash)

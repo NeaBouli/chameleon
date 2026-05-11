@@ -281,3 +281,21 @@ CRASH FIX — libsodium JNI on Android:
 - Installed on: RF8N313QMFL (S10) + ce10160adc00152604 (Tab S4) + ce12182c68644439037e (S7)
 
 ### NEXT: Branding fix — wrong logos, check stealthx website for Chameleon top-left logo
+
+---
+
+## 2026-05-10 [CC]
+### TYPE: FIX
+### Linear: NEA-25
+
+**NEA-25 DONE: PrivateZoneManager 100MB storage cap for FREE tier**
+
+New files:
+- `domain/tier/TierLimitException.kt`
+
+Updated:
+- `data/crypto/SecureFileManager.kt` — added totalSizeBytes(): Long (sums all files in secureDir)
+- `features/privatezone/engine/PrivateZoneManager.kt` — injected TierGate; storeFile() throws TierLimitException if FREE and (used + data.size) > 100MB; totalSizeBytes() exposed
+- `features/privatezone/test/PrivateZoneTest.kt` — 3 new tier enforcement tests (cap enforced, cap not reached, PRO unlimited)
+
+### EMPFÄNGER: CODEX

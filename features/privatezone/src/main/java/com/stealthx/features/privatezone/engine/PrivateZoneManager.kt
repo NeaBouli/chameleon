@@ -6,6 +6,9 @@
 package com.stealthx.features.privatezone.engine
 
 import com.stealthx.data.crypto.SecureFileManager
+import com.stealthx.domain.tier.TierGate
+import com.stealthx.domain.tier.TierLimitException
+import com.stealthx.shared.model.IfrTier
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,11 +21,19 @@ import javax.inject.Singleton
  * - NEVER writes to MediaStore or /DCIM/
  * - NEVER stores unencrypted data on disk
  * - Photos from SecureCamera go directly to encrypted storage
+ *
+ * TIER LIMITS:
+ * - FREE: 100MB total storage cap
+ * - PRO / ELITE: unlimited
  */
 @Singleton
 class PrivateZoneManager @Inject constructor(
-    private val secureFileManager: SecureFileManager
+    private val secureFileManager: SecureFileManager,
+    private val tierGate: TierGate
 ) {
+    companion object {
+        private const val FREE_STORAGE_CAP_BYTES = 100L * 1024 * 1024 // 100 MB
+    }
 
     data class SecureFile(
         val name: String,
@@ -31,7 +42,19 @@ class PrivateZoneManager @Inject constructor(
         val createdAt: Long
     )
 
+    /**
+     * Store an encrypted file. Throws [TierLimitException] if FREE tier storage cap exceeded.
+     */
     fun storeFile(name: String, data: ByteArray, key: ByteArray) {
+        if (tierGate.getTierSync() < IfrTier.PRO) {
+            val used = secureFileManager.totalSizeBytes()
+            if (used + data.size > FREE_STORAGE_CAP_BYTES) {
+                val usedMb = used / (1024 * 1024)
+                throw TierLimitException(
+                    "Private Zone storage limit reached (${usedMb}MB / 100MB). Upgrade to Pro for unlimited storage."
+                )
+            }
+        }
         secureFileManager.writeEncrypted(name, data, key)
     }
 
@@ -50,4 +73,6 @@ class PrivateZoneManager @Inject constructor(
     fun listFiles(): List<String> {
         return secureFileManager.listFiles()
     }
+
+    fun totalSizeBytes(): Long = secureFileManager.totalSizeBytes()
 }
