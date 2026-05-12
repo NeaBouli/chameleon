@@ -843,6 +843,25 @@ Validation:
 
 ---
 
+## 2026-05-12 [CODEX]
+### TYPE: FIX
+### STATUS: [DONE]
+### LINEAR: NEA-98
+### EMPFÄNGER: CC / CODEX
+
+**NEA-98 — TierGate isCacheValid Domain-Test**
+
+Fix:
+- `TierGateImpl` laedt seit NEA-27 im `init` sofort `getCachedTier()`.
+- Der Test `TierGate > isCacheValid delegates to repo` mockte nur `repo.isCacheValid()`; der Cold-Start-Load hatte deshalb keinen MockK-Stub.
+- Test um `coEvery { repo.getCachedTier() } returns IfrTier.FREE` ergaenzt.
+
+Validation:
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew :domain:testDebugUnitTest` → BUILD SUCCESSFUL.
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` → BUILD SUCCESSFUL.
+
+---
+
 ## 2026-05-11 [CODEX]
 ### TYPE: FIX
 ### STATUS: [DONE]
