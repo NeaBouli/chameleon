@@ -21,6 +21,7 @@ android {
     buildFeatures { aidl = true }
 }
 dependencies {
+    implementation(project(":data"))
     implementation(project(":stealthx-crypto"))
     implementation(project(":security"))
     implementation(project(":shared"))

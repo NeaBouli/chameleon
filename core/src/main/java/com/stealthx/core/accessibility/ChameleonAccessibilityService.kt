@@ -13,6 +13,7 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import android.view.accessibility.AccessibilityEvent
 import com.stealthx.core.ICryptoBridge
+import com.stealthx.data.prefs.AppPreferences
 import timber.log.Timber
 
 /**
@@ -37,6 +38,7 @@ class ChameleonAccessibilityService : AccessibilityService() {
 
     private var cryptoBridge: ICryptoBridge? = null
     private var isServiceBound = false
+    private val appPreferences: AppPreferences by lazy { AppPreferences(applicationContext) }
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
@@ -62,9 +64,11 @@ class ChameleonAccessibilityService : AccessibilityService() {
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         event ?: return
+        val packageName = event.packageName?.toString() ?: return
+        if (!isPackageWhitelisted(packageName)) return
+
         val source = event.source ?: return
         val text = source.text?.toString() ?: return
-        val packageName = event.packageName?.toString() ?: return
 
         // DELEGATE TO CRYPTO SERVICE — no decisions here
         val bridge = cryptoBridge
@@ -102,6 +106,9 @@ class ChameleonAccessibilityService : AccessibilityService() {
         val intent = Intent(this, CryptoService::class.java)
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
     }
+
+    private fun isPackageWhitelisted(packageName: String): Boolean =
+        appPreferences.overlayWhitelistPackages.contains(packageName)
 
     private fun injectText(source: android.view.accessibility.AccessibilityNodeInfo, text: String) {
         val args = android.os.Bundle().apply {

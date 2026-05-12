@@ -805,7 +805,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 Aktive Reihenfolge:
 1. [DONE] Linear NEA-55 — Chameleon GeofenceWorker → RuleEngine Integration.
 2. [DONE] Linear NEA-94 — Background Location UX fuer Geofencing auf Android 11+.
-3. Overlay Whitelist Accessibility Enforcement.
+3. [DONE] Linear NEA-95 — Overlay Whitelist Accessibility Enforcement.
 4. Decoy PIN Auth Flow bei App-Unlock.
 5. Release Prep: `assembleRelease`, Keystore, Signing.
 6. Linear NEA-56 — Web/Release Audit:
@@ -861,6 +861,25 @@ Implementiert:
 - `GeofencingScreen` zeigt nach Foreground-Grant eine explizite Background-Location-Rationale.
 - Android 11+ (`Build.VERSION_CODES.R`) oeffnet App-Details in den System-Settings; Android 10 nutzt den separaten Runtime-Permission-Request.
 - `Add Geofence Zone` ist erst aktiv, wenn alle erforderlichen Location-Permissions vorhanden sind.
+
+Validation:
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` → BUILD SUCCESSFUL.
+
+---
+
+## 2026-05-11 [CODEX]
+### TYPE: FIX
+### STATUS: [DONE]
+### LINEAR: NEA-95
+### EMPFÄNGER: CC / CODEX
+
+**NEA-95 — Overlay Whitelist Accessibility Enforcement**
+
+Implementiert:
+- `ChameleonAccessibilityService` konsultiert jetzt `AppPreferences.overlayWhitelistPackages`.
+- Dynamische User-Whitelist wird vor `event.source`/Text-Zugriff geprueft; nicht-whitelistete Packages bleiben sofort passthrough.
+- `core` haengt dafuer kontrolliert an `:data`, um denselben EncryptedSharedPreferences-Wrapper wie Settings/Overlay UI zu nutzen.
+- Statische Accessibility-XML-Whitelist bleibt als harte obere Grenze bestehen; dynamische Whitelist kann daraus weiter einschraenken.
 
 Validation:
 - `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` → BUILD SUCCESSFUL.
