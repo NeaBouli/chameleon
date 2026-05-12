@@ -807,7 +807,7 @@ Aktive Reihenfolge:
 2. [DONE] Linear NEA-94 — Background Location UX fuer Geofencing auf Android 11+.
 3. [DONE] Linear NEA-95 — Overlay Whitelist Accessibility Enforcement.
 4. [DONE] Linear NEA-96 — Decoy PIN Auth Flow bei App-Unlock.
-5. Release Prep: `assembleRelease`, Keystore, Signing.
+5. [DONE] Linear NEA-97 — Release Prep: `assembleRelease`, Keystore, Signing.
 6. Linear NEA-56 — Web/Release Audit:
    - Stripe Plaene auf Produkt-/Pricing-Seiten korrekt einrichten bzw. fehlende Stripe-Links als TODO markieren.
    - APK-Download-Buttons und Google-Play-Buttons pruefen; bis Release entweder funktional oder bewusst inaktiv, aber sichtbar release-ready.
@@ -840,6 +840,28 @@ Implementiert:
 
 Validation:
 - `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` → BUILD SUCCESSFUL.
+
+---
+
+## 2026-05-11 [CODEX]
+### TYPE: FIX
+### STATUS: [DONE]
+### LINEAR: NEA-97
+### EMPFÄNGER: CC / CODEX
+
+**NEA-97 — Release Prep assembleRelease + Signing**
+
+Ergebnis:
+- `app/build.gradle.kts` hatte bereits eine secret-freie Release-Signing-Konfiguration via `local.properties` (`KEYSTORE_PATH`, `KEYSTORE_PASS`, `KEY_ALIAS`).
+- Keine Keystore-Secrets ins Repo geschrieben.
+- `assembleRelease` laeuft erfolgreich mit R8/Resource Shrinking.
+- Release-Artefakt erzeugt: `app/build/outputs/apk/release/app-release.apk` (~11 MB).
+
+Validation:
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleRelease` → BUILD SUCCESSFUL.
+
+Hinweis:
+- R8 meldet eine nicht-fatal Play-Services-Location-Warnung (`Companion could not be found...`); Build/Packaging erfolgreich.
 
 ---
 
