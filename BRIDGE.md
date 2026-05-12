@@ -808,7 +808,7 @@ Aktive Reihenfolge:
 3. [DONE] Linear NEA-95 — Overlay Whitelist Accessibility Enforcement.
 4. [DONE] Linear NEA-96 — Decoy PIN Auth Flow bei App-Unlock.
 5. [DONE] Linear NEA-97 — Release Prep: `assembleRelease`, Keystore, Signing.
-6. Linear NEA-56 — Web/Release Audit:
+6. [DONE] Linear NEA-56 — Web/Release Audit:
    - Stripe Plaene auf Produkt-/Pricing-Seiten korrekt einrichten bzw. fehlende Stripe-Links als TODO markieren.
    - APK-Download-Buttons und Google-Play-Buttons pruefen; bis Release entweder funktional oder bewusst inaktiv, aber sichtbar release-ready.
    - Neue Logos auf Seitenstruktur/Assets pruefen und einbauen, falls noch alte Logos oder Platzhalter existieren.
@@ -862,6 +862,26 @@ Validation:
 
 Hinweis:
 - R8 meldet eine nicht-fatal Play-Services-Location-Warnung (`Companion could not be found...`); Build/Packaging erfolgreich.
+
+---
+
+## 2026-05-11 [CODEX]
+### TYPE: FIX
+### STATUS: [DONE]
+### LINEAR: NEA-56
+### EMPFÄNGER: CC / CODEX
+
+**NEA-56 — Chameleon Web/Release Audit**
+
+Ergebnis:
+- Chameleon-Webseite liegt im SecureChat Web-Root (`~/Desktop/repos/securechat/chameleon.html`), nicht im Android-Repo.
+- `chameleon.html` nutzt jetzt das echte Chameleon-Logo (`chameleon-logo.png`) fuer favicon, Social Preview, Navigation und Footer.
+- Chameleon Lifetime/Suite-Buttons sind Stripe-ready, aber deaktiviert, bis echte Checkout-Links vorhanden sind.
+- Chameleon APK- und Google-Play-Buttons sind sichtbar/release-ready und bis Release bewusst deaktiviert.
+- SecureChat `index.html` wurde im selben Audit fuer Stripe-ready CTAs sowie APK/Google-Play-Buttons aktualisiert.
+
+Validation:
+- Statischer HTML-Audit per `rg`: `data-stripe-product`, `data-release-artifact`, `aria-disabled` und `chameleon-logo.png` sind auf den Zielseiten vorhanden.
 
 ---
 
