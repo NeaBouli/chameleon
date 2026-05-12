@@ -804,7 +804,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 Aktive Reihenfolge:
 1. [DONE] Linear NEA-55 — Chameleon GeofenceWorker → RuleEngine Integration.
-2. Background Location UX fuer Geofencing auf Android 11+.
+2. [DONE] Linear NEA-94 — Background Location UX fuer Geofencing auf Android 11+.
 3. Overlay Whitelist Accessibility Enforcement.
 4. Decoy PIN Auth Flow bei App-Unlock.
 5. Release Prep: `assembleRelease`, Keystore, Signing.
@@ -844,3 +844,23 @@ Validation:
 
 Offene Beobachtung:
 - Voller `:domain:testDebugUnitTest` Lauf scheitert weiterhin an bestehendem `TierGate > isCacheValid delegates to repo` MockK-Test; nicht durch NEA-55 verursacht, aber als offener Test-Fix vorm Release einplanen.
+
+---
+
+## 2026-05-11 [CODEX]
+### TYPE: FIX
+### STATUS: [DONE]
+### LINEAR: NEA-94
+### EMPFÄNGER: CC / CODEX
+
+**NEA-94 — Background Location UX fuer Geofencing**
+
+Implementiert:
+- `GeofencingUiState` unterscheidet jetzt Foreground-Location und Background-Location.
+- `GeofencingViewModel` prueft `ACCESS_BACKGROUND_LOCATION` ab Android Q und blockiert `addGeofence(...)`, wenn Background Location fehlt.
+- `GeofencingScreen` zeigt nach Foreground-Grant eine explizite Background-Location-Rationale.
+- Android 11+ (`Build.VERSION_CODES.R`) oeffnet App-Details in den System-Settings; Android 10 nutzt den separaten Runtime-Permission-Request.
+- `Add Geofence Zone` ist erst aktiv, wenn alle erforderlichen Location-Permissions vorhanden sind.
+
+Validation:
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` → BUILD SUCCESSFUL.

@@ -6,6 +6,10 @@
 package com.stealthx.features.geofencing.screen
 
 import android.Manifest
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -29,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -46,8 +51,19 @@ fun GeofencingScreen(
     var latitude by remember { mutableStateOf("") }
     var longitude by remember { mutableStateOf("") }
     var radius by remember { mutableStateOf("100") }
+    val context = LocalContext.current
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
+    ) {
+        onPermissionResult()
+    }
+    val backgroundPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {
+        onPermissionResult()
+    }
+    val settingsLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
     ) {
         onPermissionResult()
     }
@@ -82,6 +98,38 @@ fun GeofencingScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFB800))
                 ) {
                     Text("Allow Location", color = Color.Black)
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            if (state.hasFineLocationPermission &&
+                state.requiresBackgroundLocationPermission &&
+                !state.hasBackgroundLocationPermission
+            ) {
+                Text(
+                    "Background location required for reliable geofencing.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color(0xFFFFB800),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(
+                    onClick = {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                            settingsLauncher.launch(
+                                Intent(
+                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", context.packageName, null)
+                                )
+                            )
+                        } else {
+                            backgroundPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFB800))
+                ) {
+                    Text("Allow Background Location", color = Color.Black)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -131,7 +179,8 @@ fun GeofencingScreen(
 
             Button(
                 onClick = { onAddGeofence(label, latitude, longitude, radius) },
-                enabled = state.hasFineLocationPermission,
+                enabled = state.hasFineLocationPermission &&
+                    (!state.requiresBackgroundLocationPermission || state.hasBackgroundLocationPermission),
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFB800))
             ) {

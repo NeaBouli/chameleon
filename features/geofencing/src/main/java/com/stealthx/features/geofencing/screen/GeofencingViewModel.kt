@@ -35,6 +35,8 @@ data class GeofenceZoneUi(
 data class GeofencingUiState(
     val zones: List<GeofenceZoneUi> = emptyList(),
     val hasFineLocationPermission: Boolean = false,
+    val hasBackgroundLocationPermission: Boolean = false,
+    val requiresBackgroundLocationPermission: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q,
     val statusMessage: String? = null,
     val errorMessage: String? = null
 )
@@ -48,13 +50,17 @@ class GeofencingViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(
         GeofencingUiState(
             zones = prefs.geofenceZones.mapNotNull(::decodeZone),
-            hasFineLocationPermission = hasFineLocationPermission()
+            hasFineLocationPermission = hasFineLocationPermission(),
+            hasBackgroundLocationPermission = hasBackgroundLocationPermission()
         )
     )
     val uiState: StateFlow<GeofencingUiState> = _uiState.asStateFlow()
 
     fun refreshPermissionState() {
-        _uiState.value = _uiState.value.copy(hasFineLocationPermission = hasFineLocationPermission())
+        _uiState.value = _uiState.value.copy(
+            hasFineLocationPermission = hasFineLocationPermission(),
+            hasBackgroundLocationPermission = hasBackgroundLocationPermission()
+        )
     }
 
     fun addGeofence(label: String, latitudeText: String, longitudeText: String, radiusText: String) {
@@ -65,6 +71,7 @@ class GeofencingViewModel @Inject constructor(
 
         val error = when {
             !hasFineLocationPermission() -> "Location permission required"
+            !hasBackgroundLocationPermission() -> "Background location required for geofencing"
             cleanLabel.isBlank() -> "Name is required"
             latitude == null || latitude !in -90.0..90.0 -> "Latitude must be between -90 and 90"
             longitude == null || longitude !in -180.0..180.0 -> "Longitude must be between -180 and 180"
@@ -100,6 +107,7 @@ class GeofencingViewModel @Inject constructor(
             _uiState.value = GeofencingUiState(
                 zones = updated,
                 hasFineLocationPermission = true,
+                hasBackgroundLocationPermission = hasBackgroundLocationPermission(),
                 statusMessage = "Geofence added"
             )
         } catch (e: Exception) {
@@ -119,6 +127,10 @@ class GeofencingViewModel @Inject constructor(
 
     private fun hasFineLocationPermission(): Boolean =
         context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
+    private fun hasBackgroundLocationPermission(): Boolean =
+        Build.VERSION.SDK_INT < Build.VERSION_CODES.Q ||
+            context.checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
 
     private fun encodeZone(zone: GeofenceZoneUi): String =
         listOf(
