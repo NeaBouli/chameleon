@@ -14,14 +14,22 @@ package com.stealthx.chameleon
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.compose.rememberNavController
+import com.stealthx.features.decoy.screen.DecoyAuthViewModel
+import com.stealthx.features.decoy.screen.DecoyModeScreen
+import com.stealthx.features.decoy.screen.DecoyUnlockScreen
 import com.stealthx.presentation.nav.StealthXNavGraph
 import com.stealthx.presentation.theme.StealthXTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val decoyAuthViewModel: DecoyAuthViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,8 +41,18 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             StealthXTheme {
-                val navController = rememberNavController()
-                StealthXNavGraph(navController = navController)
+                val authState by decoyAuthViewModel.uiState.collectAsState()
+                when {
+                    authState.isDecoyMode -> DecoyModeScreen(onLock = decoyAuthViewModel::lock)
+                    authState.requiresUnlock && !authState.isUnlocked -> DecoyUnlockScreen(
+                        state = authState,
+                        onSubmitPin = decoyAuthViewModel::submitPin
+                    )
+                    else -> {
+                        val navController = rememberNavController()
+                        StealthXNavGraph(navController = navController)
+                    }
+                }
             }
         }
     }

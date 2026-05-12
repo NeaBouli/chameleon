@@ -806,7 +806,7 @@ Aktive Reihenfolge:
 1. [DONE] Linear NEA-55 — Chameleon GeofenceWorker → RuleEngine Integration.
 2. [DONE] Linear NEA-94 — Background Location UX fuer Geofencing auf Android 11+.
 3. [DONE] Linear NEA-95 — Overlay Whitelist Accessibility Enforcement.
-4. Decoy PIN Auth Flow bei App-Unlock.
+4. [DONE] Linear NEA-96 — Decoy PIN Auth Flow bei App-Unlock.
 5. Release Prep: `assembleRelease`, Keystore, Signing.
 6. Linear NEA-56 — Web/Release Audit:
    - Stripe Plaene auf Produkt-/Pricing-Seiten korrekt einrichten bzw. fehlende Stripe-Links als TODO markieren.
@@ -837,6 +837,27 @@ Implementiert:
 - `SecureRuleRepository` ist nicht mehr ein leerer Hilt-Stub; `SecureRuleRepositoryImpl` mappt Room `SecureRuleEntity` <-> Domain `SecureRule`.
 - `RuleEngine.matchingRules(...)` ergaenzt, damit Worker exakt die gefeuerten Rules fuer Audit/Trigger-Count erfassen kann.
 - Regression-Test fuer LOCATION matchingRules hinzugefuegt.
+
+Validation:
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` → BUILD SUCCESSFUL.
+
+---
+
+## 2026-05-11 [CODEX]
+### TYPE: FIX
+### STATUS: [DONE]
+### LINEAR: NEA-96
+### EMPFÄNGER: CC / CODEX
+
+**NEA-96 — Decoy PIN Auth Flow bei App-Unlock**
+
+Implementiert:
+- `DecoyAuthViewModel` prueft beim App-Start, ob Decoy aktiviert und beide PIN-Sets vollstaendig vorhanden sind.
+- App-Start ist dann gesperrt, bis ein gueltiger PIN eingegeben wurde.
+- Real PIN setzt `ProfileMode.REAL` und startet die normale App.
+- Decoy PIN setzt `ProfileMode.DECOY` und zeigt nur eine saubere Decoy-Ansicht ohne Navigation in echte Module/Daten.
+- Falscher PIN bleibt fail-closed im Unlock-Screen.
+- `MainActivity` haengt den Gate vor den normalen `StealthXNavGraph`.
 
 Validation:
 - `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` → BUILD SUCCESSFUL.
