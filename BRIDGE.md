@@ -792,3 +792,55 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 ### NACH JEDEM TASK
 - `TYPE: FIX` in BRIDGE.md
 - Linear-Status updaten
+
+---
+
+## 2026-05-11 [CODEX]
+### TYPE: TODO
+### STATUS: [OPEN]
+### EMPFÄNGER: CODEX
+
+**Sequenzielle offene Arbeitsliste — Chameleon + Web/Release**
+
+Aktive Reihenfolge:
+1. [DONE] Linear NEA-55 — Chameleon GeofenceWorker → RuleEngine Integration.
+2. Background Location UX fuer Geofencing auf Android 11+.
+3. Overlay Whitelist Accessibility Enforcement.
+4. Decoy PIN Auth Flow bei App-Unlock.
+5. Release Prep: `assembleRelease`, Keystore, Signing.
+6. Linear NEA-56 — Web/Release Audit:
+   - Stripe Plaene auf Produkt-/Pricing-Seiten korrekt einrichten bzw. fehlende Stripe-Links als TODO markieren.
+   - APK-Download-Buttons und Google-Play-Buttons pruefen; bis Release entweder funktional oder bewusst inaktiv, aber sichtbar release-ready.
+   - Neue Logos auf Seitenstruktur/Assets pruefen und einbauen, falls noch alte Logos oder Platzhalter existieren.
+   - Seitenstruktur, Layout, Navigation, Button-Ziele, Inkohärenzen, visuelle Kollisionen/Overlaps und Branding-Konsistenz auditieren.
+   - Findings/Fixes in BRIDGE.md dokumentieren.
+
+Arbeitsmodus:
+- Ein Punkt nach dem anderen.
+- Nach jedem Feature/Fix: `./gradlew assembleDebug` falls Android-Code betroffen ist.
+- Nach jedem Feature/Fix: `TYPE: FIX` in BRIDGE.md und Linear aktualisieren.
+
+---
+
+## 2026-05-11 [CODEX]
+### TYPE: FIX
+### STATUS: [DONE]
+### LINEAR: NEA-55
+### EMPFÄNGER: CC / CODEX
+
+**NEA-55 — Chameleon GeofenceWorker → RuleEngine Integration**
+
+Implementiert:
+- `GeofenceWorker` verarbeitet ENTER/EXIT/DWELL Transitions jetzt ueber `RuleEngine.matchingRules(...)`.
+- Worker liest echte aktive LOCATION-Rules aus `SecureRuleRepository`, persistiert das aufgeloeste `SecurityLevel` in `AppPreferences.defaultSecurityLevel` und schreibt `recordTrigger(...)` fuer gematchte Rules.
+- TierGate ist im Worker fail-closed: nicht-ELITE setzt auf `PROTECTED` und fuehrt keine Geofence-Rule-Auswertung aus.
+- `SecureRuleRepository` ist nicht mehr ein leerer Hilt-Stub; `SecureRuleRepositoryImpl` mappt Room `SecureRuleEntity` <-> Domain `SecureRule`.
+- `RuleEngine.matchingRules(...)` ergaenzt, damit Worker exakt die gefeuerten Rules fuer Audit/Trigger-Count erfassen kann.
+- Regression-Test fuer LOCATION matchingRules hinzugefuegt.
+
+Validation:
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` → BUILD SUCCESSFUL.
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew :domain:testDebugUnitTest --tests com.stealthx.domain.RuleEngineTest` → BUILD SUCCESSFUL.
+
+Offene Beobachtung:
+- Voller `:domain:testDebugUnitTest` Lauf scheitert weiterhin an bestehendem `TierGate > isCacheValid delegates to repo` MockK-Test; nicht durch NEA-55 verursacht, aber als offener Test-Fix vorm Release einplanen.

@@ -13,9 +13,10 @@ import com.stealthx.data.dao.CryptoKeyDao
 import com.stealthx.data.dao.IfrTierCacheDao
 import com.stealthx.data.dao.SecureRuleDao
 import com.stealthx.data.repository.IfrTierRepositoryImpl
+import com.stealthx.data.repository.SecureRuleRepositoryImpl
 import com.stealthx.domain.repository.IfrTierRepository
 import com.stealthx.domain.repository.SecureRuleRepository
-import com.stealthx.domain.rules.SecureRule
+import com.stealthx.domain.rules.RuleEngine
 import com.stealthx.domain.tier.TierGate
 import com.stealthx.domain.tier.TierGateImpl
 import com.stealthx.security.KeystoreManager
@@ -24,8 +25,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import javax.inject.Singleton
 
 @Module
@@ -81,15 +80,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideSecureRuleRepository(dao: SecureRuleDao): SecureRuleRepository {
-        return object : SecureRuleRepository {
-            override fun observeEnabled(): Flow<List<SecureRule>> = flowOf(emptyList())
-            override fun observeAll(): Flow<List<SecureRule>> = flowOf(emptyList())
-            override suspend fun getById(id: String): SecureRule? = null
-            override suspend fun save(rule: SecureRule) {}
-            override suspend fun delete(rule: SecureRule) {}
-            override suspend fun deleteAll() {}
-            override suspend fun recordTrigger(ruleId: String, timestamp: Long) {}
-        }
-    }
+    fun provideSecureRuleRepository(dao: SecureRuleDao): SecureRuleRepository =
+        SecureRuleRepositoryImpl(dao)
+
+    @Provides
+    @Singleton
+    fun provideRuleEngine(): RuleEngine = RuleEngine()
 }

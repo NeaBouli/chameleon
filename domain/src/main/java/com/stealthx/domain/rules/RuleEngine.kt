@@ -28,11 +28,17 @@ class RuleEngine {
      * @return         Resolved SecurityLevel (always the maximum)
      */
     fun evaluate(rules: List<SecureRule>, context: TriggerContext): SecurityLevel {
-        val matchingRules = rules
+        return resolveConflicts(matchingRules(rules, context))
+    }
+
+    /**
+     * Return enabled rules that match the current context.
+     * Used by callers that also need to record which rules fired.
+     */
+    fun matchingRules(rules: List<SecureRule>, context: TriggerContext): List<SecureRule> {
+        return rules
             .filter { it.isEnabled }
             .filter { matches(it, context) }
-
-        return resolveConflicts(matchingRules)
     }
 
     /**

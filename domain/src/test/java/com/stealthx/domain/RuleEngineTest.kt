@@ -112,6 +112,18 @@ class RuleEngineTest {
     }
 
     @Test
+    @DisplayName("matchingRules returns fired LOCATION rules for trigger recording")
+    fun `matching rules returns fired location rules`() {
+        val rules = listOf(
+            createRule("inside", TriggerType.LOCATION, """{"lat":48.1351, "lng":11.5820, "radius":1000}""", SecurityLevel.PRIVATE),
+            createRule("outside", TriggerType.LOCATION, """{"lat":52.52, "lng":13.405, "radius":100}""", SecurityLevel.CAMOUFLAGE)
+        )
+        val context = TriggerContext(latitude = 48.1355, longitude = 11.5825)
+
+        assertEquals(listOf("inside"), engine.matchingRules(rules, context).map { it.id })
+    }
+
+    @Test
     @DisplayName("LOCATION trigger outside radius")
     fun `location trigger outside radius`() {
         val json = """{"lat":48.1351, "lng":11.5820, "radius":100}"""
