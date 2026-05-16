@@ -5,6 +5,8 @@
  */
 package com.stealthx.presentation.screen
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,6 +37,11 @@ import com.stealthx.presentation.viewmodel.IFRViewModel
 @Composable
 fun IFRUnlockScreen(viewModel: IFRViewModel, onBack: () -> Unit) {
     val state by viewModel.uiState.collectAsState()
+    val walletLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        viewModel.handleWalletConnectResult(result.resultCode, result.data)
+    }
 
     Scaffold(
         topBar = {
@@ -69,7 +76,9 @@ fun IFRUnlockScreen(viewModel: IFRViewModel, onBack: () -> Unit) {
             Spacer(modifier = Modifier.height(16.dp))
 
             IFRUnlockSheet(
-                onWalletConnectClicked = { viewModel.connectWallet() },
+                onWalletConnectClicked = {
+                    viewModel.createWalletConnectIntent()?.let(walletLauncher::launch)
+                },
                 onManualAddressSubmit = { viewModel.verifyManualAddress(it) },
                 isVerifying = state.isVerifying,
                 error = state.error
