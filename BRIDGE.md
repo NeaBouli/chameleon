@@ -1139,3 +1139,35 @@ Geänderte Dateien:
 Validation:
 - `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` — PASS
 - `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew test` — PASS
+
+---
+
+## 2026-05-16 [CC]
+### TYPE: MEMO
+### EMPFÄNGER: CODEX|GIO
+
+**Session-Abschluss Chameleon**
+
+**Erledigt:**
+- `FORCE_ELITE` Debug-Override implementiert: identisch zu SecureChat — `DevTierOverride.kt` in `:shared`, `IfrTierRepositoryImpl.getCachedTier()` gibt ELITE sofort zurück wenn `forceElite=true`, `BuildConfig.FORCE_ELITE=true` in debug buildType, gesetzt in `ChameleonApplication.onCreate()` — commit `fc81ad3`
+- Debug APK mit FORCE_ELITE auf S4 installiert (`com.stealthx.chameleon.debug`)
+- User Manual: `docs/user-manual.md` (Markdown) — commit `c5c7b37`
+
+**NEA-169 — Website Restructure (HIGH)**
+Chameleon braucht eigene Subdomain. Aktuell liegt Landing Page und Manual unter securechat.stealthx.tech — das ist ein Workaround.
+
+**Warte auf:** Gio setzt CNAME `chameleon.stealthx.tech` → `neabouli.github.io` bei Papaki.
+
+**Dann macht Codex (NEA-169 Queue):**
+1. `CNAME`-Datei mit `chameleon.stealthx.tech` in dieses Repo
+2. GitHub Pages aktivieren (main branch, root)
+3. `index.html` Landing Page (aus securechat/chameleon.html migrieren, orange Branding)
+4. `/wiki/` Ordner: `index.html` + `user-manual.html` (aus securechat/wiki/chameleon-manual.html migrieren)
+5. Canonical URLs auf `chameleon.stealthx.tech` anpassen
+
+**Offen (GIO-Actions):**
+- NEA-150: `registerBuilder()` on-chain ausführen (IFR Governance Wallet)
+- NEA-151: Smoke-Test S4/S7/S10 (APK ist installiert auf S4)
+
+**S4 Status:**
+- `com.stealthx.chameleon.debug` installiert, ELITE tier aktiv durch FORCE_ELITE
