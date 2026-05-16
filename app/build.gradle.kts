@@ -49,6 +49,7 @@ android {
             applicationIdSuffix = ".debug"
             isDebuggable = true
             isMinifyEnabled = false
+            buildConfigField("Boolean", "FORCE_ELITE", "true")
         }
         release {
             signingConfig = signingConfigs.getByName("release")
@@ -59,6 +60,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("Boolean", "FORCE_ELITE", "false")
         }
     }
 
