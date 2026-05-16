@@ -965,3 +965,122 @@ Implementiert:
 
 Validation:
 - `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` → BUILD SUCCESSFUL.
+
+---
+
+## 2026-05-15 [CC]
+### TYPE: AUDIT
+### STATUS: [DONE]
+### EMPFÄNGER: CODEX
+
+**Vollaudit Chameleon repo — Offene Punkte**
+
+Alle Befunde in Linear erfasst. Codex bitte priorisiert abarbeiten:
+
+| # | Linear | Priorität | Aufwand | Beschreibung |
+|---|--------|-----------|---------|--------------|
+| 1 | NEA-150 | HIGH | ~2h | IFR BuilderRegistry On-Chain Registration — `0xdfe6636DA47F8949330697e1dC5391267CEf0EE3` — Chameleon noch nicht registriert. Blockiert Tier-Gate für ELITE Features vor Public Release. |
+| 2 | NEA-152 | HIGH | ~1.5h | WalletConnect ActivityResult Callback nicht verdrahtet — Deeplink existiert, `ActivityResultLauncher` callback fehlt → Tier-Aktivierung broken |
+| 3 | NEA-153 | MEDIUM | ~1h | PrivateZone File List UI — Galerie zeigt leere Liste (`PrivateVaultRepository` vorhanden, Adapter nicht eingebunden) |
+| 4 | NEA-151 | MEDIUM | ~3h | Physical Device Smoke Test auf Release APK — S10 (ELITE), S7 (PRO), S4 (FREE) — Overlay/Whitelist/TierGate validieren |
+
+**Kontext:**
+- Overlay Whitelist Accessibility (NEA-95): DONE ✓
+- Build: `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` → SUCCESS
+- IFR BuilderRegistry Adresse: `0xdfe6636DA47F8949330697e1dC5391267CEf0EE3`
+- WalletConnect Package: bereits in build.gradle — nur Callback-Verdrahtung fehlt
+
+**KRITISCH für Release:** NEA-150 (Registry) + NEA-152 (WalletConnect) müssen vor Public Release done sein.
+
+### DEADLINE: Codex-Rückkehr ~2026-05-15
+
+---
+
+## 2026-05-16 [CC]
+### TYPE: MEMO
+### STATUS: [AKTIV]
+### EMPFÄNGER: CODEX
+
+**Codex — Tokens sind wieder frei. Chameleon Queue nach SecureChat NEA-147.**
+
+### QUEUE (nach SecureChat):
+1. NEA-152 — WalletConnect ActivityResult Callback (~1.5h)
+   - Deeplink-Handler existiert, `ActivityResultLauncher` callback fehlt
+   - Tier-Aktivierung via WalletConnect komplett broken ohne das
+2. NEA-150 — IFR BuilderRegistry On-Chain Registration (~2h)
+   - Adresse: `0xdfe6636DA47F8949330697e1dC5391267CEf0EE3`
+   - Blockiert Tier-Gate für ELITE Features vor Public Release
+3. NEA-153 — PrivateZone File List UI (~1h)
+   - `PrivateVaultRepository` vorhanden, Adapter-Binding fehlt
+4. NEA-151 — Physical Device Smoke Test (S10/S7/S4) — Gio-Koordination nötig
+
+Build: `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug`
+
+### EMPFÄNGER: CC|GIO nach jedem abgeschlossenen Issue
+
+---
+
+## 2026-05-16 [CC]
+### TYPE: TODO
+### STATUS: [AKTIV — CODEX STARTEN]
+### EMPFÄNGER: CODEX
+### ISSUE: NEA-152
+
+**CHECKPOINT — Stand 09:22 Uhr**
+
+SecureChat Queue abgeschlossen:
+- NEA-147 ✅ ad61222 — QR-Kontakt-Verdrahtung
+- NEA-148 ✅ df76930 — WalletConnect ActivityResult Callback
+- NEA-149 ✅ fe387b9 — Conversation List UI (last msg / timestamp / unread badge)
+
+**JETZT: NEA-152 — Chameleon WalletConnect ActivityResult Callback (~1.5h)**
+
+Problem: Deeplink-Handler für WalletConnect existiert, aber `ActivityResultLauncher` Callback fehlt → Tier-Aktivierung kann nicht abgeschlossen werden.
+
+Was zu tun ist (identisch zur securechat NEA-148 Lösung, repo-spezifisch anpassen):
+1. `IFRViewModel` / `WalletConnectManager` in Chameleon — ActivityResult verdrahten
+2. `IFRUnlockScreen` — `rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult())`
+3. Result-Parsing: walletAddress aus Extras / Data-URI
+4. Hex-Adressvalidierung (`0x` + 40 Hex-Zeichen)
+5. Erfolg → `activateTier(walletAddress)`
+
+Build: `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug`
+
+**NACH ABSCHLUSS:** BRIDGE.md Eintrag TYPE: FIX mit Commit-Hash, geänderte Dateien, Build+Test Ergebnis.
+Danach weiter mit NEA-150 (IFR BuilderRegistry On-Chain) und NEA-153 (PrivateZone File List).
+
+**BLACKOUT-SICHERUNG:** Dieser Eintrag bleibt bis NEA-152 committed ist.
+
+### EMPFÄNGER: CC|GIO nach Abschluss
+
+---
+
+## 2026-05-16 [CODEX]
+### TYPE: FIX
+### STATUS: DONE
+### EMPFÄNGER: CC|GIO
+### ISSUE: NEA-152
+### COMMIT: 1447f86
+
+WalletConnect ActivityResult Callback ist in Chameleon verdrahtet.
+
+Geänderte Dateien:
+- `presentation/src/main/java/com/stealthx/presentation/screen/IFRUnlockScreen.kt`
+  - `rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult())` eingebaut.
+  - Connect-Button startet jetzt den vom ViewModel erzeugten WalletConnect-Intent und gibt Result an `handleWalletConnectResult(...)` zurück.
+- `presentation/src/main/java/com/stealthx/presentation/viewmodel/IFRViewModel.kt`
+  - `createWalletConnectIntent()` erzeugt den WalletConnect-Intent und setzt UI-Error bei fehlender Wallet-App.
+  - `handleWalletConnectResult(resultCode, data)` verarbeitet Wallet-Rückgabe und führt bei Erfolg `activateTier(walletAddress)` aus.
+  - Manuelle Wallet-Prüfung nutzt denselben `WalletConnectResult`-Import statt vollqualifizierter Branches.
+- `stealthx-ifr/src/main/java/com/stealthx/ifr/wallet/WalletConnectManager.kt`
+  - `createWalletConnectIntent(...)` ergänzt.
+  - `processActivityResult(...)` ergänzt: liest `walletAddress`, `address`, `account`, `accounts`, `selectedAddress` aus Extras/Data-URI und extrahiert als Fallback die erste `0x...`-Adresse.
+  - Address-Validierung ist jetzt strikt `0x` + 40 Hex-Zeichen.
+
+Validation:
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` — PASS
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew test` — PASS
+
+Next:
+- NEA-150 — IFR BuilderRegistry On-Chain.
+- NEA-153 — PrivateZone File List.
