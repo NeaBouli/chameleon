@@ -134,6 +134,7 @@ fun StealthXNavGraph(navController: NavHostController) {
                 FeatureScaffold(title = "Private Zone", onBack = { navController.popBackStack() }) { modifier ->
                     PrivateZoneScreen(
                         fileCount = state.fileCount,
+                        files = state.files,
                         statusMessage = state.statusMessage,
                         errorMessage = state.errorMessage,
                         onImportFile = { importLauncher.launch("*/*") },

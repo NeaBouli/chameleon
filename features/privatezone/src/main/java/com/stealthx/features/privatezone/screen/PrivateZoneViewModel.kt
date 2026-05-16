@@ -22,6 +22,7 @@ import javax.inject.Inject
 
 data class PrivateZoneUiState(
     val fileCount: Int = 0,
+    val files: List<String> = emptyList(),
     val statusMessage: String? = null,
     val errorMessage: String? = null
 )
@@ -36,7 +37,7 @@ class PrivateZoneViewModel @Inject constructor(
     val uiState: StateFlow<PrivateZoneUiState> = _uiState.asStateFlow()
 
     init {
-        refreshFileCount()
+        refreshFileList()
     }
 
     fun importFile(displayName: String, bytes: ByteArray) {
@@ -56,9 +57,10 @@ class PrivateZoneViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 privateZoneManager.storeFile(name, bytes, vaultKey())
-                val count = privateZoneManager.listFiles().size
+                val files = privateZoneManager.listFiles().sorted()
                 _uiState.value = PrivateZoneUiState(
-                    fileCount = count,
+                    fileCount = files.size,
+                    files = files,
                     statusMessage = "$successPrefix $name"
                 )
             } catch (e: TierLimitException) {
@@ -69,9 +71,13 @@ class PrivateZoneViewModel @Inject constructor(
         }
     }
 
-    private fun refreshFileCount() {
+    fun refreshFileList() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiState.value = _uiState.value.copy(fileCount = privateZoneManager.listFiles().size)
+            val files = privateZoneManager.listFiles().sorted()
+            _uiState.value = _uiState.value.copy(
+                fileCount = files.size,
+                files = files
+            )
         }
     }
 
