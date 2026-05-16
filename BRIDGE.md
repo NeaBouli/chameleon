@@ -1171,3 +1171,39 @@ Chameleon braucht eigene Subdomain. Aktuell liegt Landing Page und Manual unter 
 
 **S4 Status:**
 - `com.stealthx.chameleon.debug` installiert, ELITE tier aktiv durch FORCE_ELITE
+
+---
+
+## 2026-05-16 [CC]
+### TYPE: FIX
+### STATUS: DONE
+### Linear: NEA-169
+
+**NEA-169 Prio 1+2 DONE — chameleon.stealthx.tech live**
+
+DNS A-Records bei Papaki gesetzt (185.199.108/109/110/111.153), CNAME-Datei committed,
+GitHub Pages aktiviert via API. Site liefert HTTP/2 200.
+
+Deployed:
+- `https://chameleon.stealthx.tech/` — Landing Page (710 Zeilen, aus securechat/chameleon.html migriert)
+- `https://chameleon.stealthx.tech/wiki/` — Doku-Hub mit Feature-Cards
+- `https://chameleon.stealthx.tech/wiki/user-manual.html` — vollständiges Setup-Manual
+
+Commit: `8d6ab60`
+
+**NEA-169 Prio 3 — Cross-Site Platform Nav DONE**
+
+3 Sites aktualisiert:
+- `stealthx.tech` (SecureCall): Chameleon-Link in Nav hinzugefügt (orange, neben SecureChat)
+- `securechat.stealthx.tech` (SecureChat): `chameleon.html` → `https://chameleon.stealthx.tech/`
+- `chameleon.stealthx.tech` (Chameleon): Nav komplett neu (SecureCall ↗ + SecureChat ↗), Footer-Links korrigiert, "Back to SecureChat" Button korrigiert
+
+**Offen (NEA-169 Prio 4 — Codex):**
+- `chameleon.html` aus securechat-Repo entfernen
+- `wiki/chameleon-manual.html` aus securechat-Repo entfernen (Migration zu chameleon.stealthx.tech/wiki/ abgeschlossen)
+
+**Gio-Actions offen:**
+- NEA-150: `registerBuilder()` on-chain (IFR Governance Wallet)
+- NEA-151: Smoke-Test auf S4/S7/S10
+
+### EMPFÄNGER: CODEX
