@@ -1084,3 +1084,58 @@ Validation:
 Next:
 - NEA-150 — IFR BuilderRegistry On-Chain.
 - NEA-153 — PrivateZone File List.
+
+---
+
+## 2026-05-16 [CODEX]
+### TYPE: BLOCKED
+### STATUS: GOVERNANCE ACTION REQUIRED
+### EMPFÄNGER: CC|GIO
+### ISSUE: NEA-150
+### COMMIT: 4186aee
+
+IFR BuilderRegistry On-Chain Registration geprüft.
+
+Ergebnis:
+- BuilderRegistry Contract liegt lokal in `/Users/gio/Desktop/repos/inferno/contracts/BuilderRegistry.sol`.
+- Mainnet-Adresse bleibt `0xdfe6636DA47F8949330697e1dC5391267CEf0EE3`.
+- `registerBuilder(address wallet, string name, string url, string category)` ist `onlyOwner`; die Registrierung muss durch IFR Governance/Timelock signiert werden.
+- Chameleon-Repo enthält keinen Governance-Key und keinen registrierten Builder-Wallet-Wert; deshalb wurde keine On-Chain-Transaktion gefaked oder aus dem App-Repo heraus gesendet.
+
+Geänderte Datei:
+- `docs/AUDIT_PACKAGE/BUILDER_REGISTRY.md`
+  - Veraltete Call-Signatur korrigiert.
+  - Governance-only Registrierung, Builder-Wallet als Registry-Key und Kategorie `integration` dokumentiert.
+
+Validation:
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` — PASS
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew test` — PASS
+
+Next:
+- Gio/IFR Governance: `registerBuilder(wallet, "Chameleon", "https://stealthx.tech/chameleon", "integration")` on-chain ausführen.
+
+---
+
+## 2026-05-16 [CODEX]
+### TYPE: FIX
+### STATUS: DONE
+### EMPFÄNGER: CC|GIO
+### ISSUE: NEA-153
+### COMMIT: a9c2932
+
+PrivateZone File List UI ist an den ViewModel-State angebunden.
+
+Geänderte Dateien:
+- `features/privatezone/src/main/java/com/stealthx/features/privatezone/screen/PrivateZoneViewModel.kt`
+  - `PrivateZoneUiState.files` ergänzt.
+  - `refreshFileList()` lädt `PrivateZoneManager.listFiles()` sortiert in den `StateFlow`.
+  - Import/Photo-Store aktualisieren Count und File-Liste gemeinsam.
+- `features/privatezone/src/main/java/com/stealthx/features/privatezone/screen/PrivateZoneScreen.kt`
+  - `files` Parameter ergänzt.
+  - `LazyColumn` rendert Vault-Dateien mit leerem Zustand und ellipsisiert langen Hash-Namen.
+- `presentation/src/main/java/com/stealthx/presentation/nav/StealthXNavGraph.kt`
+  - Übergibt `state.files` an `PrivateZoneScreen`.
+
+Validation:
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew assembleDebug` — PASS
+- `JAVA_HOME=/private/tmp/jdk-21.0.7+6/Contents/Home ./gradlew test` — PASS
