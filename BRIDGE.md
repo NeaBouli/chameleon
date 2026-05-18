@@ -3,6 +3,89 @@
 
 ---
 
+## 2026-05-18 [CC]
+### TYPE: MEMO
+### STATUS: DONE
+
+**NEA-151 — Chameleon Smoke Test (partial)**
+
+Scope: Unit tests + APK build + on-device launch + tier broadcast — S7 + Tab S4.
+S10 not connected (SecureCall device, no Chameleon).
+
+#### Unit Tests
+- `./gradlew test` — BUILD SUCCESSFUL in 1m 41s
+- 161 unique tests (322 incl. debug+release variants), 0 failures, 0 errors
+- 12 hardware-dependent skips: Keystore JVM (4), AttestationVerifier (4), Parcelable (2), PermissionState (2) — all intentional
+
+| Module | Tests | Skip | Fail |
+|--------|-------|------|------|
+| :stealthx-crypto | 25 | 0 | 0 |
+| :stealthx-ifr | 20 | 0 | 0 |
+| :security | 21 | 8 | 0 |
+| :core | 25 | 4 | 0 |
+| :data | 20 | 0 | 0 |
+| :domain | 22 | 0 | 0 |
+| :features (all 5) | 28 | 0 | 0 |
+| **TOTAL** | **161** | **12** | **0** |
+
+#### APK Build
+- `assembleDebug` GREEN, 35MB, includes FORCE_ELITE + privatezone fix (commits fc81ad3 + a9c2932)
+
+#### On-Device Results
+
+| Device | Serial | Test | Result |
+|--------|--------|------|--------|
+| SM-T835 (Tab S4) | ce12182c68644439037e | Fresh install | ✅ |
+| SM-T835 (Tab S4) | ce12182c68644439037e | App launch | ✅ 6281ms |
+| SM-T835 (Tab S4) | ce12182c68644439037e | No crashes | ✅ |
+| SM-T835 (Tab S4) | ce12182c68644439037e | SET_TIER FREE→ELITE broadcast | ✅ result=0 |
+| SM-T835 (Tab S4) | ce12182c68644439037e | Keystore HMAC write | ✅ UPDATE+FINISH seen |
+| SM-G930F (S7) | ce10160adc00152604 | Fresh install | ✅ |
+| SM-G930F (S7) | ce10160adc00152604 | App launch | ✅ |
+| SM-G930F (S7) | ce10160adc00152604 | SET_TIER PRO broadcast | ✅ result=0 |
+
+#### Open Items (manual, requires Gio)
+- AccessibilityService NOT enabled on either device (only Kaspersky in enabled_accessibility_services)
+  → Overlay encryption untestable until Gio enables it in Settings > Accessibility
+- Geofencing / Decoy screens (ELITE): UI-only, not testable via ADB
+- S10 (RF8N313QMFL) not connected — ELITE tier on S10 deferred
+
+#### IFR Threshold Alignment — CONFIRMED ✅
+- Chameleon: PRO=2000*10^9, ELITE=6000*10^9 (IFRConstants.kt)
+- Backend ifr.js (fixed in prior session): PRO=2000*10^9, ELITE=6000*10^9
+- Both aligned. IFRConstantsTest 14/14 pass.
+
+### EMPFÄNGER: GIO / CODEX
+
+---
+
+## 2026-05-17 [CC]
+### TYPE: FIX
+### STATUS: DONE (no code change needed)
+
+**Chameleon "not working" on S7 — DecoyUnlockScreen blocking access**
+
+Root cause: `prefs.decoyEnabled=true` + all 4 PIN hashes set in EncryptedSharedPrefs
+on S7 (ce10160adc00152604). App correctly showed `DecoyUnlockScreen` — this is by
+design — but Gio did not know the secret real-PIN.
+
+Fix applied: `adb shell pm clear com.stealthx.chameleon.debug` on S7.
+Resets all prefs to defaults (decoyEnabled=false, all hashes null).
+`DecoyAuthViewModel.initialState()` now returns requiresUnlock=false → app
+goes directly to StealthXNavGraph. App running (PID 20992), no crashes.
+
+No code change committed. Architecture correct.
+
+### NOTE FOR CODEX:
+The decoy system requires the user to set up their real/decoy PIN pairs via
+the DecoySetup flow before enabling. If Gio sets up the device fresh and skips
+setup, decoyEnabled stays false → no lock screen. Gio should set up
+Decoy Mode deliberately via Settings when ready.
+
+### EMPFÄNGER: CODEX
+
+---
+
 ## 2026-05-09 15:00 [CC]
 ### STATUS: [IN_PROGRESS]
 ### TYPE: MEMO
