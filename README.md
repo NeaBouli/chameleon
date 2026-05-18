@@ -4,7 +4,7 @@
 
 *A product of the [StealthX Platform](https://stealthx.tech)*
 
-[![GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](LICENSE)
+[![BUSL-1.1](https://img.shields.io/badge/License-BUSL--1.1-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Android%2026+-green.svg)](https://developer.android.com)
 [![Crypto](https://img.shields.io/badge/Crypto-XChaCha20--Poly1305-purple.svg)](docs/CRYPTO_PROTOCOL_SPEC.md)
 [![Status](https://img.shields.io/badge/Status-In%20Development-orange.svg)](LOGBUCH.md)
@@ -145,8 +145,12 @@ Security-critical changes (crypto, keystore, AIDL) require additional review.
 
 ## License
 
-GPL-3.0-or-later. See [LICENSE](LICENSE).
-100% open source. Fork it, audit it, contribute.
+BUSL-1.1. Source-available and independently auditable.
+
+You may build and use Chameleon for personal, non-commercial purposes.
+Copying, rebranding, distributing, or using Chameleon commercially requires
+a separate license from Vendetta Labs. After 2030-05-04 the code becomes
+GPL-3.0-only. See [LICENSE](LICENSE).
 
 ---
 
