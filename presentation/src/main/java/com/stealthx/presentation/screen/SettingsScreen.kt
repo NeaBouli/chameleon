@@ -139,7 +139,7 @@ fun SettingsScreen(
                     icon = Icons.Default.FaceRetouchingNatural,
                     title = "Decoy Profile",
                     subtitle = "Wrong PIN → decoy identity",
-                    locked = currentTier < IfrTier.ELITE,
+                    locked = currentTier < IfrTier.PRO,
                     onLockedClick = onNavigateToIFR,
                     onClick = onNavigateToDecoy
                 )
@@ -149,7 +149,8 @@ fun SettingsScreen(
                     subtitle = "Location-triggered encryption",
                     locked = currentTier < IfrTier.PRO,
                     onLockedClick = onNavigateToIFR,
-                    onClick = onNavigateToGeofencing
+                    onClick = onNavigateToGeofencing,
+                    comingSoon = true
                 )
             }
 
@@ -163,7 +164,8 @@ fun SettingsScreen(
                     subtitle = "Multiple fake identities",
                     locked = currentTier < IfrTier.ELITE,
                     onLockedClick = onNavigateToIFR,
-                    eliteTier = true
+                    eliteTier = true,
+                    comingSoon = true
                 )
                 FeatureRow(
                     icon = Icons.Default.Security,
@@ -171,7 +173,8 @@ fun SettingsScreen(
                     subtitle = "Real-time behavioral analysis",
                     locked = currentTier < IfrTier.ELITE,
                     onLockedClick = onNavigateToIFR,
-                    eliteTier = true
+                    eliteTier = true,
+                    comingSoon = true
                 )
                 FeatureRow(
                     icon = Icons.Default.Shield,
@@ -242,27 +245,35 @@ private fun FeatureRow(
     locked: Boolean,
     onLockedClick: (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
-    eliteTier: Boolean = false
+    eliteTier: Boolean = false,
+    comingSoon: Boolean = false
 ) {
     val tintColor = when {
-        locked -> Color.Gray.copy(alpha = 0.4f)
+        locked || comingSoon -> Color.Gray.copy(alpha = 0.4f)
         eliteTier -> Color(0xFFFFD700)
         else -> StealthXColors.Primary
     }
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .then(if (!locked && onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
+            .then(if (!locked && !comingSoon && onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
             .padding(vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(icon, contentDescription = null, tint = tintColor)
         Spacer(Modifier.width(12.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.bodyMedium, color = if (locked) Color.Gray else StealthXColors.OnSurface)
+            Text(title, style = MaterialTheme.typography.bodyMedium, color = if (locked || comingSoon) Color.Gray else StealthXColors.OnSurface)
             Text(subtitle, style = MaterialTheme.typography.bodySmall, color = StealthXColors.OnSurfaceVariant)
         }
-        if (locked && onLockedClick != null) {
+        if (comingSoon) {
+            Text(
+                "SOON",
+                style = MaterialTheme.typography.labelSmall,
+                color = Color(0xFF888888),
+                modifier = Modifier.padding(horizontal = 6.dp)
+            )
+        } else if (locked && onLockedClick != null) {
             TextButton(onClick = onLockedClick) {
                 Icon(Icons.Default.Lock, contentDescription = "Locked", tint = Color.Gray, modifier = Modifier.padding(end = 4.dp))
                 Text("Unlock", color = StealthXColors.Primary, style = MaterialTheme.typography.labelSmall)
