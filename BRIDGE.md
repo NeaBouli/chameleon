@@ -103,8 +103,8 @@ Decoy Mode deliberately via Settings when ready.
 
 **[HIGH] FINDING: Chameleon IFR verifier calls obsolete lockedAmount contract method**
 File: `/Users/gio/Desktop/repos/chameleon/stealthx-ifr/src/main/java/com/stealthx/ifr/verifier/IFRLockVerifier.kt:51`
-Description: `IFRLockVerifier` encodes `lockedAmount(address)` and reports `All RPC endpoints failed for lockedAmount(...)`. The required/live contract method is `lockedBalance(address)`, and SecureChat/backend already use that name.
-Fix: Change verifier function name and error text to `lockedBalance`; update `IFRConstants.IFRLOCK_ABI` and tests to assert the live method name.
+STATUS: **FIXED** — Commit 5b59c14 (2026-05-18)
+`lockedAmount` → `lockedBalance` in verifier + error message. Tests GREEN.
 Linear: NEW
 
 **[HIGH] FINDING: Chameleon sx_ IDs are not derived from Ed25519 public keys**
@@ -121,8 +121,7 @@ Linear: NEW
 
 **[MEDIUM] FINDING: Chameleon IFR ABI constant still references lockedAmount**
 File: `/Users/gio/Desktop/repos/chameleon/stealthx-ifr/src/main/java/com/stealthx/ifr/IFRConstants.kt:61`
-Description: The ABI string still declares `lockedAmount`, matching the broken verifier and contradicting the required `lockedBalance` contract field.
-Fix: Update ABI to `lockedBalance` or remove unused ABI string; add regression coverage.
+STATUS: **N/A** — ABI already had `lockedBalance` when checked 2026-05-18. Codex finding was stale. IFRConstantsTest:105 asserts `lockedBalance` present and `lockedAmount` absent — passes.
 Linear: NEW
 
 **[HIGH] FINDING: SecureCall can send plaintext when native crypto is unavailable or encryption returns null**
