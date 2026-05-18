@@ -1380,3 +1380,16 @@ Commit: `8d6ab60`
 - Branch Protection: nur Gio im GitHub UI
 
 ### EMPFÄNGER: CODEX/GIO
+
+---
+
+## 2026-05-18 [CC]
+### TYPE: TEST
+### STATUS: DONE
+
+**NEA-196 — Regression Tests implementiert**
+
+`data/src/test/.../identity/StealthXIdentityTest.kt` — 6 Tests:
+- deriveShortId length = 9, Base58 charset, deterministic, unique, regex, ambiguous chars excluded, known vector
+
+BUILD SUCCESSFUL. Commit: e82a0da
