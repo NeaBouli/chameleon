@@ -30,7 +30,7 @@ Create `/chameleon` page with:
 Create `/chameleon/privacy` with:
 - No data collection statement
 - IFR verification disclosure (optional, user-initiated)
-- Open source transparency (GPL-3.0, full source on GitHub)
+- Source-available transparency (Source-Available, full source on GitHub)
 
 ### 5. Documentation Links
 Link to GitHub repository docs:

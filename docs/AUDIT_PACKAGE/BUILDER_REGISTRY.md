@@ -45,7 +45,7 @@ For Chameleon the intended category is `integration`.
 ## Governance
 
 IFR Builder Registry is governed by IFR token holders. Registration requires:
-- Open source codebase (GPL-3.0)
+- Source-available codebase (Source-Available)
 - Security audit (planned with Trail of Bits)
 - Community review period
 - Governance vote approval

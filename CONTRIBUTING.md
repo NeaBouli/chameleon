@@ -1,19 +1,21 @@
 # Contributing to Chameleon
 
-Thank you for your interest in contributing to Chameleon.
+Thank you for your interest in Chameleon. We value transparency, security review, and responsible vulnerability reports.
 
-## Getting Started
+## What We Accept
 
-1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/chameleon.git`
-3. Create a branch: `git checkout -b feature/your-feature`
-4. Make your changes
-5. Run tests: `./gradlew testAll`
-6. Submit a Pull Request
+- Bug reports via GitHub Issues
+- Feature requests via GitHub Issues
+- Security vulnerability reports via the process in [SECURITY.md](SECURITY.md)
 
-## Code Review Process
+## What We Do Not Accept
 
-All contributions require code review before merging.
+We do not accept code contributions or pull requests.
+
+This repository is source-available for transparency and independent security auditing only. Forks, builds, derivative works, redistribution, rebranding, hosting, and any use of Chameleon or official StealthX services require prior written permission from Vendetta Labs.
+
+- Pull requests will be closed without review.
+- Patches, code suggestions, or implementation changes submitted via issues or other channels will not be incorporated.
 
 ### Standard Changes
 - One approving review required
@@ -63,4 +65,4 @@ chore: short description
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under GPL-3.0-or-later.
+Chameleon is licensed under the StealthX Source-Available License. You may read and inspect the source code for transparency and security review, but you may not copy, modify, build, run, distribute, rebrand, host, or use Chameleon without prior written permission from Vendetta Labs.

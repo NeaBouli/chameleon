@@ -272,7 +272,7 @@ Both PINs are hashed with Argon2id (64 MB memory cost, 3 iterations) with a uniq
 ### About
 
 - Version: 0.1.0-alpha
-- License: GPL-3.0
+- License: Source-Available
 - Platform: StealthX
 
 ---

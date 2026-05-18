@@ -15,7 +15,7 @@ Set environment variable:
 ALLOWED_SIGNATURES=<fingerprint>
 
 ## Why This Matters
-A fork can copy the code (GPL-3.0 allows that).
+A license violator may try to copy the code (the license prohibits that).
 But it cannot copy your keystore.
 Without your keystore, the fork has a different fingerprint.
 Relay nodes that set ALLOWED_SIGNATURES will reject forks.
