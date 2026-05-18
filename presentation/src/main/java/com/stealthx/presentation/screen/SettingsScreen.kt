@@ -5,6 +5,8 @@
  */
 package com.stealthx.presentation.screen
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,10 +23,13 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AutoFixHigh
 import androidx.compose.material.icons.filled.FaceRetouchingNatural
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.MyLocation
+import androidx.compose.material.icons.filled.RocketLaunch
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Storage
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -61,6 +66,9 @@ fun SettingsScreen(
     onNavigateToDecoy: () -> Unit,
     currentTier: IfrTier = IfrTier.FREE
 ) {
+    val context = LocalContext.current
+    fun openUrl(url: String) = context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -188,6 +196,24 @@ fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // — Help ———————————————————————————————————————————
+            SettingsSection(title = "Help") {
+                HelpLinkRow(
+                    icon = Icons.Default.MenuBook,
+                    title = "User Manual",
+                    subtitle = "How Chameleon works + first setup",
+                    onClick = { openUrl("https://chameleon.stealthx.tech/wiki/user-manual.html") }
+                )
+                HelpLinkRow(
+                    icon = Icons.Default.RocketLaunch,
+                    title = "Getting Started",
+                    subtitle = "Activate overlay, set up Private Zone, configure rules",
+                    onClick = { openUrl("https://chameleon.stealthx.tech/wiki/user-manual.html#getting-started") }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             // — About ——————————————————————————————————————————
             SettingsSection(title = "About") {
                 SettingsItem(label = "Version", value = "0.1.0-alpha")
@@ -301,5 +327,23 @@ private fun SettingsItem(label: String, value: String) {
     Column(modifier = Modifier.padding(vertical = 4.dp)) {
         Text(label, style = MaterialTheme.typography.bodyMedium, color = StealthXColors.OnSurface)
         Text(value, style = MaterialTheme.typography.bodySmall, color = StealthXColors.OnSurfaceVariant)
+    }
+}
+
+@Composable
+private fun HelpLinkRow(icon: ImageVector, title: String, subtitle: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(icon, contentDescription = null, tint = StealthXColors.Primary)
+        Spacer(Modifier.width(12.dp))
+        Column(Modifier.weight(1f)) {
+            Text(title, style = MaterialTheme.typography.bodyMedium, color = StealthXColors.OnSurface)
+            Text(subtitle, style = MaterialTheme.typography.bodySmall, color = StealthXColors.OnSurfaceVariant)
+        }
     }
 }
