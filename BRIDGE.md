@@ -109,8 +109,8 @@ Linear: NEW
 
 **[HIGH] FINDING: Chameleon sx_ IDs are not derived from Ed25519 public keys**
 File: `/Users/gio/Desktop/repos/chameleon/data/src/main/java/com/stealthx/data/identity/StealthXIdentity.kt:42`
-Description: `getOrCreateWithSeed()` creates a random `identity_seed` and derives the `sx_` ID from that seed. The platform requires deterministic derivation from Ed25519 public key.
-Fix: Generate/load Ed25519 identity key before ID creation, derive `sx_` from Ed25519 public key bytes, and add exact format tests.
+STATUS: **FIXED** — Commit f427d1e (2026-05-18)
+Ed25519 keypair now generated first; sx_ID = sx_ + deriveShortId(edPublicHex). Option B backward-compat (existing installs unchanged).
 Linear: NEW
 
 **[HIGH] FINDING: Chameleon Settings tier promises diverge from enforcement**
