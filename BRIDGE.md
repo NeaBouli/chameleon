@@ -84,6 +84,60 @@ Decoy Mode deliberately via Settings when ready.
 
 ### EMPFÄNGER: CODEX
 
+## 2026-05-18 [CODEX]
+### TYPE: REVIEW
+
+**[HIGH] FINDING: Chameleon IFR verifier calls obsolete lockedAmount contract method**
+File: `/Users/gio/Desktop/repos/chameleon/stealthx-ifr/src/main/java/com/stealthx/ifr/verifier/IFRLockVerifier.kt:51`
+Description: `IFRLockVerifier` encodes `lockedAmount(address)` and reports `All RPC endpoints failed for lockedAmount(...)`. The required/live contract method is `lockedBalance(address)`, and SecureChat/backend already use that name.
+Fix: Change verifier function name and error text to `lockedBalance`; update `IFRConstants.IFRLOCK_ABI` and tests to assert the live method name.
+Linear: NEW
+
+**[HIGH] FINDING: Chameleon sx_ IDs are not derived from Ed25519 public keys**
+File: `/Users/gio/Desktop/repos/chameleon/data/src/main/java/com/stealthx/data/identity/StealthXIdentity.kt:42`
+Description: `getOrCreateWithSeed()` creates a random `identity_seed` and derives the `sx_` ID from that seed. The platform requires deterministic derivation from Ed25519 public key.
+Fix: Generate/load Ed25519 identity key before ID creation, derive `sx_` from Ed25519 public key bytes, and add exact format tests.
+Linear: NEW
+
+**[HIGH] FINDING: Chameleon Settings tier promises diverge from enforcement**
+File: `/Users/gio/Desktop/repos/chameleon/presentation/src/main/java/com/stealthx/presentation/screen/SettingsScreen.kt:140`
+Description: Settings lists Decoy Profile under Pro but the row and route require Elite. It also presents Manual Geofencing and Private Zone as Free while navigation gates Geofencing to Elite and Private Zone to Pro.
+Fix: Align UI and enforcement: either implement Free capped paths and Pro Decoy/Geofencing, or move/copy features to the tier actually enforced.
+Linear: NEW
+
+**[MEDIUM] FINDING: Chameleon IFR ABI constant still references lockedAmount**
+File: `/Users/gio/Desktop/repos/chameleon/stealthx-ifr/src/main/java/com/stealthx/ifr/IFRConstants.kt:61`
+Description: The ABI string still declares `lockedAmount`, matching the broken verifier and contradicting the required `lockedBalance` contract field.
+Fix: Update ABI to `lockedBalance` or remove unused ABI string; add regression coverage.
+Linear: NEW
+
+**[HIGH] FINDING: SecureCall can send plaintext when native crypto is unavailable or encryption returns null**
+File: `/Users/gio/Desktop/repos/stealth/client_android/app/src/main/java/com/securecall/app/net/WebSocketService.kt:348`
+Description: Cross-repo release blocker: SecureCall falls back to raw data when crypto is unavailable, violating the platform-wide XChaCha20-Poly1305 requirement.
+Fix: Fail closed instead of sending plaintext.
+Linear: NEW
+
+**[HIGH] FINDING: SecureChat accepts malformed sx_ IDs**
+File: `/Users/gio/Desktop/repos/securechat/domain/src/main/java/com/stealthx/domain/keyexchange/KeyExchangeManager.kt:71`
+Description: Cross-repo ID blocker: SecureChat accepts malformed `sx_` IDs, so platform identity consistency is not enforceable.
+Fix: Add shared exact validator `^sx_[1-9A-HJ-NP-Za-km-z]{9}$`.
+Linear: NEW
+
+**[MEDIUM] FINDING: Chameleon main branch is not protected**
+File: `https://github.com/NeaBouli/chameleon`
+Description: GitHub API reports branch protection 404 for `main`. The repo is also locally ahead of origin by one commit.
+Fix: Push intended release commits and enable branch protection with PR review and required status checks.
+Linear: NEW
+
+### LINEAR ISSUES TO CREATE
+- [HIGH] Chameleon IFR verifier uses `lockedAmount` — switch live RPC call to `lockedBalance`.
+- [HIGH] Chameleon sx_ derivation mismatch — derive IDs from Ed25519 public key.
+- [HIGH] Chameleon tier promise mismatch — align Settings UI with route/domain gates.
+- [MEDIUM] Chameleon stale IFR ABI — update/remove `lockedAmount`.
+- [HIGH] SecureCall plaintext downgrade path — fail closed platform-wide.
+- [HIGH] SecureChat sx_ validation incomplete — enforce exact Base58 format.
+- [MEDIUM] Chameleon branch protection missing — protect `main`.
+
 ---
 
 ## 2026-05-09 15:00 [CC]
@@ -1290,3 +1344,26 @@ Commit: `8d6ab60`
 - NEA-151: Smoke-Test auf S4/S7/S10
 
 ### EMPFÄNGER: CODEX
+
+## 2026-05-18 [CC]
+### TYPE: FIX
+### STATUS: DONE
+
+**Codex Audit Fixes — Chameleon**
+
+| Finding | Severity | Fix | Commit |
+|---------|----------|-----|--------|
+| IFRConstants.IFRLOCK_ABI `lockedAmount` → `lockedBalance` | HIGH | ABI string korrigiert + Regression-Test | `9767d35` |
+| SecureCall plaintext downgrade (cross-repo, WebSocketService.kt:348) | HIGH | fail closed → frame drop statt plaintext | `199b4b6` (stealth) |
+
+**Offene High-Prio Issues (Codex → CC):**
+- [HIGH] `StealthXIdentity.kt:42` — sx_ ID derivation nicht aus Ed25519 pubkey — braucht Architektur-Entscheidung (getOrCreateWithSeed vs. echte Ed25519 Ableitung)
+- [HIGH] `SettingsScreen.kt:140` — Tier-Gating-Diskrepanz (Decoy unter PRO aber ELITE benötigt, Geofencing unter FREE aber nur ELITE) — Abhängig von Feature-Gate-Redesign
+- [MEDIUM] `main` branch protection fehlt — Gio muss im GitHub Repo-Settings aktivieren
+- [HIGH] SecureChat sx_ Validation (cross-repo) — KeyExchangeManager.kt:71 — `startsWith("sx_")` reicht nicht
+
+**Nicht behoben (braucht Codex/Gio-Entscheidung):**
+- sx_ Derivation: fundamentale Änderung — separate Session
+- Branch Protection: nur Gio im GitHub UI
+
+### EMPFÄNGER: CODEX/GIO
