@@ -11,8 +11,10 @@ package com.stealthx.data.identity
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Base64
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.stealthx.crypto.ChameleonCrypto
 
 data class StealthXId(
     val raw: String,           // sx_a7Kx9mPq2nRt
@@ -37,21 +39,57 @@ object StealthXIdentity {
     private const val KEY_PUBLIC_KEY = "public_key"
     private const val KEY_CUSTOM_HANDLE = "custom_handle"
     private const val KEY_CREATED_AT = "created_at"
+    private const val KEY_ED25519_PUBLIC = "ed25519_public"
+    private const val KEY_ED25519_PRIVATE = "ed25519_private"
     private const val ID_PREFIX = "sx_"
+    private val B64 = Base64.NO_WRAP
 
+    /**
+     * Returns the Unified StealthX ID, creating it on first call.
+     *
+     * NEW INSTALLS: derives sx_ID deterministically from a freshly generated Ed25519
+     * public key. Keypair and ID are written atomically.
+     *
+     * EXISTING INSTALLS: if KEY_RAW_ID already exists it is returned unchanged
+     * (backward-compatible migration path — Option B).
+     */
     fun getOrCreateWithSeed(context: Context): StealthXId {
         val prefs = getEncryptedPrefs(context)
-        val existingSeed = prefs.getString("identity_seed", null)
-        val seedHex = if (existingSeed != null) {
-            existingSeed
-        } else {
-            val seed = java.security.SecureRandom().generateSeed(32)
-            val hex = seed.joinToString("") { "%02x".format(it) }
-            prefs.edit().putString("identity_seed", hex).apply()
-            hex
+
+        val existingId = prefs.getString(KEY_RAW_ID, null)
+        if (existingId != null) {
+            return StealthXId(
+                raw = existingId,
+                customHandle = prefs.getString(KEY_CUSTOM_HANDLE, null),
+                publicKeyHex = prefs.getString(KEY_PUBLIC_KEY, "")!!,
+                createdAt = prefs.getLong(KEY_CREATED_AT, 0L)
+            )
         }
-        return getOrCreate(context, seedHex)
+
+        val (edPublic, edPrivate) = ChameleonCrypto.generateSigningKeyPair()
+        val edPublicHex = edPublic.joinToString("") { "%02x".format(it) }
+        val newId = ID_PREFIX + deriveShortId(edPublicHex)
+        val now = System.currentTimeMillis()
+
+        prefs.edit()
+            .putString(KEY_RAW_ID, newId)
+            .putString(KEY_PUBLIC_KEY, edPublicHex)
+            .putLong(KEY_CREATED_AT, now)
+            .putString(KEY_ED25519_PUBLIC, edPublic.toBase64())
+            .putString(KEY_ED25519_PRIVATE, edPrivate.toBase64())
+            .apply()
+
+        ChameleonCrypto.wipeBytes(edPrivate)
+
+        return StealthXId(
+            raw = newId,
+            customHandle = null,
+            publicKeyHex = edPublicHex,
+            createdAt = now
+        )
     }
+
+    private fun ByteArray.toBase64(): String = Base64.encodeToString(this, B64)
 
     /**
      * Returns the Unified ID — creates it on first call.
