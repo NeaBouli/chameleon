@@ -4,6 +4,20 @@
 ---
 
 ## 2026-05-18 [CC]
+### TYPE: FIX
+### STATUS: DONE
+
+**NEA-198 — Settings: Decoy Profile Tier-Mismatch + Coming-Soon-Labels**
+
+Decoy Profile war unter Pro-Sektion aber mit `locked = currentTier < IfrTier.ELITE` — fixed auf `< IfrTier.PRO`.
+Multi-Decoy Profiles + Advanced Threat Detection (Elite, Phase 2/3) → `comingSoon = true`.
+Automatic Geofencing (Pro, Phase 2) → `comingSoon = true`.
+`comingSoon`-Flag: Icon/Text gedimmt, kein Click, SOON-Badge statt Unlock-Button.
+Commit: `a8f9a42`
+
+---
+
+## 2026-05-18 [CC]
 ### TYPE: MEMO
 ### STATUS: DONE
 
