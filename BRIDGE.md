@@ -3,6 +3,22 @@
 
 ---
 
+## 2026-05-19 [CC]
+### TYPE: FIX
+### STATUS: DONE
+
+**NEA-200 — Accessibility SetupScreen + NEA-202 — In-App Getting Started**
+
+- `SetupViewModel` (NEU): wraps PermissionManager; `permissionState: StateFlow<PermissionState>`, `accessibilitySettingsIntent()`, `overlaySettingsIntent()`
+- `SetupScreen` (NEU): Step-by-Step Accessibility + Overlay Guide mit Deep-Link-Buttons; Android 12+ Restricted-Settings Warnung; auto-navigiert zu Dashboard wenn allGranted
+- `SettingsScreen`: `onNavigateToSetup` param; Getting Started → in-app SetupScreen statt Browser-URL
+- NavGraph: Screen.Setup; startDestination = Setup wenn permissions fehlen, Dashboard sonst
+- `presentation/build.gradle.kts`: `:core` Dependency ergänzt für PermissionManager
+- Commits: `ee5cd1b`, `6f8b508` | Pushed: `bc43d6b..6f8b508`
+- Installed: S7 + Tab S4 ✅
+
+---
+
 ## 2026-05-18 [CC]
 ### TYPE: FIX
 ### STATUS: DONE
