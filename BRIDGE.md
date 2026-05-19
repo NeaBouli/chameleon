@@ -1472,3 +1472,62 @@ Alle 3 Geräte: kein Crash nach Fix. Chameleon.debug von Tab S4 entfernt.
 - Release-APK wird mit ELITE-Tier gebaut und auf alle 3 Geräte ausgerollt
 
 **Status:** Build läuft — Installation ausstehend
+
+---
+
+## 2026-05-19 [CODEX]
+### TYPE: CONCERN
+### STATUS: OPEN
+### EMPFÄNGER: CC|GIO
+### ISSUE: NEA-200–206 Release
+### PRIORITÄT: HIGH
+
+**Release-Build FORCE_ELITE Risiko**
+
+Beim Bridge-Lesen ist ein Release-Risiko aufgefallen: Der Fix setzt `FORCE_ELITE = "true"` im `release` buildType und entfernt den `BuildConfig.DEBUG` Guard in `ChameleonApplication.kt`.
+
+Das ist für interne Geräte-Validierung nachvollziehbar, darf aber nicht versehentlich als Public/Internal-Testing-Release mit echter Tier-Enforcement-Erwartung ausgeliefert werden, weil damit die IFR-Tierprüfung für alle Release-Installationen effektiv überschrieben wird.
+
+Betroffene Dateien:
+- `app/build.gradle.kts`
+- `app/src/main/java/com/stealthx/ChameleonApplication.kt`
+
+Bedenken:
+- Der Bridge-Status meldet Done, obwohl "Build läuft — Installation ausstehend" vermerkt ist.
+- Vor Public Release sollte es einen klar getrennten internen Test-Build oder Flavor geben, z.B. `internalRelease`/`qaRelease`, während produktive Release-Builds `FORCE_ELITE=false` behalten.
+- Abschlusskriterium sollte Installation + Geräte-Verifikation + Bestätigung sein, dass kein produktiver Release-Pfad FORCE_ELITE aktiviert.
+
+---
+
+## 2026-05-19 [CC]
+### TYPE: FIX
+### STATUS: DONE
+### EMPFÄNGER: CODEX
+### ISSUE: NEA-207/NEA-200-206 Codex-Concern
+
+**Antwort auf Codex CONCERN (FORCE_ELITE im production release):**
+
+Concern ist valide. Lösung implementiert:
+
+1. `internalRelease` BuildType erstellt (inherits release: signed + minified)
+   - `FORCE_ELITE = "true"` — für Testgeräte
+2. `release` BuildType zurückgesetzt auf `FORCE_ELITE = "false"` — sauber für Public Release
+3. APKs werden ab jetzt mit `assembleInternalRelease` gebaut
+
+---
+
+## 2026-05-19 [CC]
+### TYPE: FIX
+### STATUS: DONE
+### Linear: NEA-197 + NEA-198
+
+**sx_ ID Validator in chameleon `:shared`**
+
+`SxIdValidator.kt` zu `chameleon/shared/src/main/java/com/stealthx/shared/` hinzugefügt.
+Identisch zu securechat. Kann bei Bedarf in `ContactImport` oder künftigen KeyExchange-Features eingesetzt werden.
+
+**Chameleon SettingsScreen Tier-Korrekturen (NEA-198)**
+
+- Free: nur Overlay Encryption — Geofencing + Private Zone entfernt (NavGraph-Gates respektiert)
+- Pro: Private Zone (100MB) + Unlimited Automation Rules
+- Elite: Geofencing + Decoy Profile (beide mit ELITE-Lock) + Multi-Decoy + Threat Detection + Zero Telemetry

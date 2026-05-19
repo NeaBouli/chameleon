@@ -109,20 +109,6 @@ fun SettingsScreen(
                     locked = false,
                     onClick = onNavigateToOverlay
                 )
-                FeatureRow(
-                    icon = Icons.Default.MyLocation,
-                    title = "Manual Geofencing",
-                    subtitle = "3 rules max",
-                    locked = false,
-                    onClick = onNavigateToGeofencing
-                )
-                FeatureRow(
-                    icon = Icons.Default.Storage,
-                    title = "Private Zone",
-                    subtitle = "100 MB encrypted vault",
-                    locked = false,
-                    onClick = onNavigateToPrivateZone
-                )
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -138,28 +124,11 @@ fun SettingsScreen(
                 )
                 FeatureRow(
                     icon = Icons.Default.Storage,
-                    title = "Private Zone — Unlimited",
-                    subtitle = "No storage cap",
+                    title = "Private Zone",
+                    subtitle = "100 MB encrypted vault",
                     locked = currentTier < IfrTier.PRO,
                     onLockedClick = onNavigateToIFR,
                     onClick = onNavigateToPrivateZone
-                )
-                FeatureRow(
-                    icon = Icons.Default.FaceRetouchingNatural,
-                    title = "Decoy Profile",
-                    subtitle = "Wrong PIN → decoy identity",
-                    locked = currentTier < IfrTier.PRO,
-                    onLockedClick = onNavigateToIFR,
-                    onClick = onNavigateToDecoy
-                )
-                FeatureRow(
-                    icon = Icons.Default.MyLocation,
-                    title = "Automatic Geofencing",
-                    subtitle = "Location-triggered encryption",
-                    locked = currentTier < IfrTier.PRO,
-                    onLockedClick = onNavigateToIFR,
-                    onClick = onNavigateToGeofencing,
-                    comingSoon = true
                 )
             }
 
@@ -167,6 +136,24 @@ fun SettingsScreen(
 
             // — Elite features —————————————————————————————————
             SettingsSection(title = "Elite  ≥ 6,000 IFR") {
+                FeatureRow(
+                    icon = Icons.Default.MyLocation,
+                    title = "Geofencing",
+                    subtitle = "Location-triggered encryption rules",
+                    locked = currentTier < IfrTier.ELITE,
+                    onLockedClick = onNavigateToIFR,
+                    onClick = onNavigateToGeofencing,
+                    eliteTier = true
+                )
+                FeatureRow(
+                    icon = Icons.Default.FaceRetouchingNatural,
+                    title = "Decoy Profile",
+                    subtitle = "Wrong PIN → decoy identity",
+                    locked = currentTier < IfrTier.ELITE,
+                    onLockedClick = onNavigateToIFR,
+                    onClick = onNavigateToDecoy,
+                    eliteTier = true
+                )
                 FeatureRow(
                     icon = Icons.Default.FaceRetouchingNatural,
                     title = "Multi-Decoy Profiles",

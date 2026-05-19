@@ -51,6 +51,11 @@ android {
             isMinifyEnabled = false
             buildConfigField("Boolean", "FORCE_ELITE", "true")
         }
+        create("internalRelease") {
+            initWith(getByName("release"))
+            signingConfig = signingConfigs.getByName("release")
+            buildConfigField("Boolean", "FORCE_ELITE", "true")
+        }
         release {
             signingConfig = signingConfigs.getByName("release")
             isDebuggable = false
@@ -60,7 +65,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("Boolean", "FORCE_ELITE", "true")
+            buildConfigField("Boolean", "FORCE_ELITE", "false")
         }
     }
 
