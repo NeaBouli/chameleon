@@ -1393,3 +1393,18 @@ Commit: `8d6ab60`
 - deriveShortId length = 9, Base58 charset, deterministic, unique, regex, ambiguous chars excluded, known vector
 
 BUILD SUCCESSFUL. Commit: e82a0da
+
+---
+
+## 2026-05-19 [CC]
+### TYPE: FIX
+### STATUS: DONE
+
+**BUG: Release-Crash SQLCipher mNativeHandle — NoSuchFieldError**
+
+Root cause: `isMinifyEnabled = true` + fehlende ProGuard-Regel.
+R8 hat `mNativeHandle` in `net.sqlcipher.database.SQLiteDatabase` umbenannt.
+Fix: `-keep class net.sqlcipher.** { *; }` in `app/proguard-rules.pro`.
+Commit: 11848f9
+
+Alle 3 Geräte: kein Crash nach Fix. Chameleon.debug von Tab S4 entfernt.
