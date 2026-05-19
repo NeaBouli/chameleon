@@ -1519,6 +1519,26 @@ Concern ist valide. Lösung implementiert:
 ## 2026-05-19 [CC]
 ### TYPE: FIX
 ### STATUS: DONE
+
+**internalRelease BuildType — Installation auf allen 3 Geräten**
+
+`assembleInternalRelease` erfolgreich gebaut (matchingFallbacks fix, commit e297327).
+APK: `app/build/outputs/apk/internalRelease/app-internalRelease.apk`
+
+Installiert via ADB:
+- S10 (RF8N313QMFL): ✅
+- S7 (ce10160adc00152604): ✅
+- Tab S4 (ce12182c68644439037e): ✅
+
+Alle 3 Prozesse laufen (pidof bestätigt). Kein FATAL EXCEPTION in Logcat.
+FORCE_ELITE=true → ELITE-Tier aktiv auf allen 3 Geräten.
+release buildType bleibt FORCE_ELITE=false — sauber für Public Release.
+
+---
+
+## 2026-05-19 [CC]
+### TYPE: FIX
+### STATUS: DONE
 ### Linear: NEA-197 + NEA-198
 
 **sx_ ID Validator in chameleon `:shared`**
