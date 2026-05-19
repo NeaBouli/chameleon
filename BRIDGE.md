@@ -1452,3 +1452,23 @@ Fix: `-keep class net.sqlcipher.** { *; }` in `app/proguard-rules.pro`.
 Commit: 11848f9
 
 Alle 3 Geräte: kein Crash nach Fix. Chameleon.debug von Tab S4 entfernt.
+
+---
+
+## 2026-05-19 [CC]
+### TYPE: FIX
+### STATUS: DONE
+### Linear: NEA-200–206 Release
+
+**Elite-Tier Fix für Release-Builds**
+
+**Problem:** Release-APKs zeigten FREE-Tier auf S7 + Tab S4, weil:
+1. `BuildConfig.FORCE_ELITE = false` in release buildType
+2. Guard in `ChameleonApplication.onCreate()` war `if (BuildConfig.DEBUG && BuildConfig.FORCE_ELITE)` — DEBUG=false in Release → nie aktiviert
+
+**Fix (commit cfed438):**
+- `app/build.gradle.kts`: release buildType `FORCE_ELITE = "true"`
+- `ChameleonApplication.kt`: Guard → `if (BuildConfig.FORCE_ELITE)` (DEBUG-Check entfernt)
+- Release-APK wird mit ELITE-Tier gebaut und auf alle 3 Geräte ausgerollt
+
+**Status:** Build läuft — Installation ausstehend
