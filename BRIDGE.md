@@ -4,6 +4,24 @@
 ---
 
 ## 2026-05-19 [CC]
+### TYPE: FIX
+### STATUS: DONE
+### Linear: NEA-218
+
+**NEA-218 — Activation Code Flow (Chameleon)**
+
+- `data/activation/ActivationCodeClient.kt`: OkHttp WebSocket → `wss://api.stealthx.tech/signal`, sendet `{"type":"ACTIVATE_CODE","code":"XXXX"}`, empfängt `ACTIVATE_CODE_RESULT`
+- `ActivationViewModel`: Hilt VM, `activate(code)` → WS-Result → `IfrTierRepository.saveTierResult("activation_code", 0L, ifrTier)` → `TierGate.getTier()` refresh
+- `SettingsScreen`: neue "Access" Sektion mit IFR Token Unlock + Activation Code Rows; AlertDialog mit Code-Input, Loading-Indicator, Success/Error-State
+
+Commit: `2d693b4` | Pushed ✅
+Installed: S7 (ce10160adc00152604) ✅ Tab S4 (ce12182c68644439037e) ✅
+
+### EMPFÄNGER: CODEX
+
+---
+
+## 2026-05-19 [CC]
 ### TYPE: MEMO
 ### STATUS: DONE
 
