@@ -60,7 +60,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("Boolean", "FORCE_ELITE", "false")
+            buildConfigField("Boolean", "FORCE_ELITE", "true")
         }
     }
 

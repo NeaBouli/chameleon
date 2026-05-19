@@ -30,7 +30,7 @@ class ChameleonApplication : Application() {
         // Create per-device identity on first launch — idempotent on subsequent launches
         StealthXIdentity.getOrCreateWithSeed(this)
 
-        if (BuildConfig.DEBUG && BuildConfig.FORCE_ELITE) {
+        if (BuildConfig.FORCE_ELITE) {
             com.stealthx.shared.DevTierOverride.forceElite = true
         }
 
