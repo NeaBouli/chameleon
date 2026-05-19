@@ -130,6 +130,14 @@ fun SettingsScreen(
                     onLockedClick = onNavigateToIFR,
                     onClick = onNavigateToPrivateZone
                 )
+                FeatureRow(
+                    icon = Icons.Default.FaceRetouchingNatural,
+                    title = "Decoy Profile",
+                    subtitle = "Wrong PIN → decoy identity",
+                    locked = currentTier < IfrTier.PRO,
+                    onLockedClick = onNavigateToIFR,
+                    onClick = onNavigateToDecoy
+                )
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -143,15 +151,6 @@ fun SettingsScreen(
                     locked = currentTier < IfrTier.ELITE,
                     onLockedClick = onNavigateToIFR,
                     onClick = onNavigateToGeofencing,
-                    eliteTier = true
-                )
-                FeatureRow(
-                    icon = Icons.Default.FaceRetouchingNatural,
-                    title = "Decoy Profile",
-                    subtitle = "Wrong PIN → decoy identity",
-                    locked = currentTier < IfrTier.ELITE,
-                    onLockedClick = onNavigateToIFR,
-                    onClick = onNavigateToDecoy,
                     eliteTier = true
                 )
                 FeatureRow(
