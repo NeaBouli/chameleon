@@ -15,4 +15,5 @@ sealed class Screen(val route: String) {
     data object IFRUnlock    : Screen("ifr_unlock")
     data object Settings     : Screen("settings")
     data object KeyExchange  : Screen("key_exchange")
+    data object Setup        : Screen("setup")
 }

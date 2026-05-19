@@ -64,6 +64,7 @@ fun SettingsScreen(
     onNavigateToPrivateZone: () -> Unit,
     onNavigateToGeofencing: () -> Unit,
     onNavigateToDecoy: () -> Unit,
+    onNavigateToSetup: () -> Unit = {},
     currentTier: IfrTier = IfrTier.FREE
 ) {
     val context = LocalContext.current
@@ -208,7 +209,7 @@ fun SettingsScreen(
                     icon = Icons.Default.RocketLaunch,
                     title = "Getting Started",
                     subtitle = "Activate overlay, set up Private Zone, configure rules",
-                    onClick = { openUrl("https://chameleon.stealthx.tech/wiki/user-manual.html#getting-started") }
+                    onClick = onNavigateToSetup
                 )
             }
 

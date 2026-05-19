@@ -24,6 +24,7 @@ android {
 dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
+    implementation(project(":core"))
     implementation(project(":features:overlay"))
     implementation(project(":features:messenger"))
     implementation(project(":features:privatezone"))

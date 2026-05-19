@@ -42,6 +42,8 @@ import com.stealthx.presentation.screen.DashboardScreen
 import com.stealthx.presentation.screen.IFRUnlockScreen
 import com.stealthx.presentation.screen.KeyExchangeScreen
 import com.stealthx.presentation.screen.SettingsScreen
+import com.stealthx.presentation.screen.SetupScreen
+import com.stealthx.presentation.viewmodel.SetupViewModel
 import com.stealthx.presentation.theme.StealthXColors
 import com.stealthx.presentation.viewmodel.DashboardViewModel
 import com.stealthx.presentation.viewmodel.IFRViewModel
@@ -56,11 +58,16 @@ fun StealthXNavGraph(navController: NavHostController) {
     val dashboardVm: DashboardViewModel = hiltViewModel()
     val ifrVm: IFRViewModel = hiltViewModel()
     val settingsVm: SettingsViewModel = hiltViewModel()
+    val setupVm: SetupViewModel = hiltViewModel()
     val currentTier by dashboardVm.currentTier.collectAsState()
     val overlayEnabled by settingsVm.overlayEnabled.collectAsState()
     val overlayWhitelist by settingsVm.overlayWhitelist.collectAsState()
 
-    NavHost(navController = navController, startDestination = Screen.Dashboard.route) {
+    val startDestination = remember {
+        if (setupVm.isInitiallySetup) Screen.Dashboard.route else Screen.Setup.route
+    }
+
+    NavHost(navController = navController, startDestination = startDestination) {
 
         composable(Screen.Dashboard.route) {
             DashboardScreen(
@@ -192,6 +199,14 @@ fun StealthXNavGraph(navController: NavHostController) {
             )
         }
 
+        composable(Screen.Setup.route) {
+            SetupScreen(onContinue = {
+                navController.navigate(Screen.Dashboard.route) {
+                    popUpTo(Screen.Setup.route) { inclusive = true }
+                }
+            }, viewModel = setupVm)
+        }
+
         composable(Screen.Settings.route) {
             SettingsScreen(
                 onBack = { navController.popBackStack() },
@@ -200,6 +215,7 @@ fun StealthXNavGraph(navController: NavHostController) {
                 onNavigateToPrivateZone = { navController.navigate(Screen.PrivateZone.route) },
                 onNavigateToGeofencing = { navController.navigate(Screen.Geofencing.route) },
                 onNavigateToDecoy = { navController.navigate(Screen.Decoy.route) },
+                onNavigateToSetup = { navController.navigate(Screen.Setup.route) },
                 currentTier = currentTier
             )
         }
