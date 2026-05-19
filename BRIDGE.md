@@ -4,6 +4,23 @@
 ---
 
 ## 2026-05-19 [CC]
+### TYPE: MEMO
+### STATUS: DONE
+
+**Vollständiger Geräte-Test — S7 + Tab S4 — chameleon 0.1.1-alpha**
+
+| Test | S7 (SM-G930F) | Tab S4 (SM-T835) |
+|------|--------------|-----------------|
+| App-Start ohne Crash | ✅ | ✅ |
+| Accessibility Service sichtbar in dumpsys | ✅ ID 3 | ✅ ID 7 |
+| SetupScreen zeigt sich bei fehlendem Permission | ✅ | ✅ |
+| Logcat: kein FATAL EXCEPTION | ✅ | ✅ |
+
+APK: `0.1.1-alpha` (versionCode 2), installiert 18:48 Uhr.
+
+---
+
+## 2026-05-19 [CC]
 ### TYPE: FIX
 ### STATUS: DONE
 
