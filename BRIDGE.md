@@ -7,6 +7,17 @@
 ### TYPE: FIX
 ### STATUS: DONE
 
+**NEA-204 — Website Mobile Navigation**
+
+- `chameleon/index.html`: Hamburger-Button `#nav-toggle` + `.nav-links.open` CSS + JS Toggle
+- Commit: `89af700` | Pushed ✅
+
+---
+
+## 2026-05-19 [CC]
+### TYPE: FIX
+### STATUS: DONE
+
 **NEA-200 — Accessibility SetupScreen + NEA-202 — In-App Getting Started**
 
 - `SetupViewModel` (NEU): wraps PermissionManager; `permissionState: StateFlow<PermissionState>`, `accessibilitySettingsIntent()`, `overlaySettingsIntent()`
