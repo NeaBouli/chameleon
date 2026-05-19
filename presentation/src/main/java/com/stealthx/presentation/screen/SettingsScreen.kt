@@ -44,6 +44,15 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,8 +60,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.stealthx.presentation.composable.TierBadge
 import com.stealthx.presentation.theme.StealthXColors
+import com.stealthx.presentation.viewmodel.ActivationState
+import com.stealthx.presentation.viewmodel.ActivationViewModel
 import com.stealthx.shared.model.IfrTier
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,10 +77,21 @@ fun SettingsScreen(
     onNavigateToGeofencing: () -> Unit,
     onNavigateToDecoy: () -> Unit,
     onNavigateToSetup: () -> Unit = {},
-    currentTier: IfrTier = IfrTier.FREE
+    currentTier: IfrTier = IfrTier.FREE,
+    activationVm: ActivationViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
+    val activationState by activationVm.state.collectAsState()
+    var showActivationDialog by remember { mutableStateOf(false) }
     fun openUrl(url: String) = context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+
+    if (showActivationDialog) {
+        ActivationCodeDialog(
+            state = activationState,
+            onDismiss = { showActivationDialog = false; activationVm.reset() },
+            onSubmit = activationVm::activate
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -178,6 +201,24 @@ fun SettingsScreen(
                     locked = currentTier < IfrTier.ELITE,
                     onLockedClick = onNavigateToIFR,
                     eliteTier = true
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // — Access ——————————————————————————————————————————
+            SettingsSection(title = "Access") {
+                HelpLinkRow(
+                    icon = Icons.Default.Lock,
+                    title = "IFR Token Unlock",
+                    subtitle = "Lock tokens for lifetime tier access",
+                    onClick = onNavigateToIFR
+                )
+                HelpLinkRow(
+                    icon = Icons.Default.Key,
+                    title = "Activation Code",
+                    subtitle = "Enter code to unlock Pro or Elite tier",
+                    onClick = { showActivationDialog = true }
                 )
             }
 
@@ -333,4 +374,63 @@ private fun HelpLinkRow(icon: ImageVector, title: String, subtitle: String, onCl
             Text(subtitle, style = MaterialTheme.typography.bodySmall, color = StealthXColors.OnSurfaceVariant)
         }
     }
+}
+
+@Composable
+private fun ActivationCodeDialog(
+    state: ActivationState,
+    onDismiss: () -> Unit,
+    onSubmit: (String) -> Unit
+) {
+    var code by remember { mutableStateOf("") }
+    val isLoading = state is ActivationState.Loading
+    val isDone = state is ActivationState.Success
+
+    AlertDialog(
+        onDismissRequest = { if (!isLoading) onDismiss() },
+        title = { Text("Enter Activation Code") },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = code,
+                    onValueChange = { code = it.uppercase() },
+                    label = { Text("Code") },
+                    placeholder = { Text("XXXX-XXXX-XXXX") },
+                    singleLine = true,
+                    enabled = !isLoading && !isDone,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(Modifier.height(8.dp))
+                when (state) {
+                    is ActivationState.Error -> Text(
+                        state.message,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    is ActivationState.Success -> Text(
+                        "Unlocked: ${state.tier.name}",
+                        color = Color(0xFF00E676),
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    is ActivationState.Loading -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                    else -> {}
+                }
+            }
+        },
+        confirmButton = {
+            if (isDone) {
+                TextButton(onClick = onDismiss) { Text("Done") }
+            } else {
+                TextButton(
+                    onClick = { onSubmit(code) },
+                    enabled = code.isNotBlank() && !isLoading
+                ) { Text("Activate") }
+            }
+        },
+        dismissButton = {
+            if (!isDone) {
+                TextButton(onClick = { if (!isLoading) onDismiss() }) { Text("Cancel") }
+            }
+        }
+    )
 }
