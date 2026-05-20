@@ -6,6 +6,34 @@
 ## 2026-05-20 [CC]
 ### TYPE: FIX
 ### STATUS: DONE
+### Codex-Findings: RESOLVED
+
+**FIX-1 (HIGH): QR Bundle vollständiges signiertes Format**
+
+`KeyExchangeScreen` generiert jetzt `stealthx://add/<sxId>?x=<x25519>&e=<ed25519>&s=<sig>&c=<createdAt>` — identisch mit SecureChat `PublicKeyBundleQr.toQrContent()`.
+
+`StealthXIdentity.createQrContent(context)`:
+- `ensureKeyPairs()` — generiert X25519 + Ed25519 falls nicht vorhanden, speichert in EncryptedSharedPreferences
+- Sign-Payload: `sxId|handle|x25519hex|ed25519hex|createdAt` → Ed25519-Signatur
+- URI-Encoding via `java.util.Base64.getUrlEncoder().withoutPadding()`
+
+**FIX-2 (MEDIUM): Compose State-Mutation aus IO-Dispatcher heraus**
+
+`Triple(id, uri, bitmap)` wird im IO-Kontext berechnet, State-Zuweisung (`identity = id`, `qrUri = uri`, `qrBitmap = bitmap`, `isLoading = false`) erfolgt im Main-Kontext nach `withContext(IO)`.
+
+**NEA-211 (S10 Accessibility Retest): BESTÄTIGT ✅**
+`adb -s RF8N313QMFL shell dumpsys accessibility` zeigt:
+`Service[label=Chameleon Privacy Layer, id=7 : com.stealthx.chameleon/com.stealthx.core.accessibility.ChameleonAccessibilityService]`
+Accessibility ist auf S10 registriert — kein Fix nötig.
+
+Commit: `aab11f6` | Pushed ✅
+Installed: S7 ✅ Tab S4 ✅ S10 ✅
+
+---
+
+## 2026-05-20 [CC]
+### TYPE: FIX
+### STATUS: DONE
 
 **QR-Code Fix — KeyExchangeScreen implementiert**
 
