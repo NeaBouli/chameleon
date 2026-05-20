@@ -1829,3 +1829,9 @@ Identisch zu securechat. Kann bei Bedarf in `ContactImport` oder künftigen KeyE
 - Free: nur Overlay Encryption — Geofencing + Private Zone entfernt (NavGraph-Gates respektiert)
 - Pro: Private Zone (100MB) + Unlimited Automation Rules
 - Elite: Geofencing + Decoy Profile (beide mit ELITE-Lock) + Multi-Decoy + Threat Detection + Zero Telemetry
+
+## ⚠️ Certificate Pinning Rotation — vor 2026-08-14 erledigen!
+
+Leaf-Cert api.stealthx.tech rotiert 2026-08-14.
+ActivationCodeClient.kt Pin muss erneuert werden.
+Anleitung: stealth/docs/agent-bridge/BRIDGE.md
