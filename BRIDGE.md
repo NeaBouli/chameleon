@@ -27,7 +27,7 @@
 Accessibility ist auf S10 registriert — kein Fix nötig.
 
 Commit: `aab11f6` | Pushed ✅
-Installed: S7 ✅ Tab S4 ✅ S10 ✅
+Installed: S7 ✅ Tab S4 ✅ S10 ✅ (S10 nachinstalliert 2026-05-20 — Gerät war beim ersten Durchlauf nicht verbunden)
 
 ---
 
