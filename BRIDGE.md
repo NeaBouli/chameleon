@@ -4,6 +4,32 @@
 ---
 
 ## 2026-05-21 [CC]
+### TYPE: FEAT
+### STATUS: DONE
+### REF: NEA-238
+
+**QR Scanner — AddContactScreen implementiert**
+
+Neue Dateien:
+- `data/.../dao/ContactKeyDao.kt` — Room DAO für `contact_keys` Tabelle
+- `presentation/.../screen/AddContactScreen.kt` — ZXing QR Scanner + Paste-Feld
+- `presentation/.../viewmodel/AddContactViewModel.kt` — URI-Parsing, Ed25519-Verifikation, DB-Speicherung
+
+Geänderte Dateien:
+- `ChameleonDatabase`: `contactKeyDao()` exponiert
+- `AppModule`: `ContactKeyDao` via Hilt bereitgestellt
+- `Screen.kt`: `AddContact = "add_contact"` Route hinzugefügt
+- `StealthXNavGraph.kt`: `AddContactScreen` eingebunden; `MessengerScreen.onAddContact` → `Screen.AddContact` (war `Screen.KeyExchange`)
+- `presentation/build.gradle.kts`: `:stealthx-crypto` als direkter Dep (für `ChameleonCrypto.verify`)
+
+URI-Format: `stealthx://add/<sxId>?x=<x25519_b64url>&e=<ed25519_b64url>&s=<sig_b64url>&c=<createdAt>&h=<handle>`
+Verifikation: Ed25519-Signatur über Payload `sxId|handle|x25519hex|ed25519hex|createdAt`
+
+Commit: `50e0520` | Build ✅ | S10 ✅ S7 ✅ Tab S4 ✅ | Linear NEA-238 Done ✅
+
+---
+
+## 2026-05-21 [CC]
 ### TYPE: FIX
 ### STATUS: DONE
 ### REF: NEA-237 | CODEX-CONCERN (Decoy Tier Gate)
