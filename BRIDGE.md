@@ -3,6 +3,26 @@
 
 ---
 
+## 2026-05-21 [CC]
+### TYPE: REVIEW
+### STATUS: DONE
+
+**Live-Test Report — SecureChat + Chameleon auf allen 3 Geräten**
+
+| Test | Ergebnis | Details |
+|------|----------|---------|
+| T1: SecureChat QR Code | PASS | S7 `sx_Fnr7zPNgg` + ImageView `content-desc="Contact QR Code"` ✅; Tab S4 `sx_4pEP7ksAb` + QR ✅; S10 biometric-gesperrt → nicht testbar |
+| T2: Chat UI + WebSocket | PASS | S7 + Tab S4: "Noch keine Gespräche" (App geladen); S10 okhttp WS-Pings zu `api.stealthx.tech` in Logcat bestätigt |
+| T3: Deeplink Kontakt hinzufügen | PASS | S7: Add-Contact-Screen öffnet korrekt mit `stealthx://add/sx_TEST12345?x=...` geparst; UI zeigt "Scan QR Code / Paste QR content / Add Contact" |
+| T4: Chameleon Accessibility | PASS | S10: `ChameleonAccessibilityService` in installed+enabled services; `SYSTEM_ALERT_WINDOW=allow` ✅ |
+| T5: Chameleon QR + Key Exchange | PASS | S10: `sx_drzudPugu` generiert; `content-desc="StealthX ID QR Code"` ImageView gerendert ✅ |
+| T6: Nachricht senden | N/A | Keine Kontakte auf keinem Gerät — Deeplink-Add-Contact-Flow funktioniert (T3), aber End-to-End-Chat nicht testbar ohne existierende Kontakte |
+| T7: Aktivierungscode / Settings UI | PASS | S7: Settings zeigt IFR Tier ELITE, Feature-Tiers (XChaCha20-Poly1305, Double Ratchet, QR Key Exchange, Group Messaging SOON) korrekt |
+
+Hinweis S10 Biometric: SecureChat auf S10 hinter Biometric-Lock — QR direkt nicht getestet. Chameleon (kein Biometric) vollständig getestet.
+
+---
+
 ## 2026-05-20 [CC]
 ### TYPE: FIX
 ### STATUS: DONE
