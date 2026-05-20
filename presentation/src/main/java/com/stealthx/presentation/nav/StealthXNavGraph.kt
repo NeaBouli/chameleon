@@ -39,6 +39,7 @@ import com.stealthx.features.overlay.screen.OverlayScreen
 import com.stealthx.features.privatezone.screen.PrivateZoneScreen
 import com.stealthx.features.privatezone.screen.PrivateZoneViewModel
 import com.stealthx.ifr.compose.TierGatedContent
+import com.stealthx.presentation.screen.AddContactScreen
 import com.stealthx.presentation.screen.DashboardScreen
 import com.stealthx.presentation.screen.IFRUnlockScreen
 import com.stealthx.presentation.screen.KeyExchangeScreen
@@ -102,7 +103,7 @@ fun StealthXNavGraph(navController: NavHostController) {
             ) {
                 FeatureScaffold(title = "Messenger", onBack = { navController.popBackStack() }) { modifier ->
                     MessengerScreen(
-                        onAddContact = { navController.navigate(Screen.KeyExchange.route) },
+                        onAddContact = { navController.navigate(Screen.AddContact.route) },
                         modifier = modifier
                     )
                 }
@@ -224,6 +225,13 @@ fun StealthXNavGraph(navController: NavHostController) {
         composable(Screen.KeyExchange.route) {
             KeyExchangeScreen(
                 onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.AddContact.route) {
+            AddContactScreen(
+                onBack = { navController.popBackStack() },
+                onContactAdded = { navController.popBackStack() }
             )
         }
     }

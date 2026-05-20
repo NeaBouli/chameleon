@@ -24,6 +24,7 @@ android {
 dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
+    implementation(project(":stealthx-crypto"))
     implementation(project(":core"))
     implementation(project(":features:overlay"))
     implementation(project(":features:messenger"))

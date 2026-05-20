@@ -9,6 +9,7 @@ import android.content.Context
 import android.util.Base64
 import com.stealthx.data.ChameleonDatabase
 import com.stealthx.data.dao.AuditLogDao
+import com.stealthx.data.dao.ContactKeyDao
 import com.stealthx.data.dao.CryptoKeyDao
 import com.stealthx.data.dao.IfrTierCacheDao
 import com.stealthx.data.dao.SecureRuleDao
@@ -60,6 +61,9 @@ object AppModule {
 
     @Provides
     fun provideCryptoKeyDao(db: ChameleonDatabase): CryptoKeyDao = db.cryptoKeyDao()
+
+    @Provides
+    fun provideContactKeyDao(db: ChameleonDatabase): ContactKeyDao = db.contactKeyDao()
 
     @Provides
     fun provideAuditLogDao(db: ChameleonDatabase): AuditLogDao = db.auditLogDao()
