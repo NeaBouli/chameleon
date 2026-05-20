@@ -3,6 +3,26 @@
 
 ---
 
+## 2026-05-20 [CC]
+### TYPE: FIX
+### STATUS: DONE
+
+**QR-Code Fix — KeyExchangeScreen implementiert**
+
+Root-Cause: `KeyExchangeScreen.kt` hatte `[QR Code]` als Literal-Placeholder — nie implementiert.
+
+Fix:
+- `LaunchedEffect(Unit)` + `withContext(Dispatchers.IO)`: `StealthXIdentity.getOrCreateWithSeed()` + ZXing QRCodeWriter off main thread
+- QR-Content: `stealthx://add/<sx_id>` (Identity DeepLink)
+- `isLoading`-State → CircularProgressIndicator während Load
+- `Surface(color = Color.White)` für QR-Hintergrund (schwarz/weiß QR immer sichtbar)
+- Share-Button → `ACTION_SEND` mit Identity-Link
+- Tab-Title: "Key Exchange" → "My Identity"
+
+Commit: pending
+
+---
+
 ## 2026-05-19 [CC]
 ### TYPE: FIX
 ### STATUS: DONE
