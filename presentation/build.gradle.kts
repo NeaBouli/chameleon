@@ -47,4 +47,10 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     debugImplementation(libs.compose.ui.tooling)
+    testImplementation(libs.junit5.api)
+    testRuntimeOnly(libs.junit5.engine)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
 }
+
+tasks.withType<Test> { useJUnitPlatform() }

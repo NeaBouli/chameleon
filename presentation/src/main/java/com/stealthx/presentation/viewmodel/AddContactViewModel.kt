@@ -5,16 +5,19 @@
  */
 package com.stealthx.presentation.viewmodel
 
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stealthx.crypto.ChameleonCrypto
 import com.stealthx.data.dao.ContactKeyDao
 import com.stealthx.data.entity.ContactKeyEntity
+import com.stealthx.shared.SxIdValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.net.URI
+import java.net.URLDecoder
+import java.util.Base64
 import javax.inject.Inject
 
 data class AddContactUiState(
@@ -61,55 +64,64 @@ class AddContactViewModel @Inject constructor(
     }
 
     private suspend fun parseAndSave(content: String) {
-        val uri = Uri.parse(content)
-        val segments = uri.pathSegments
-        val sxId = segments.lastOrNull()
-            ?: throw IllegalArgumentException("Missing sx_ ID in URI")
-        if (!sxId.startsWith("sx_")) throw IllegalArgumentException("Invalid sx_ ID: $sxId")
+        // Use java.net.URI — no Android dependency, fully testable in JVM tests
+        val uri = URI(content)
+        val sxId = uri.path.substringAfterLast('/')
 
-        val decoder = java.util.Base64.getUrlDecoder()
+        // FIX 1: strict sx_ ID validation via shared validator
+        SxIdValidator.requireValid(sxId)
 
-        val xParam = uri.getQueryParameter("x")
-            ?: throw IllegalArgumentException("Missing x (X25519 key)")
-        val eParam = uri.getQueryParameter("e")
-            ?: throw IllegalArgumentException("Missing e (Ed25519 key)")
-        val sParam = uri.getQueryParameter("s")
-            ?: throw IllegalArgumentException("Missing s (signature)")
-        val cParam = uri.getQueryParameter("c")
-            ?: throw IllegalArgumentException("Missing c (createdAt)")
+        val params = uri.rawQuery
+            ?.split("&")
+            ?.associate { part ->
+                val eq = part.indexOf('=')
+                if (eq < 0) part to ""
+                else part.substring(0, eq) to URLDecoder.decode(part.substring(eq + 1), "UTF-8")
+            } ?: emptyMap()
 
-        val x25519 = decoder.decode(xParam)
-        val ed25519 = decoder.decode(eParam)
-        val signature = decoder.decode(sParam)
-        val createdAt = cParam.toLongOrNull()
-            ?: throw IllegalArgumentException("Invalid createdAt: $cParam")
-        val handle = uri.getQueryParameter("h")
+        val decoder = Base64.getUrlDecoder()
+
+        val xParam = params["x"] ?: throw IllegalArgumentException("Missing x (X25519 key)")
+        val eParam = params["e"] ?: throw IllegalArgumentException("Missing e (Ed25519 key)")
+        val sParam = params["s"] ?: throw IllegalArgumentException("Missing s (signature)")
+        val cParam = params["c"] ?: throw IllegalArgumentException("Missing c (createdAt)")
+
+        val x25519   = runCatching { decoder.decode(xParam) }.getOrElse { throw IllegalArgumentException("Invalid base64url in x") }
+        val ed25519  = runCatching { decoder.decode(eParam) }.getOrElse { throw IllegalArgumentException("Invalid base64url in e") }
+        val signature = runCatching { decoder.decode(sParam) }.getOrElse { throw IllegalArgumentException("Invalid base64url in s") }
+        val createdAt = cParam.toLongOrNull() ?: throw IllegalArgumentException("Invalid createdAt: $cParam")
+        val handle    = params["h"]?.takeIf { it.isNotEmpty() }
+
+        // FIX 3: key and signature length validation
+        require(x25519.size == 32)    { "Invalid X25519 key length: ${x25519.size} (expected 32)" }
+        require(ed25519.size == 32)   { "Invalid Ed25519 key length: ${ed25519.size} (expected 32)" }
+        require(signature.size == 64) { "Invalid signature length: ${signature.size} (expected 64)" }
 
         val payload = buildString {
             append(sxId); append("|")
             append(handle ?: ""); append("|")
-            append(x25519.joinToString("") { b: Byte -> "%02x".format(b.toInt() and 0xFF) }); append("|")
-            append(ed25519.joinToString("") { b: Byte -> "%02x".format(b.toInt() and 0xFF) }); append("|")
+            append(x25519.joinToString("")   { b: Byte -> "%02x".format(b.toInt() and 0xFF) }); append("|")
+            append(ed25519.joinToString("")  { b: Byte -> "%02x".format(b.toInt() and 0xFF) }); append("|")
             append(createdAt.toString())
         }.toByteArray(Charsets.UTF_8)
 
-        val isVerified = runCatching {
-            ChameleonCrypto.verify(payload, signature, ed25519)
-        }.getOrDefault(false)
+        // FIX 2: fail-closed — invalid signature → throw, not saved
+        val isVerified = runCatching { ChameleonCrypto.verify(payload, signature, ed25519) }.getOrDefault(false)
+        if (!isVerified) throw SecurityException("Signature verification failed — bundle rejected")
 
         val existing = contactKeyDao.getById(sxId)
         if (existing != null) throw IllegalStateException("Contact $sxId already exists")
 
         contactKeyDao.upsert(
             ContactKeyEntity(
-                id = sxId,
+                id          = sxId,
                 displayName = handle ?: sxId,
                 identityKey = ed25519,
                 dhPublicKey = x25519,
-                signature = signature,
-                isVerified = isVerified,
-                createdAt = createdAt,
-                lastUsedAt = null
+                signature   = signature,
+                isVerified  = true,
+                createdAt   = createdAt,
+                lastUsedAt  = null
             )
         )
     }
