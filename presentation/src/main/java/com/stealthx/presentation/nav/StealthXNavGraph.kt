@@ -176,7 +176,7 @@ fun StealthXNavGraph(navController: NavHostController) {
         composable(Screen.Decoy.route) {
             TierGatedContent(
                 currentTier = currentTier,
-                requiredTier = IfrTier.PRO,
+                requiredTier = IfrTier.ELITE,
                 featureName = "Decoy Profile",
                 onUnlockClicked = { navController.navigate(Screen.IFRUnlock.route) }
             ) {
