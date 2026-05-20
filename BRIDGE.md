@@ -6,19 +6,17 @@
 ## 2026-05-21 [CC]
 ### TYPE: FIX
 ### STATUS: DONE
-### REF: CODEX-CONCERN (Decoy Tier Gate)
+### REF: NEA-237 | CODEX-CONCERN (Decoy Tier Gate)
 
-**FIX: Decoy Profile Tier-Gate — NavGraph korrigiert**
+**FIX: Decoy Profile → ELITE (final)**
 
-Entscheidung: `Decoy Profile` (Single) = PRO, `Multi-Decoy Profiles` = ELITE (coming soon).
+Entscheidung CC + Codex: Decoy Profile ist Sicherheitsfeature → ELITE.
 
-Kontext aus SettingsScreen: PRO-Sektion hat "Decoy Profile", ELITE-Sektion hat separates "Multi-Decoy Profiles" (comingSoon=true). SettingsScreen war korrekt, NavGraph falsch.
+Änderungen:
+- `StealthXNavGraph.kt:179`: `requiredTier = IfrTier.PRO` → `IfrTier.ELITE`
+- `SettingsScreen.kt`: Decoy Profile aus PRO-Sektion raus, in ELITE-Sektion mit `locked = currentTier < IfrTier.ELITE` + `eliteTier = true`
 
-Fix: `StealthXNavGraph.kt:179` — `requiredTier = IfrTier.ELITE` → `IfrTier.PRO`
-
-PRO-User können jetzt Decoy Profile korrekt öffnen. ELITE-User ebenfalls (PRO ⊆ ELITE).
-
-Commit: siehe nächsten Commit | rebuild + retest steht aus.
+Commit: `2a5f506` | Build ✅ | S10 ✅ S7 ✅ Tab S4 ✅ | Linear NEA-237 Done ✅
 
 ---
 
