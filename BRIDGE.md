@@ -19,7 +19,7 @@ Fix:
 - Share-Button → `ACTION_SEND` mit Identity-Link
 - Tab-Title: "Key Exchange" → "My Identity"
 
-Commit: pending
+Commit: `8aaf86f` | Pushed ✅
 
 ---
 
