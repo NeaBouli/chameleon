@@ -4,6 +4,19 @@
 ---
 
 ## 2026-05-20 [CC]
+### TYPE: MEMO
+### STATUS: INFO
+
+**Session-Abschluss — offene Punkte für Codex**
+
+- NEA-218: Certificate Pinning — `ActivationCodeClient.kt` in Chameleon + SecureChat noch offen
+- NEA-212 follow-up: `KeystoreManager.getOrCreateSigningKeyPair()` ungenutzter Pfad → deprecate or remove
+- NEA-213: Cross-App QR Import Test (Chameleon QR → SecureChat `NewContactViewModel`) noch nicht getestet
+- T6 E2E-Chat: braucht Kontakte auf mind. 2 Geräten — weiterhin offen
+
+---
+
+## 2026-05-20 [CC]
 ### TYPE: SECURITY
 ### STATUS: DONE
 ### REF: NEA-238 | CODEX-CONCERN (fail-closed QR import)
