@@ -64,19 +64,25 @@ import kotlinx.coroutines.withContext
 fun KeyExchangeScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     var identity by remember { mutableStateOf<StealthXId?>(null) }
+    var qrUri by remember { mutableStateOf<String?>(null) }
     var qrBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var isLoading by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
-        withContext(Dispatchers.IO) {
+        val (id, uri, bitmap) = withContext(Dispatchers.IO) {
             val id = runCatching { StealthXIdentity.getOrCreateWithSeed(context) }.getOrNull()
-            val bitmap = if (id != null) {
-                runCatching { generateQrBitmap(id.qrContent) }.getOrNull()
+            val uri = if (id != null) {
+                runCatching { StealthXIdentity.createQrContent(context) }.getOrNull()
             } else null
-            identity = id
-            qrBitmap = bitmap
-            isLoading = false
+            val bitmap = if (uri != null) {
+                runCatching { generateQrBitmap(uri) }.getOrNull()
+            } else null
+            Triple(id, uri, bitmap)
         }
+        identity = id
+        qrUri = uri
+        qrBitmap = bitmap
+        isLoading = false
     }
 
     Scaffold(
@@ -141,7 +147,11 @@ fun KeyExchangeScreen(onBack: () -> Unit) {
                             contentDescription = "StealthX ID QR Code",
                             modifier = Modifier.size(196.dp)
                         )
-                        else -> Text("QR unavailable", color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
+                        else -> Text(
+                            "QR unavailable",
+                            color = MaterialTheme.colorScheme.error,
+                            textAlign = TextAlign.Center
+                        )
                     }
                 }
             }
@@ -150,14 +160,14 @@ fun KeyExchangeScreen(onBack: () -> Unit) {
 
             Button(
                 onClick = {
-                    val link = identity?.qrContent ?: return@Button
+                    val link = qrUri ?: return@Button
                     val intent = Intent(Intent.ACTION_SEND).apply {
                         type = "text/plain"
                         putExtra(Intent.EXTRA_TEXT, link)
                     }
                     context.startActivity(Intent.createChooser(intent, "Share StealthX ID"))
                 },
-                enabled = identity != null,
+                enabled = qrUri != null,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = StealthXColors.Primary)
             ) {

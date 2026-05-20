@@ -41,6 +41,8 @@ object StealthXIdentity {
     private const val KEY_CREATED_AT = "created_at"
     private const val KEY_ED25519_PUBLIC = "ed25519_public"
     private const val KEY_ED25519_PRIVATE = "ed25519_private"
+    private const val KEY_X25519_PUBLIC = "x25519_public"
+    private const val KEY_X25519_PRIVATE = "x25519_private"
     private const val ID_PREFIX = "sx_"
     private val B64 = Base64.NO_WRAP
 
@@ -89,7 +91,62 @@ object StealthXIdentity {
         )
     }
 
+    /**
+     * Generates the full signed public-key bundle as a QR URI.
+     * Format: stealthx://add/<sxId>?x=<x25519>&e=<ed25519>&s=<sig>&c=<createdAt>
+     * Matches SecureChat's PublicKeyBundleQr.toQrContent() exactly.
+     */
+    fun createQrContent(context: Context): String {
+        val identity = getOrCreateWithSeed(context)
+        val prefs = getEncryptedPrefs(context)
+        ensureKeyPairs(prefs)
+        val x25519 = prefs.getString(KEY_X25519_PUBLIC, null)!!.fromBase64()
+        val ed25519 = prefs.getString(KEY_ED25519_PUBLIC, null)!!.fromBase64()
+        val edPrivate = prefs.getString(KEY_ED25519_PRIVATE, null)!!.fromBase64()
+        val createdAt = identity.createdAt.takeIf { it > 0L } ?: System.currentTimeMillis()
+        val payload = buildSignPayload(identity.raw, identity.customHandle, x25519, ed25519, createdAt)
+        val signature = ChameleonCrypto.sign(payload, edPrivate)
+        ChameleonCrypto.wipeBytes(edPrivate)
+        val encoder = java.util.Base64.getUrlEncoder().withoutPadding()
+        val x = encoder.encodeToString(x25519)
+        val e = encoder.encodeToString(ed25519)
+        val s = encoder.encodeToString(signature)
+        val handle = identity.customHandle
+            ?.let { "&h=${java.net.URLEncoder.encode(it, "UTF-8")}" } ?: ""
+        return "stealthx://add/${identity.raw}?x=$x&e=$e&s=$s&c=$createdAt$handle"
+    }
+
+    private fun ensureKeyPairs(prefs: SharedPreferences) {
+        if (prefs.getString(KEY_X25519_PUBLIC, null) != null &&
+            prefs.getString(KEY_ED25519_PUBLIC, null) != null
+        ) return
+        val (xPublic, xPrivate) = ChameleonCrypto.generateX25519KeyPair()
+        val (edPublic, edPrivate) = ChameleonCrypto.generateSigningKeyPair()
+        prefs.edit()
+            .putString(KEY_X25519_PUBLIC, xPublic.toBase64())
+            .putString(KEY_X25519_PRIVATE, xPrivate.toBase64())
+            .putString(KEY_ED25519_PUBLIC, edPublic.toBase64())
+            .putString(KEY_ED25519_PRIVATE, edPrivate.toBase64())
+            .apply()
+    }
+
+    private fun buildSignPayload(
+        sxId: String,
+        handle: String?,
+        x25519: ByteArray,
+        ed25519: ByteArray,
+        createdAt: Long
+    ): ByteArray = buildString {
+        append(sxId); append("|")
+        append(handle ?: ""); append("|")
+        append(x25519.joinToString("") { "%02x".format(it) }); append("|")
+        append(ed25519.joinToString("") { "%02x".format(it) }); append("|")
+        append(createdAt.toString())
+    }.toByteArray(Charsets.UTF_8)
+
     private fun ByteArray.toBase64(): String = Base64.encodeToString(this, B64)
+
+    private fun String.fromBase64(): ByteArray = Base64.decode(this, B64)
 
     /**
      * Returns the Unified ID — creates it on first call.
