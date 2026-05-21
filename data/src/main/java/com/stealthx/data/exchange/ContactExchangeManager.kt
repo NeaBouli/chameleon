@@ -55,6 +55,19 @@ class ContactExchangeManager @Inject constructor(
 
     @Volatile private var listenerWs: WebSocket? = null
 
+    fun sendExchange(toSxId: String) {
+        ioScope.launch {
+            runCatching {
+                val bundle = StealthXIdentity.createQrContent(context)
+                listenerWs?.send(JSONObject().apply {
+                    put("type", "CONTACT_EXCHANGE")
+                    put("to", toSxId)
+                    put("bundle", bundle)
+                }.toString())
+            }
+        }
+    }
+
     fun startListening() {
         if (listenerWs != null) return
         val mySxId = StealthXIdentity.get(context)?.raw ?: return
