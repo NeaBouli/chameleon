@@ -66,16 +66,28 @@ class AddContactViewModel @Inject constructor(
     private fun sendExchange(toSxId: String) {
         ioScope.launch {
             try {
+                val mySxId = StealthXIdentity.get(context)?.raw ?: return@launch
                 val myBundle = StealthXIdentity.createQrContent(context)
                 val req = Request.Builder().url(SIGNAL_URL).build()
                 exchangeClient.newWebSocket(req, object : WebSocketListener() {
                     override fun onOpen(ws: WebSocket, response: Response) {
                         ws.send(JSONObject().apply {
-                            put("type", "CONTACT_EXCHANGE")
-                            put("to", toSxId)
-                            put("bundle", myBundle)
+                            put("type", "IDENTIFY")
+                            put("sxId", mySxId)
                         }.toString())
-                        ws.close(1000, null)
+                    }
+                    override fun onMessage(ws: WebSocket, text: String) {
+                        try {
+                            val json = JSONObject(text)
+                            if (json.optString("type") == "IDENTIFY_ACK") {
+                                ws.send(JSONObject().apply {
+                                    put("type", "CONTACT_EXCHANGE")
+                                    put("to", toSxId)
+                                    put("bundle", myBundle)
+                                }.toString())
+                                ws.close(1000, null)
+                            }
+                        } catch (_: Exception) {}
                     }
                     override fun onFailure(ws: WebSocket, t: Throwable, response: Response?) {}
                 })
