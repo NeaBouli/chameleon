@@ -7,6 +7,7 @@ package com.stealthx.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.stealthx.data.exchange.ContactExchangeManager
 import com.stealthx.domain.repository.SecureRuleRepository
 import com.stealthx.domain.rules.SecureRule
 import com.stealthx.domain.tier.TierGate
@@ -24,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val tierGate: TierGate,
-    private val ruleRepository: SecureRuleRepository
+    private val ruleRepository: SecureRuleRepository,
+    private val contactExchangeManager: ContactExchangeManager,
 ) : ViewModel() {
 
     val currentTier: StateFlow<IfrTier> = tierGate.currentTier
@@ -37,6 +39,7 @@ class DashboardViewModel @Inject constructor(
     val activeRules: StateFlow<List<SecureRule>> = _activeRules.asStateFlow()
 
     init {
+        contactExchangeManager.startListening()
         viewModelScope.launch {
             tierGate.getTier()
         }
