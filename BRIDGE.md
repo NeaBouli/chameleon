@@ -1855,3 +1855,19 @@ Identisch zu securechat. Kann bei Bedarf in `ContactImport` oder künftigen KeyE
 Leaf-Cert api.stealthx.tech rotiert 2026-08-14.
 ActivationCodeClient.kt Pin muss erneuert werden.
 Anleitung: stealth/docs/agent-bridge/BRIDGE.md
+
+## 2026-05-21 CC
+### TYPE: FIX
+### STATUS: DONE
+
+NEA-213 FIX 1 — Chameleon Incoming CONTACT_EXCHANGE Listener
+
+`data/exchange/ContactExchangeManager.kt` erstellt:
+- `@Singleton`, persistente WebSocket-Verbindung (0 readTimeout, 30s ping)
+- IDENTIFY on open, parst + verifiziert eingehende bundles via ChameleonCrypto.verify
+- Doppel-Schutz: existing contact → skip; bad sig → drop
+- `DashboardViewModel` injiziert Manager, ruft `startListening()` in init {}
+- Build: SUCCESS — installiert auf S7 + Tab S4
+- Commits: 3f02067 — pushed main
+
+TEST-ERGEBNIS: Build grün. Install auf ce10160adc00152604 + ce12182c68644439037e: Success.
