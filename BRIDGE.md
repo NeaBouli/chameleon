@@ -3,6 +3,26 @@
 
 ---
 
+## 2026-05-21 [CC]
+### TYPE: FEAT
+### STATUS: DONE
+### REF: NEA-213
+
+**QR Scan Flow Fix + Outgoing Contact Exchange**
+
+1. `AddContactScreen`: Nach QR-Scan → `addFromQrContent` automatisch aufgerufen
+2. `AddContactScreen`: "Paste QR content" Card liest aus System-Clipboard
+3. `AddContactViewModel`: Nach Save → `sendExchange(sxId)` via WebSocket
+   Message: `{type: "CONTACT_EXCHANGE", to: sxId, bundle: myQrUri}`
+4. `presentation/build.gradle.kts`: `okhttp` als direkter Dep hinzugefügt
+
+Hinweis: Incoming Listener (receive side) ist in SecureChat implementiert,
+in Chameleon noch nicht (kein persistentes Start-Screen verfügbar).
+
+Commit: `80b3721` | Build ✅ | S7 ✅ Tab S4 ✅ | Push ✅
+
+---
+
 ## 2026-05-20 [CC]
 ### TYPE: SECURITY
 ### STATUS: DONE
