@@ -5,19 +5,33 @@
  */
 package com.stealthx.presentation.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stealthx.crypto.ChameleonCrypto
 import com.stealthx.data.dao.ContactKeyDao
 import com.stealthx.data.entity.ContactKeyEntity
+import com.stealthx.data.identity.StealthXIdentity
 import com.stealthx.shared.SxIdValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import okhttp3.CertificatePinner
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.WebSocket
+import okhttp3.WebSocketListener
+import org.json.JSONObject
 import java.net.URI
 import java.net.URLDecoder
 import java.util.Base64
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 data class AddContactUiState(
@@ -29,8 +43,45 @@ data class AddContactUiState(
 
 @HiltViewModel
 class AddContactViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val contactKeyDao: ContactKeyDao
 ) : ViewModel() {
+
+    private companion object {
+        const val SIGNAL_URL = "wss://api.stealthx.tech/signal"
+    }
+
+    private val certPinner = CertificatePinner.Builder()
+        .add("api.stealthx.tech", "sha256/1e85xNSEj+dcImOJS0iNkfMZOrZdvJJzzPCqT1/CZDc=")
+        .add("api.stealthx.tech", "sha256/kZwN96eHtZftBWrOZUsd6cA4es80n3NzSk/XtYz2EqQ=")
+        .build()
+
+    private val exchangeClient = OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .certificatePinner(certPinner)
+        .build()
+
+    private val ioScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+    private fun sendExchange(toSxId: String) {
+        ioScope.launch {
+            try {
+                val myBundle = StealthXIdentity.createQrContent(context)
+                val req = Request.Builder().url(SIGNAL_URL).build()
+                exchangeClient.newWebSocket(req, object : WebSocketListener() {
+                    override fun onOpen(ws: WebSocket, response: Response) {
+                        ws.send(JSONObject().apply {
+                            put("type", "CONTACT_EXCHANGE")
+                            put("to", toSxId)
+                            put("bundle", myBundle)
+                        }.toString())
+                        ws.close(1000, null)
+                    }
+                    override fun onFailure(ws: WebSocket, t: Throwable, response: Response?) {}
+                })
+            } catch (_: Exception) {}
+        }
+    }
 
     private val _uiState = MutableStateFlow(AddContactUiState())
     val uiState: StateFlow<AddContactUiState> = _uiState
@@ -124,5 +175,7 @@ class AddContactViewModel @Inject constructor(
                 lastUsedAt  = null
             )
         )
+
+        sendExchange(sxId)
     }
 }
