@@ -1,0 +1,60 @@
+language: "de-DE"
+
+reviews:
+  profile: "assertive"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - main
+
+  path_filters:
+    - "!**/BRIDGE.md"
+    - "!**/*.md"
+    - "!**/build/**"
+    - "!**/.gradle/**"
+    - "!**/local.properties"
+
+  path_instructions:
+    - path: "**/*.kt"
+      instructions: |
+        Sicherheitskritische Kotlin/Android App (Overlay/Chameleon-System, E2E-Verschlüsselung, XChaCha20-Poly1305).
+        Prüfe auf:
+        - Android API-Kompatibilität: minSdk 26 — keine API > 26 ohne @RequiresApi oder Fallback
+        - Overlay-Permissions: TYPE_APPLICATION_OVERLAY korrekt abgefragt, kein Bypass
+        - Kryptographie: kein Klartext-Fallback, kein fail-open bei null-Crypto-Ergebnissen
+        - Hilt DI: kein zirkulärer Inject, @Singleton mit mutableem State thread-safe
+        - Coroutines: kein Compose-State aus IO-Dispatcher, kein runBlocking im Main-Thread
+        - Room/SQLCipher: kein raw query ohne Parameter-Binding
+        - TierGate: Elite-Features nur per TierGate.requiresElite() am Sink, nicht nur im UI
+        - IFR-Verifizierung: lockedBalance (nicht lockedAmount) — Regression-Check
+        - Secrets: keine hardcodierten Keys oder API-Tokens
+
+    - path: "**/crypto/**/*.kt"
+      instructions: |
+        Crypto-Kernmodul — höchste Priorität.
+        Prüfe: Nonce-Einzigartigkeit, AAD-Validierung, paddedLength-Korrektheit,
+        DoubleRatchet Chain-Advancement, kein unwrap/force-unwrap bei Crypto-Ergebnissen.
+
+    - path: "**/*Overlay*.kt"
+      instructions: |
+        Overlay-System: Prüfe Permission-Checks vor jedem WindowManager.addView(),
+        korrekte removeView() in onDestroy/onError, kein Memory-Leak durch nicht entfernte Views.
+
+    - path: "**/*Repository*.kt"
+      instructions: |
+        Prüfe: Thread-Safety, atomische Tier-Checks, TierLimitException korrekt propagiert.
+
+    - path: "**/*ViewModel*.kt"
+      instructions: |
+        Prüfe: StateFlow korrekt initialisiert, kein ephemerer State für persistente Settings,
+        Error-States vollständig (kein silent failure).
+
+chat:
+  auto_reply: true
