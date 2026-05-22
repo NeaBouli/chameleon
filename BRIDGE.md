@@ -3,6 +3,33 @@
 
 ---
 
+## 2026-05-22 [CC]
+### TYPE: FEAT
+### STATUS: DONE — DEPLOYED
+### Commit: 8b522b7
+
+**ContactListenerService — Foreground WS Keep-Alive**
+
+`DashboardViewModel.init` rief `startListening()` auf — WS stirbt sobald Screen verlassen wird.
+
+**Fix:**
+- `ContactExchangeManager`: `isConnected: Boolean` property hinzugefügt
+- Neue Datei `app/.../service/ContactListenerService.kt`:
+  - `@AndroidEntryPoint` Foreground Service
+  - `START_STICKY` — Android neu-startet Service nach Kill
+  - `startListening()` in `onCreate()`
+  - 30s Reconnect-Loop: `if (!isConnected) startListening()`
+  - Silent Ongoing Notification (IMPORTANCE_MIN, `NOTIFICATION_ID = 7332`)
+- `ChameleonApplication.onCreate`: `startForegroundService(ContactListenerService)` am App-Start
+- `AndroidManifest.xml`:
+  - `INTERNET` + `POST_NOTIFICATIONS` ergänzt (WS-Verbindung war ohne explizite INTERNET-Permission)
+  - `FOREGROUND_SERVICE_DATA_SYNC` hinzugefügt
+  - Service-Eintrag: `foregroundServiceType="dataSync"`
+
+Build: ✅ (43s) | Installed: S7 ✅ S4 ✅
+
+---
+
 ## 2026-05-21 [CC]
 ### TYPE: FEAT
 ### STATUS: DONE
