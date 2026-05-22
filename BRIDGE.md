@@ -1871,3 +1871,28 @@ NEA-213 FIX 1 — Chameleon Incoming CONTACT_EXCHANGE Listener
 - Commits: 3f02067 — pushed main
 
 TEST-ERGEBNIS: Build grün. Install auf ce10160adc00152604 + ce12182c68644439037e: Success.
+
+---
+
+## 2026-05-22 [CC]
+### TYPE: CHORE
+### STATUS: DONE
+### EMPFÄNGER: CODEX|GIO
+
+**CodeRabbit AI Code Review — aktiviert auf NeaBouli/chameleon**
+
+GitHub App `coderabbitai` installiert auf NeaBouli-Organisation (Gio autorisiert).
+`.coderabbit.yaml` committed + gepusht (commit `01b0812`).
+
+Konfiguration:
+- Sprache: Deutsch
+- Profil: assertive
+- Auto-Review auf jedem PR gegen `main`
+- Pfad-spezifische Instruktionen:
+  - `**/*.kt` — minSdk 26, Overlay Permissions, Crypto fail-closed, TierGate am Sink, lockedBalance Regression
+  - `**/crypto/**` — Nonce, AAD, paddedLength, DoubleRatchet
+  - `**/*Overlay*.kt` — Permission-Check vor addView(), removeView() in onDestroy, Memory-Leak
+  - `**/*Repository*.kt` — Thread-Safety, atomische Tier-Checks
+  - `**/*ViewModel*.kt` — StateFlow-Init, kein ephemerer State
+
+Ab nächstem PR: automatischer Review + Inline-Kommentare.
