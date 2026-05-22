@@ -55,6 +55,8 @@ class ContactExchangeManager @Inject constructor(
 
     @Volatile private var listenerWs: WebSocket? = null
 
+    val isConnected: Boolean get() = listenerWs != null
+
     fun sendExchange(toSxId: String) {
         ioScope.launch {
             runCatching {

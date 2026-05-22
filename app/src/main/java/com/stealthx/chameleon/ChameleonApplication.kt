@@ -12,6 +12,8 @@
 package com.stealthx.chameleon
 
 import android.app.Application
+import android.content.Intent
+import com.stealthx.chameleon.service.ContactListenerService
 import com.stealthx.crypto.SodiumInitializer
 import com.stealthx.data.identity.StealthXIdentity
 import dagger.hilt.android.HiltAndroidApp
@@ -37,5 +39,7 @@ class ChameleonApplication : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+
+        startForegroundService(Intent(this, ContactListenerService::class.java))
     }
 }
