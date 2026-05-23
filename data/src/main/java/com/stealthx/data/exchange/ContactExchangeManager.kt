@@ -26,6 +26,7 @@ import org.json.JSONObject
 import java.net.URI
 import java.net.URLDecoder
 import java.util.Base64
+import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -54,14 +55,25 @@ class ContactExchangeManager @Inject constructor(
     private val ioScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     @Volatile private var listenerWs: WebSocket? = null
+    @Volatile private var identified = false
+    private val pendingFrames = ConcurrentLinkedQueue<String>()
 
     val isConnected: Boolean get() = listenerWs != null
+
+    private fun sendOrQueue(frame: String) {
+        if (identified) listenerWs?.send(frame) else pendingFrames.add(frame)
+    }
+
+    private fun drainPending(ws: WebSocket) {
+        var frame = pendingFrames.poll()
+        while (frame != null) { ws.send(frame); frame = pendingFrames.poll() }
+    }
 
     fun sendExchange(toSxId: String) {
         ioScope.launch {
             runCatching {
                 val bundle = StealthXIdentity.createQrContent(context)
-                listenerWs?.send(JSONObject().apply {
+                sendOrQueue(JSONObject().apply {
                     put("type", "CONTACT_EXCHANGE")
                     put("to", toSxId)
                     put("bundle", bundle)
@@ -85,21 +97,24 @@ class ContactExchangeManager @Inject constructor(
             override fun onMessage(ws: WebSocket, text: String) {
                 runCatching {
                     val json = JSONObject(text)
-                    if (json.optString("type") == "CONTACT_EXCHANGE") {
-                        val bundle = json.optString("bundle")
-                        if (bundle.startsWith("stealthx://add/")) {
-                            ioScope.launch { parseAndSave(bundle) }
+                    when (json.optString("type")) {
+                        "IDENTIFY_ACK" -> { identified = true; drainPending(ws) }
+                        "CONTACT_EXCHANGE" -> {
+                            val bundle = json.optString("bundle")
+                            if (bundle.startsWith("stealthx://add/")) {
+                                ioScope.launch { parseAndSave(bundle) }
+                            }
                         }
                     }
                 }
             }
 
             override fun onFailure(ws: WebSocket, t: Throwable, response: Response?) {
-                listenerWs = null
+                listenerWs = null; identified = false
             }
 
             override fun onClosed(ws: WebSocket, code: Int, reason: String) {
-                listenerWs = null
+                listenerWs = null; identified = false
             }
         })
     }
