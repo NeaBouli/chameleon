@@ -13,6 +13,7 @@ import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,8 +21,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -45,6 +50,7 @@ fun GeofencingScreen(
     state: GeofencingUiState,
     onPermissionResult: () -> Unit,
     onAddGeofence: (label: String, latitude: String, longitude: String, radius: String) -> Unit,
+    onRemoveZone: (id: String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var label by remember { mutableStateOf("") }
@@ -208,19 +214,31 @@ fun GeofencingScreen(
             }
         }
 
-        items(state.zones) { zone ->
+        items(state.zones, key = { it.id }) { zone ->
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp),
                 color = MaterialTheme.colorScheme.surfaceVariant
             ) {
-                Column(modifier = Modifier.padding(12.dp)) {
-                    Text(zone.label, style = MaterialTheme.typography.titleSmall)
-                    Text(
-                        "${zone.latitude}, ${zone.longitude} • ${zone.radiusMeters.toInt()}m",
-                        style = MaterialTheme.typography.bodySmall
-                    )
+                Row(
+                    modifier = Modifier.padding(start = 12.dp, top = 4.dp, bottom = 4.dp),
+                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(zone.label, style = MaterialTheme.typography.titleSmall)
+                        Text(
+                            "${zone.latitude}, ${zone.longitude} • ${zone.radiusMeters.toInt()}m",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                    IconButton(onClick = { onRemoveZone(zone.id) }) {
+                        Icon(
+                            Icons.Default.Delete,
+                            contentDescription = "Remove zone",
+                            tint = Color(0xFFFF6B6B)
+                        )
+                    }
                 }
             }
         }

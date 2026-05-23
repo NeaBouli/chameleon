@@ -118,6 +118,13 @@ class GeofencingViewModel @Inject constructor(
         }
     }
 
+    fun removeZone(id: String) {
+        runCatching { engine.removeGeofence(id) }
+        val updated = _uiState.value.zones.filter { it.id != id }
+        prefs.geofenceZones = updated.map(::encodeZone).toSet()
+        _uiState.value = _uiState.value.copy(zones = updated, statusMessage = "Zone removed")
+    }
+
     private fun geofencePendingIntent(): PendingIntent {
         val intent = Intent(context, GeofenceTransitionReceiver::class.java)
         val flags = PendingIntent.FLAG_UPDATE_CURRENT or

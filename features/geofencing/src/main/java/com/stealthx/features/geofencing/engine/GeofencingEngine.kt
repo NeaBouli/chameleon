@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.Task
 import com.stealthx.domain.tier.TierGate
 import com.stealthx.shared.model.IfrTier
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.util.concurrent.CopyOnWriteArraySet
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -48,6 +49,8 @@ class GeofencingEngine @Inject constructor(
         LocationServices.getGeofencingClient(context)
     }
 
+    private val registeredIds = CopyOnWriteArraySet<String>()
+
     data class GeofenceConfig(
         val id: String,
         val latitude: Double,
@@ -80,19 +83,29 @@ class GeofencingEngine @Inject constructor(
             .build()
 
         return geofencingClient.addGeofences(request, pendingIntent)
+            .also { registeredIds.add(config.id) }
     }
 
     /** Fire-and-forget variant for BootReceiver — no Task return type to resolve. */
     @SuppressLint("MissingPermission")
     fun addGeofenceSilent(config: GeofenceConfig, pendingIntent: PendingIntent) {
-        runCatching { addGeofence(config, pendingIntent) }
+        runCatching {
+            addGeofence(config, pendingIntent)
+            registeredIds.add(config.id)
+        }
     }
 
     fun removeGeofence(geofenceId: String) {
         geofencingClient.removeGeofences(listOf(geofenceId))
+        registeredIds.remove(geofenceId)
     }
 
+    /** Removes all currently registered geofences from GMS. */
     fun removeAllGeofences() {
-        geofencingClient.removeGeofences(emptyList<String>())
+        val ids = registeredIds.toList()
+        if (ids.isNotEmpty()) {
+            geofencingClient.removeGeofences(ids)
+            registeredIds.clear()
+        }
     }
 }

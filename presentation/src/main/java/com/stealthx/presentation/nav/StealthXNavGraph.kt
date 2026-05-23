@@ -168,6 +168,7 @@ fun StealthXNavGraph(navController: NavHostController) {
                         state = state,
                         onPermissionResult = vm::refreshPermissionState,
                         onAddGeofence = vm::addGeofence,
+                        onRemoveZone = vm::removeZone,
                         modifier = modifier
                     )
                 }
