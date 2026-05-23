@@ -3,6 +3,25 @@
 
 ---
 
+## 2026-05-23 [CC]
+### TYPE: FIX
+### STATUS: DONE — DEPLOYED
+### Commit: 4e69c4f
+### Source: Codex Audit 2026-05-23
+
+**IDENTIFY_ACK Queue — Contact Exchange Race Condition Fix**
+
+`sendExchange()` sendete CONTACT_EXCHANGE via `listenerWs?.send()` ohne zu warten bis Server IDENTIFY_ACK zurückgibt. Wenn WS offen aber noch nicht identifiziert → Frame wird vom Server mit `not_identified` Error abgewiesen, UI meldet dennoch "Kontakt gespeichert".
+
+Fix: `identified` flag + `pendingFrames` Queue in `ContactExchangeManager`:
+- `sendOrQueue()` gepuffert bis IDENTIFY_ACK
+- `drainPending(ws)` auf ACK auslösen
+- `identified = false` bei Disconnect (Reconnect-safe)
+
+Chameleon DB-Version = 1 → kein Migration-Problem (nur in securechat relevant).
+
+---
+
 ## 2026-05-22 [CC]
 ### TYPE: FEAT
 ### STATUS: DONE — DEPLOYED
