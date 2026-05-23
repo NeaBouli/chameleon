@@ -4,6 +4,27 @@
 ---
 
 ## 2026-05-23 [CC]
+### TYPE: FEAT
+### STATUS: DONE
+### Commit: 4bc1311
+
+**Geofencing — Delete Zone UI + removeAllGeofences bug fix**
+
+Delete zone:
+- `GeofencingScreen`: Row layout per zone-card mit `IconButton` (Icons.Default.Delete, red tint), `onRemoveZone` callback param
+- `GeofencingViewModel.removeZone()`: GMS remove, prefs update, UI state update
+- `StealthXNavGraph`: `onRemoveZone = vm::removeZone` eingehängt
+
+Bug fix — `removeAllGeofences()` war ein No-Op:
+- War: `geofencingClient.removeGeofences(emptyList())` — GMS entfernt dabei gar nichts
+- Fix: `CopyOnWriteArraySet<String>` (`registeredIds`) trackt registrierte IDs
+- `addGeofence()` + `addGeofenceSilent()` tragen ID ein; `removeGeofence()` entfernt; `removeAllGeofences()` übergibt tatsächliche ID-Liste
+
+Tests: ✅ BUILD SUCCESSFUL (30s)
+
+---
+
+## 2026-05-23 [CC]
 ### TYPE: FIX
 ### STATUS: DONE
 ### Commit: c8508bf
