@@ -5,9 +5,11 @@
  */
 package com.stealthx.presentation.viewmodel
 
+import android.content.Context
 import com.stealthx.crypto.ChameleonCrypto
 import com.stealthx.data.dao.ContactKeyDao
 import com.stealthx.data.entity.ContactKeyEntity
+import com.stealthx.data.exchange.ContactExchangeManager
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -21,7 +23,6 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
@@ -37,6 +38,8 @@ class AddContactViewModelTest {
 
     private val dispatcher = StandardTestDispatcher()
     private lateinit var dao: ContactKeyDao
+    private lateinit var exchangeManager: ContactExchangeManager
+    private lateinit var context: Context
     private lateinit var vm: AddContactViewModel
 
     private val validX25519   = ByteArray(32) { (it + 1).toByte() }
@@ -59,8 +62,10 @@ class AddContactViewModelTest {
     fun setUp() {
         Dispatchers.setMain(dispatcher)
         dao = mockk(relaxed = true)
+        exchangeManager = mockk(relaxed = true)
+        context = mockk(relaxed = true)
         coEvery { dao.getById(any()) } returns null
-        vm = AddContactViewModel(dao)
+        vm = AddContactViewModel(context, dao, exchangeManager)
         mockkObject(ChameleonCrypto)
     }
 
