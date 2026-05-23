@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import com.stealthx.data.NfcUriRelay
 import com.stealthx.presentation.theme.StealthXColors
 import com.stealthx.presentation.viewmodel.AddContactViewModel
 
@@ -67,15 +68,22 @@ fun AddContactScreen(
     var qrContent by remember { mutableStateOf("") }
     val state by vm.uiState.collectAsState()
     val context = LocalContext.current
+    val nfcUri by NfcUriRelay.uri.collectAsState()
 
     val scanLauncher = rememberLauncherForActivityResult(ScanContract()) { result ->
         result.contents?.let { content ->
             qrContent = content
-            // Auto-trigger: scan intent == add intent, skip manual button press
             if (content.startsWith("stealthx://add/")) {
                 vm.addFromQrContent(content)
             }
         }
+    }
+
+    LaunchedEffect(nfcUri) {
+        val uri = nfcUri ?: return@LaunchedEffect
+        NfcUriRelay.consume()
+        qrContent = uri
+        vm.addFromQrContent(uri)
     }
 
     LaunchedEffect(state.contactAdded) {
@@ -127,8 +135,8 @@ fun AddContactScreen(
             OptionCard(
                 icon = Icons.Default.Nfc,
                 title = "NFC Tap",
-                subtitle = "Coming soon",
-                enabled = false,
+                subtitle = "Tap phones together to exchange identity",
+                enabled = true,
                 onClick = {}
             )
             OptionCard(

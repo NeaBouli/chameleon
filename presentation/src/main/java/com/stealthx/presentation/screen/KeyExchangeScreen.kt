@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Nfc
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -34,7 +35,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,6 +56,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
+import com.stealthx.data.NfcWriteRelay
+import com.stealthx.data.NfcWriteState
 import com.stealthx.data.identity.StealthXId
 import com.stealthx.data.identity.StealthXIdentity
 import com.stealthx.presentation.theme.StealthXColors
@@ -67,6 +72,11 @@ fun KeyExchangeScreen(onBack: () -> Unit) {
     var qrUri by remember { mutableStateOf<String?>(null) }
     var qrBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var isLoading by remember { mutableStateOf(true) }
+    val nfcState by NfcWriteRelay.state.collectAsState()
+
+    DisposableEffect(Unit) {
+        onDispose { NfcWriteRelay.reset() }
+    }
 
     LaunchedEffect(Unit) {
         val (id, uri, bitmap) = withContext(Dispatchers.IO) {
@@ -174,6 +184,46 @@ fun KeyExchangeScreen(onBack: () -> Unit) {
                 Icon(Icons.Default.Share, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
                 Text("Share Identity Link", color = Color.Black)
+            }
+
+            Spacer(Modifier.height(8.dp))
+
+            val nfcLabel = when (nfcState) {
+                is NfcWriteState.Pending -> "Hold phone to NFC tag…"
+                is NfcWriteState.Success -> "Written! Tap again to write another"
+                is NfcWriteState.Failure -> "Write failed — tap again to retry"
+                is NfcWriteState.Idle -> "Share via NFC"
+            }
+            val nfcActive = nfcState is NfcWriteState.Pending
+            Button(
+                onClick = {
+                    if (nfcState is NfcWriteState.Idle || nfcState is NfcWriteState.Success) {
+                        NfcWriteRelay.post(qrUri)
+                    } else {
+                        NfcWriteRelay.reset()
+                    }
+                },
+                enabled = qrUri != null,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (nfcActive) StealthXColors.Primary.copy(alpha = 0.6f)
+                                    else StealthXColors.Surface
+                )
+            ) {
+                Icon(Icons.Default.Nfc, contentDescription = null,
+                    tint = if (nfcActive) Color.Black else StealthXColors.Primary)
+                Spacer(Modifier.width(8.dp))
+                Text(nfcLabel,
+                    color = if (nfcActive) Color.Black else StealthXColors.OnSurface)
+            }
+
+            if (nfcState is NfcWriteState.Failure) {
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    (nfcState as NfcWriteState.Failure).reason,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
         }
     }
