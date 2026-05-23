@@ -6,6 +6,34 @@
 ## 2026-05-23 [CC]
 ### TYPE: FEAT
 ### STATUS: DONE — DEPLOYED
+### Commit: f272410
+
+**NFC Key Exchange — Chameleon**
+
+Write path (KeyExchangeScreen → MainActivity):
+- `NfcWriteRelay` singleton in `:data` — sealed state: Idle/Pending/Success/Failure
+- `KeyExchangeScreen` hat NFC-Button: post qrUri → Pending, zeigt Status, Failure retryable, DisposableEffect reset on leave
+- `MainActivity.handleNfcIntent()`: schreibt NDEF URI-Record auf Tag (Ndef + NdefFormatable fallback), reportSuccess/reportFailure zu Relay
+- Foreground dispatch in onResume/onPause — App fängt NFC-Tags wenn im Vordergrund
+
+Read path (incoming NFC tap → AddContactScreen):
+- `NfcUriRelay` singleton in `:data` — StateFlow<String?>
+- MainActivity parsed NDEF URI aus `EXTRA_NDEF_MESSAGES`, postet wenn `stealthx://add/` prefix
+- `AddContactScreen`: `LaunchedEffect(nfcUri)` konsumiert Relay, füllt qrContent, triggert `addFromQrContent()` automatisch
+- NFC Tap Card: "Coming soon" + disabled → aktiv mit korrektem Subtitle
+
+Manifest:
+- `singleTop` launch mode auf MainActivity
+- `ACTION_NDEF_DISCOVERED` filter: scheme=stealthx, host=add
+- `ACTION_TAG_DISCOVERED` filter: fallback für unformatierte Tags
+
+Build: ✅ (85s) | S7 ✅ S4 ✅
+
+---
+
+## 2026-05-23 [CC]
+### TYPE: FEAT
+### STATUS: DONE — DEPLOYED
 ### Commit: 8f5b8ba
 
 **BootReceiver — S-05 + S-08 implementiert**

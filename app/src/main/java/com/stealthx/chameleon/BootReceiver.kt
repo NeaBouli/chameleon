@@ -19,6 +19,9 @@ import com.stealthx.domain.tier.TierGate
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Base64
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class BootReceiver : BroadcastReceiver() {
@@ -30,7 +33,7 @@ class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context == null || intent?.action != Intent.ACTION_BOOT_COMPLETED) return
 
-        // S-05: Restart ContactListenerService (WS keep-alive)
+        // S-05: Restart ContactListenerService (WS keep-alive) — no tier check needed
         val serviceIntent = Intent(context, ContactListenerService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(serviceIntent)
@@ -38,9 +41,18 @@ class BootReceiver : BroadcastReceiver() {
             context.startService(serviceIntent)
         }
 
-        // S-08: Re-register geofences if Elite tier (GMS loses them after reboot)
-        if (tierGate.getTierSync() >= IfrTier.ELITE) {
-            reRegisterGeofences(context)
+        // S-08: Re-register geofences if Elite tier (GMS loses them after reboot).
+        // getTierSync() reads the in-memory cache which is FREE on cold boot until the
+        // init coroutine completes — use goAsync() + suspend getTier() to read from DB.
+        val pending = goAsync()
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                if (tierGate.getTier() >= IfrTier.ELITE) {
+                    reRegisterGeofences(context)
+                }
+            } finally {
+                pending.finish()
+            }
         }
     }
 
