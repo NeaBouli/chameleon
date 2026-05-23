@@ -4,6 +4,28 @@
 ---
 
 ## 2026-05-23 [CC]
+### TYPE: FIX
+### STATUS: DONE
+### Commit: c8508bf
+
+**BootReceiver S-08 — goAsync() fix (HIGH)**
+
+`getTierSync()` liest `_currentTier.value` das bei Cold Boot noch `FREE` ist
+(TierGateImpl.init-Coroutine läuft noch nicht). Geofence-Restore wurde dadurch
+auf Elite-Geräten nach Reboot stillschweigend übersprungen.
+
+Fix: `goAsync()` verlängert den BroadcastReceiver-Lifecycle.
+Suspend `tierGate.getTier()` liest direkt aus der DB (accurate).
+S-05 Service-Restart bleibt synchron — kein Tier-Check nötig.
+
+Worktree ebenfalls bereinigt: `core/src/main/java/com/stealthx/core/BootReceiver.kt` (deleted)
+und BRIDGE.md committed.
+
+Build: ✅ (5s)
+
+---
+
+## 2026-05-23 [CC]
 ### TYPE: FEAT
 ### STATUS: DONE — DEPLOYED
 ### Commit: f272410
