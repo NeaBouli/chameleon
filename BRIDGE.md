@@ -4,6 +4,31 @@
 ---
 
 ## 2026-05-23 [CC]
+### TYPE: FEAT
+### STATUS: DONE — DEPLOYED
+### Commit: 8f5b8ba
+
+**BootReceiver — S-05 + S-08 implementiert**
+
+TODOs aus `core/BootReceiver.kt` sind aufgelöst:
+
+**S-05 — ContactListenerService restart nach Reboot:**
+`ContactListenerService` wird auf `BOOT_COMPLETED` per `startForegroundService` neu gestartet — WS keep-alive läuft nach Reboot wieder an ohne App-Start durch User.
+
+**S-08 — Geofencing re-registrieren wenn Elite:**
+GMS Geofencing API verliert alle Registrierungen nach Reboot. `BootReceiver` liest gespeicherte Zonen aus `AppPreferences.geofenceZones` (Base64-encoded), dekodiert sie, und ruft `GeofencingEngine.addGeofenceSilent()` pro Zone auf.
+
+**Architektur-Fix:**
+- `BootReceiver` von `:core` nach `:app` verschoben — `:core` hat keinen Zugriff auf `:features:geofencing` oder `:app:ContactListenerService`
+- `GeofencingEngine.addGeofenceSilent()` ergänzt: Unit-rückgabe damit `:app` kein direktes GMS `Task<Void>` auflösen muss
+- AndroidManifest: `com.stealthx.core.BootReceiver` → `.BootReceiver`
+- `@AndroidEntryPoint` + `@Inject` für `AppPreferences`, `GeofencingEngine`, `TierGate`
+
+Build: ✅ (24s) | S7 ✅ S4 ✅
+
+---
+
+## 2026-05-23 [CC]
 ### TYPE: FIX
 ### STATUS: DONE — DEPLOYED
 ### Commit: 4e69c4f
