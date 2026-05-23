@@ -96,9 +96,9 @@
             android:foregroundServiceType="dataSync"
             android:exported="false" />
 
-        <!-- Boot receiver for rule engine -->
+        <!-- Boot receiver: restarts WS listener + geofences after reboot -->
         <receiver
-            android:name="com.stealthx.core.BootReceiver"
+            android:name=".BootReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

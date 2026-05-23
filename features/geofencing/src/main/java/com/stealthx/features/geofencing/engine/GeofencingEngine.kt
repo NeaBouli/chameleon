@@ -82,6 +82,12 @@ class GeofencingEngine @Inject constructor(
         return geofencingClient.addGeofences(request, pendingIntent)
     }
 
+    /** Fire-and-forget variant for BootReceiver — no Task return type to resolve. */
+    @SuppressLint("MissingPermission")
+    fun addGeofenceSilent(config: GeofenceConfig, pendingIntent: PendingIntent) {
+        runCatching { addGeofence(config, pendingIntent) }
+    }
+
     fun removeGeofence(geofenceId: String) {
         geofencingClient.removeGeofences(listOf(geofenceId))
     }
