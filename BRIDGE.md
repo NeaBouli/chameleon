@@ -2213,3 +2213,30 @@ PR wartet auf CodeRabbit Review → merge nach grünem CI.
 
 Tests: 14/14 grün (4 neue `authenticateWithMultiDecoy` Tests)
 Build: ✅ beide Module kompilieren sauber
+
+---
+
+## 2026-05-24 [CC]
+### TYPE: FIX
+### STATUS: DONE — Pushed to feat/multi-decoy-profiles
+### PR: https://github.com/NeaBouli/chameleon/pull/1
+### Commit: ad92986
+
+**PR #1 CodeRabbit Round 2 — alle offenen Punkte gefixt**
+
+[LOW] Test DisplayName korrigiert:
+- War: "different salts yields different hashes" (falsch — Test nutzt selben Salt)
+- Fix: "same PIN + same salt → same hash; different PIN → different hash"
+
+[MEDIUM] loadMultiDecoyEntries() kein stilles Schlucken mehr:
+- `catch (e: Exception)` → `android.util.Log.w(TAG, "Multi-decoy store unreadable...")`
+
+[MEDIUM] removeProfile() I/O off Main Thread:
+- `viewModelScope.launch { withContext(Dispatchers.IO) { saveProfiles(updated) } }`
+
+[MEDIUM] getTierSync() → suspend getTier():
+- addProfile(): Tier-Check innerhalb Dispatchers.IO Coroutine mit `tierGate.getTier()`
+- removeProfile(): ebenfalls suspend getTier() in neuem Coroutine-Kontext
+- Sync-Check entfernt — kein stale Cache-Problem mehr bei Cold-Start
+
+Tests: 14/14 grün, Build: ✅
