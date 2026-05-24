@@ -2152,3 +2152,35 @@ Entscheidung (bestätigt von Codex + Gio):
 - Für bereits auf main gemergte Commits: kein retroaktiver PR
 - **Ab nächstem größerem Feature: Branch erstellen → PR öffnen → CodeRabbit reviewen lassen → CI grün → merge**
 - Kleine Fixes/Docs: direkte main-Pushes weiterhin OK
+
+---
+
+## 2026-05-24 [CC]
+### TYPE: FEAT
+### STATUS: PR OPEN — Awaiting CodeRabbit
+### PR: https://github.com/NeaBouli/chameleon/pull/1
+### Branch: feat/multi-decoy-profiles
+### Commit: b680205
+
+**Multi-Decoy Profiles (Elite) — Feature komplett implementiert**
+
+Neue Dateien:
+- `features/decoy/screen/MultiDecoyViewModel.kt` — add/remove profiles, real-PIN verification (Argon2id re-hash check), duplicate-PIN detection per existing entry, JSON serialization via `org.json` → `AppPreferences.decoyProfilesJson`
+- `features/decoy/screen/MultiDecoyScreen.kt` — LazyColumn profile list, inline add-form (AnimatedVisibility), ExtendedFAB, per-row delete
+
+Geändert:
+- `AppPreferences.kt` — `KEY_DECOY_PROFILES` + `decoyProfilesJson` Property (EncryptedSharedPreferences)
+- `Screen.kt` — `data object MultiDecoy : Screen("multi_decoy")`
+- `StealthXNavGraph.kt` — `Screen.MultiDecoy` Composable mit `TierGatedContent(ELITE)`, neue Imports
+- `SettingsScreen.kt` — `onNavigateToMultiDecoy` Param, `comingSoon = true` entfernt
+- `DecoyProfileTest.kt` — 3 neue Tests (multi-entry independence, duplicate-PIN detection)
+
+Security:
+- Real PIN wird vor jedem Add per `engine.hashPin` gegen gespeicherten Hash verifiziert
+- Duplicate-Check: neues Decoy-PIN wird mit jedem existierenden Salt re-gehasht und gegen gespeicherten Hash verglichen
+- Storage: EncryptedSharedPreferences (AES-256-GCM) — kein Plaintext
+
+Tests: ✅ 9/9 decoy unit tests grün (BUILD SUCCESSFUL 41s)
+Build: ✅ `:features:decoy:compileDebugKotlin` + `:presentation:compileDebugKotlin` OK
+
+PR wartet auf CodeRabbit Review → merge nach grünem CI.
