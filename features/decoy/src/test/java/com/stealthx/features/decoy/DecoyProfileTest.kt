@@ -214,7 +214,7 @@ class DecoyProfileTest {
     }
 
     @Test
-    @DisplayName("Duplicate-decoy detection: same PIN hashed with different salts yields different hashes")
+    @DisplayName("Duplicate-decoy detection: same PIN + same salt → same hash; different PIN → different hash")
     fun `duplicate pin detection across profiles`() {
         // Simulates the ViewModel's duplicate check: re-hash the candidate PIN
         // with an existing entry's salt and compare to that entry's stored hash.

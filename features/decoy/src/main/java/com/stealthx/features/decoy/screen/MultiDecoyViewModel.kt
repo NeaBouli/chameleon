@@ -68,14 +68,7 @@ class MultiDecoyViewModel @Inject constructor(
         confirmDecoyPin: String,
         onAdded: () -> Unit = {}
     ) {
-        if (tierGate.getTierSync() < IfrTier.ELITE) {
-            _uiState.value = _uiState.value.copy(
-                errorMessage = "Elite tier required for Multi-Decoy Profiles",
-                statusMessage = null
-            )
-            return
-        }
-
+        // Validate synchronously for immediate UX feedback
         val validationError = validate(name, realPin, decoyPin, confirmDecoyPin)
         if (validationError != null) {
             _uiState.value = _uiState.value.copy(errorMessage = validationError, statusMessage = null)
@@ -96,6 +89,15 @@ class MultiDecoyViewModel @Inject constructor(
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Tier check uses suspend getTier() for accurate result, not stale cache
+                if (tierGate.getTier() < IfrTier.ELITE) {
+                    _uiState.value = _uiState.value.copy(
+                        isSaving = false,
+                        errorMessage = "Elite tier required for Multi-Decoy Profiles"
+                    )
+                    return@launch
+                }
+
                 val realSalt = Base64.decode(realSaltB64, Base64.NO_WRAP)
                 val realHash = Base64.decode(realHashB64, Base64.NO_WRAP)
                 val realDerived = engine.hashPin(realPin, realSalt)
@@ -150,17 +152,20 @@ class MultiDecoyViewModel @Inject constructor(
     }
 
     fun removeProfile(id: String) {
-        if (tierGate.getTierSync() < IfrTier.ELITE) {
-            _uiState.value = _uiState.value.copy(errorMessage = "Elite tier required")
-            return
+        viewModelScope.launch {
+            // suspend getTier() gives accurate tier, not potentially stale cache
+            if (tierGate.getTier() < IfrTier.ELITE) {
+                _uiState.value = _uiState.value.copy(errorMessage = "Elite tier required")
+                return@launch
+            }
+            val updated = _uiState.value.profiles.filter { it.id != id }
+            withContext(Dispatchers.IO) { saveProfiles(updated) }
+            _uiState.value = _uiState.value.copy(
+                profiles = updated,
+                statusMessage = "Profile removed",
+                errorMessage = null
+            )
         }
-        val updated = _uiState.value.profiles.filter { it.id != id }
-        saveProfiles(updated)
-        _uiState.value = _uiState.value.copy(
-            profiles = updated,
-            statusMessage = "Profile removed",
-            errorMessage = null
-        )
     }
 
     fun clearMessages() {

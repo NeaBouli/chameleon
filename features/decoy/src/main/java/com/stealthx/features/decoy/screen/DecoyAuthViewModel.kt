@@ -107,10 +107,15 @@ class DecoyAuthViewModel @Inject constructor(
                 val salt = obj.getString("pinSalt").fromBase64()
                 Pair(hash, salt)
             }
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            android.util.Log.w(TAG, "Multi-decoy store unreadable, falling back to single-decoy auth: ${e.message}")
             emptyList()
         }
     }
 
     private fun String.fromBase64(): ByteArray = Base64.decode(this, Base64.NO_WRAP)
+
+    private companion object {
+        const val TAG = "DecoyAuthViewModel"
+    }
 }
