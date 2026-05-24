@@ -2064,3 +2064,28 @@ Nur UI fehlte.
 **Fix:** DashboardScreen Titel "SecureChat" → "Chameleon"
 
 Tests: ✅ BUILD SUCCESSFUL | S7 ✅ S4 ✅
+
+---
+
+## 2026-05-24 [CC]
+### TYPE: FIX
+### STATUS: DONE
+### Commit: 88c9325
+### Source: Codex Audit 2026-05-24 [MEDIUM]
+
+**Automation Rules — Save/Lifecycle Race Condition Fix**
+
+`saveRule()` startete nur eine Coroutine und kehrte sofort zurück.
+Direkt danach `navController.popBackStack()` → AddRule-Route gepoppt →
+ViewModel gecleared → `viewModelScope` cancelled → `repository.save()` ggf. abgebrochen.
+
+Fix: `saveRule(onSaved: () -> Unit)` — Navigation findet erst nach erfolgreichem
+`repository.save()` statt, aufgerufen aus der Coroutine heraus.
+
+```kotlin
+vm.saveRule(name, type, value, level,
+    onSaved = { navController.popBackStack() }
+)
+```
+
+Tests: ✅ | S7 ✅ | S4 ✅
