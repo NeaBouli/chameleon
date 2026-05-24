@@ -138,6 +138,60 @@ class DecoyProfileTest {
         assertFalse(h1.contentEquals(h2))
     }
 
+    // authenticateWithMultiDecoy — auth-flow integration tests
+    @Test
+    @DisplayName("authenticateWithMultiDecoy: real PIN returns REAL")
+    fun `authenticateWithMultiDecoy real pin returns real`() {
+        val realSalt = engine.generatePinSalt()
+        val realHash = engine.hashPin("1234", realSalt)
+        val config = DecoyProfileEngine.DecoyConfig(
+            isEnabled = true,
+            realPinHash = realHash,
+            realPinSalt = realSalt
+        )
+        assertEquals(DecoyProfileEngine.ProfileMode.REAL, engine.authenticateWithMultiDecoy("1234", config, emptyList()))
+    }
+
+    @Test
+    @DisplayName("authenticateWithMultiDecoy: single decoy PIN returns DECOY")
+    fun `authenticateWithMultiDecoy single decoy returns decoy`() {
+        val realSalt = engine.generatePinSalt()
+        val realHash = engine.hashPin("1234", realSalt)
+        val decoySalt = engine.generatePinSalt()
+        val decoyHash = engine.hashPin("9999", decoySalt)
+        val config = DecoyProfileEngine.DecoyConfig(
+            isEnabled = true,
+            realPinHash = realHash, realPinSalt = realSalt,
+            decoyPinHash = decoyHash, decoyPinSalt = decoySalt
+        )
+        assertEquals(DecoyProfileEngine.ProfileMode.DECOY, engine.authenticateWithMultiDecoy("9999", config, emptyList()))
+    }
+
+    @Test
+    @DisplayName("authenticateWithMultiDecoy: multi-entry PIN returns DECOY")
+    fun `authenticateWithMultiDecoy multi entry returns decoy`() {
+        val realSalt = engine.generatePinSalt()
+        val realHash = engine.hashPin("1234", realSalt)
+        val config = DecoyProfileEngine.DecoyConfig(isEnabled = true, realPinHash = realHash, realPinSalt = realSalt)
+        val extraSalt = engine.generatePinSalt()
+        val extraHash = engine.hashPin("5555", extraSalt)
+        assertEquals(
+            DecoyProfileEngine.ProfileMode.DECOY,
+            engine.authenticateWithMultiDecoy("5555", config, listOf(Pair(extraHash, extraSalt)))
+        )
+    }
+
+    @Test
+    @DisplayName("authenticateWithMultiDecoy: wrong PIN throws SecurityException")
+    fun `authenticateWithMultiDecoy wrong pin throws`() {
+        val realSalt = engine.generatePinSalt()
+        val realHash = engine.hashPin("1234", realSalt)
+        val config = DecoyProfileEngine.DecoyConfig(isEnabled = true, realPinHash = realHash, realPinSalt = realSalt)
+        assertThrows(SecurityException::class.java) {
+            engine.authenticateWithMultiDecoy("0000", config, emptyList())
+        }
+    }
+
     // Multi-decoy: each profile has independent salt+hash — same PIN verified correctly per entry
     @Test
     @DisplayName("Multiple decoy entries each authenticate independently")

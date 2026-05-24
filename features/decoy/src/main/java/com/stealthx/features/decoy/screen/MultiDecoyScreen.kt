@@ -36,7 +36,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -64,6 +66,16 @@ fun MultiDecoyScreen(
     modifier: Modifier = Modifier
 ) {
     var showAddForm by remember { mutableStateOf(false) }
+    var lastKnownProfileCount by remember { mutableIntStateOf(state.profiles.size) }
+
+    // Close the add-form only when a profile was actually persisted (count increases).
+    // This avoids closing on old state before the async coroutine completes.
+    LaunchedEffect(state.profiles.size) {
+        if (state.profiles.size > lastKnownProfileCount && showAddForm) {
+            showAddForm = false
+        }
+        lastKnownProfileCount = state.profiles.size
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -106,6 +118,14 @@ fun MultiDecoyScreen(
             }
 
             item {
+                if (state.storeCorrupted) {
+                    Text(
+                        "Profile store was corrupted and has been reset.",
+                        color = Red,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Spacer(Modifier.height(8.dp))
+                }
                 state.statusMessage?.let {
                     Text(it, color = Green, style = MaterialTheme.typography.bodySmall)
                     Spacer(Modifier.height(8.dp))
@@ -121,8 +141,8 @@ fun MultiDecoyScreen(
                     AddProfileForm(
                         isSaving = state.isSaving,
                         onSave = { name, real, decoy, confirm ->
+                            // Form close is handled by LaunchedEffect(state.profiles.size)
                             onAddProfile(name, real, decoy, confirm)
-                            if (state.errorMessage == null) showAddForm = false
                         },
                         onCancel = { showAddForm = false }
                     )

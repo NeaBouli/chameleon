@@ -9,7 +9,9 @@ import android.util.Base64
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stealthx.data.prefs.AppPreferences
+import com.stealthx.domain.tier.TierGate
 import com.stealthx.features.decoy.engine.DecoyProfileEngine
+import com.stealthx.shared.model.IfrTier
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +28,8 @@ data class MultiDecoyUiState(
     val profiles: List<DecoyProfileEntry> = emptyList(),
     val isSaving: Boolean = false,
     val statusMessage: String? = null,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val storeCorrupted: Boolean = false
 )
 
 data class DecoyProfileEntry(
@@ -39,10 +42,23 @@ data class DecoyProfileEntry(
 @HiltViewModel
 class MultiDecoyViewModel @Inject constructor(
     private val engine: DecoyProfileEngine,
+    private val tierGate: TierGate,
     private val prefs: AppPreferences
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(MultiDecoyUiState(profiles = loadProfiles()))
+    private val _uiState: MutableStateFlow<MultiDecoyUiState>
+
+    init {
+        val (profiles, corrupted) = loadProfilesWithStatus()
+        _uiState = MutableStateFlow(
+            MultiDecoyUiState(
+                profiles = profiles,
+                storeCorrupted = corrupted,
+                errorMessage = if (corrupted) "Profile store was corrupted and has been reset" else null
+            )
+        )
+    }
+
     val uiState: StateFlow<MultiDecoyUiState> = _uiState.asStateFlow()
 
     fun addProfile(
@@ -52,6 +68,14 @@ class MultiDecoyViewModel @Inject constructor(
         confirmDecoyPin: String,
         onAdded: () -> Unit = {}
     ) {
+        if (tierGate.getTierSync() < IfrTier.ELITE) {
+            _uiState.value = _uiState.value.copy(
+                errorMessage = "Elite tier required for Multi-Decoy Profiles",
+                statusMessage = null
+            )
+            return
+        }
+
         val validationError = validate(name, realPin, decoyPin, confirmDecoyPin)
         if (validationError != null) {
             _uiState.value = _uiState.value.copy(errorMessage = validationError, statusMessage = null)
@@ -126,6 +150,10 @@ class MultiDecoyViewModel @Inject constructor(
     }
 
     fun removeProfile(id: String) {
+        if (tierGate.getTierSync() < IfrTier.ELITE) {
+            _uiState.value = _uiState.value.copy(errorMessage = "Elite tier required")
+            return
+        }
         val updated = _uiState.value.profiles.filter { it.id != id }
         saveProfiles(updated)
         _uiState.value = _uiState.value.copy(
@@ -149,10 +177,10 @@ class MultiDecoyViewModel @Inject constructor(
         return null
     }
 
-    private fun loadProfiles(): List<DecoyProfileEntry> {
+    private fun loadProfilesWithStatus(): Pair<List<DecoyProfileEntry>, Boolean> {
         return try {
             val arr = JSONArray(prefs.decoyProfilesJson)
-            (0 until arr.length()).map { i ->
+            val profiles = (0 until arr.length()).map { i ->
                 val obj = arr.getJSONObject(i)
                 DecoyProfileEntry(
                     id = obj.getString("id"),
@@ -161,8 +189,10 @@ class MultiDecoyViewModel @Inject constructor(
                     pinSaltBase64 = obj.getString("pinSalt")
                 )
             }
+            Pair(profiles, false)
         } catch (_: Exception) {
-            emptyList()
+            prefs.decoyProfilesJson = "[]"
+            Pair(emptyList(), true)
         }
     }
 

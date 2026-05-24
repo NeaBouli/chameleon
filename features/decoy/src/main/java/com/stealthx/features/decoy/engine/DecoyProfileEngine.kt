@@ -95,6 +95,47 @@ class DecoyProfileEngine @Inject constructor(
         }
     }
 
+    /**
+     * Authenticate PIN against real PIN, single decoy PIN, and a list of multi-decoy entries.
+     * Multi-decoy entries are Pair(pinHash, pinSalt).
+     * Does not require Elite tier — users must always be able to authenticate with configured PINs
+     * even if tier changes after setup.
+     */
+    fun authenticateWithMultiDecoy(
+        pin: String,
+        config: DecoyConfig,
+        multiDecoyEntries: List<Pair<ByteArray, ByteArray>>
+    ): ProfileMode {
+        if (!config.isEnabled ||
+            config.realPinHash == null || config.realPinSalt == null) {
+            return ProfileMode.REAL
+        }
+
+        val realDerived = hashPin(pin, config.realPinSalt)
+        if (realDerived.contentEquals(config.realPinHash)) {
+            currentMode = ProfileMode.REAL
+            return ProfileMode.REAL
+        }
+
+        if (config.decoyPinHash != null && config.decoyPinSalt != null) {
+            val decoyDerived = hashPin(pin, config.decoyPinSalt)
+            if (decoyDerived.contentEquals(config.decoyPinHash)) {
+                currentMode = ProfileMode.DECOY
+                return ProfileMode.DECOY
+            }
+        }
+
+        for ((hash, salt) in multiDecoyEntries) {
+            val derived = hashPin(pin, salt)
+            if (derived.contentEquals(hash)) {
+                currentMode = ProfileMode.DECOY
+                return ProfileMode.DECOY
+            }
+        }
+
+        throw SecurityException("Invalid PIN")
+    }
+
     fun getCurrentMode(): ProfileMode = currentMode
 
     fun isDecoyMode(): Boolean = currentMode == ProfileMode.DECOY
