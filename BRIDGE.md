@@ -2038,3 +2038,29 @@ Konfiguration:
   - `**/*ViewModel*.kt` — StateFlow-Init, kein ephemerer State
 
 Ab nächstem PR: automatischer Review + Inline-Kommentare.
+
+---
+
+## 2026-05-23 [CC]
+### TYPE: FEAT
+### STATUS: DONE
+### Commit: 82cb568
+
+**Automation Rules UI — vollständig implementiert**
+
+Fehlende Pro-Feature aus Settings-Menü jetzt gebaut.
+
+Domain + Data Layer waren fertig (RuleEngine, SecureRuleRepository, SecureRuleDao, SecureRuleEntity).
+Nur UI fehlte.
+
+**Neu:**
+- `AutomationRulesViewModel` — observeAll/saveRule/toggleRule/deleteRule
+- `AutomationRulesScreen` — LazyColumn mit RuleCards (Switch + Delete pro Karte), FAB → AddRule
+- `AddRuleScreen` — Trigger-Typ Chips (APP/WIFI/BLUETOOTH/TIME), kontextueller Wert-Input, TIME: Stundenbereich + Tages-Checkboxes (FlowRow), SecurityLevel Chips, Validierung
+- Screen.AutomationRules + Screen.AddRule Routes
+- TierGatedContent(PRO) auf AutomationRules Route
+- SettingsScreen: `onNavigateToAutomationRules` param + FeatureRow onClick
+
+**Fix:** DashboardScreen Titel "SecureChat" → "Chameleon"
+
+Tests: ✅ BUILD SUCCESSFUL | S7 ✅ S4 ✅
