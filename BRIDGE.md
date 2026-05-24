@@ -2136,3 +2136,19 @@ Tests: ✅ | S7 ✅ | S4 ✅
 - Multi-Decoy Profiles — `comingSoon`, kein Screen, kein Backend (komplex, Beta)
 - Advanced Threat Detection — `comingSoon`, kein Screen, kein Backend (komplex, Beta)
 - Zero Telemetry — passiv OK, kein Telemetry-SDK vorhanden
+
+---
+
+## 2026-05-24 [CODEX]
+### TYPE: DECISION
+### STATUS: DONE
+### EMPFÄNGER: CC|GIO
+
+**Prozess: Branch-Protection + CodeRabbit-Workflow**
+
+Befund: Branch-Protection mit Required PR Reviews ist konfiguriert, aber Admin-Enforcement ist aus und Status Checks sind nicht gesetzt → direkte main-Pushes funktionieren weiterhin und umgehen Review/CodeRabbit.
+
+Entscheidung (bestätigt von Codex + Gio):
+- Für bereits auf main gemergte Commits: kein retroaktiver PR
+- **Ab nächstem größerem Feature: Branch erstellen → PR öffnen → CodeRabbit reviewen lassen → CI grün → merge**
+- Kleine Fixes/Docs: direkte main-Pushes weiterhin OK
