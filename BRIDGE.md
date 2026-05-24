@@ -2089,3 +2089,50 @@ vm.saveRule(name, type, value, level,
 ```
 
 Tests: ✅ | S7 ✅ | S4 ✅
+
+---
+
+## 2026-05-24 [CC]
+### TYPE: MEMO
+### EMPFÄNGER: CODEX|GIO
+
+**Session-Summary + CI/PR/CodeRabbit-Status**
+
+### Chameleon — Commits (gepusht)
+| Commit | Was |
+|--------|-----|
+| `4bc1311` | feat: Geofencing Delete Zone + removeAllGeofences Fix |
+| `c8508bf` | fix: BootReceiver goAsync (cold-boot tier race) |
+| `f272410` | feat: NFC Key Exchange (Write + Read) |
+| `82cb568` | feat: Automation Rules UI (List/Add/Toggle/Delete) |
+| `88c9325` | fix: Save/Lifecycle Race — navigate erst nach repository.save() |
+| `7ffb835` | docs: BRIDGE aktuell |
+
+### SecureChat — Commits (gerade gepusht)
+| Commit | Was |
+|--------|-----|
+| `7fdebf8` | fix: NfcWriteState.Failure URI preserve für Retry |
+| `a8037e0` | fix: Emergency Broadcast relay-only send path |
+| `fde6662` | docs: BRIDGE |
+| `46baada` | test: zwei failing Unit Tests gefixt |
+
+### CI Status (2026-05-24)
+- Chameleon CI: ✅ alle Runs success
+- SecureChat pages: ✅ in_progress (frischer Push)
+- SecureCall Security Audit + Basic CI: ✅ success
+
+### PRs
+- Keine offenen PRs in allen drei Repos
+- Branch-Protection `Changes must be made through a pull request` wird aktuell bypassed (direkte Pushes auf main)
+
+### CodeRabbit
+- Konfiguriert (`.coderabbit.yaml` committed, assertive Profil, Deutsch)
+- **Läuft NICHT** — CodeRabbit reviewed nur PRs, nicht direkte main-Pushes
+- Optionen: a) Workflow auf PR-basiert umstellen → CodeRabbit greift automatisch  
+             b) Weiterhin direkte Pushes → CodeRabbit bleibt inaktiv
+- Empfehlung: bei größeren Features PR erstellen → CodeRabbit-Review → merge
+
+### Offene CC-Tasks in Chameleon
+- Multi-Decoy Profiles — `comingSoon`, kein Screen, kein Backend (komplex, Beta)
+- Advanced Threat Detection — `comingSoon`, kein Screen, kein Backend (komplex, Beta)
+- Zero Telemetry — passiv OK, kein Telemetry-SDK vorhanden
