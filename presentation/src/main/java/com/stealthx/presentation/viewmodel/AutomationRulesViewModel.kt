@@ -32,7 +32,8 @@ class AutomationRulesViewModel @Inject constructor(
         name: String,
         triggerType: TriggerType,
         triggerValue: String,
-        securityLevel: SecurityLevel
+        securityLevel: SecurityLevel,
+        onSaved: () -> Unit = {}
     ) {
         viewModelScope.launch {
             repository.save(
@@ -50,6 +51,7 @@ class AutomationRulesViewModel @Inject constructor(
                     triggerCount = 0
                 )
             )
+            onSaved()
         }
     }
 

@@ -260,8 +260,9 @@ fun StealthXNavGraph(navController: NavHostController) {
             FeatureScaffold(title = "New Rule", onBack = { navController.popBackStack() }) { modifier ->
                 AddRuleScreen(
                     onSave = { name, type, value, level ->
-                        vm.saveRule(name, type, value, level)
-                        navController.popBackStack()
+                        vm.saveRule(name, type, value, level,
+                            onSaved = { navController.popBackStack() }
+                        )
                     },
                     modifier = modifier
                 )
