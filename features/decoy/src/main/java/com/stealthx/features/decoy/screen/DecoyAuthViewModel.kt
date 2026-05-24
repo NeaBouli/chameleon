@@ -108,7 +108,8 @@ class DecoyAuthViewModel @Inject constructor(
                 Pair(hash, salt)
             }
         } catch (e: Exception) {
-            android.util.Log.w(TAG, "Multi-decoy store unreadable, falling back to single-decoy auth: ${e.message}")
+            val jsonLen = runCatching { prefs.decoyProfilesJson.length }.getOrDefault(-1)
+            android.util.Log.w(TAG, "Multi-decoy store unreadable (jsonLen=$jsonLen): ${e.message} — falling back to single-decoy auth")
             emptyList()
         }
     }
