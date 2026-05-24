@@ -19,4 +19,5 @@ sealed class Screen(val route: String) {
     data object Setup            : Screen("setup")
     data object AutomationRules  : Screen("automation_rules")
     data object AddRule          : Screen("add_rule")
+    data object MultiDecoy       : Screen("multi_decoy")
 }
