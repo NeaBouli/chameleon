@@ -76,6 +76,7 @@ fun SettingsScreen(
     onNavigateToPrivateZone: () -> Unit,
     onNavigateToGeofencing: () -> Unit,
     onNavigateToDecoy: () -> Unit,
+    onNavigateToAutomationRules: () -> Unit = {},
     onNavigateToSetup: () -> Unit = {},
     currentTier: IfrTier = IfrTier.FREE,
     activationVm: ActivationViewModel = hiltViewModel()
@@ -143,7 +144,8 @@ fun SettingsScreen(
                     title = "Unlimited Automation Rules",
                     subtitle = "Context-aware triggers",
                     locked = currentTier < IfrTier.PRO,
-                    onLockedClick = onNavigateToIFR
+                    onLockedClick = onNavigateToIFR,
+                    onClick = onNavigateToAutomationRules
                 )
                 FeatureRow(
                     icon = Icons.Default.Storage,

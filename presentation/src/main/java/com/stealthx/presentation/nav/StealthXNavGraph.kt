@@ -40,6 +40,8 @@ import com.stealthx.features.privatezone.screen.PrivateZoneScreen
 import com.stealthx.features.privatezone.screen.PrivateZoneViewModel
 import com.stealthx.ifr.compose.TierGatedContent
 import com.stealthx.presentation.screen.AddContactScreen
+import com.stealthx.presentation.screen.AddRuleScreen
+import com.stealthx.presentation.screen.AutomationRulesScreen
 import com.stealthx.presentation.screen.DashboardScreen
 import com.stealthx.presentation.screen.IFRUnlockScreen
 import com.stealthx.presentation.screen.KeyExchangeScreen
@@ -218,6 +220,7 @@ fun StealthXNavGraph(navController: NavHostController) {
                 onNavigateToPrivateZone = { navController.navigate(Screen.PrivateZone.route) },
                 onNavigateToGeofencing = { navController.navigate(Screen.Geofencing.route) },
                 onNavigateToDecoy = { navController.navigate(Screen.Decoy.route) },
+                onNavigateToAutomationRules = { navController.navigate(Screen.AutomationRules.route) },
                 onNavigateToSetup = { navController.navigate(Screen.Setup.route) },
                 currentTier = currentTier
             )
@@ -234,6 +237,35 @@ fun StealthXNavGraph(navController: NavHostController) {
                 onBack = { navController.popBackStack() },
                 onContactAdded = { navController.popBackStack() }
             )
+        }
+
+        composable(Screen.AutomationRules.route) {
+            TierGatedContent(
+                currentTier = currentTier,
+                requiredTier = IfrTier.PRO,
+                featureName = "Automation Rules",
+                onUnlockClicked = { navController.navigate(Screen.IFRUnlock.route) }
+            ) {
+                FeatureScaffold(title = "Automation Rules", onBack = { navController.popBackStack() }) { modifier ->
+                    AutomationRulesScreen(
+                        onAddRule = { navController.navigate(Screen.AddRule.route) },
+                        modifier = modifier
+                    )
+                }
+            }
+        }
+
+        composable(Screen.AddRule.route) {
+            val vm: com.stealthx.presentation.viewmodel.AutomationRulesViewModel = hiltViewModel()
+            FeatureScaffold(title = "New Rule", onBack = { navController.popBackStack() }) { modifier ->
+                AddRuleScreen(
+                    onSave = { name, type, value, level ->
+                        vm.saveRule(name, type, value, level)
+                        navController.popBackStack()
+                    },
+                    modifier = modifier
+                )
+            }
         }
     }
 }

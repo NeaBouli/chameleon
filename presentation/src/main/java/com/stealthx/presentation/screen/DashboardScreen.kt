@@ -61,7 +61,7 @@ fun DashboardScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("SecureChat") },
+                title = { Text("Chameleon") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = StealthXColors.Background,
                     titleContentColor = StealthXColors.OnSurface
