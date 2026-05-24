@@ -2184,3 +2184,32 @@ Tests: ✅ 9/9 decoy unit tests grün (BUILD SUCCESSFUL 41s)
 Build: ✅ `:features:decoy:compileDebugKotlin` + `:presentation:compileDebugKotlin` OK
 
 PR wartet auf CodeRabbit Review → merge nach grünem CI.
+
+---
+
+## 2026-05-24 [CC]
+### TYPE: FIX
+### STATUS: DONE — Pushed to feat/multi-decoy-profiles
+### PR: https://github.com/NeaBouli/chameleon/pull/1
+### Commit: 7b02041
+
+**PR #1 CodeRabbit Findings — alle 4 Punkte gefixt**
+
+[HIGH] Auth-Flow verdrahtet:
+- `DecoyProfileEngine.authenticateWithMultiDecoy()` prüft: real PIN → single Decoy → alle Multi-Decoy-Entries
+- Kein `requireElite()` im Auth-Pfad — User muss immer entsperren können, auch bei Tier-Downgrade
+- `DecoyAuthViewModel.submitPin()` nutzt neue Methode + `loadMultiDecoyEntries()` liest `decoyProfilesJson`
+
+[HIGH] Tier-Gate in MultiDecoyViewModel:
+- `TierGate` injiziert; `addProfile()` + `removeProfile()` prüfen `getTierSync() < ELITE` vor jedem Write
+
+[MEDIUM] Form-Close Race Condition:
+- Sofortigen Close-Check auf altem State entfernt
+- `LaunchedEffect(state.profiles.size)`: Form schließt nur wenn Count tatsächlich steigt — nach abgeschlossenem Coroutine-Write
+
+[LOW] Corrupted JSON Store:
+- `loadProfilesWithStatus()` auto-reset auf `"[]"` bei Exception; `storeCorrupted = true` im State
+- Screen zeigt rotes Banner wenn `storeCorrupted == true`
+
+Tests: 14/14 grün (4 neue `authenticateWithMultiDecoy` Tests)
+Build: ✅ beide Module kompilieren sauber
