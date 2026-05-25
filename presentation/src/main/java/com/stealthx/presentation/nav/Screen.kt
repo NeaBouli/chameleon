@@ -20,4 +20,10 @@ sealed class Screen(val route: String) {
     data object AutomationRules  : Screen("automation_rules")
     data object AddRule          : Screen("add_rule")
     data object MultiDecoy       : Screen("multi_decoy")
+    data class Conversation(val contactId: String) : Screen("conversation/{contactId}") {
+        val resolvedRoute: String get() = "conversation/$contactId"
+        companion object {
+            const val ROUTE = "conversation/{contactId}"
+        }
+    }
 }

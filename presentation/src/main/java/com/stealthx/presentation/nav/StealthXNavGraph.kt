@@ -36,6 +36,9 @@ import com.stealthx.features.decoy.screen.MultiDecoyScreen
 import com.stealthx.features.decoy.screen.MultiDecoyViewModel
 import com.stealthx.features.geofencing.screen.GeofencingScreen
 import com.stealthx.features.geofencing.screen.GeofencingViewModel
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.stealthx.features.messenger.screen.ConversationScreen
 import com.stealthx.features.messenger.screen.MessengerScreen
 import com.stealthx.features.overlay.screen.OverlayScreen
 import com.stealthx.features.privatezone.screen.PrivateZoneScreen
@@ -105,13 +108,23 @@ fun StealthXNavGraph(navController: NavHostController) {
                 featureName = "Encrypted Messenger",
                 onUnlockClicked = { navController.navigate(Screen.IFRUnlock.route) }
             ) {
-                FeatureScaffold(title = "Messenger", onBack = { navController.popBackStack() }) { modifier ->
-                    MessengerScreen(
-                        onAddContact = { navController.navigate(Screen.AddContact.route) },
-                        modifier = modifier
-                    )
-                }
+                MessengerScreen(
+                    onBack = { navController.popBackStack() },
+                    onOpenConversation = { contactId ->
+                        navController.navigate("conversation/$contactId")
+                    },
+                    onAddContact = { navController.navigate(Screen.AddContact.route) }
+                )
             }
+        }
+
+        composable(
+            route = Screen.Conversation.ROUTE,
+            arguments = listOf(navArgument("contactId") { type = NavType.StringType })
+        ) {
+            ConversationScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
 
         composable(Screen.PrivateZone.route) {
