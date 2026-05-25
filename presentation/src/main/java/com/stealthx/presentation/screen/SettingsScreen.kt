@@ -77,6 +77,7 @@ fun SettingsScreen(
     onNavigateToGeofencing: () -> Unit,
     onNavigateToDecoy: () -> Unit,
     onNavigateToAutomationRules: () -> Unit = {},
+    onNavigateToMultiDecoy: () -> Unit = {},
     onNavigateToSetup: () -> Unit = {},
     currentTier: IfrTier = IfrTier.FREE,
     activationVm: ActivationViewModel = hiltViewModel()
@@ -185,8 +186,8 @@ fun SettingsScreen(
                     subtitle = "Multiple fake identities",
                     locked = currentTier < IfrTier.ELITE,
                     onLockedClick = onNavigateToIFR,
-                    eliteTier = true,
-                    comingSoon = true
+                    onClick = onNavigateToMultiDecoy,
+                    eliteTier = true
                 )
                 FeatureRow(
                     icon = Icons.Default.Security,

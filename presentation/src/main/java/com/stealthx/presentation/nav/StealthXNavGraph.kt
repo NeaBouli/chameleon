@@ -32,6 +32,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.stealthx.features.decoy.screen.DecoySetupScreen
 import com.stealthx.features.decoy.screen.DecoySetupViewModel
+import com.stealthx.features.decoy.screen.MultiDecoyScreen
+import com.stealthx.features.decoy.screen.MultiDecoyViewModel
 import com.stealthx.features.geofencing.screen.GeofencingScreen
 import com.stealthx.features.geofencing.screen.GeofencingViewModel
 import com.stealthx.features.messenger.screen.MessengerScreen
@@ -221,6 +223,7 @@ fun StealthXNavGraph(navController: NavHostController) {
                 onNavigateToGeofencing = { navController.navigate(Screen.Geofencing.route) },
                 onNavigateToDecoy = { navController.navigate(Screen.Decoy.route) },
                 onNavigateToAutomationRules = { navController.navigate(Screen.AutomationRules.route) },
+                onNavigateToMultiDecoy = { navController.navigate(Screen.MultiDecoy.route) },
                 onNavigateToSetup = { navController.navigate(Screen.Setup.route) },
                 currentTier = currentTier
             )
@@ -249,6 +252,26 @@ fun StealthXNavGraph(navController: NavHostController) {
                 FeatureScaffold(title = "Automation Rules", onBack = { navController.popBackStack() }) { modifier ->
                     AutomationRulesScreen(
                         onAddRule = { navController.navigate(Screen.AddRule.route) },
+                        modifier = modifier
+                    )
+                }
+            }
+        }
+
+        composable(Screen.MultiDecoy.route) {
+            TierGatedContent(
+                currentTier = currentTier,
+                requiredTier = IfrTier.ELITE,
+                featureName = "Multi-Decoy Profiles",
+                onUnlockClicked = { navController.navigate(Screen.IFRUnlock.route) }
+            ) {
+                val vm: MultiDecoyViewModel = hiltViewModel()
+                val state by vm.uiState.collectAsState()
+                FeatureScaffold(title = "Multi-Decoy Profiles", onBack = { navController.popBackStack() }) { modifier ->
+                    MultiDecoyScreen(
+                        state = state,
+                        onAddProfile = vm::addProfile,
+                        onRemoveProfile = vm::removeProfile,
                         modifier = modifier
                     )
                 }

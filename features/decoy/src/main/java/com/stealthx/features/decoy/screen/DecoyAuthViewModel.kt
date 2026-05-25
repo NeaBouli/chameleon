@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import org.json.JSONArray
 import javax.inject.Inject
 
 data class DecoyAuthUiState(
@@ -43,7 +44,9 @@ class DecoyAuthViewModel @Inject constructor(
 
         viewModelScope.launch(Dispatchers.Default) {
             _uiState.value = _uiState.value.copy(isAuthenticating = true, errorMessage = null)
-            val result = runCatching { engine.authenticatePin(pin, loadConfig()) }
+            val result = runCatching {
+                engine.authenticateWithMultiDecoy(pin, loadConfig(), loadMultiDecoyEntries())
+            }
             val nextState = result.fold(
                 onSuccess = { mode ->
                     when (mode) {
@@ -95,5 +98,25 @@ class DecoyAuthViewModel @Inject constructor(
             realPinSalt = prefs.realPinSaltBase64?.fromBase64()
         )
 
+    private fun loadMultiDecoyEntries(): List<Pair<ByteArray, ByteArray>> {
+        return try {
+            val arr = JSONArray(prefs.decoyProfilesJson)
+            (0 until arr.length()).map { i ->
+                val obj = arr.getJSONObject(i)
+                val hash = obj.getString("pinHash").fromBase64()
+                val salt = obj.getString("pinSalt").fromBase64()
+                Pair(hash, salt)
+            }
+        } catch (e: Exception) {
+            val jsonLen = runCatching { prefs.decoyProfilesJson.length }.getOrDefault(-1)
+            android.util.Log.w(TAG, "Multi-decoy store unreadable (jsonLen=$jsonLen): ${e.message} — falling back to single-decoy auth")
+            emptyList()
+        }
+    }
+
     private fun String.fromBase64(): ByteArray = Base64.decode(this, Base64.NO_WRAP)
+
+    private companion object {
+        const val TAG = "DecoyAuthViewModel"
+    }
 }

@@ -59,6 +59,7 @@ class AppPreferences @Inject constructor(
         private const val KEY_REAL_PIN_HASH = "real_pin_hash"
         private const val KEY_REAL_PIN_SALT = "real_pin_salt"
         private const val KEY_GEOFENCE_ZONES = "geofence_zones"
+        private const val KEY_DECOY_PROFILES = "decoy_profiles_json"
         private val DEFAULT_OVERLAY_WHITELIST = setOf(
             "com.whatsapp",
             "org.telegram.messenger",
@@ -115,6 +116,10 @@ class AppPreferences @Inject constructor(
     var realPinSaltBase64: String?
         get() = prefs.getString(KEY_REAL_PIN_SALT, null)
         set(value) = prefs.edit().putString(KEY_REAL_PIN_SALT, value).apply()
+
+    var decoyProfilesJson: String
+        get() = prefs.getString(KEY_DECOY_PROFILES, "[]") ?: "[]"
+        set(value) = prefs.edit().putString(KEY_DECOY_PROFILES, value).apply()
 
     var geofenceZones: Set<String>
         get() = prefs.getStringSet(KEY_GEOFENCE_ZONES, emptySet()) ?: emptySet()
