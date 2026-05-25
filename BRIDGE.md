@@ -2262,3 +2262,34 @@ Feature-komplett nach 4 Fix-Runden:
 CI: Build & Test ✅ | Security Pattern Scan ✅ | CodeRabbit ✅
 Tests: 14/14 grün
 Branch feat/multi-decoy-profiles aufgeräumt.
+
+---
+
+## 2026-05-25 [CC]
+### TYPE: MEMO
+### STATUS: SESSION CLOSE
+
+**Session-Abschluss + TODO für nächste Session**
+
+**Erledigt heute:**
+- Geofencing Delete Zone + removeAllGeofences Bug-Fix (`4bc1311`)
+- Automation Rules UI vollständig (`82cb568`, `88c9325`)
+- Dashboard Title Fix (`82cb568`)
+- Multi-Decoy Profiles (Elite): Feature-Impl + 4 CodeRabbit-Fix-Runden → PR #1 gemergt (`5b4d717`)
+
+**Chameleon offene comingSoon-Items:**
+| Item | Prio | Notiz |
+|------|------|-------|
+| Advanced Threat Detection (Elite) | Beta | Erst wenn klar: lokal-only Heuristik oder Backend-gestützt — Architektur-Entscheidung ausstehend |
+| Zero Telemetry (Elite) | Passiv ✅ | Kein Telemetry-SDK im Code — bereits erfüllt, nur Label entfernen |
+
+**Zero Telemetry** — einzige noch nötige Aktion: `comingSoon = true` in SettingsScreen entfernen (kein Backend nötig, Claim ist bereits wahr).
+
+**Nächste CC-Actions:**
+1. Zero Telemetry `comingSoon` entfernen (10min, direkt auf main)
+2. Neue APK/AAB für Chameleon bauen (Multi-Decoy + Automation Rules sind jetzt in main)
+3. Auf Gio-Entscheidung warten: Advanced Threat Detection lokal-only oder Backend?
+
+**Offene Gio-Actions:**
+- Cert-Rotation api.stealthx.tech vor 2026-08-14 (CertificatePinner in beiden Repos updaten)
+- NEA-209 BIP39 Mnemonic Import → Beta-Backlog
