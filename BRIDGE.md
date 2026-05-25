@@ -3,6 +3,52 @@
 
 ---
 
+## 2026-05-25 [CC]
+### TYPE: FEAT
+### STATUS: DONE — DEPLOYED
+### Commit: d63d200
+
+**Messenger — vollständige E2E-Implementierung mit 3-Transport-Routing**
+
+Stub-Code entfernt, echte Implementierung gebaut. User wählt pro Nachricht den Transport.
+
+**Data Layer (DB v1 → v2):**
+- `MessageEntity`: alle Ratchet-Felder, `transport_type`, `direction`, `delivery_status`, `sent_at`; FK → `contact_keys` CASCADE
+- `ChatSessionEntity`: Double-Ratchet-Session-State (root_key, send/receive chain/DH keys, counter); FK → `contact_keys`
+- `MessageDao` + `ChatSessionDao`: `observeForContact`, `observeLatestPerContact`, `markRead`, upsert
+- `ChameleonDatabase` v1→v2: `MIGRATION_1_2` via raw SQL — kein destructive fallback
+
+**Transport Layer (`features/messenger/transport/`):**
+- `MessengerTransport` interface + `MessengerTransportType` enum (BLUETOOTH, WIFI_DIRECT, SERVER_RELAY)
+- `BluetoothTransport`: Classic RFCOMM, UUID `5E6D7C8A-...`, paired-device lookup, accept loop
+- `WifiDirectTransport`: WifiP2pManager, DNS-SD `_chameleon._tcp`, TCP port 8742
+- `ServerRelayTransport`: OkHttp WebSocket `wss://api.stealthx.tech/signal`, gleiches `MESSAGE`-JSON wie SecureChat → cross-app kompatibel
+
+**Repository Layer:**
+- `ChatSessionRepository`: Double-Ratchet-Session-State (encryptForSend / decryptIncoming / withReceiveChain). `withReceiveChain()` nutzt `sendDhPrivate` aus Session-Entity — kein Zugriff auf Identity-Key nötig
+- `MessengerRepository`: send (encrypt → transport → persist), receive, `observeMessages`, `observeConversationSummaries`, `getContactName`, `markRead`. Lokaler Speicherschlüssel via HKDF aus `identityKey + dhPublicKey + contactId`
+
+**UI:**
+- `MessengerScreen`: LazyColumn Kontaktliste, unread badge, letzter Nachrichtenpreview, FAB "Add Contact"
+- `ConversationScreen`: Message-Bubbles mit Transport-Badge + Delivery-Status, Transport-Picker (3 Chips), OutlinedTextField, ImeAction.Send
+- `ConversationViewModel`: `_uiState` und `messages` vor `init`-Block initialisiert (NPE-Fix — init greift auf `_uiState.value` zu)
+- `contactName` wird async aus `ContactKeyDao.getById()` geladen, fällt auf `contactId` zurück
+
+**NavGraph:**
+- `MessengerScreen` ohne `FeatureScaffold`-Wrapper (Screen hat eigenen TopAppBar)
+- Neues `composable(Screen.Conversation.ROUTE)` mit `navArgument("contactId")`
+
+**Dependencies ergänzt in `messenger/build.gradle.kts`:**
+- `:stealthx-crypto`, `compose.icons.extended`, `compose.hilt.navigation`, `room.runtime`, `room.ktx`, `okhttp`
+
+**Security-Note:**
+- `ServerRelayTransport` nutzt `StealthXIdentity.getOrCreateWithSeed(context).raw` für WS-URL-Parameter
+- Kein Plaintext in DB — alle Nachrichten lokal re-encrypted mit HKDF-Key
+
+Build: ✅ (assembleInternalRelease 24s) | S7 ✅ S4 ✅
+
+---
+
 ## 2026-05-23 [CC]
 ### TYPE: FEAT
 ### STATUS: DONE
