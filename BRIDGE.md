@@ -2240,3 +2240,25 @@ Build: ✅ beide Module kompilieren sauber
 - Sync-Check entfernt — kein stale Cache-Problem mehr bei Cold-Start
 
 Tests: 14/14 grün, Build: ✅
+
+---
+
+## 2026-05-25 [CC]
+### TYPE: FEAT
+### STATUS: MERGED ✅
+### PR: https://github.com/NeaBouli/chameleon/pull/1 (CLOSED)
+### Merge-Commit: 5b4d717
+
+**Multi-Decoy Profiles — auf main gemergt**
+
+Feature-komplett nach 4 Fix-Runden:
+- Auth-Flow verdrahtet: `authenticateWithMultiDecoy()` in Engine + DecoyAuthViewModel
+- Tier-Gate: suspend `getTier()` in VM, nicht stale `getTierSync()`
+- Form-Close Race: `LaunchedEffect(profiles.size)` statt sofortigem State-Check
+- JSON-Store Corruption: `storeCorrupted` Banner + auto-reset
+- removeProfile(): `withContext(Dispatchers.IO)` — kein Main-Thread-I/O
+- Log: `jsonLen` im Fehlerfall von `loadMultiDecoyEntries()`
+
+CI: Build & Test ✅ | Security Pattern Scan ✅ | CodeRabbit ✅
+Tests: 14/14 grün
+Branch feat/multi-decoy-profiles aufgeräumt.
