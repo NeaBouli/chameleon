@@ -69,10 +69,12 @@ class TierGateTest {
     fun `sync returns last known`() = runTest {
         val repo = mockk<IfrTierRepository>()
         coEvery { repo.getCachedTier() } returns IfrTier.PRO
-        val gate = TierGateImpl(repo)
-        assertEquals(IfrTier.FREE, gate.getTierSync()) // before first load
-        gate.getTier() // load
-        assertEquals(IfrTier.PRO, gate.getTierSync()) // after load
+        // backgroundScope uses the test scheduler — init coroutine won't run
+        // until the test suspends or advances, so FREE is stable before load.
+        val gate = TierGateImpl(repo, initScope = backgroundScope)
+        assertEquals(IfrTier.FREE, gate.getTierSync()) // init not yet dispatched
+        gate.getTier() // explicit load
+        assertEquals(IfrTier.PRO, gate.getTierSync())
     }
 
     @Test
