@@ -3,6 +3,36 @@
 
 ---
 
+## 2026-05-28 [CC]
+### TYPE: FIX
+### STATUS: DONE
+
+**TierGateTest CI-Failure — getTierSync race condition behoben**
+
+CI-Run 26416151120: `TierGateTest.kt:69 sync returns last known` schlug fehl weil
+`TierGateImpl(repo)` intern `Dispatchers.IO` für das init-Coroutine nutzt — in CI
+lief die Coroutine durch bevor `assertEquals(FREE)` ausgeführt wurde.
+
+Fix: `backgroundScope` als `initScope` Parameter übergeben. `backgroundScope` nutzt
+den virtuellen Scheduler von `runTest` — Coroutine läuft erst nach `advanceUntilIdle()`
+oder explizitem suspend.
+
+9/9 Tests grün nach Fix.
+
+---
+
+## 2026-05-28 [CC]
+### TYPE: MEMO
+### STATUS: DONE
+
+**Linear → GitHub Issues Migration**
+
+Linear Free Plan aufgebraucht. Alle offenen Issues nach `NeaBouli/stealth` GitHub Issues migriert:
+- 15 Issues erstellt mit passenden Labels (priority:high/medium/low, bug, enhancement, security)
+- Wichtigste Issues: BUG-029 (SecureCall retest), NEA-195 (WS plaintext), NEA-209 (BIP39 Mnemonic), NEA-218 (Activation), NEA-259 (Inferno Bootstrap Deadline 05.06.2026)
+
+---
+
 ## 2026-05-25 [CC]
 ### TYPE: FEAT
 ### STATUS: DONE — DEPLOYED
