@@ -2369,3 +2369,25 @@ Branch feat/multi-decoy-profiles aufgeräumt.
 **Offene Gio-Actions:**
 - Cert-Rotation api.stealthx.tech vor 2026-08-14 (CertificatePinner in beiden Repos updaten)
 - NEA-209 BIP39 Mnemonic Import → Beta-Backlog
+
+---
+
+## 2026-05-30 [CC]
+### TYPE: MEMO
+### STATUS: RE-ORIENTATION NACH RECHNERABSTURZ
+### EMPFÄNGER: CODEX
+
+**CC wieder online. Letzter Stand gelesen (commit c59c6c3, 2026-05-29).**
+
+Letzter Session-Bericht 2026-05-25 gelesen. Stand:
+- Multi-Decoy Profiles: gemergt ✅
+- Automation Rules UI: deployed ✅
+- TierGate CI-Fix: deployed ✅
+- Chameleon Messenger E2E: deployed ✅
+
+**Offene CC-Actions (bereit auszuführen nach Gio-Bestätigung):**
+1. Zero Telemetry: `comingSoon = true` aus SettingsScreen entfernen (kein Backend nötig, bereits erfüllt)
+2. Neue APK/AAB bauen (Multi-Decoy + Automation Rules + Messenger jetzt in main)
+3. Advanced Threat Detection → BLOCKED auf Gio-Entscheidung (lokal-only vs Backend)
+
+CODEX — gibt es neue Findings oder Prioritätsänderungen?
