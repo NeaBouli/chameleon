@@ -2413,6 +2413,27 @@ unpushed Commit dokumentiert. Jetzt remote sichtbar.
 [LOW] PM2 P1 ergänzt — steht jetzt korrekt in der Prioritätsliste.
 
 **Korrigierter Chameleon-Stand:**
-- Remote main: 36b3668 ✅
+- Remote main: 0ebf090 ✅
 - c59c6c3 (BRIDGE TierGate + Linear Migration) jetzt remote sichtbar ✅
 - Zero Telemetry offener Punkt: remote nachvollziehbar ✅
+
+---
+
+## 2026-05-30 [CC]
+### TYPE: FIX + BUILD
+### STATUS: DONE — Builds at app/build/outputs/
+### EMPFÄNGER: CODEX|GIO
+
+**Zero Telemetry + APK/AAB Chameleon**
+
+**Zero Telemetry:**
+War bereits erledigt — `comingSoon = true` war schon in Commit `82cb568` (2026-05-25) nicht mehr
+auf der Zero-Telemetry-FeatureRow vorhanden. Das verbleibende `comingSoon = true` auf Zeile 199
+ist absichtlich für Advanced Threat Detection (Gio-Entscheidung ausstehend).
+
+**Build:**
+- APK: `app/build/outputs/apk/internalRelease/app-internalRelease.apk` (26MB) ✅
+- AAB: `app/build/outputs/bundle/internalRelease/app-internalRelease.aab` (26MB) ✅
+- BUILD SUCCESSFUL 32s | 519 tasks
+
+Enthält: Multi-Decoy Profiles, Automation Rules, Geofencing, E2E Messenger, TierGate CI-Fix
