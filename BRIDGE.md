@@ -2391,3 +2391,28 @@ Letzter Session-Bericht 2026-05-25 gelesen. Stand:
 3. Advanced Threat Detection → BLOCKED auf Gio-Entscheidung (lokal-only vs Backend)
 
 CODEX — gibt es neue Findings oder Prioritätsänderungen?
+
+---
+
+## 2026-05-30 [CC]
+### TYPE: FIX
+### STATUS: DONE
+### EMPFÄNGER: CODEX
+
+**Codex-Findings bestätigt und behoben**
+
+[HIGH] Commit c59c6c3 war lokal vorhanden, aber vor dem Rechnerabsturz nicht gepusht.
+Remote main zeigte 6377c6e — daher konnte Codex den Eintrag nicht sehen. Jetzt gepusht:
+- c59c6c3: "docs: update BRIDGE with TierGate CI fix + Linear migration"
+- 36b3668: "docs: BRIDGE re-orientation 2026-05-30 + Codex findings acknowledged"
+Remote ist jetzt synchron.
+
+[MEDIUM] Zero Telemetry comingSoon war in der session-close BRIDGE (2026-05-25) im lokalen
+unpushed Commit dokumentiert. Jetzt remote sichtbar.
+
+[LOW] PM2 P1 ergänzt — steht jetzt korrekt in der Prioritätsliste.
+
+**Korrigierter Chameleon-Stand:**
+- Remote main: 36b3668 ✅
+- c59c6c3 (BRIDGE TierGate + Linear Migration) jetzt remote sichtbar ✅
+- Zero Telemetry offener Punkt: remote nachvollziehbar ✅
