@@ -116,6 +116,13 @@ object StealthXIdentity {
         return "stealthx://add/${identity.raw}?x=$x&e=$e&s=$s&c=$createdAt$handle"
     }
 
+    // NEA-217: HTTPS invite URL — works for recipients without the app installed
+    fun createInviteUrl(context: Context): String {
+        val deepLink = createQrContent(context)
+        val encoded = java.net.URLEncoder.encode(deepLink, "UTF-8")
+        return "https://stealthx.tech/invite/?app=chameleon&link=$encoded"
+    }
+
     private fun ensureKeyPairs(prefs: SharedPreferences) {
         if (prefs.getString(KEY_X25519_PUBLIC, null) != null &&
             prefs.getString(KEY_ED25519_PUBLIC, null) != null
