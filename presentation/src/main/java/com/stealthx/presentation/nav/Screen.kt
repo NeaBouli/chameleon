@@ -16,6 +16,7 @@ sealed class Screen(val route: String) {
     data object Settings     : Screen("settings")
     data object KeyExchange  : Screen("key_exchange")
     data object AddContact   : Screen("add_contact")
+    data object Intro             : Screen("intro")
     data object Setup            : Screen("setup")
     data object AutomationRules  : Screen("automation_rules")
     data object AddRule          : Screen("add_rule")

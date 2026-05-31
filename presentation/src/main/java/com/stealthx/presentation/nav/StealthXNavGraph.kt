@@ -49,6 +49,7 @@ import com.stealthx.presentation.screen.AddRuleScreen
 import com.stealthx.presentation.screen.AutomationRulesScreen
 import com.stealthx.presentation.screen.DashboardScreen
 import com.stealthx.presentation.screen.IFRUnlockScreen
+import com.stealthx.presentation.screen.IntroScreen
 import com.stealthx.presentation.screen.KeyExchangeScreen
 import com.stealthx.presentation.screen.SettingsScreen
 import com.stealthx.presentation.screen.SetupScreen
@@ -73,7 +74,10 @@ fun StealthXNavGraph(navController: NavHostController) {
     val overlayWhitelist by settingsVm.overlayWhitelist.collectAsState()
 
     val startDestination = remember {
-        if (setupVm.isInitiallySetup) Screen.Dashboard.route else Screen.Setup.route
+        when {
+            setupVm.isInitiallySetup -> Screen.Dashboard.route
+            else -> Screen.Intro.route
+        }
     }
 
     NavHost(navController = navController, startDestination = startDestination) {
@@ -216,6 +220,21 @@ fun StealthXNavGraph(navController: NavHostController) {
             IFRUnlockScreen(
                 viewModel = ifrVm,
                 onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.Intro.route) {
+            IntroScreen(
+                onWatchIntro = {
+                    navController.navigate(Screen.Setup.route) {
+                        popUpTo(Screen.Intro.route) { inclusive = true }
+                    }
+                },
+                onSkip = {
+                    navController.navigate(Screen.Setup.route) {
+                        popUpTo(Screen.Intro.route) { inclusive = true }
+                    }
+                }
             )
         }
 
