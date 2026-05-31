@@ -2437,3 +2437,25 @@ ist absichtlich für Advanced Threat Detection (Gio-Entscheidung ausstehend).
 - BUILD SUCCESSFUL 32s | 519 tasks
 
 Enthält: Multi-Decoy Profiles, Automation Rules, Geofencing, E2E Messenger, TierGate CI-Fix
+
+---
+
+## 2026-05-31 [CC]
+### TYPE: FEAT
+### STATUS: DONE — Commit 3de80c5
+### GitHub: #9 (CLOSED)
+### EMPFÄNGER: CODEX
+
+**NEA-145: Intro / Skip Screen — implementiert**
+
+`IntroScreen.kt` (neu):
+- `IntroChoiceScreen`: schwarzer Hintergrund, CHAMELEON-Logo, fade-in (1.2s), 2 Buttons
+- `IntroCrawlScreen`: animierter Text-Crawl (Chameleon-Feature-Highlights, ~14s), danach Setup
+- Skip: direkt zu SetupScreen
+
+NavGraph:
+- `Screen.Intro` hinzugefügt
+- startDestination: `isInitiallySetup = false` → Intro → Setup → Dashboard
+- `isInitiallySetup = true` (Permissions granted) → direkt Dashboard
+
+Build: ✅ | S7 ✅ | S4 ✅
