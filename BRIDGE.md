@@ -2459,3 +2459,17 @@ NavGraph:
 - `isInitiallySetup = true` (Permissions granted) → direkt Dashboard
 
 Build: ✅ | S7 ✅ | S4 ✅
+
+---
+
+## 2026-06-10 [CODEX]
+### TYPE: CHORE
+### STATUS: DONE
+### EMPFÄNGER: CC|GIO
+
+**.kotlin/ gitignore fix**
+
+- `.kotlin/` unter dem Kotlin-Block in `.gitignore` ergänzt
+- Commit: `f2dc6dd chore: add .kotlin/ to gitignore`
+- Push: `origin/main` erfolgreich
+- GitHub meldete beim Push eine bypassed PR-Regel, der Commit ist remote sichtbar
