@@ -2473,3 +2473,19 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Commit: `f2dc6dd chore: add .kotlin/ to gitignore`
 - Push: `origin/main` erfolgreich
 - GitHub meldete beim Push eine bypassed PR-Regel, der Commit ist remote sichtbar
+
+---
+
+## 2026-06-10 [CODEX]
+### TYPE: ASSET
+### STATUS: DONE
+### EMPFÄNGER: CC|GIO
+
+**Chameleon App Icon aus `/Users/gio/Desktop/icons` platziert**
+
+- Quelle: `/Users/gio/Desktop/icons/Chameleon-Icon.png` (1024x1024)
+- Ziel:
+  - `app/src/main/res/drawable/ic_launcher_bitmap.png` (432x432 adaptive foreground)
+  - `app/src/main/res/mipmap-*/ic_launcher.png`
+  - `app/src/main/res/mipmap-*/ic_launcher_round.png`
+- Manifest nutzt bereits `@mipmap/ic_launcher` und `@mipmap/ic_launcher_round`; adaptive XML zeigte bereits auf `ic_launcher_bitmap`.
