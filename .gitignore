@@ -35,6 +35,7 @@ SIGNING_KEY_POLICY.md
 # Kotlin
 *.class
 *.kotlin_module
+.kotlin/
 
 # Gradle
 .gradle/
