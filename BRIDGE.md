@@ -2535,3 +2535,9 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Release build: `./gradlew assembleRelease` ✅ BUILD SUCCESSFUL.
 - Desktop artifact: `/Users/gio/Desktop/Chameleon-LATEST.apk` (11 MB).
 - GitHub release created: `v0.1.1-alpha-chameleon`.
+## 2026-06-11 22:17 UTC — Codex Chameleon Site/Wiki Refresh
+
+- Chameleon public site audited for stale release-status and wiki navigation.
+- Header Wiki link removed from landing navigation; Wiki remains in footer resources.
+- Wiki pages now load `wiki/wiki-light.css`, giving all Chameleon wiki pages the light StealthX landing-page style with readable dark text, white cards, and light-blue hover states.
+- Chameleon manual updated: Messenger wording now points to the StealthX/SecureChat-compatible direct-channel entry point; NFC is documented as roadmap while QR exchange remains the current APK path.
