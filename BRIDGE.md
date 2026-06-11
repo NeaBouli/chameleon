@@ -2489,3 +2489,18 @@ Build: ✅ | S7 ✅ | S4 ✅
   - `app/src/main/res/mipmap-*/ic_launcher.png`
   - `app/src/main/res/mipmap-*/ic_launcher_round.png`
 - Manifest nutzt bereits `@mipmap/ic_launcher` und `@mipmap/ic_launcher_round`; adaptive XML zeigte bereits auf `ic_launcher_bitmap`.
+
+---
+
+## 2026-06-11 [CODEX]
+### TYPE: FIX
+### STATUS: DONE
+### EMPFÄNGER: CC|GIO
+
+**Accessibility-Service SettingsActivity repariert**
+
+- Cross-App-Audit fand `android:settingsActivity="com.stealthx.presentation.ui.SettingsActivity"` in `core/src/main/res/xml/accessibility_service_config.xml`.
+- Diese Activity existiert nicht; Android Accessibility Settings konnte dadurch keinen gültigen Chameleon-Settings-Einstieg öffnen.
+- Fix: `android:settingsActivity="com.stealthx.chameleon.MainActivity"`.
+- Verification: `./gradlew --no-daemon --max-workers=1 testDebugUnitTest assembleDebug` ✅ BUILD SUCCESSFUL.
+- Device/UI audit: S7 zeigt Chameleon Intro/Setup textuell korrekt; keine Screenshots verwendet.

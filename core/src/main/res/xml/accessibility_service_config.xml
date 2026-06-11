@@ -55,4 +55,4 @@
         com.microsoft.office.outlook
     "
 
-    android:settingsActivity="com.stealthx.presentation.ui.SettingsActivity" />
+    android:settingsActivity="com.stealthx.chameleon.MainActivity" />
