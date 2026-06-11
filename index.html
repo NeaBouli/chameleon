@@ -258,6 +258,156 @@
     .stats-bar { gap:1.5rem; }
     .integration-grid { grid-template-columns:1fr; }
   }
+
+  /* Light StealthX product layout override, aligned with /securecall product.css */
+  :root {
+    --bg: #fbf8ff;
+    --surface: #ffffff;
+    --surface2: #f4eefc;
+    --border: rgba(69, 35, 103, 0.13);
+    --cyan: #3269d8;
+    --green: #8450d7;
+    --green-dim: #7041bd;
+    --gold: #b77900;
+    --red: #cf3348;
+    --orange: #d4662b;
+    --muted: #6b6477;
+    --text: #21172c;
+    --text-dim: #5f536d;
+    --logo-glow: rgba(132,80,215,.18);
+  }
+  body {
+    background:
+      linear-gradient(180deg, rgba(132,80,215,.11), transparent 560px),
+      var(--bg);
+    color: var(--text);
+    font-family: "Hanken Grotesk", "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  body::before {
+    opacity: .045;
+    background-image:
+      linear-gradient(30deg, rgba(132,80,215,.22) 12%, transparent 12.5%, transparent 87%, rgba(132,80,215,.22) 87.5%, rgba(132,80,215,.22)),
+      linear-gradient(150deg, rgba(50,105,216,.16) 12%, transparent 12.5%, transparent 87%, rgba(50,105,216,.16) 87.5%, rgba(50,105,216,.16));
+    background-size: 96px 120px;
+  }
+  nav {
+    background: rgba(251,248,255,.9);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 10px 32px rgba(15, 23, 42, .05);
+  }
+  .nav-logo-bg,
+  .footer-logo-bg {
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+  }
+  .nav-logo-bg img { height: 42px; border-radius: 10px; }
+  .footer-logo-bg img { height: 30px; border-radius: 8px; }
+  .nav-logo-brand,
+  .section-label,
+  .hero-eyebrow,
+  .stat-value,
+  .footer-col a:hover,
+  .tier-lock span,
+  .tier-features li::before { color: var(--green); }
+  .nav-logo-app,
+  .feature-card h3,
+  .integration-col h3,
+  .crypto-table td:first-child,
+  .compare-table th:first-child,
+  .footer-logo-name { color: var(--text); }
+  .nav-links a { color: var(--muted); }
+  .nav-links a:hover,
+  .nav-links a.active {
+    color: var(--green);
+    background: rgba(132,80,215,.08);
+  }
+  .nav-links a.cta,
+  .btn-primary {
+    background: var(--green);
+    color: #fff;
+    border: 1px solid var(--green);
+  }
+  .nav-links a.cta:hover,
+  .btn-primary:hover {
+    background: var(--green-dim);
+    color: #fff;
+  }
+  .btn-secondary {
+    color: var(--text);
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.72);
+  }
+  .btn-secondary:hover {
+    color: var(--green);
+    border-color: var(--green);
+    background: #fff;
+  }
+  .hero { max-width: 1120px; text-align: left; }
+  .hero-inner { gap: 56px; }
+  .hero-title {
+    font-family: "Schibsted Grotesk", system-ui, sans-serif;
+    color: var(--text);
+    letter-spacing: -0.035em;
+  }
+  .hero-title span { color: var(--green); }
+  .hero-sub,
+  .feature-card p,
+  .section-sub,
+  .footer-bottom p,
+  .footer-bottom a,
+  .footer-col a,
+  .tier-features li,
+  .crypto-table td,
+  .compare-table td:first-child,
+  .integration-col ul li { color: var(--text-dim); }
+  .tag,
+  .badge,
+  .feature-card,
+  .tier-card,
+  .integration-col,
+  .arch-diagram,
+  .code-block,
+  .hero-phone,
+  .stats-bar,
+  .status-bar,
+  footer {
+    background: rgba(255,255,255,.86);
+    border-color: var(--border);
+    box-shadow: 0 18px 48px rgba(15,23,42,.06);
+  }
+  .hero-phone-content {
+    background: linear-gradient(180deg, #ffffff 0%, #f4eefc 100%);
+  }
+  .hero-phone::before { background: #eadff7; }
+  .feature-card:hover,
+  .tier-card.featured,
+  .integration-col.with { border-color: var(--green); }
+  .crypto-table th,
+  .compare-table th {
+    background: #f4eefc;
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .crypto-table td,
+  .compare-table td { border-color: var(--border); }
+  .compare-table th.ours,
+  .compare-table td.ours,
+  .tier-card.featured {
+    background: rgba(132,80,215,.07);
+    color: var(--green);
+  }
+  .arch-diagram,
+  .code-block {
+    color: #463458;
+    background: #ffffff;
+  }
+  hr.divider { border-top-color: var(--border); }
+  @media(max-width:768px) {
+    .hero { text-align: left; }
+    .hero-inner { gap: 32px; }
+    .nav-links { background: rgba(251,248,255,.96); }
+  }
 </style>
 </head>
 <body>
