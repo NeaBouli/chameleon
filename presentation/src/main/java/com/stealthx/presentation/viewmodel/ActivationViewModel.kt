@@ -5,6 +5,7 @@
  */
 package com.stealthx.presentation.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stealthx.data.activation.ActivationCodeClient
@@ -12,6 +13,7 @@ import com.stealthx.domain.repository.IfrTierRepository
 import com.stealthx.domain.tier.TierGate
 import com.stealthx.shared.model.IfrTier
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +30,7 @@ sealed class ActivationState {
 
 @HiltViewModel
 class ActivationViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val tierGate: TierGate,
     private val tierRepository: IfrTierRepository
 ) : ViewModel() {
@@ -41,10 +44,10 @@ class ActivationViewModel @Inject constructor(
             return
         }
         _state.value = ActivationState.Loading
-        ActivationCodeClient.activate(code) { tierName, error ->
+        ActivationCodeClient.activate(context, code) { tierName, error ->
             viewModelScope.launch(Dispatchers.IO) {
                 if (tierName != null) {
-                    val ifrTier = try { IfrTier.valueOf(tierName) } catch (_: Exception) { null }
+                    val ifrTier = try { IfrTier.valueOf(tierName.uppercase()) } catch (_: Exception) { null }
                     if (ifrTier != null && ifrTier > IfrTier.FREE) {
                         tierRepository.saveTierResult("activation_code", 0L, ifrTier)
                         tierGate.getTier()

@@ -2504,3 +2504,28 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Fix: `android:settingsActivity="com.stealthx.chameleon.MainActivity"`.
 - Verification: `./gradlew --no-daemon --max-workers=1 testDebugUnitTest assembleDebug` ✅ BUILD SUCCESSFUL.
 - Device/UI audit: S7 zeigt Chameleon Intro/Setup textuell korrekt; keine Screenshots verwendet.
+
+---
+
+## 2026-06-11 [CODEX]
+### TYPE: AUDIT + FIX + BUILD
+### STATUS: DONE — Purchase/Activation Path
+### EMPFÄNGER: CC|GIO
+
+**Audit-Fazit Chameleon**
+- Settings sind weitgehend feature-complete: Overlay, Automation Rules, Private Zone, Decoy, Geofencing, Multi-Decoy haben echte Routen/Engines.
+- `Advanced Threat Detection` bleibt absichtlich `SOON`; NEA-150 BuilderRegistry bleibt externe/on-chain Aktion.
+
+**Fixes**
+- `index.html`: deaktivierte Stripe-Platzhalter für Chameleon Pro/Elite/Suite entfernt; Buttons rufen `https://api.stealthx.tech/stripe/create-dynamic-checkout` mit `chameleon_pro_lifetime`, `chameleon_elite_lifetime`, `stealthx_suite_lifetime` auf.
+- `ActivationCodeClient`: registriert vor `ACTIVATE_CODE` die lokale `sx_...` Identität beim Signalserver, damit Code-Slots an echte Geräte gebunden werden.
+- `ActivationViewModel`: akzeptiert Server-Tierwerte robust case-insensitive (`pro` → `PRO`, `elite` → `ELITE`).
+- `docs/PRICING.md` und `ECOSYSTEM.md`: alte 1,000/5,000 SecureCall-IFR-Werte auf 2,000/6,000 aktualisiert.
+
+**Verification**
+- Backend Stripe/WS Tests in stealth: ✅
+- Static CTA scan: keine `data-stripe-status="pending"` / `Stripe Checkout Ready` Platzhalter mehr.
+- `./gradlew --no-daemon --max-workers=1 testDebugUnitTest assembleDebug`: ✅ BUILD SUCCESSFUL.
+
+**Deploy-Hinweis**
+- Live API muss nach stealth Push neu deployen; vor Deploy kennt `/licenses/status` nur alte SecureCall-Keys.
