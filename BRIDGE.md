@@ -2541,3 +2541,8 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Header Wiki link removed from landing navigation; Wiki remains in footer resources.
 - Wiki pages now load `wiki/wiki-light.css`, giving all Chameleon wiki pages the light StealthX landing-page style with readable dark text, white cards, and light-blue hover states.
 - Chameleon manual updated: Messenger wording now points to the StealthX/SecureChat-compatible direct-channel entry point; NFC is documented as roadmap while QR exchange remains the current APK path.
+
+## 2026-06-11 22:36 UTC — Codex IFR Uniswap CTA
+
+- Chameleon landing IFR section now has a prominent `Buy $IFR on Uniswap` button.
+- Chameleon footer/wiki IFR purchase links now point directly to the official Uniswap $IFR token page.
