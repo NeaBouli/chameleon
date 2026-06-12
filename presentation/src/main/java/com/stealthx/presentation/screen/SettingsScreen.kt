@@ -84,6 +84,11 @@ fun SettingsScreen(
 ) {
     val context = LocalContext.current
     val activationState by activationVm.state.collectAsState()
+    val appVersion = remember(context.packageName) {
+        runCatching {
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "unknown"
+        }.getOrDefault("unknown")
+    }
     var showActivationDialog by remember { mutableStateOf(false) }
     fun openUrl(url: String) = context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
 
@@ -248,7 +253,7 @@ fun SettingsScreen(
 
             // — About ——————————————————————————————————————————
             SettingsSection(title = "About") {
-                SettingsItem(label = "Version", value = "0.1.0-alpha")
+                SettingsItem(label = "Version", value = appVersion)
                 SettingsItem(label = "License", value = "GPL-3.0")
                 SettingsItem(label = "Platform", value = "StealthX")
             }

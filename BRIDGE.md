@@ -2575,3 +2575,13 @@ Build: ✅ | S7 ✅ | S4 ✅
   - Advanced Threat Detection im Manual als Roadmap/SOON ausgewiesen, passend zur App.
 - Checkout:
   - Hetzner-local Test erzeugt Checkout-URLs fuer `chameleon_elite_lifetime`; Live-Status kennt Pro/Elite/Suite Keys.
+
+## 2026-06-12 16:12 PT — Codex Chameleon Version Display Hotfix
+
+- User-facing Settings zeigte noch hartcodiert `Version 0.1.0-alpha`, obwohl Build/Package `0.1.1-alpha` ist.
+- Fix: Settings liest `versionName` jetzt dynamisch aus `PackageManager`, damit kuenftige Builds keinen stale About-Text behalten.
+- Verification:
+  - `./gradlew --no-daemon --max-workers=1 testDebugUnitTest assembleRelease` ✅ BUILD SUCCESSFUL.
+  - `/Users/gio/Desktop/Chameleon-LATEST.apk` ersetzt; SHA256 `9de34b30edfb19ee12b269cb87894073f01342df111c68e5e50af7c915403d1c`.
+  - APK auf S4, S7, S10 installiert.
+  - GitHub Release `v0.1.1-alpha-chameleon` Asset `Chameleon-LATEST.apk` neu hochgeladen.
