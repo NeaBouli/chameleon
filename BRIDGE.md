@@ -2556,3 +2556,22 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Verification: `testDebugUnitTest assembleDebug` gruen, `testDebugUnitTest assembleRelease` gruen, finaler `assembleRelease` gruen.
 - Desktop-Artefakt: `/Users/gio/Desktop/Chameleon-LATEST.apk` aktualisiert.
 - Device refresh: S4, S7, S10 frisch installiert; text-only launch smoke ohne Crash.
+
+## 2026-06-12 16:01 PT — Codex Final Chameleon Audit Pass
+
+- Chameleon auf allen drei Geräten geprüft:
+  - Tab S4 `ce12182c68644439037e`: `com.stealthx.chameleon` v0.1.1-alpha.
+  - S7 `ce10160adc00152604`: `com.stealthx.chameleon` v0.1.1-alpha.
+  - S10 `RF8N313QMFL`: `com.stealthx.chameleon` v0.1.1-alpha.
+- Intro Claim Fix:
+  - Alter Text `An encrypted messenger with no central server` aus `IntroScreen.kt` entfernt.
+  - Neuer Text: `SecureChat-compatible privacy controls for encrypted workflows.`
+  - Releasebuild erfolgreich, `/Users/gio/Desktop/Chameleon-LATEST.apk` neu erzeugt und auf S4/S7/S10 installiert.
+  - Tab S4 Introtext per uiautomator geprüft: keine `central server`/`encrypted messenger` Alt-Claims sichtbar.
+- Stability:
+  - Monkey Stabilitätslauf je Gerät: 180 Events, keine Chameleon Fatal Exceptions/ANRs.
+- Public/Wiki Fix:
+  - User Manual korrigiert Decoy Profile auf ELITE statt veraltetem `UI shows PRO`.
+  - Advanced Threat Detection im Manual als Roadmap/SOON ausgewiesen, passend zur App.
+- Checkout:
+  - Hetzner-local Test erzeugt Checkout-URLs fuer `chameleon_elite_lifetime`; Live-Status kennt Pro/Elite/Suite Keys.

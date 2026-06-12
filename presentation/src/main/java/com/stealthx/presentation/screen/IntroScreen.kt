@@ -41,7 +41,7 @@ Chameleon is your personal privacy layer. It doesn't just protect you — it ada
 Automated rules that respond to your environment.
 Geofenced zones that lock down your most sensitive data.
 Decoy profiles that shield your real identity.
-An encrypted messenger with no central server.
+SecureChat-compatible privacy controls for encrypted workflows.
 
 No telemetry. No analytics. No compromise.
 
