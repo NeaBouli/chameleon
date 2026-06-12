@@ -115,17 +115,17 @@ The top section of Settings shows your current tier and provides access to the I
 **IFR Unlock Screen:**
 
 *Tier Status Card:*
-Shows your current tier, locked IFR amount, wallet address, and cache expiry (30-day window).
+Shows your current tier, held IFR amount, wallet address, and cache expiry (30-day window).
 
 *Connect Wallet (WalletConnect):*
 Tap **Connect Wallet**. Chameleon launches your installed Ethereum wallet app (MetaMask, Trust Wallet, etc.). Your wallet signs a challenge proving ownership of the address. Chameleon then queries the IFR contract on Ethereum Mainnet directly.
 
-- ≥ 6,000 IFR locked → Elite (permanent, no expiry)
-- ≥ 2,000 IFR locked → Pro (permanent, no expiry)
+- ≥ 6,000 IFR held → Elite (permanent, no expiry)
+- ≥ 2,000 IFR held → Pro (permanent, no expiry)
 - < 2,000 IFR → Free (balance shown, no unlock)
 
 *Manual Address Entry:*
-Paste your Ethereum address (0x format). Chameleon verifies the locked balance on-chain. Manual verifications expire after 30 days and re-verify every 24 hours. If re-verification is not possible (offline), the cached tier is kept until expiry.
+Paste your Ethereum address (0x format). Chameleon verifies the held IFR balance on-chain. Manual verifications expire after 30 days and re-verify every 24 hours. If re-verification is not possible (offline), the cached tier is kept until expiry.
 
 The verification result is stored in an encrypted local database. The cache is protected by an HMAC-SHA256 tag computed with a hardware-backed key from Android Keystore. If the cache is tampered with, the tier reverts to Free.
 
@@ -345,7 +345,7 @@ Chameleon does not request internet permission. IFR verification is performed by
 1. Settings → tap the Upgrade button (top of Settings).
 2. On the IFR Unlock screen, tap **Connect Wallet**.
 3. Your wallet app opens. Sign the authorization message.
-4. Chameleon verifies your locked IFR balance on Ethereum.
+4. Chameleon verifies your held IFR balance on Ethereum.
 5. If ≥ 2,000 IFR are locked, Pro features unlock immediately.
 6. Return to Settings — the tier badge updates and Pro features are available.
 
@@ -395,7 +395,7 @@ Decoy must be enabled and saved correctly. Open Settings → Decoy Profile and c
 Files imported into the vault are never written to the regular file system — they exist only in the encrypted vault directory. They will not appear in your gallery, file manager, or any other app.
 
 **My tier shows Free after verifying IFR**
-Ensure your tokens are locked in the IFR contract, not just held in your wallet. Visit ifrunit.tech to lock tokens. After locking, return to Settings → IFR Token and verify again.
+Ensure your IFR tokens are held in the wallet address you verify. If you need IFR, use the Uniswap link on ifrunit.tech, then return to Settings -> IFR Token and verify again.
 
 **The app crashes when opening on a new device**
 If Decoy Profile was enabled on a previous installation and you reinstall, the hashed PINs are gone. The app will open normally (no PIN screen) since there is no profile to unlock. Reconfigure Decoy if needed.

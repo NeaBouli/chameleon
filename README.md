@@ -65,7 +65,7 @@ Android Keystore      Hardware-backed private key storage (StrongBox/TEE)
 ## IFR Token Integration
 
 Chameleon is integrated with the [IFR Token](https://ifrunit.tech) ecosystem.  
-Lock IFR tokens once for lifetime tier access — no subscriptions.
+Hold IFR tokens for lifetime tier access — no subscriptions.
 
 | IFR Lock | Tier | Features |
 |----------|------|----------|

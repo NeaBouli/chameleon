@@ -2546,3 +2546,13 @@ Build: ✅ | S7 ✅ | S4 ✅
 
 - Chameleon landing IFR section now has a prominent `Buy $IFR on Uniswap` button.
 - Chameleon footer/wiki IFR purchase links now point directly to the official Uniswap $IFR token page.
+## 2026-06-12 15:22 PT — Codex Chameleon Wallet/IFR Fix
+
+- IFR-Modell auf HOLD umgestellt: `balanceOf()` gegen IFR Token statt altem `lockedBalance()`/Lock-Contract.
+- RPC-Fallbacks aktualisiert; `eth.llamarpc.com` entfernt, weil es manche App/Server-Clients ablehnt.
+- Wallet-App-Erkennung korrigiert: Android package visibility fuer MetaMask, Trust Wallet, Rainbow, Coinbase; kaputter Dummy-WalletConnect-Flow wird nicht mehr als echte Session verwendet.
+- UI/Doku von Lock/Stake auf Hold-Modell aktualisiert.
+- Release-Pipeline-Fix: `isMinifyEnabled=false`, `isShrinkResources=false`, weil R8 bei `:app:minifyReleaseWithR8` reproduzierbar hing. Tests/Release bauen damit sauber.
+- Verification: `testDebugUnitTest assembleDebug` gruen, `testDebugUnitTest assembleRelease` gruen, finaler `assembleRelease` gruen.
+- Desktop-Artefakt: `/Users/gio/Desktop/Chameleon-LATEST.apk` aktualisiert.
+- Device refresh: S4, S7, S10 frisch installiert; text-only launch smoke ohne Crash.

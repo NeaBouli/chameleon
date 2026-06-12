@@ -279,7 +279,7 @@ private fun TierSection(tier: IfrTier, onUpgradeClick: () -> Unit) {
                 TierBadge(tier = tier)
                 if (tier == IfrTier.FREE) {
                     Spacer(Modifier.height(4.dp))
-                    Text("Lock IFR tokens for Pro or Elite access", style = MaterialTheme.typography.bodySmall, color = StealthXColors.OnSurfaceVariant)
+                    Text("Hold IFR tokens for Pro or Elite access", style = MaterialTheme.typography.bodySmall, color = StealthXColors.OnSurfaceVariant)
                 }
             }
             if (tier != IfrTier.ELITE) {
