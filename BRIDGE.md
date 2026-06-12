@@ -2585,3 +2585,4 @@ Build: ✅ | S7 ✅ | S4 ✅
   - `/Users/gio/Desktop/Chameleon-LATEST.apk` ersetzt; SHA256 `9de34b30edfb19ee12b269cb87894073f01342df111c68e5e50af7c915403d1c`.
   - APK auf S4, S7, S10 installiert.
   - GitHub Release `v0.1.1-alpha-chameleon` Asset `Chameleon-LATEST.apk` neu hochgeladen.
+  - Post-install Smoke: S4/S7/S10 melden `versionName=0.1.1-alpha`; je 80 Monkey-Events ohne Chameleon Fatal Exception/ANR.
