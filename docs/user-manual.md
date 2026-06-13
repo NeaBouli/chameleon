@@ -124,9 +124,6 @@ Tap **Connect Wallet**. Chameleon launches your installed Ethereum wallet app (M
 - ≥ 2,000 IFR held → Pro (permanent, no expiry)
 - < 2,000 IFR → Free (balance shown, no unlock)
 
-*Manual Address Entry:*
-Paste your Ethereum address (0x format). Chameleon verifies the held IFR balance on-chain. Manual verifications expire after 30 days and re-verify every 24 hours. If re-verification is not possible (offline), the cached tier is kept until expiry.
-
 The verification result is stored in an encrypted local database. The cache is protected by an HMAC-SHA256 tag computed with a hardware-backed key from Android Keystore. If the cache is tampered with, the tier reverts to Free.
 
 ---

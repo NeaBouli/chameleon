@@ -79,7 +79,6 @@ fun IFRUnlockScreen(viewModel: IFRViewModel, onBack: () -> Unit) {
                 onWalletConnectClicked = {
                     viewModel.createWalletConnectIntent()?.let(walletLauncher::launch)
                 },
-                onManualAddressSubmit = { viewModel.verifyManualAddress(it) },
                 isVerifying = state.isVerifying,
                 error = state.error
             )
