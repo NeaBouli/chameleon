@@ -30,7 +30,7 @@ import javax.inject.Singleton
  * Flow:
  * 1. User taps "Open Wallet"
  * 2. We open the SecureCall SIWE page inside the installed wallet browser
- * 3. The wallet signs the challenge and redirects to chameleon://wc
+ * 3. The wallet signs the challenge and redirects to https://stealthx.tech/return/chameleon
  * 4. Chameleon verifies held IFR balance via web3j eth_call
  */
 @Singleton
@@ -199,10 +199,20 @@ class WalletConnectManager @Inject constructor(
     }
 
     fun handleDeepLink(uri: Uri?): Boolean {
-        if (uri?.scheme != "chameleon" || uri.host != "wc") return false
+        if (uri == null) return false
+        val isCustomCallback = uri.scheme == "chameleon" && uri.host == "wc"
+        val isHttpsCallback = uri.scheme == "https" && uri.host == "stealthx.tech" &&
+            ((uri.path?.startsWith("/return/chameleon") == true &&
+                (uri.getQueryParameter("app") ?: "chameleon") == "chameleon") ||
+                (uri.path?.startsWith("/return") == true &&
+                    uri.getQueryParameter("app") == "chameleon"))
+        if (!isCustomCallback && !isHttpsCallback) return false
+
         val address = uri.getQueryParameter("address")
             ?: uri.getQueryParameter("walletAddress")
+            ?: uri.getQueryParameter("addr")
         val signature = uri.getQueryParameter("signature")
+            ?: uri.getQueryParameter("sig")
         val result = when {
             address == null || !isValidAddress(address) ->
                 WalletConnectResult.Error("Wallet did not return a valid Ethereum address")
