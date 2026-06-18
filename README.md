@@ -44,7 +44,7 @@ Android Keystore      Hardware-backed private key storage (StrongBox/TEE)
 ```
 :app                    Entry point, Hilt DI graph
 :stealthx-crypto        THE ONLY crypto module (XChaCha20, X25519, DR, Argon2id)
-:stealthx-ifr           IFR Token verification (WalletConnect, web3j LITE)
+:stealthx-ifr           Internal IFR helpers (not exposed in public app wallet flow)
 :security               Android Keystore, Attestation, SecureWipe
 :core                   AccessibilityService (AIDL isolated), Overlay
 :data                   Room + SQLCipher, EncryptedSharedPrefs, SecureFile
@@ -62,18 +62,15 @@ Android Keystore      Hardware-backed private key storage (StrongBox/TEE)
 
 ---
 
-## IFR Token Integration
+## IFR Holder Discount
 
-Chameleon is integrated with the [IFR Token](https://ifrunit.tech) ecosystem.  
-Hold IFR tokens for lifetime tier access — no subscriptions.
+The public Chameleon app does not run WalletConnect or wallet verification inside Android. IFR holder benefits are handled on the website: buy or hold $IFR, verify a browser wallet, then open Stripe checkout with a 50% discount. The app unlocks through the normal activation-code path.
 
-| IFR Lock | Tier | Features |
-|----------|------|----------|
+| Web IFR eligibility | Tier discount | Features |
+|---:|---|---|
 | 0 IFR | Free | Overlay encryption, 5 rules |
-| ≥ 2,000 IFR | Pro | + Private Zone, + Messenger |
-| ≥ 6,000 IFR | Elite | + Geofencing, + Decoy Profile |
-
-IFR Lock contract: `0x769928aBDfc949D0718d8766a1C2d7dBb63954Eb` (Ethereum Mainnet)
+| >= 2,000 IFR | 50% off Pro checkout | + Private Zone, + Messenger |
+| >= 6,000 IFR | 50% off Elite checkout | + Geofencing, + Decoy Profile |
 
 ---
 
@@ -89,7 +86,7 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 | S-03 | ✅ Done | AccessibilityService (AIDL, CryptoService :crypto process) |
 | S-04 | ✅ Done | Data Layer (Room + SQLCipher + IFR HMAC Cache) |
 | S-05 | ✅ Done | Domain Layer (XChaCha20, Double Ratchet HKDF, TierGate, RuleEngine) |
-| S-06 | ✅ Done | IFR Module (WalletConnect, IFRLockVerifier, TierActivator) |
+| S-06 | ✅ Done | IFR web discount model and activation-code unlock path |
 | S-07 | ✅ Done | Compose UI (StealthX Design System, Navigation, Screens) |
 | S-08 | ✅ Done | Feature Layer (Overlay, Messenger, PrivateZone, Geofencing, Decoy) |
 | S-09 | ✅ Done | Security Hardening + OWASP MASVS L2 Audit |

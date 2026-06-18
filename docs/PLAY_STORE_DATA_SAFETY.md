@@ -35,10 +35,7 @@ Users can delete all data by:
 
 ## IFR Token Verification
 
-The only optional network activity is IFR token verification:
-- **What:** One-time Ethereum RPC call (`eth_call`, read-only)
-- **When:** User explicitly initiates wallet verification
-- **Data sent:** Wallet address (public on blockchain)
+The public app does not perform wallet verification for IFR discounts. IFR discounts are verified on the website before Stripe checkout.
 - **Data received:** Locked token amount (public on blockchain)
 - **Storage:** Cached locally with HMAC tamper protection
 - **No account, no registration, no server**

@@ -26,7 +26,7 @@ Beyond message encryption, Chameleon provides a context-aware rule engine that a
 
 ## Tier Overview
 
-Chameleon uses IFR token locking for permanent tier access. No subscriptions.
+Chameleon does not verify wallets inside the Android app. IFR holders verify on the website for a 50% Stripe checkout discount, then unlock with an activation code.
 
 | Feature | Free | Pro (≥ 2,000 IFR) | Elite (≥ 6,000 IFR) |
 |---|---|---|---|
@@ -68,7 +68,7 @@ The Dashboard shows your current security level. You can set it manually by tapp
 
 ### Step 4 — Unlock Features (Optional)
 
-If you hold IFR tokens and want to unlock Pro or Elite features, open Settings → **IFR Token** and connect your Ethereum wallet.
+If you hold IFR tokens, open Settings → **IFR Holder Discount** to visit the website, verify a browser wallet, and start discounted Stripe checkout.
 
 ---
 
@@ -115,16 +115,16 @@ The top section of Settings shows your current tier and provides access to the I
 **IFR Unlock Screen:**
 
 *Tier Status Card:*
-Shows your current tier, held IFR amount, wallet address, and cache expiry (30-day window).
+Shows your current app tier and links to website purchase, IFR discount, and activation-code unlock.
 
-*Connect Wallet (WalletConnect):*
-Tap **Connect Wallet**. Chameleon launches your installed Ethereum wallet app (MetaMask, Trust Wallet, etc.). Your wallet signs a challenge proving ownership of the address. Chameleon then queries the IFR contract on Ethereum Mainnet directly.
+*Website IFR discount:*
+Tap **IFR Holder Discount**. The website connects MetaMask or accepts a wallet address, then the backend checks IFR balance read-only on Ethereum Mainnet before opening Stripe checkout.
 
-- ≥ 6,000 IFR held → Elite (permanent, no expiry)
-- ≥ 2,000 IFR held → Pro (permanent, no expiry)
-- < 2,000 IFR → Free (balance shown, no unlock)
+- ≥ 6,000 IFR held → 50% off Elite checkout
+- ≥ 2,000 IFR held → 50% off Pro checkout
+- < 2,000 IFR → normal checkout remains available
 
-The verification result is stored in an encrypted local database. The cache is protected by an HMAC-SHA256 tag computed with a hardware-backed key from Android Keystore. If the cache is tampered with, the tier reverts to Free.
+After Stripe checkout, Chameleon unlocks through the normal activation-code path. WalletConnect is not used inside the Android app.
 
 ---
 
@@ -289,7 +289,7 @@ Both PINs are hashed with Argon2id (64 MB memory cost, 3 iterations) with a uniq
 | Vibrate | Security alert haptics | Declared, no prompt |
 | Boot Completed | Auto-restart rule engine after reboot | Declared, no prompt |
 
-Chameleon does not request internet permission. IFR verification is performed by your external wallet app. Chameleon communicates with the wallet app via Android Intents, not direct network calls.
+Chameleon does not request wallet connectivity for discounts. IFR verification happens on the website; the app receives only an activation code after checkout.
 
 ---
 
@@ -337,14 +337,14 @@ Chameleon does not request internet permission. IFR verification is performed by
 6. Force-close and reopen the app.
 7. A PIN screen appears — enter the Decoy PIN to test the empty decoy state.
 
-### Unlock Pro Tier via WalletConnect
+### Unlock Pro Tier via Web Discount
 
 1. Settings → tap the Upgrade button (top of Settings).
-2. On the IFR Unlock screen, tap **Connect Wallet**.
-3. Your wallet app opens. Sign the authorization message.
-4. Chameleon verifies your held IFR balance on Ethereum.
-5. If ≥ 2,000 IFR are locked, Pro features unlock immediately.
-6. Return to Settings — the tier badge updates and Pro features are available.
+2. On the upgrade screen, tap **Verify IFR for 50% Stripe Discount**.
+3. Your browser opens the Chameleon checkout website.
+4. Connect MetaMask in the browser or paste a wallet address fallback.
+5. The backend verifies IFR balance read-only on Ethereum and opens Stripe with the eligible discount.
+6. Enter the activation code after checkout to unlock Pro or Elite.
 
 ---
 
@@ -392,7 +392,7 @@ Decoy must be enabled and saved correctly. Open Settings → Decoy Profile and c
 Files imported into the vault are never written to the regular file system — they exist only in the encrypted vault directory. They will not appear in your gallery, file manager, or any other app.
 
 **My tier shows Free after verifying IFR**
-Ensure your IFR tokens are held in the wallet address you verify. If you need IFR, use the Uniswap link on ifrunit.tech, then return to Settings -> IFR Token and verify again.
+Verify the wallet on chameleon.stealthx.tech/#ifr. If you need IFR, use the Uniswap link there, then start the discounted Stripe checkout.
 
 **The app crashes when opening on a new device**
 If Decoy Profile was enabled on a previous installation and you reinstall, the hashed PINs are gone. The app will open normally (no PIN screen) since there is no profile to unlock. Reconfigure Decoy if needed.

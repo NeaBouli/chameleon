@@ -2585,4 +2585,25 @@ Build: ✅ | S7 ✅ | S4 ✅
   - `/Users/gio/Desktop/Chameleon-LATEST.apk` ersetzt; SHA256 `9de34b30edfb19ee12b269cb87894073f01342df111c68e5e50af7c915403d1c`.
   - APK auf S4, S7, S10 installiert.
   - GitHub Release `v0.1.1-alpha-chameleon` Asset `Chameleon-LATEST.apk` neu hochgeladen.
-  - Post-install Smoke: S4/S7/S10 melden `versionName=0.1.1-alpha`; je 80 Monkey-Events ohne Chameleon Fatal Exception/ANR.
+- Post-install Smoke: S4/S7/S10 melden `versionName=0.1.1-alpha`; je 80 Monkey-Events ohne Chameleon Fatal Exception/ANR.
+
+## 2026-06-18 16:01 PT — Codex Chameleon IFR Web Checkout Discount
+
+- Product direction changed: Chameleon public Android app no longer starts WalletConnect or wallet verification.
+- Settings upgrade/IFR entries now route to the website:
+  - `https://chameleon.stealthx.tech/#ifr` for IFR holder 50% Stripe discount.
+  - `https://chameleon.stealthx.tech/#lifetime` for normal card checkout.
+  - Uniswap $IFR token link for purchase.
+- Removed active wallet callback path from Android:
+  - MainActivity no longer injects or calls `WalletConnectManager`.
+  - Manifest no longer declares MetaMask/Trust package queries.
+  - Manifest no longer registers `chameleon://wc` or `https://stealthx.tech/return/chameleon` app-return filters.
+  - `IFRViewModel` no longer depends on WalletConnect or tier activation.
+  - Nav graph no longer creates an IFR wallet view model for the upgrade screen.
+- Website changes:
+  - Landing page IFR section now verifies browser wallet/manual address and sends `ifrDiscount + walletAddress` to the shared Stripe checkout API.
+  - Pro, Elite, and Suite 50% checkout buttons added.
+  - Wiki, Data Safety, user manual, README updated to describe web checkout discount and activation-code unlock.
+- Verification:
+  - `./gradlew --no-daemon --max-workers=1 :app:compileReleaseKotlin :presentation:compileReleaseKotlin` succeeded.
+  - Kotlin string interpolation risk on `Buy $IFR on Uniswap` was fixed to `Buy IFR on Uniswap`.

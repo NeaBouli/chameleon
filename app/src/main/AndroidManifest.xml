@@ -4,9 +4,8 @@
     <!--
         CHAMELEON MANIFEST
         ==================
-        Internet permission is NOT declared here by default.
-        IFR verification can open installed wallet apps and uses read-only
-        Ethereum RPC balance checks after the user provides/verifies an address.
+        Internet permission is declared for relay and purchase website access.
+        IFR wallet verification is handled only on the public website.
 
         If optional sync is ever added, it must be declared
         with required="false" and gated behind explicit user consent.
@@ -58,25 +57,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
-    <queries>
-        <package android:name="io.metamask" />
-        <package android:name="com.wallet.crypto.trustapp" />
-        <package android:name="me.rainbow" />
-        <package android:name="org.toshi" />
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="wc" />
-        </intent>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="metamask" />
-        </intent>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="trust" />
-        </intent>
-    </queries>
-
     <application
         android:name=".ChameleonApplication"
         android:allowBackup="false"
@@ -99,20 +79,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter android:autoVerify="false">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="chameleon" android:host="wc" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https"
-                    android:host="stealthx.tech"
-                    android:pathPrefix="/return/chameleon" />
             </intent-filter>
             <!-- NFC: receive stealthx://add/ contact URIs written to NDEF tags -->
             <intent-filter>

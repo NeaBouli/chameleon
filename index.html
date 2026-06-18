@@ -591,8 +591,8 @@
     </div>
     <div class="feature-card">
       <div class="feature-icon">🔑</div>
-      <h3>IFR Token Access</h3>
-      <p>Same IFR token lock as SecureChat. One on-chain lock unlocks lifetime access to both Chameleon and SecureChat. No subscriptions, no renewals.</p>
+      <h3>IFR Holder Discount</h3>
+      <p>Verify IFR in the browser for 50% off Chameleon checkout. The Android app stays wallet-free and unlocks through normal activation.</p>
     </div>
   </div>
 </section>
@@ -655,8 +655,8 @@
 <!-- IFR -->
 <section id="ifr">
   <div class="section-label">Inferno Integration</div>
-  <h2 class="section-title">IFR Lifetime Unlock.</h2>
-  <p class="section-sub">Hold IFR tokens. Unlock forever. Same wallet balance across Chameleon and SecureChat.</p>
+  <h2 class="section-title">IFR Holder Discount.</h2>
+  <p class="section-sub">Buy IFR on Uniswap, verify your wallet in the browser, then open Stripe with a 50% discount. No WalletConnect runs inside the Android app.</p>
 
   <div class="tier-grid">
     <div class="tier-card">
@@ -671,7 +671,7 @@
     </div>
     <div class="tier-card featured">
       <div class="tier-name" style="color:var(--green)">Pro</div>
-      <div class="tier-lock">Hold <span>&ge; 2,000 IFR</span> — lifetime</div>
+      <div class="tier-lock">Hold <span>&ge; 2,000 IFR</span> — 50% Pro checkout</div>
       <ul class="tier-features">
         <li>Everything in Free</li>
         <li>Unlimited automation rules</li>
@@ -683,7 +683,7 @@
     </div>
     <div class="tier-card">
       <div class="tier-name" style="color:var(--gold)">Elite</div>
-      <div class="tier-lock">Hold <span>&ge; 6,000 IFR</span> — lifetime</div>
+      <div class="tier-lock">Hold <span>&ge; 6,000 IFR</span> — 50% Elite checkout</div>
       <ul class="tier-features">
         <li>Everything in Pro</li>
         <li>Multi-decoy profiles</li>
@@ -696,12 +696,17 @@
   </div>
 
   <br>
-  <p style="font-size:13px; color:var(--muted); text-align:center;">
-    Same IFR holding model as SecureChat — one wallet balance covers both.
-  </p>
-  <p style="text-align:center;">
-    <a href="https://app.uniswap.org/explore/tokens/ethereum/0x77e99917Eca8539c62F509ED1193ac36580A6e7B" class="btn btn-primary" target="_blank" rel="noopener">Buy $IFR on Uniswap</a>
-  </p>
+  <div style="max-width:760px;margin:1.5rem auto 0;background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.22);border-radius:12px;padding:1.5rem;">
+    <p style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:1rem;">Same backend eligibility as SecureChat and SecureCall. The Android app receives only the activation code after Stripe checkout.</p>
+    <input id="ifrWalletAddress" type="text" inputmode="text" autocomplete="off" placeholder="0x wallet address (optional fallback)" style="width:100%;padding:12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);margin-bottom:10px;">
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;">
+      <button type="button" data-checkout-tier="chameleon_pro_lifetime" data-ifr-discount="true" style="padding:10px;border:1px solid var(--green);border-radius:8px;background:var(--green);color:#000;font-weight:700;cursor:pointer;">Pro 50% Checkout</button>
+      <button type="button" data-checkout-tier="chameleon_elite_lifetime" data-ifr-discount="true" style="padding:10px;border:1px solid var(--gold);border-radius:8px;background:var(--gold);color:#000;font-weight:700;cursor:pointer;">Elite 50% Checkout</button>
+      <button type="button" data-checkout-tier="stealthx_suite_lifetime" data-ifr-discount="true" style="padding:10px;border:1px solid var(--gold);border-radius:8px;background:transparent;color:var(--gold);font-weight:700;cursor:pointer;">Suite 50% Checkout</button>
+    </div>
+    <p id="ifrDiscountStatus" style="font-size:12px;color:var(--muted);text-align:center;margin-top:10px;">Connect MetaMask in this browser or paste a wallet address. The backend applies the discount only after verifying IFR balance.</p>
+    <p style="text-align:center;margin-top:1rem;"><a href="https://app.uniswap.org/explore/tokens/ethereum/0x77e99917Eca8539c62F509ED1193ac36580A6e7B" class="btn btn-primary" target="_blank" rel="noopener">Buy $IFR on Uniswap</a></p>
+  </div>
 </section>
 
 <hr class="divider">
@@ -746,11 +751,11 @@
   <div style="margin-top:2rem;background:rgba(255,184,0,0.05);border:1px solid rgba(255,184,0,0.2);border-radius:12px;padding:2rem;text-align:center;">
     <h3 style="font-size:1.3rem;color:var(--gold);margin-bottom:0.5rem;">StealthX Suite &mdash; &euro;54 one-time</h3>
     <p style="color:var(--text-dim);font-size:14px;margin-bottom:1rem;">SecureChat Elite + Chameleon Elite + SecureCall Premium. Everything. Forever.</p>
-    <p style="color:var(--muted);font-size:13px;margin-bottom:1.5rem;">OR: Hold &ge; 8,000 IFR for the same access.</p>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:1.5rem;">IFR holders can verify above for 50% off Suite checkout.</p>
     <button type="button" data-checkout-tier="stealthx_suite_lifetime" style="display:inline-block;padding:10px 24px;border:1px solid var(--gold);border-radius:8px;background:var(--gold);color:#000;font-weight:700;font-size:14px;cursor:pointer;">Buy Suite Lifetime</button>
   </div>
 
-  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:1.5rem;">Same IFR holding model as SecureChat &mdash; one wallet balance covers both. All lifetime prices limited to 100 licenses.</p>
+  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:1.5rem;">Wallet verification happens only on the website. Chameleon stays free of wallet code and unlocks through activation codes. All lifetime prices limited to 100 licenses.</p>
 </section>
 
 <hr class="divider">
@@ -816,24 +821,53 @@
 <script>
 (function(){
   var API='https://api.stealthx.tech';
+  async function getIfrWalletAddress(){
+    var input=document.getElementById('ifrWalletAddress');
+    var status=document.getElementById('ifrDiscountStatus');
+    if(window.ethereum&&window.ethereum.request){
+      try{
+        if(status)status.textContent='Connecting browser wallet...';
+        var accounts=await window.ethereum.request({method:'eth_requestAccounts'});
+        if(accounts&&accounts[0]){
+          if(input)input.value=accounts[0];
+          return accounts[0];
+        }
+      }catch(e){
+        if(status)status.textContent='Wallet connection cancelled. Paste the wallet address or try again.';
+      }
+    }
+    var manual=(input&&input.value||'').trim();
+    if(/^0x[0-9a-fA-F]{40}$/.test(manual))return manual;
+    throw new Error('Connect MetaMask or enter a valid 0x wallet address for the IFR discount');
+  }
   async function startCheckout(button){
     if(!button||button.disabled)return;
     var label=button.textContent;
     button.disabled=true;
     button.textContent='Opening Stripe...';
     try{
+      var payload={tier:button.dataset.checkoutTier};
+      if(button.dataset.ifrDiscount==='true'){
+        button.textContent='Verifying IFR...';
+        payload.ifrDiscount=true;
+        payload.walletAddress=await getIfrWalletAddress();
+      }
       var r=await fetch(API+'/stripe/create-dynamic-checkout',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({tier:button.dataset.checkoutTier})
+        body:JSON.stringify(payload)
       });
       var d=await r.json().catch(function(){return{}});
       if(!r.ok||!d.url)throw new Error(d.error||'Checkout unavailable');
+      var status=document.getElementById('ifrDiscountStatus');
+      if(status&&d.ifrDiscountApplied)status.textContent='IFR verified: 50% discount applied. Redirecting to Stripe...';
       window.location.href=d.url;
     }catch(e){
       button.textContent='Try again';
       button.disabled=false;
       button.title=e.message;
+      var status=document.getElementById('ifrDiscountStatus');
+      if(status)status.textContent=e.message;
       setTimeout(function(){ if(!button.disabled) button.textContent=label; },2500);
     }
   }

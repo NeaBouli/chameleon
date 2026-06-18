@@ -56,7 +56,6 @@ import com.stealthx.presentation.screen.SetupScreen
 import com.stealthx.presentation.viewmodel.SetupViewModel
 import com.stealthx.presentation.theme.StealthXColors
 import com.stealthx.presentation.viewmodel.DashboardViewModel
-import com.stealthx.presentation.viewmodel.IFRViewModel
 import com.stealthx.presentation.viewmodel.SettingsViewModel
 import com.stealthx.shared.model.IfrTier
 import java.io.ByteArrayOutputStream
@@ -66,7 +65,6 @@ import java.io.ByteArrayOutputStream
 fun StealthXNavGraph(navController: NavHostController) {
     val context = LocalContext.current
     val dashboardVm: DashboardViewModel = hiltViewModel()
-    val ifrVm: IFRViewModel = hiltViewModel()
     val settingsVm: SettingsViewModel = hiltViewModel()
     val setupVm: SetupViewModel = hiltViewModel()
     val currentTier by dashboardVm.currentTier.collectAsState()
@@ -218,7 +216,6 @@ fun StealthXNavGraph(navController: NavHostController) {
 
         composable(Screen.IFRUnlock.route) {
             IFRUnlockScreen(
-                viewModel = ifrVm,
                 onBack = { navController.popBackStack() }
             )
         }

@@ -32,16 +32,13 @@ import com.stealthx.data.NfcWriteRelay
 import com.stealthx.features.decoy.screen.DecoyAuthViewModel
 import com.stealthx.features.decoy.screen.DecoyModeScreen
 import com.stealthx.features.decoy.screen.DecoyUnlockScreen
-import com.stealthx.ifr.wallet.WalletConnectManager
 import com.stealthx.presentation.nav.StealthXNavGraph
 import com.stealthx.presentation.theme.StealthXTheme
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val decoyAuthViewModel: DecoyAuthViewModel by viewModels()
-    @Inject lateinit var walletConnectManager: WalletConnectManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +48,6 @@ class MainActivity : ComponentActivity() {
             WindowManager.LayoutParams.FLAG_SECURE
         )
 
-        handleWalletIntent(intent)
         handleNfcIntent(intent)
 
         setContent {
@@ -75,12 +71,7 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        handleWalletIntent(intent)
         handleNfcIntent(intent)
-    }
-
-    private fun handleWalletIntent(intent: Intent?) {
-        walletConnectManager.handleDeepLink(intent?.data)
     }
 
     override fun onResume() {

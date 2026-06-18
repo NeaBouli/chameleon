@@ -21,6 +21,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AutoFixHigh
+import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.FaceRetouchingNatural
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MenuBook
@@ -144,7 +145,7 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             // — Pro features ———————————————————————————————————
-            SettingsSection(title = "Pro  ≥ 2,000 IFR") {
+            SettingsSection(title = "Pro  - IFR holders get 50% off") {
                 FeatureRow(
                     icon = Icons.Default.AutoFixHigh,
                     title = "Unlimited Automation Rules",
@@ -166,7 +167,7 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             // — Elite features —————————————————————————————————
-            SettingsSection(title = "Elite  ≥ 6,000 IFR") {
+            SettingsSection(title = "Elite  - IFR holders get 50% off") {
                 FeatureRow(
                     icon = Icons.Default.FaceRetouchingNatural,
                     title = "Decoy Profile",
@@ -219,9 +220,15 @@ fun SettingsScreen(
             SettingsSection(title = "Access") {
                 HelpLinkRow(
                     icon = Icons.Default.Lock,
-                    title = "IFR Token Unlock",
-                    subtitle = "Lock tokens for lifetime tier access",
+                    title = "IFR Holder Discount",
+                    subtitle = "Verify wallet on the website for 50% Stripe checkout",
                     onClick = onNavigateToIFR
+                )
+                HelpLinkRow(
+                    icon = Icons.Default.CreditCard,
+                    title = "Buy Lifetime Access",
+                    subtitle = "Pro EUR 9 · Elite EUR 19 · Stripe checkout",
+                    onClick = { openUrl("https://chameleon.stealthx.tech/#lifetime") }
                 )
                 HelpLinkRow(
                     icon = Icons.Default.Key,
@@ -284,7 +291,7 @@ private fun TierSection(tier: IfrTier, onUpgradeClick: () -> Unit) {
                 TierBadge(tier = tier)
                 if (tier == IfrTier.FREE) {
                     Spacer(Modifier.height(4.dp))
-                    Text("Hold IFR tokens for Pro or Elite access", style = MaterialTheme.typography.bodySmall, color = StealthXColors.OnSurfaceVariant)
+                    Text("IFR holders get 50% off on the website", style = MaterialTheme.typography.bodySmall, color = StealthXColors.OnSurfaceVariant)
                 }
             }
             if (tier != IfrTier.ELITE) {
