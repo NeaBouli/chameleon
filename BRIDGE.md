@@ -2607,3 +2607,11 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Verification:
   - `./gradlew --no-daemon --max-workers=1 :app:compileReleaseKotlin :presentation:compileReleaseKotlin` succeeded.
   - Kotlin string interpolation risk on `Buy $IFR on Uniswap` was fixed to `Buy IFR on Uniswap`.
+
+## 2026-06-18 16:18 PT — Codex Chameleon IFR Discount Signature Requirement
+
+- User flagged manual wallet address fallback as insecure.
+- Chameleon website IFR discount block now requires MetaMask connection and wallet signature.
+- Address field is read-only display only; it is not accepted as proof.
+- Checkout requests a backend challenge at `/stripe/ifr-discount-challenge`, signs it with `personal_sign`, and sends `walletAddress`, `walletNonce`, and `walletSignature` to dynamic Stripe checkout.
+- Backend verifies the signature before checking IFR balance and applying the 50% discount.
