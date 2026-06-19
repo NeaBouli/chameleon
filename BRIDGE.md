@@ -2633,3 +2633,19 @@ Build: ✅ | S7 ✅ | S4 ✅
   - Desktop artifact refreshed: `/Users/gio/Desktop/Chameleon-LATEST.apk` (19 MB, 2026-06-19 14:58 PDT).
 - Device note: no ADB install or logcat actions were run to avoid interfering with the separate `woizz` device work.
 - Next: install and smoke-test on S10/S7/S4 once device ownership is clear.
+
+## 2026-06-19 15:34 PDT — CODEX TERMINAL FIX/STATUS
+
+- Chameleon sales landing page IFR discount section aligned with the current SecureCall web purchase model.
+- Added the missing full-width StealthX Suite / Best Value IFR card with Uniswap link and IFR token logo.
+- Rebuilt the IFR verification block as two clear cards:
+  - Buy IFR with Uniswap link and IFR token logo.
+  - Verify for Stripe discount with prominent Connect Wallet, Disconnect Wallet, connected-address display, and Pro/Elite/Suite 50% checkout buttons.
+- The Connect Wallet button is now part of the same visible verification card layout used by SecureChat/SecureCall.
+- The status copy now uses `color:var(--text)` for readable contrast on the light card background.
+- Static verification passed:
+  - Exactly one Connect Wallet button and one Disconnect Wallet button.
+  - Suite card CSS has `grid-column:1 / -1`.
+  - Mobile layout stacks Suite, wallet actions, and checkout actions to one column.
+  - Inline JS parse check succeeded for both executable script blocks.
+- Device note: no ADB/device action was run to avoid interfering with the separate `woizz` device work.
