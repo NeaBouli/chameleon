@@ -2667,3 +2667,17 @@ Build: ✅ | S7 ✅ | S4 ✅
   - Targeted APK string scan found no visible old IFR/Wallet/Connect/Uniswap phrases; raw short `IIFr`/`ifre` byte hits are non-UI false positives.
 - Device note: no ADB/device action was run to avoid interfering with separate `woizz` work.
 - Later milestone: build Chameleon AAB only after Chameleon is functionally complete and fully verified; do not produce AAB before that pass.
+
+## 2026-06-19 16:55 PDT — CODEX TERMINAL DEVICE/STATUS
+
+- User reported that S7 still showed Chameleon IFR-token content.
+- Root cause was a stale installed APK on S7 `ce10160adc00152604`: before reinstall, `com.stealthx.chameleon` had `lastUpdateTime=2026-06-15 09:30:25`.
+- Installed refreshed `/Users/gio/Desktop/Chameleon-LATEST.apk` on S7; `adb install -r` succeeded and package metadata changed to `lastUpdateTime=2026-06-20 02:53:22` device time.
+- Navigated Chameleon on S7 through Intro -> Setup -> Dashboard -> Settings.
+- UIAutomator Settings dump after the reinstall showed the current app-side model only:
+  - Current Tier / FREE.
+  - "Buy on the website, then activate with your code."
+  - "Buy access" / "Buy Elite" locked-feature CTAs.
+- Visible S7 Settings dump had no `IFR`, `wallet`, `Uniswap`, `MetaMask`, `connect`, or old upgrade wording.
+- `com.neabouli.woizz` was not touched.
+- Next: repeat install/smoke on S10/S4 and SecureChat only when device ownership is clear, then continue functional-completeness work before any Chameleon AAB.
