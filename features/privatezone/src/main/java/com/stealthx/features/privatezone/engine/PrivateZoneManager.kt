@@ -62,7 +62,7 @@ class PrivateZoneManager @Inject constructor(
             if (used + incoming > FREE_STORAGE_CAP_BYTES) {
                 val usedMb = used / (1024 * 1024)
                 throw TierLimitException(
-                    "Private Zone storage limit reached (${usedMb}MB / 100MB). Upgrade to Pro for unlimited storage."
+                    "Private Zone storage limit reached (${usedMb}MB / 100MB). Buy Pro Lifetime for unlimited storage."
                 )
             }
         }

@@ -47,7 +47,7 @@ fun UpgradeScreen(onBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Upgrade") },
+                title = { Text("Access") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -66,7 +66,7 @@ fun UpgradeScreen(onBack: () -> Unit) {
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp)
-                .semantics { contentDescription = "Upgrade screen" }
+                .semantics { contentDescription = "Access screen" }
         ) {
             Card(
                 colors = CardDefaults.cardColors(containerColor = StealthXColors.Surface),

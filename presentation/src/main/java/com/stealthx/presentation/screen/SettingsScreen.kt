@@ -294,7 +294,7 @@ private fun TierSection(tier: AccessTier, onUpgradeClick: () -> Unit) {
                     onClick = onUpgradeClick,
                     colors = ButtonDefaults.buttonColors(containerColor = tierColor.copy(alpha = 0.85f))
                 ) {
-                    Text(if (tier == AccessTier.FREE) "Upgrade" else "Upgrade to Elite", color = Color.Black)
+                    Text(if (tier == AccessTier.FREE) "Buy access" else "Buy Elite", color = Color.Black)
                 }
             }
         }
@@ -340,7 +340,7 @@ private fun FeatureRow(
         } else if (locked && onLockedClick != null) {
             TextButton(onClick = onLockedClick) {
                 Icon(Icons.Default.Lock, contentDescription = "Locked", tint = Color.Gray, modifier = Modifier.padding(end = 4.dp))
-                Text("Upgrade", color = StealthXColors.Primary, style = MaterialTheme.typography.labelSmall)
+                Text("Buy access", color = StealthXColors.Primary, style = MaterialTheme.typography.labelSmall)
             }
         }
     }
