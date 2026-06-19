@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
                 val authState by decoyAuthViewModel.uiState.collectAsState()
                 when {
                     authState.isDecoyMode -> DecoyModeScreen(onLock = decoyAuthViewModel::lock)
-                    authState.requiresUnlock && !authState.isUnlocked -> DecoyUnlockScreen(
+                    authState.requiresUnlock && !authState.isUnaccess -> DecoyUnlockScreen(
                         state = authState,
                         onSubmitPin = decoyAuthViewModel::submitPin
                     )

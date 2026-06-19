@@ -3,7 +3,7 @@
     Chameleon data extraction rules.
     allowBackup is false in manifest — this file is belt-and-suspenders.
     NO data may be backed up to Google Drive or other cloud services.
-    This prevents IFR cache, encryption keys, and rules from leaking.
+    This prevents access cache, encryption keys, and rules from leaking.
 -->
 <data-extraction-rules>
     <cloud-backup>

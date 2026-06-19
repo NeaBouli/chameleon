@@ -31,7 +31,7 @@ dependencies {
     implementation(project(":features:privatezone"))
     implementation(project(":features:geofencing"))
     implementation(project(":features:decoy"))
-    implementation(project(":stealthx-ifr"))
+    implementation(project(":stealthx-access"))
     implementation(project(":shared"))
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)

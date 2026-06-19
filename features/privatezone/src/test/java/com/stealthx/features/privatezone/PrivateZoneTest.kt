@@ -8,7 +8,7 @@ import com.stealthx.data.crypto.SecureFileManager
 import com.stealthx.domain.tier.TierGate
 import com.stealthx.domain.tier.TierLimitException
 import com.stealthx.features.privatezone.engine.PrivateZoneManager
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -27,7 +27,7 @@ class PrivateZoneTest {
     }
 
     private fun buildManager(
-        tier: IfrTier,
+        tier: AccessTier,
         usedBytes: Long,
         existingBytes: Long = 0L
     ): Pair<PrivateZoneManager, SecureFileManager> {
@@ -73,7 +73,7 @@ class PrivateZoneTest {
     fun `free tier storage cap enforced`() {
         // 99.9MB on disk, adding ~1MB encrypted would exceed 100MB
         val usedBytes = 99L * 1024 * 1024 + 900 * 1024
-        val (manager, _) = buildManager(IfrTier.FREE, usedBytes)
+        val (manager, _) = buildManager(AccessTier.FREE, usedBytes)
         val data = ByteArray(1024 * 1024) // 1MB plaintext
 
         assertThrows(TierLimitException::class.java) {
@@ -84,7 +84,7 @@ class PrivateZoneTest {
     @Test
     @DisplayName("FREE tier — storeFile succeeds when under 100MB")
     fun `free tier storage cap not yet reached`() {
-        val (manager, _) = buildManager(IfrTier.FREE, usedBytes = 0L)
+        val (manager, _) = buildManager(AccessTier.FREE, usedBytes = 0L)
         val data = ByteArray(1024) // 1KB
 
         assertDoesNotThrow { manager.storeFile("test.jpg", data, ByteArray(32)) }
@@ -93,7 +93,7 @@ class PrivateZoneTest {
     @Test
     @DisplayName("PRO tier — storeFile allowed beyond 100MB")
     fun `pro tier no storage cap`() {
-        val (manager, sfm) = buildManager(IfrTier.PRO, usedBytes = 0L)
+        val (manager, sfm) = buildManager(AccessTier.PRO, usedBytes = 0L)
         val data = ByteArray(1024) // actual size irrelevant for PRO
 
         assertDoesNotThrow { manager.storeFile("large.zip", data, ByteArray(32)) }
@@ -108,7 +108,7 @@ class PrivateZoneTest {
         // With fix:    used=99.5MB − 1MB existing + ~1MB incoming = ~99.5MB → OK
         val existingFileBytes = 1L * 1024 * 1024
         val totalBytes = 99L * 1024 * 1024 + 512 * 1024 // 99.5MB
-        val (manager, _) = buildManager(IfrTier.FREE, totalBytes, existingBytes = existingFileBytes)
+        val (manager, _) = buildManager(AccessTier.FREE, totalBytes, existingBytes = existingFileBytes)
         val data = ByteArray(512 * 1024) // 0.5MB replacement
 
         assertDoesNotThrow { manager.storeFile("overwrite.jpg", data, ByteArray(32)) }
@@ -118,11 +118,11 @@ class PrivateZoneTest {
     @DisplayName("FREE tier — writeEncrypted not called when limit exceeded")
     fun `free tier write not called on limit exceeded`() {
         val usedBytes = 99L * 1024 * 1024 + 900 * 1024
-        val (manager, sfm) = buildManager(IfrTier.FREE, usedBytes)
+        val (manager, sfm) = buildManager(AccessTier.FREE, usedBytes)
         val data = ByteArray(1024 * 1024)
 
         assertThrows(TierLimitException::class.java) {
-            manager.storeFile("blocked.jpg", data, ByteArray(32))
+            manager.storeFile("baccess.jpg", data, ByteArray(32))
         }
         verify(exactly = 0) { sfm.writeEncrypted(any(), any(), any()) }
     }
@@ -130,7 +130,7 @@ class PrivateZoneTest {
     @Test
     @DisplayName("FREE tier — small file on empty vault is well within limit")
     fun `free tier small file on empty vault`() {
-        val (manager, _) = buildManager(IfrTier.FREE, usedBytes = 0L)
+        val (manager, _) = buildManager(AccessTier.FREE, usedBytes = 0L)
         val data = ByteArray(4096) // 4KB
 
         assertDoesNotThrow { manager.storeFile("small.pdf", data, ByteArray(32)) }

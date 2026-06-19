@@ -11,7 +11,7 @@ import com.stealthx.data.exchange.ContactExchangeManager
 import com.stealthx.domain.repository.SecureRuleRepository
 import com.stealthx.domain.rules.SecureRule
 import com.stealthx.domain.tier.TierGate
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 import com.stealthx.shared.model.SecurityLevel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,8 +29,8 @@ class DashboardViewModel @Inject constructor(
     private val contactExchangeManager: ContactExchangeManager,
 ) : ViewModel() {
 
-    val currentTier: StateFlow<IfrTier> = tierGate.currentTier
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), IfrTier.FREE)
+    val currentTier: StateFlow<AccessTier> = tierGate.currentTier
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), AccessTier.FREE)
 
     private val _securityLevel = MutableStateFlow(SecurityLevel.PROTECTED)
     val securityLevel: StateFlow<SecurityLevel> = _securityLevel.asStateFlow()

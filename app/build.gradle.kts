@@ -109,7 +109,7 @@ android {
 
 dependencies {
     implementation(project(":stealthx-crypto"))
-    implementation(project(":stealthx-ifr"))
+    implementation(project(":stealthx-access"))
     implementation(project(":security"))
     implementation(project(":core"))
     implementation(project(":data"))

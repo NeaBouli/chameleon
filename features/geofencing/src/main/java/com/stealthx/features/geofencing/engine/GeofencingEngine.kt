@@ -13,7 +13,7 @@ import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
 import com.stealthx.domain.tier.TierGate
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.CopyOnWriteArraySet
 import javax.inject.Inject
@@ -35,7 +35,7 @@ class GeofencingEngine @Inject constructor(
 ) {
 
     private fun requireElite() {
-        if (tierGate.getTierSync() < IfrTier.ELITE) {
+        if (tierGate.getTierSync() < AccessTier.ELITE) {
             throw SecurityException("GeofencingEngine requires ELITE tier")
         }
     }

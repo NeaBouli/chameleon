@@ -5,7 +5,7 @@
         CHAMELEON MANIFEST
         ==================
         Internet permission is declared for relay and purchase website access.
-        IFR wallet verification is handled only on the public website.
+        Wallet verification is handled only on the public website.
 
         If optional sync is ever added, it must be declared
         with required="false" and gated behind explicit user consent.

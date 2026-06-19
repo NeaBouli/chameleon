@@ -14,7 +14,7 @@ import com.stealthx.chameleon.service.ContactListenerService
 import com.stealthx.data.prefs.AppPreferences
 import com.stealthx.features.geofencing.engine.GeofenceTransitionReceiver
 import com.stealthx.features.geofencing.engine.GeofencingEngine
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 import com.stealthx.domain.tier.TierGate
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Base64
@@ -47,7 +47,7 @@ class BootReceiver : BroadcastReceiver() {
         val pending = goAsync()
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                if (tierGate.getTier() >= IfrTier.ELITE) {
+                if (tierGate.getTier() >= AccessTier.ELITE) {
                     reRegisterGeofences(context)
                 }
             } finally {

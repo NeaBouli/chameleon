@@ -66,13 +66,13 @@ import com.stealthx.presentation.composable.TierBadge
 import com.stealthx.presentation.theme.StealthXColors
 import com.stealthx.presentation.viewmodel.ActivationState
 import com.stealthx.presentation.viewmodel.ActivationViewModel
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     onBack: () -> Unit,
-    onNavigateToIFR: () -> Unit,
+    onNavigateToUpgrade: () -> Unit,
     onNavigateToOverlay: () -> Unit,
     onNavigateToPrivateZone: () -> Unit,
     onNavigateToGeofencing: () -> Unit,
@@ -80,7 +80,7 @@ fun SettingsScreen(
     onNavigateToAutomationRules: () -> Unit = {},
     onNavigateToMultiDecoy: () -> Unit = {},
     onNavigateToSetup: () -> Unit = {},
-    currentTier: IfrTier = IfrTier.FREE,
+    currentTier: AccessTier = AccessTier.FREE,
     activationVm: ActivationViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -127,7 +127,7 @@ fun SettingsScreen(
                 .semantics { contentDescription = "Settings screen" }
         ) {
             // — Tier Card ——————————————————————————————————————
-            TierSection(tier = currentTier, onUpgradeClick = onNavigateToIFR)
+            TierSection(tier = currentTier, onUpgradeClick = onNavigateToUpgrade)
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -145,21 +145,21 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             // — Pro features ———————————————————————————————————
-            SettingsSection(title = "Pro  - IFR holders get 50% off") {
+            SettingsSection(title = "Pro") {
                 FeatureRow(
                     icon = Icons.Default.AutoFixHigh,
                     title = "Unlimited Automation Rules",
                     subtitle = "Context-aware triggers",
-                    locked = currentTier < IfrTier.PRO,
-                    onLockedClick = onNavigateToIFR,
+                    locked = currentTier < AccessTier.PRO,
+                    onLockedClick = onNavigateToUpgrade,
                     onClick = onNavigateToAutomationRules
                 )
                 FeatureRow(
                     icon = Icons.Default.Storage,
                     title = "Private Zone",
                     subtitle = "100 MB encrypted vault",
-                    locked = currentTier < IfrTier.PRO,
-                    onLockedClick = onNavigateToIFR,
+                    locked = currentTier < AccessTier.PRO,
+                    onLockedClick = onNavigateToUpgrade,
                     onClick = onNavigateToPrivateZone
                 )
             }
@@ -167,13 +167,13 @@ fun SettingsScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             // — Elite features —————————————————————————————————
-            SettingsSection(title = "Elite  - IFR holders get 50% off") {
+            SettingsSection(title = "Elite") {
                 FeatureRow(
                     icon = Icons.Default.FaceRetouchingNatural,
                     title = "Decoy Profile",
                     subtitle = "Wrong PIN → decoy identity",
-                    locked = currentTier < IfrTier.ELITE,
-                    onLockedClick = onNavigateToIFR,
+                    locked = currentTier < AccessTier.ELITE,
+                    onLockedClick = onNavigateToUpgrade,
                     onClick = onNavigateToDecoy,
                     eliteTier = true
                 )
@@ -181,8 +181,8 @@ fun SettingsScreen(
                     icon = Icons.Default.MyLocation,
                     title = "Geofencing",
                     subtitle = "Location-triggered encryption rules",
-                    locked = currentTier < IfrTier.ELITE,
-                    onLockedClick = onNavigateToIFR,
+                    locked = currentTier < AccessTier.ELITE,
+                    onLockedClick = onNavigateToUpgrade,
                     onClick = onNavigateToGeofencing,
                     eliteTier = true
                 )
@@ -190,8 +190,8 @@ fun SettingsScreen(
                     icon = Icons.Default.FaceRetouchingNatural,
                     title = "Multi-Decoy Profiles",
                     subtitle = "Multiple fake identities",
-                    locked = currentTier < IfrTier.ELITE,
-                    onLockedClick = onNavigateToIFR,
+                    locked = currentTier < AccessTier.ELITE,
+                    onLockedClick = onNavigateToUpgrade,
                     onClick = onNavigateToMultiDecoy,
                     eliteTier = true
                 )
@@ -199,8 +199,8 @@ fun SettingsScreen(
                     icon = Icons.Default.Security,
                     title = "Advanced Threat Detection",
                     subtitle = "Real-time behavioral analysis",
-                    locked = currentTier < IfrTier.ELITE,
-                    onLockedClick = onNavigateToIFR,
+                    locked = currentTier < AccessTier.ELITE,
+                    onLockedClick = onNavigateToUpgrade,
                     eliteTier = true,
                     comingSoon = true
                 )
@@ -208,8 +208,8 @@ fun SettingsScreen(
                     icon = Icons.Default.Shield,
                     title = "Zero Telemetry",
                     subtitle = "No analytics, no logs",
-                    locked = currentTier < IfrTier.ELITE,
-                    onLockedClick = onNavigateToIFR,
+                    locked = currentTier < AccessTier.ELITE,
+                    onLockedClick = onNavigateToUpgrade,
                     eliteTier = true
                 )
             }
@@ -218,12 +218,6 @@ fun SettingsScreen(
 
             // — Access ——————————————————————————————————————————
             SettingsSection(title = "Access") {
-                HelpLinkRow(
-                    icon = Icons.Default.Lock,
-                    title = "IFR Holder Discount",
-                    subtitle = "Verify wallet on the website for 50% Stripe checkout",
-                    onClick = onNavigateToIFR
-                )
                 HelpLinkRow(
                     icon = Icons.Default.CreditCard,
                     title = "Buy Lifetime Access",
@@ -269,11 +263,11 @@ fun SettingsScreen(
 }
 
 @Composable
-private fun TierSection(tier: IfrTier, onUpgradeClick: () -> Unit) {
+private fun TierSection(tier: AccessTier, onUpgradeClick: () -> Unit) {
     val tierColor = when (tier) {
-        IfrTier.FREE -> Color.Gray
-        IfrTier.PRO -> StealthXColors.Primary
-        IfrTier.ELITE -> Color(0xFFFFD700)
+        AccessTier.FREE -> Color.Gray
+        AccessTier.PRO -> StealthXColors.Primary
+        AccessTier.ELITE -> Color(0xFFFFD700)
     }
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -289,18 +283,18 @@ private fun TierSection(tier: IfrTier, onUpgradeClick: () -> Unit) {
                 Text("Current Tier", style = MaterialTheme.typography.bodySmall, color = StealthXColors.OnSurfaceVariant)
                 Spacer(Modifier.height(4.dp))
                 TierBadge(tier = tier)
-                if (tier == IfrTier.FREE) {
+                if (tier == AccessTier.FREE) {
                     Spacer(Modifier.height(4.dp))
-                    Text("IFR holders get 50% off on the website", style = MaterialTheme.typography.bodySmall, color = StealthXColors.OnSurfaceVariant)
+                    Text("Buy on the website, then activate with your code.", style = MaterialTheme.typography.bodySmall, color = StealthXColors.OnSurfaceVariant)
                 }
             }
-            if (tier != IfrTier.ELITE) {
+            if (tier != AccessTier.ELITE) {
                 Spacer(Modifier.width(8.dp))
                 Button(
                     onClick = onUpgradeClick,
                     colors = ButtonDefaults.buttonColors(containerColor = tierColor.copy(alpha = 0.85f))
                 ) {
-                    Text(if (tier == IfrTier.FREE) "Upgrade" else "Upgrade to Elite", color = Color.Black)
+                    Text(if (tier == AccessTier.FREE) "Upgrade" else "Upgrade to Elite", color = Color.Black)
                 }
             }
         }
@@ -346,7 +340,7 @@ private fun FeatureRow(
         } else if (locked && onLockedClick != null) {
             TextButton(onClick = onLockedClick) {
                 Icon(Icons.Default.Lock, contentDescription = "Locked", tint = Color.Gray, modifier = Modifier.padding(end = 4.dp))
-                Text("Unlock", color = StealthXColors.Primary, style = MaterialTheme.typography.labelSmall)
+                Text("Upgrade", color = StealthXColors.Primary, style = MaterialTheme.typography.labelSmall)
             }
         }
     }
@@ -424,7 +418,7 @@ private fun ActivationCodeDialog(
                         style = MaterialTheme.typography.bodySmall
                     )
                     is ActivationState.Success -> Text(
-                        "Unlocked: ${state.tier.name}",
+                        "Unaccess: ${state.tier.name}",
                         color = Color(0xFF00E676),
                         style = MaterialTheme.typography.bodySmall
                     )

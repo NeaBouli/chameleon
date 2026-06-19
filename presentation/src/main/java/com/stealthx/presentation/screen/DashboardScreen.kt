@@ -28,7 +28,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -50,7 +49,6 @@ fun DashboardScreen(
     viewModel: DashboardViewModel,
     onNavigateToSettings: () -> Unit,
     onNavigateToKeyExchange: () -> Unit,
-    onNavigateToIFR: () -> Unit,
     onNavigateToOverlay: () -> Unit,
     onNavigateToMessenger: () -> Unit
 ) {
@@ -103,13 +101,10 @@ fun DashboardScreen(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text("Active Rules", style = MaterialTheme.typography.titleMedium, color = StealthXColors.OnSurface)
-                TextButton(onClick = onNavigateToIFR) {
-                    Text("IFR Status", color = StealthXColors.Primary)
-                }
             }
 
             LazyColumn {

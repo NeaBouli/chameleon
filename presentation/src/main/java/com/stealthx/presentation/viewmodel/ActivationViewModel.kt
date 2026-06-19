@@ -9,9 +9,9 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stealthx.data.activation.ActivationCodeClient
-import com.stealthx.domain.repository.IfrTierRepository
+import com.stealthx.domain.repository.AccessTierRepository
 import com.stealthx.domain.tier.TierGate
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +24,7 @@ import javax.inject.Inject
 sealed class ActivationState {
     data object Idle : ActivationState()
     data object Loading : ActivationState()
-    data class Success(val tier: IfrTier) : ActivationState()
+    data class Success(val tier: AccessTier) : ActivationState()
     data class Error(val message: String) : ActivationState()
 }
 
@@ -32,7 +32,7 @@ sealed class ActivationState {
 class ActivationViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val tierGate: TierGate,
-    private val tierRepository: IfrTierRepository
+    private val tierRepository: AccessTierRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<ActivationState>(ActivationState.Idle)
@@ -47,11 +47,11 @@ class ActivationViewModel @Inject constructor(
         ActivationCodeClient.activate(context, code) { tierName, error ->
             viewModelScope.launch(Dispatchers.IO) {
                 if (tierName != null) {
-                    val ifrTier = try { IfrTier.valueOf(tierName.uppercase()) } catch (_: Exception) { null }
-                    if (ifrTier != null && ifrTier > IfrTier.FREE) {
-                        tierRepository.saveTierResult("activation_code", 0L, ifrTier)
+                    val accessTier = try { AccessTier.valueOf(tierName.uppercase()) } catch (_: Exception) { null }
+                    if (accessTier != null && accessTier > AccessTier.FREE) {
+                        tierRepository.saveTierResult("activation_code", 0L, accessTier)
                         tierGate.getTier()
-                        _state.value = ActivationState.Success(ifrTier)
+                        _state.value = ActivationState.Success(accessTier)
                     } else {
                         _state.value = ActivationState.Error("Unknown tier received")
                     }

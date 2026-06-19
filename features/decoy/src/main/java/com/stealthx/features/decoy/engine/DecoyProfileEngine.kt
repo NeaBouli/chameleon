@@ -8,7 +8,7 @@ package com.stealthx.features.decoy.engine
 import com.stealthx.crypto.ChameleonCrypto
 import com.stealthx.crypto.SodiumInitializer
 import com.stealthx.domain.tier.TierGate
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,7 +34,7 @@ class DecoyProfileEngine @Inject constructor(
 ) {
 
     private fun requireElite() {
-        if (tierGate.getTierSync() < IfrTier.ELITE) {
+        if (tierGate.getTierSync() < AccessTier.ELITE) {
             throw SecurityException("DecoyProfileEngine requires ELITE tier")
         }
     }

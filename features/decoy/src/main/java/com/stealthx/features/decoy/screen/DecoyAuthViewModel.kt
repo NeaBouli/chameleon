@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 data class DecoyAuthUiState(
     val requiresUnlock: Boolean = false,
-    val isUnlocked: Boolean = true,
+    val isUnaccess: Boolean = true,
     val isDecoyMode: Boolean = false,
     val isAuthenticating: Boolean = false,
     val errorMessage: String? = null
@@ -52,11 +52,11 @@ class DecoyAuthViewModel @Inject constructor(
                     when (mode) {
                         DecoyProfileEngine.ProfileMode.REAL -> DecoyAuthUiState(
                             requiresUnlock = true,
-                            isUnlocked = true
+                            isUnaccess = true
                         )
                         DecoyProfileEngine.ProfileMode.DECOY -> DecoyAuthUiState(
                             requiresUnlock = true,
-                            isUnlocked = false,
+                            isUnaccess = false,
                             isDecoyMode = true
                         )
                     }
@@ -64,7 +64,7 @@ class DecoyAuthViewModel @Inject constructor(
                 onFailure = {
                     DecoyAuthUiState(
                         requiresUnlock = true,
-                        isUnlocked = false,
+                        isUnaccess = false,
                         errorMessage = "Invalid PIN"
                     )
                 }
@@ -85,7 +85,7 @@ class DecoyAuthViewModel @Inject constructor(
             prefs.realPinSaltBase64 != null
         return DecoyAuthUiState(
             requiresUnlock = requiresUnlock,
-            isUnlocked = !requiresUnlock
+            isUnaccess = !requiresUnlock
         )
     }
 

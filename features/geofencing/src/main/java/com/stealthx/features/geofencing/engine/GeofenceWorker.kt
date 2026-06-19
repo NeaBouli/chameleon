@@ -14,7 +14,7 @@ import com.stealthx.domain.repository.SecureRuleRepository
 import com.stealthx.domain.rules.RuleEngine
 import com.stealthx.domain.rules.TriggerType
 import com.stealthx.domain.tier.TierGate
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 import com.stealthx.shared.model.SecurityLevel
 import com.stealthx.shared.model.TriggerContext
 import dagger.hilt.EntryPoint
@@ -48,7 +48,7 @@ class GeofenceWorker(
             GeofenceWorkerEntryPoint::class.java
         )
 
-        if (entryPoint.tierGate().getTierSync() < IfrTier.ELITE) {
+        if (entryPoint.tierGate().getTierSync() < AccessTier.ELITE) {
             entryPoint.appPreferences().defaultSecurityLevel = SecurityLevel.PROTECTED.name
             return Result.success()
         }

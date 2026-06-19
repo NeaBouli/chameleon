@@ -16,14 +16,14 @@ import com.stealthx.data.dao.AuditLogDao
 import com.stealthx.data.dao.ChatSessionDao
 import com.stealthx.data.dao.ContactKeyDao
 import com.stealthx.data.dao.CryptoKeyDao
-import com.stealthx.data.dao.IfrTierCacheDao
+import com.stealthx.data.dao.AccessTierCacheDao
 import com.stealthx.data.dao.MessageDao
 import com.stealthx.data.dao.SecureRuleDao
 import com.stealthx.data.entity.AuditLogEntity
 import com.stealthx.data.entity.ChatSessionEntity
 import com.stealthx.data.entity.ContactKeyEntity
 import com.stealthx.data.entity.CryptoKeyEntity
-import com.stealthx.data.entity.IfrTierCacheEntity
+import com.stealthx.data.entity.AccessTierCacheEntity
 import com.stealthx.data.entity.MessageEntity
 import com.stealthx.data.entity.SecureRuleEntity
 import net.sqlcipher.database.SupportFactory
@@ -43,11 +43,11 @@ import net.sqlcipher.database.SupportFactory
         CryptoKeyEntity::class,
         ContactKeyEntity::class,
         AuditLogEntity::class,
-        IfrTierCacheEntity::class,
+        AccessTierCacheEntity::class,
         MessageEntity::class,
         ChatSessionEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 @TypeConverters(ChameleonTypeConverters::class)
@@ -57,7 +57,7 @@ abstract class ChameleonDatabase : RoomDatabase() {
     abstract fun cryptoKeyDao(): CryptoKeyDao
     abstract fun contactKeyDao(): ContactKeyDao
     abstract fun auditLogDao(): AuditLogDao
-    abstract fun ifrTierCacheDao(): IfrTierCacheDao
+    abstract fun accessTierCacheDao(): AccessTierCacheDao
     abstract fun messageDao(): MessageDao
     abstract fun chatSessionDao(): ChatSessionDao
 
@@ -114,6 +114,23 @@ abstract class ChameleonDatabase : RoomDatabase() {
             }
         }
 
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS access_tier_cache (
+                        source_id TEXT NOT NULL PRIMARY KEY,
+                        access_weight INTEGER NOT NULL,
+                        tier TEXT NOT NULL,
+                        verified_at INTEGER NOT NULL,
+                        expires_at INTEGER NOT NULL,
+                        hmac BLOB NOT NULL
+                    )
+                    """.trimIndent()
+                )
+            }
+        }
+
         fun build(context: Context, passphrase: ByteArray): ChameleonDatabase {
             val factory = SupportFactory(passphrase)
             return Room.databaseBuilder(
@@ -122,7 +139,7 @@ abstract class ChameleonDatabase : RoomDatabase() {
                 DB_NAME
             )
                 .openHelperFactory(factory)
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .build()
         }
     }

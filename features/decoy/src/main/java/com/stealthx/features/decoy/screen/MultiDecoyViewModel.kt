@@ -11,7 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.stealthx.data.prefs.AppPreferences
 import com.stealthx.domain.tier.TierGate
 import com.stealthx.features.decoy.engine.DecoyProfileEngine
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -90,7 +90,7 @@ class MultiDecoyViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 // Tier check uses suspend getTier() for accurate result, not stale cache
-                if (tierGate.getTier() < IfrTier.ELITE) {
+                if (tierGate.getTier() < AccessTier.ELITE) {
                     _uiState.value = _uiState.value.copy(
                         isSaving = false,
                         errorMessage = "Elite tier required for Multi-Decoy Profiles"
@@ -154,7 +154,7 @@ class MultiDecoyViewModel @Inject constructor(
     fun removeProfile(id: String) {
         viewModelScope.launch {
             // suspend getTier() gives accurate tier, not potentially stale cache
-            if (tierGate.getTier() < IfrTier.ELITE) {
+            if (tierGate.getTier() < AccessTier.ELITE) {
                 _uiState.value = _uiState.value.copy(errorMessage = "Elite tier required")
                 return@launch
             }

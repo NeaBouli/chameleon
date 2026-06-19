@@ -8,7 +8,7 @@ package com.stealthx.features.privatezone.engine
 import com.stealthx.data.crypto.SecureFileManager
 import com.stealthx.domain.tier.TierGate
 import com.stealthx.domain.tier.TierLimitException
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -55,7 +55,7 @@ class PrivateZoneManager @Inject constructor(
      */
     @Synchronized
     fun storeFile(name: String, data: ByteArray, key: ByteArray) {
-        if (tierGate.getTierSync() < IfrTier.PRO) {
+        if (tierGate.getTierSync() < AccessTier.PRO) {
             val existing = secureFileManager.existingFileSizeBytes(name)
             val used = secureFileManager.totalSizeBytes() - existing
             val incoming = secureFileManager.estimatedEncryptedSizeBytes(data.size)

@@ -11,11 +11,11 @@ import com.stealthx.data.ChameleonDatabase
 import com.stealthx.data.dao.AuditLogDao
 import com.stealthx.data.dao.ContactKeyDao
 import com.stealthx.data.dao.CryptoKeyDao
-import com.stealthx.data.dao.IfrTierCacheDao
+import com.stealthx.data.dao.AccessTierCacheDao
 import com.stealthx.data.dao.SecureRuleDao
-import com.stealthx.data.repository.IfrTierRepositoryImpl
+import com.stealthx.data.repository.AccessTierRepositoryImpl
 import com.stealthx.data.repository.SecureRuleRepositoryImpl
-import com.stealthx.domain.repository.IfrTierRepository
+import com.stealthx.domain.repository.AccessTierRepository
 import com.stealthx.domain.repository.SecureRuleRepository
 import com.stealthx.domain.rules.RuleEngine
 import com.stealthx.domain.tier.TierGate
@@ -69,18 +69,18 @@ object AppModule {
     fun provideAuditLogDao(db: ChameleonDatabase): AuditLogDao = db.auditLogDao()
 
     @Provides
-    fun provideIfrTierCacheDao(db: ChameleonDatabase): IfrTierCacheDao = db.ifrTierCacheDao()
+    fun provideAccessTierCacheDao(db: ChameleonDatabase): AccessTierCacheDao = db.accessTierCacheDao()
 
     @Provides
     @Singleton
-    fun provideIfrTierRepository(
-        dao: IfrTierCacheDao,
+    fun provideAccessTierRepository(
+        dao: AccessTierCacheDao,
         keystoreManager: KeystoreManager
-    ): IfrTierRepository = IfrTierRepositoryImpl(dao, keystoreManager)
+    ): AccessTierRepository = AccessTierRepositoryImpl(dao, keystoreManager)
 
     @Provides
     @Singleton
-    fun provideTierGate(repo: IfrTierRepository): TierGate = TierGateImpl(repo)
+    fun provideTierGate(repo: AccessTierRepository): TierGate = TierGateImpl(repo)
 
     @Provides
     @Singleton

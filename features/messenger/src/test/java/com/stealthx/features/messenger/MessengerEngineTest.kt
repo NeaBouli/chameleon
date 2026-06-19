@@ -7,7 +7,7 @@ package com.stealthx.features.messenger
 import com.stealthx.domain.tier.TierGate
 import com.stealthx.features.messenger.engine.MessengerEngine
 import com.stealthx.domain.keys.X25519KeyManager
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.jupiter.api.Assertions.*
@@ -15,9 +15,9 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 private val proTierGate = object : TierGate {
-    override val currentTier: Flow<IfrTier> = flowOf(IfrTier.PRO)
-    override fun getTierSync(): IfrTier = IfrTier.PRO
-    override suspend fun getTier(): IfrTier = IfrTier.PRO
+    override val currentTier: Flow<AccessTier> = flowOf(AccessTier.PRO)
+    override fun getTierSync(): AccessTier = AccessTier.PRO
+    override suspend fun getTier(): AccessTier = AccessTier.PRO
     override suspend fun isCacheValid(): Boolean = true
     override suspend fun invalidateCache() {}
 }

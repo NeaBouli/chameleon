@@ -19,7 +19,7 @@ rootProject.name = "Chameleon"
 
 include(":app")
 include(":stealthx-crypto")
-include(":stealthx-ifr")
+include(":stealthx-access")
 include(":security")
 include(":core")
 include(":data")

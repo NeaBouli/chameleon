@@ -43,21 +43,21 @@ import com.stealthx.features.messenger.screen.MessengerScreen
 import com.stealthx.features.overlay.screen.OverlayScreen
 import com.stealthx.features.privatezone.screen.PrivateZoneScreen
 import com.stealthx.features.privatezone.screen.PrivateZoneViewModel
-import com.stealthx.ifr.compose.TierGatedContent
+import com.stealthx.access.compose.TierGatedContent
 import com.stealthx.presentation.screen.AddContactScreen
 import com.stealthx.presentation.screen.AddRuleScreen
 import com.stealthx.presentation.screen.AutomationRulesScreen
 import com.stealthx.presentation.screen.DashboardScreen
-import com.stealthx.presentation.screen.IFRUnlockScreen
 import com.stealthx.presentation.screen.IntroScreen
 import com.stealthx.presentation.screen.KeyExchangeScreen
 import com.stealthx.presentation.screen.SettingsScreen
 import com.stealthx.presentation.screen.SetupScreen
+import com.stealthx.presentation.screen.UpgradeScreen
 import com.stealthx.presentation.viewmodel.SetupViewModel
 import com.stealthx.presentation.theme.StealthXColors
 import com.stealthx.presentation.viewmodel.DashboardViewModel
 import com.stealthx.presentation.viewmodel.SettingsViewModel
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 import java.io.ByteArrayOutputStream
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -85,7 +85,6 @@ fun StealthXNavGraph(navController: NavHostController) {
                 viewModel = dashboardVm,
                 onNavigateToSettings = { navController.navigate(Screen.Settings.route) },
                 onNavigateToKeyExchange = { navController.navigate(Screen.KeyExchange.route) },
-                onNavigateToIFR = { navController.navigate(Screen.IFRUnlock.route) },
                 onNavigateToOverlay = { navController.navigate(Screen.Overlay.route) },
                 onNavigateToMessenger = { navController.navigate(Screen.Messenger.route) }
             )
@@ -106,9 +105,9 @@ fun StealthXNavGraph(navController: NavHostController) {
         composable(Screen.Messenger.route) {
             TierGatedContent(
                 currentTier = currentTier,
-                requiredTier = IfrTier.PRO,
+                requiredTier = AccessTier.PRO,
                 featureName = "Encrypted Messenger",
-                onUnlockClicked = { navController.navigate(Screen.IFRUnlock.route) }
+                onUnlockClicked = { navController.navigate(Screen.Upgrade.route) }
             ) {
                 MessengerScreen(
                     onBack = { navController.popBackStack() },
@@ -132,9 +131,9 @@ fun StealthXNavGraph(navController: NavHostController) {
         composable(Screen.PrivateZone.route) {
             TierGatedContent(
                 currentTier = currentTier,
-                requiredTier = IfrTier.PRO,
+                requiredTier = AccessTier.PRO,
                 featureName = "Private Zone",
-                onUnlockClicked = { navController.navigate(Screen.IFRUnlock.route) }
+                onUnlockClicked = { navController.navigate(Screen.Upgrade.route) }
             ) {
                 val vm: PrivateZoneViewModel = hiltViewModel()
                 val state by vm.uiState.collectAsState()
@@ -176,9 +175,9 @@ fun StealthXNavGraph(navController: NavHostController) {
         composable(Screen.Geofencing.route) {
             TierGatedContent(
                 currentTier = currentTier,
-                requiredTier = IfrTier.ELITE,
+                requiredTier = AccessTier.ELITE,
                 featureName = "Geofencing",
-                onUnlockClicked = { navController.navigate(Screen.IFRUnlock.route) }
+                onUnlockClicked = { navController.navigate(Screen.Upgrade.route) }
             ) {
                 val vm: GeofencingViewModel = hiltViewModel()
                 val state by vm.uiState.collectAsState()
@@ -197,9 +196,9 @@ fun StealthXNavGraph(navController: NavHostController) {
         composable(Screen.Decoy.route) {
             TierGatedContent(
                 currentTier = currentTier,
-                requiredTier = IfrTier.ELITE,
+                requiredTier = AccessTier.ELITE,
                 featureName = "Decoy Profile",
-                onUnlockClicked = { navController.navigate(Screen.IFRUnlock.route) }
+                onUnlockClicked = { navController.navigate(Screen.Upgrade.route) }
             ) {
                 val vm: DecoySetupViewModel = hiltViewModel()
                 val state by vm.uiState.collectAsState()
@@ -214,8 +213,8 @@ fun StealthXNavGraph(navController: NavHostController) {
             }
         }
 
-        composable(Screen.IFRUnlock.route) {
-            IFRUnlockScreen(
+        composable(Screen.Upgrade.route) {
+            UpgradeScreen(
                 onBack = { navController.popBackStack() }
             )
         }
@@ -246,7 +245,7 @@ fun StealthXNavGraph(navController: NavHostController) {
         composable(Screen.Settings.route) {
             SettingsScreen(
                 onBack = { navController.popBackStack() },
-                onNavigateToIFR = { navController.navigate(Screen.IFRUnlock.route) },
+                onNavigateToUpgrade = { navController.navigate(Screen.Upgrade.route) },
                 onNavigateToOverlay = { navController.navigate(Screen.Overlay.route) },
                 onNavigateToPrivateZone = { navController.navigate(Screen.PrivateZone.route) },
                 onNavigateToGeofencing = { navController.navigate(Screen.Geofencing.route) },
@@ -274,9 +273,9 @@ fun StealthXNavGraph(navController: NavHostController) {
         composable(Screen.AutomationRules.route) {
             TierGatedContent(
                 currentTier = currentTier,
-                requiredTier = IfrTier.PRO,
+                requiredTier = AccessTier.PRO,
                 featureName = "Automation Rules",
-                onUnlockClicked = { navController.navigate(Screen.IFRUnlock.route) }
+                onUnlockClicked = { navController.navigate(Screen.Upgrade.route) }
             ) {
                 FeatureScaffold(title = "Automation Rules", onBack = { navController.popBackStack() }) { modifier ->
                     AutomationRulesScreen(
@@ -290,9 +289,9 @@ fun StealthXNavGraph(navController: NavHostController) {
         composable(Screen.MultiDecoy.route) {
             TierGatedContent(
                 currentTier = currentTier,
-                requiredTier = IfrTier.ELITE,
+                requiredTier = AccessTier.ELITE,
                 featureName = "Multi-Decoy Profiles",
-                onUnlockClicked = { navController.navigate(Screen.IFRUnlock.route) }
+                onUnlockClicked = { navController.navigate(Screen.Upgrade.route) }
             ) {
                 val vm: MultiDecoyViewModel = hiltViewModel()
                 val state by vm.uiState.collectAsState()

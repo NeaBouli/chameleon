@@ -7,7 +7,7 @@ package com.stealthx.features.messenger.engine
 
 import com.stealthx.domain.keys.X25519KeyManager
 import com.stealthx.domain.tier.TierGate
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 import com.stealthx.shared.model.PublicKeyBundle
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -26,7 +26,7 @@ class MessengerEngine @Inject constructor(
 ) {
 
     private fun requirePro() {
-        if (tierGate.getTierSync() < IfrTier.PRO) {
+        if (tierGate.getTierSync() < AccessTier.PRO) {
             throw SecurityException("MessengerEngine requires PRO tier or above")
         }
     }

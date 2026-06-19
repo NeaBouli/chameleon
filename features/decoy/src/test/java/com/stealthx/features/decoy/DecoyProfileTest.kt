@@ -7,7 +7,7 @@ package com.stealthx.features.decoy
 import com.stealthx.crypto.SodiumInitializer
 import com.stealthx.domain.tier.TierGate
 import com.stealthx.features.decoy.engine.DecoyProfileEngine
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.jupiter.api.Assertions.*
@@ -16,9 +16,9 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 private val eliteTierGate = object : TierGate {
-    override val currentTier: Flow<IfrTier> = flowOf(IfrTier.ELITE)
-    override fun getTierSync(): IfrTier = IfrTier.ELITE
-    override suspend fun getTier(): IfrTier = IfrTier.ELITE
+    override val currentTier: Flow<AccessTier> = flowOf(AccessTier.ELITE)
+    override fun getTierSync(): AccessTier = AccessTier.ELITE
+    override suspend fun getTier(): AccessTier = AccessTier.ELITE
     override suspend fun isCacheValid(): Boolean = true
     override suspend fun invalidateCache() {}
 }

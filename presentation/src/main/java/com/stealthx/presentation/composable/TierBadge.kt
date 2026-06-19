@@ -18,14 +18,14 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.stealthx.presentation.theme.StealthXColors
-import com.stealthx.shared.model.IfrTier
+import com.stealthx.shared.model.AccessTier
 
 @Composable
-fun TierBadge(tier: IfrTier, modifier: Modifier = Modifier) {
+fun TierBadge(tier: AccessTier, modifier: Modifier = Modifier) {
     val (bgColor, textColor) = when (tier) {
-        IfrTier.FREE -> StealthXColors.Disabled to StealthXColors.TierFree
-        IfrTier.PRO -> StealthXColors.PrimaryDark to Color.White
-        IfrTier.ELITE -> Color(0xFF3D2E00) to StealthXColors.TierElite
+        AccessTier.FREE -> StealthXColors.Disabled to StealthXColors.TierFree
+        AccessTier.PRO -> StealthXColors.PrimaryDark to Color.White
+        AccessTier.ELITE -> Color(0xFF3D2E00) to StealthXColors.TierElite
     }
 
     Text(
@@ -36,6 +36,6 @@ fun TierBadge(tier: IfrTier, modifier: Modifier = Modifier) {
             .clip(RoundedCornerShape(4.dp))
             .background(bgColor)
             .padding(horizontal = 8.dp, vertical = 2.dp)
-            .semantics { contentDescription = "IFR Tier: ${tier.name}" }
+            .semantics { contentDescription = "Current tier: ${tier.name}" }
     )
 }
