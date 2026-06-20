@@ -2785,3 +2785,14 @@ External release:
   - AAB `dad04d8a6e8585240e74f1013a004145cab0aad4a7c6b337e70cb20542234bf1`
 - Device install/smoke not run in this pass; artifacts are build-verified for upload.
 - Next: create GitHub Release `v0.1.3-alpha-chameleon` after pushing this commit.
+
+External release:
+- Created GitHub Release `v0.1.3-alpha-chameleon` from commit `e70e89a`.
+- Release URL:
+  - `https://github.com/NeaBouli/chameleon/releases/tag/v0.1.3-alpha-chameleon`
+- Uploaded assets:
+  - `Chameleon-LATEST.apk` (20,150,716 bytes)
+  - `Chameleon-LATEST.aab` (20,176,313 bytes)
+- Verified download URLs return HTTP 200:
+  - `https://github.com/NeaBouli/chameleon/releases/download/v0.1.3-alpha-chameleon/Chameleon-LATEST.apk`
+  - `https://github.com/NeaBouli/chameleon/releases/download/v0.1.3-alpha-chameleon/Chameleon-LATEST.aab`
