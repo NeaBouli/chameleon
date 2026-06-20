@@ -2752,3 +2752,12 @@ Build: ✅ | S7 ✅ | S4 ✅
   - APK `8f31d0056e4ecb98784856a855ee3f3d76c96665e529b0a8d4b44a3b5250b612`
   - AAB `0b1059afaee55069296feaffc844481c3d1a474760f4ec9edd090e8cc14c0db4`
 - Device install/smoke not run in this pass to avoid device interference; artifacts are build-verified.
+
+External release:
+- Created GitHub Release `v0.1.2-alpha-chameleon`:
+  - `https://github.com/NeaBouli/chameleon/releases/tag/v0.1.2-alpha-chameleon`
+- Uploaded assets:
+  - `Chameleon-LATEST.apk` (20,150,720 bytes)
+  - `Chameleon-LATEST.aab` (20,176,284 bytes)
+- Verified APK asset URL returns HTTP 200 after redirect:
+  - `https://github.com/NeaBouli/chameleon/releases/download/v0.1.2-alpha-chameleon/Chameleon-LATEST.apk`
