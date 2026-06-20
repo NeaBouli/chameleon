@@ -2712,3 +2712,12 @@ Build: ✅ | S7 ✅ | S4 ✅
   - Final package-restricted 100-event Monkey smoke passed on both devices.
 - S10 was not connected; no local Android emulator/AVD was available.
 - `com.neabouli.woizz` was not touched.
+
+## 2026-06-20 14:09 PDT — CODEX TERMINAL DECISION/FIX
+
+- User clarified the public distribution model: customers should not choose separate Free/Pro/Premium APKs.
+- Chameleon should ship as one public APK/AAB; paid tiers are unlocked after checkout with an activation code/subscription state.
+- Website copy was adjusted to state: one APK covers Free, Pro, and Elite; paid plans unlock with an activation code after checkout.
+- Google Play placeholder remains disabled until Play listing is live.
+- Current Google Play upload target remains `/Users/gio/Desktop/Chameleon-LATEST.aab`.
+- Next: keep app-side IFR/wallet mechanisms out of Android code; continue functional QA before any new production upload.
