@@ -2761,3 +2761,27 @@ External release:
   - `Chameleon-LATEST.aab` (20,176,284 bytes)
 - Verified APK asset URL returns HTTP 200 after redirect:
   - `https://github.com/NeaBouli/chameleon/releases/download/v0.1.2-alpha-chameleon/Chameleon-LATEST.apk`
+
+## 2026-06-20 15:26 PDT — CODEX TERMINAL RELEASE
+
+- Bumped Chameleon release metadata for the next public build:
+  - versionCode `3` -> `4`
+  - versionName `0.1.2-alpha` -> `0.1.3-alpha`
+- Website download section now points to GitHub release tag `v0.1.3-alpha-chameleon`.
+- Build verification succeeded:
+  - `./gradlew --no-daemon --no-watch-fs --max-workers=1 testDebugUnitTest :app:assembleRelease :app:bundleRelease`
+- Desktop artifacts refreshed:
+  - `/Users/gio/Desktop/Chameleon-LATEST.apk`
+  - `/Users/gio/Desktop/Chameleon-LATEST.aab`
+  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.3-alpha-vC4.apk`
+  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.3-alpha-vC4.aab`
+- Verified APK/AAB metadata:
+  - package `com.stealthx.chameleon`
+  - versionCode `4`
+  - versionName `0.1.3-alpha`
+  - targetSdk `35`
+- SHA256:
+  - APK `0378069473a072ca8cb1b0b65fea76f6ccdab02a2a323429f553a58c5d691c35`
+  - AAB `dad04d8a6e8585240e74f1013a004145cab0aad4a7c6b337e70cb20542234bf1`
+- Device install/smoke not run in this pass; artifacts are build-verified for upload.
+- Next: create GitHub Release `v0.1.3-alpha-chameleon` after pushing this commit.
