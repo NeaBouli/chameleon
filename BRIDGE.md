@@ -2796,3 +2796,30 @@ External release:
 - Verified download URLs return HTTP 200:
   - `https://github.com/NeaBouli/chameleon/releases/download/v0.1.3-alpha-chameleon/Chameleon-LATEST.apk`
   - `https://github.com/NeaBouli/chameleon/releases/download/v0.1.3-alpha-chameleon/Chameleon-LATEST.aab`
+
+## 2026-06-20 15:39 PDT — CODEX TERMINAL FIX/RELEASE
+
+- User reported Google Play requires Chameleon upload package name `chameleon24.app`.
+- Updated Android release identity:
+  - applicationId `com.stealthx.chameleon` -> `chameleon24.app`
+  - versionCode `4` -> `5`
+  - versionName `0.1.3-alpha` -> `0.1.4-alpha`
+- Kotlin/Java namespace remains `com.stealthx.chameleon`; only the shipped Android applicationId/package changed for Play compatibility.
+- Website download section now points to GitHub release tag `v0.1.4-alpha-chameleon`.
+- Build verification succeeded:
+  - `./gradlew --no-daemon --no-watch-fs --max-workers=1 testDebugUnitTest :app:assembleRelease :app:bundleRelease`
+- Desktop artifacts refreshed:
+  - `/Users/gio/Desktop/Chameleon-LATEST.apk`
+  - `/Users/gio/Desktop/Chameleon-LATEST.aab`
+  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.4-alpha-vC5.apk`
+  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.4-alpha-vC5.aab`
+- Verified APK/AAB metadata:
+  - package `chameleon24.app`
+  - versionCode `5`
+  - versionName `0.1.4-alpha`
+  - targetSdk `35`
+- SHA256:
+  - APK `0b035dd980ea10a30d9f8647ef176311fb55cd10dfcf40dce6292e1b48c0579c`
+  - AAB `1b0d5ca43c01ebd93de6114a42035ae4de6239bc7da82c97e388547d3b462ca3`
+- Device install/smoke not run in this pass; artifacts are build-verified for Play upload.
+- Next: create GitHub Release `v0.1.4-alpha-chameleon` after pushing this commit.
