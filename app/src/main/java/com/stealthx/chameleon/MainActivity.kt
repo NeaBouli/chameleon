@@ -22,10 +22,15 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
-import androidx.activity.viewModels
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.stealthx.data.NfcUriRelay
 import com.stealthx.data.NfcWriteRelay
@@ -42,6 +47,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_SECURE,
@@ -52,16 +58,18 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             StealthXTheme {
-                val authState by decoyAuthViewModel.uiState.collectAsState()
-                when {
-                    authState.isDecoyMode -> DecoyModeScreen(onLock = decoyAuthViewModel::lock)
-                    authState.requiresUnlock && !authState.isUnaccess -> DecoyUnlockScreen(
-                        state = authState,
-                        onSubmitPin = decoyAuthViewModel::submitPin
-                    )
-                    else -> {
-                        val navController = rememberNavController()
-                        StealthXNavGraph(navController = navController)
+                Box(Modifier.fillMaxSize().safeDrawingPadding()) {
+                    val authState by decoyAuthViewModel.uiState.collectAsState()
+                    when {
+                        authState.isDecoyMode -> DecoyModeScreen(onLock = decoyAuthViewModel::lock)
+                        authState.requiresUnlock && !authState.isUnaccess -> DecoyUnlockScreen(
+                            state = authState,
+                            onSubmitPin = decoyAuthViewModel::submitPin
+                        )
+                        else -> {
+                            val navController = rememberNavController()
+                            StealthXNavGraph(navController = navController)
+                        }
                     }
                 }
             }

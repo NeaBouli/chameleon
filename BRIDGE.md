@@ -2721,3 +2721,34 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Google Play placeholder remains disabled until Play listing is live.
 - Current Google Play upload target remains `/Users/gio/Desktop/Chameleon-LATEST.aab`.
 - Next: keep app-side IFR/wallet mechanisms out of Android code; continue functional QA before any new production upload.
+
+## 2026-06-20 15:11 PDT — CODEX TERMINAL FIX/RELEASE
+
+- Exported Chameleon launcher icons to the Desktop:
+  - `/Users/gio/Desktop/Chameleon-App-Icon.png`
+  - `/Users/gio/Desktop/Chameleon-App-Icon-Round.png`
+  - Both are 192x192 PNG from `mipmap-xxxhdpi`.
+- Android 15 edge-to-edge compatibility pass:
+  - `MainActivity` now calls `enableEdgeToEdge()`.
+  - Root Compose content is wrapped with `Modifier.safeDrawingPadding()`.
+  - Existing keyboard `imePadding()` in Conversation remains in place for keyboard handling.
+- Bumped release metadata:
+  - versionCode `2` -> `3`
+  - versionName `0.1.1-alpha` -> `0.1.2-alpha`
+- Website download section now points to GitHub release tag `v0.1.2-alpha-chameleon`.
+- Build verification succeeded:
+  - `./gradlew --no-daemon --no-watch-fs --max-workers=1 testDebugUnitTest :app:assembleRelease :app:bundleRelease`
+- Desktop artifacts refreshed:
+  - `/Users/gio/Desktop/Chameleon-LATEST.apk`
+  - `/Users/gio/Desktop/Chameleon-LATEST.aab`
+  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.2-alpha-vC3.apk`
+  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.2-alpha-vC3.aab`
+- Verified APK metadata:
+  - package `com.stealthx.chameleon`
+  - versionCode `3`
+  - versionName `0.1.2-alpha`
+  - targetSdk `35`
+- SHA256:
+  - APK `8f31d0056e4ecb98784856a855ee3f3d76c96665e529b0a8d4b44a3b5250b612`
+  - AAB `0b1059afaee55069296feaffc844481c3d1a474760f4ec9edd090e8cc14c0db4`
+- Device install/smoke not run in this pass to avoid device interference; artifacts are build-verified.
