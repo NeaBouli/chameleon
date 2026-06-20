@@ -2681,3 +2681,12 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Visible S7 Settings dump had no `IFR`, `wallet`, `Uniswap`, `MetaMask`, `connect`, or old upgrade wording.
 - `com.neabouli.woizz` was not touched.
 - Next: repeat install/smoke on S10/S4 and SecureChat only when device ownership is clear, then continue functional-completeness work before any Chameleon AAB.
+
+## 2026-06-20 00:09 PDT — CODEX TERMINAL STATUS
+
+- User clarified that removing IFR/wallet means removing app-side code mechanisms and wiring, not only hiding UI.
+- Re-ran a hard Android-code scan over `app data domain presentation shared features stealthx-access gradle settings.gradle.kts build.gradle.kts`, excluding build/.gradle output.
+- No app-code hits remain for IFR, old `IfrTier`/`ifr_tier`, `stealthx-ifr`, WalletConnect, walletconnect, MetaMask, Uniswap, Web3, Ethereum, SIWE, wallet callback schemes, wallet address/signature identifiers, IFR discount identifiers, old hold amounts, `Buy IFR`, or `Connect Wallet`.
+- File-name scan found no IFR/wallet connector files.
+- No Chameleon code changes were required in this pass beyond the previously installed cleanup APK on S7; this entry records the code-level verification.
+- Web sales pages remain separate and still contain the browser-based IFR Stripe discount by product decision.
