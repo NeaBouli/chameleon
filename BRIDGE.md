@@ -2909,3 +2909,27 @@ Verification:
 Desktop artifact refreshed:
 - `/Users/gio/Desktop/Chameleon-LATEST.aab`
   - SHA256 `ba298d1b05ee2b2c4efc78636ad6835e0e771b4ad33233d8b38a62f10bcc87ed`
+
+## 2026-06-21 15:30 PDT - CODEX TERMINAL TEST-TIER BUILDS/S10 INSTALL
+
+User requested all three tiers of all three apps on S10.
+
+Change:
+- Added test-only release build types `freeTierRelease`, `proTierRelease`, `eliteTierRelease`.
+- Public `release` package remains `chameleon24.app`; test tier packages use:
+  - `chameleon24.app.free`
+  - `chameleon24.app.pro`
+  - `chameleon24.app.elite`
+- Added `BuildConfig.FORCED_TIER` and `DevTierOverride.forcedTier` so test-tier builds force FREE/PRO/ELITE through the existing `AccessTierRepository` path.
+
+Build:
+- `./gradlew --no-daemon --max-workers=1 app:assembleFreeTierRelease app:assembleProTierRelease app:assembleEliteTierRelease` succeeded.
+
+S10 install verification:
+- `chameleon24.app.free` vC6 / `0.1.5-alpha-free` / targetSdk 35
+- `chameleon24.app.pro` vC6 / `0.1.5-alpha-pro` / targetSdk 35
+- `chameleon24.app.elite` vC6 / `0.1.5-alpha-elite` / targetSdk 35
+- Public `chameleon24.app` also updated to vC6 / `0.1.5-alpha` / targetSdk 35.
+
+Note:
+- This is test-only parallel packaging; public app distribution remains one package with paid plans unlocked by activation/subscription state.

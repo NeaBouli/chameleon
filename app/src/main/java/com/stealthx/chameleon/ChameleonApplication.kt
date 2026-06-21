@@ -17,6 +17,7 @@ import com.stealthx.chameleon.service.ContactListenerService
 import com.stealthx.crypto.SodiumInitializer
 import com.stealthx.data.identity.StealthXIdentity
 import com.stealthx.data.prefs.AppPreferences
+import com.stealthx.shared.model.AccessTier
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import javax.inject.Inject
@@ -35,9 +36,9 @@ class ChameleonApplication : Application() {
         // Create per-device identity on first launch — idempotent on subsequent launches
         StealthXIdentity.getOrCreateWithSeed(this)
 
-        if (BuildConfig.FORCE_ELITE) {
-            com.stealthx.shared.DevTierOverride.forceElite = true
-        }
+        com.stealthx.shared.DevTierOverride.forcedTier =
+            BuildConfig.FORCED_TIER.takeIf { it.isNotBlank() }?.let { AccessTier.valueOf(it) }
+        com.stealthx.shared.DevTierOverride.forceElite = BuildConfig.FORCE_ELITE
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
