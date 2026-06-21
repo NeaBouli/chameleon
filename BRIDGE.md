@@ -2834,3 +2834,25 @@ External release:
 - Verified download URLs return HTTP 200:
   - `https://github.com/NeaBouli/chameleon/releases/download/v0.1.4-alpha-chameleon/Chameleon-LATEST.apk`
   - `https://github.com/NeaBouli/chameleon/releases/download/v0.1.4-alpha-chameleon/Chameleon-LATEST.aab`
+
+## 2026-06-21 00:00 PDT — CODEX TERMINAL STATUS
+
+- Restart handoff requested by user before machine reboot.
+- Terminal command execution was unavailable during this save pass: even minimal shell commands returned exit code `-1` with no stdout/stderr.
+- Latest known saved Chameleon state remains:
+  - Code commit `1cb7b11 fix: align Chameleon package name for Play upload`
+  - Bridge verification commit `55d61de docs: record Chameleon v0.1.4 release verification`
+  - Desktop upload artifact `/Users/gio/Desktop/Chameleon-LATEST.aab`
+  - package `chameleon24.app`
+  - versionCode `5`
+  - versionName `0.1.4-alpha`
+  - AAB SHA256 `1b0d5ca43c01ebd93de6114a42035ae4de6239bc7da82c97e388547d3b462ca3`
+  - GitHub release `https://github.com/NeaBouli/chameleon/releases/tag/v0.1.4-alpha-chameleon`
+- Product direction to preserve:
+  - No in-app IFR/wallet/WalletConnect logic in public Android app.
+  - IFR/wallet verification stays website-side for Stripe discount.
+  - One public APK/AAB; paid plans unlock after checkout with activation code/subscription state.
+- Additional Desktop handoff written:
+  - `/Users/gio/Desktop/STEALTHX_RESTART_STATUS_2026-06-21.md`
+- Next startup check:
+  - Run `git status --short` and `git log -3 --oneline` in this repo after reboot.
