@@ -2856,3 +2856,22 @@ External release:
   - `/Users/gio/Desktop/STEALTHX_RESTART_STATUS_2026-06-21.md`
 - Next startup check:
   - Run `git status --short` and `git log -3 --oneline` in this repo after reboot.
+
+## 2026-06-21 09:20 PDT - CODEX TERMINAL VERIFICATION
+
+User clarified Chameleon must be IFR-free for all tiers, not only visually or only in the Free path.
+
+Status:
+- Targeted Android app-source scan found no IFR/WalletConnect/Wallet/Web3/Ethereum/MetaMask/Uniswap code paths.
+- Added Gradle verification task `verifyNoAppIfrWalletCode`.
+- The task scans Android app source roots across app/core/data/domain/features/presentation/shared/access/crypto modules.
+- The task fails if forbidden IFR/wallet/Web3 terms are reintroduced in app code.
+- Module `check` tasks depend on this verification where available.
+
+Verification:
+- `./gradlew --no-daemon --max-workers=1 verifyNoAppIfrWalletCode` succeeded.
+- `./gradlew --no-daemon --max-workers=1 app:bundleRelease` succeeded.
+
+Desktop artifact refreshed:
+- `/Users/gio/Desktop/Chameleon-LATEST.aab`
+  - SHA256 `ba298d1b05ee2b2c4efc78636ad6835e0e771b4ad33233d8b38a62f10bcc87ed`
