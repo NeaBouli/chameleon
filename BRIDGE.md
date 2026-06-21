@@ -3,6 +3,40 @@
 
 ---
 
+## 2026-06-21 [Codex]
+### TYPE: FIX / AUDIT
+### STATUS: DONE — BUILT / INSTALLED
+
+**Settings-Audit + Background Contact Listener verdrahtet**
+
+Vollständiger Settings-/Access-Durchlauf für Chameleon:
+- Externe Settings-/Upgrade-Links abgesichert (`ACTION_VIEW` mit Fehler-Toast statt Crash ohne Browser).
+- Aktivierungsdialog: Erfolgstext `Unlocked` statt `Unaccess`.
+- Neuer echter Settings-Schalter `Background Contact Listener`.
+- Preference in `AppPreferences`; `SettingsViewModel` startet/stoppt `ContactListenerService` sofort.
+- `ChameleonApplication` startet den Listener nur noch, wenn der Schalter aktiv ist.
+- `BootReceiver` respektiert den Schalter und startet den ContactListener nach Reboot nicht mehr gegen das Setting.
+- `ContactListenerService` stoppt Foreground/WS bei deaktiviertem Setting und prüft das auch im Reconnect-Loop.
+- `ContactExchangeManager.stopListening()` ergänzt.
+- Version: `versionCode=6`, `versionName=0.1.5-alpha`.
+
+Verifikation:
+- `verifyNoAppIfrWalletCode` ✅
+- `app:assembleRelease app:bundleRelease` ✅
+- `app:assembleInternalRelease` ✅
+- Links: `https://chameleon.stealthx.tech/#lifetime` HTTP 200, `https://chameleon.stealthx.tech/wiki/user-manual.html` HTTP 200
+- Installiert auf S7 + Tab S4: `chameleon24.app` v6 / `0.1.5-alpha`
+- S10 nicht verbunden.
+
+Desktop-Artefakte:
+- `/Users/gio/Desktop/Chameleon-LATEST.aab`
+- `/Users/gio/Desktop/Chameleon-Release-LATEST.apk`
+- `/Users/gio/Desktop/Chameleon-Internal-LATEST.apk` (Test, FORCE_ELITE)
+
+Audit-Details: `docs/SETTINGS_AUDIT_2026-06-21.md`
+
+---
+
 ## 2026-05-28 [CC]
 ### TYPE: FIX
 ### STATUS: DONE

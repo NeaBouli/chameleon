@@ -33,12 +33,14 @@ class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context == null || intent?.action != Intent.ACTION_BOOT_COMPLETED) return
 
-        // S-05: Restart ContactListenerService (WS keep-alive) — no tier check needed
-        val serviceIntent = Intent(context, ContactListenerService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(serviceIntent)
-        } else {
-            context.startService(serviceIntent)
+        // Restart ContactListenerService only when the user keeps background delivery enabled.
+        if (appPreferences.backgroundListenerEnabled) {
+            val serviceIntent = Intent(context, ContactListenerService::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent)
+            } else {
+                context.startService(serviceIntent)
+            }
         }
 
         // S-08: Re-register geofences if Elite tier (GMS loses them after reboot).

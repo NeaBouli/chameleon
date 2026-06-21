@@ -7,6 +7,7 @@ package com.stealthx.presentation.screen
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +27,7 @@ import androidx.compose.material.icons.filled.FaceRetouchingNatural
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.MyLocation
+import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.RocketLaunch
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Shield
@@ -40,6 +42,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -66,6 +69,7 @@ import com.stealthx.presentation.composable.TierBadge
 import com.stealthx.presentation.theme.StealthXColors
 import com.stealthx.presentation.viewmodel.ActivationState
 import com.stealthx.presentation.viewmodel.ActivationViewModel
+import com.stealthx.presentation.viewmodel.SettingsViewModel
 import com.stealthx.shared.model.AccessTier
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -81,17 +85,25 @@ fun SettingsScreen(
     onNavigateToMultiDecoy: () -> Unit = {},
     onNavigateToSetup: () -> Unit = {},
     currentTier: AccessTier = AccessTier.FREE,
-    activationVm: ActivationViewModel = hiltViewModel()
+    activationVm: ActivationViewModel = hiltViewModel(),
+    settingsVm: SettingsViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val activationState by activationVm.state.collectAsState()
+    val backgroundListenerEnabled by settingsVm.backgroundListenerEnabled.collectAsState()
     val appVersion = remember(context.packageName) {
         runCatching {
             context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "unknown"
         }.getOrDefault("unknown")
     }
     var showActivationDialog by remember { mutableStateOf(false) }
-    fun openUrl(url: String) = context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    fun openUrl(url: String) {
+        runCatching {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+        }.onFailure {
+            Toast.makeText(context, "No browser available for this link", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     if (showActivationDialog) {
         ActivationCodeDialog(
@@ -130,6 +142,18 @@ fun SettingsScreen(
             TierSection(tier = currentTier, onUpgradeClick = onNavigateToUpgrade)
 
             Spacer(modifier = Modifier.height(16.dp))
+
+            SettingsSection(title = "Connection") {
+                ToggleRow(
+                    icon = Icons.Default.NotificationsActive,
+                    title = "Background Contact Listener",
+                    subtitle = "Keep secure contact exchange active after leaving the app",
+                    checked = backgroundListenerEnabled,
+                    onCheckedChange = settingsVm::setBackgroundListenerEnabled
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             // — Free features ——————————————————————————————————
             SettingsSection(title = "Free") {
@@ -387,6 +411,30 @@ private fun HelpLinkRow(icon: ImageVector, title: String, subtitle: String, onCl
 }
 
 @Composable
+private fun ToggleRow(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(icon, contentDescription = null, tint = StealthXColors.Primary)
+        Spacer(Modifier.width(12.dp))
+        Column(Modifier.weight(1f)) {
+            Text(title, style = MaterialTheme.typography.bodyMedium, color = StealthXColors.OnSurface)
+            Text(subtitle, style = MaterialTheme.typography.bodySmall, color = StealthXColors.OnSurfaceVariant)
+        }
+        Switch(checked = checked, onCheckedChange = onCheckedChange)
+    }
+}
+
+@Composable
 private fun ActivationCodeDialog(
     state: ActivationState,
     onDismiss: () -> Unit,
@@ -418,7 +466,7 @@ private fun ActivationCodeDialog(
                         style = MaterialTheme.typography.bodySmall
                     )
                     is ActivationState.Success -> Text(
-                        "Unaccess: ${state.tier.name}",
+                        "Unlocked: ${state.tier.name}",
                         color = Color(0xFF00E676),
                         style = MaterialTheme.typography.bodySmall
                     )

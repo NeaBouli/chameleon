@@ -50,6 +50,7 @@ class AppPreferences @Inject constructor(
         private const val KEY_SECURITY_LEVEL_DEFAULT = "security_level_default"
         private const val KEY_OVERLAY_ENABLED = "overlay_enabled"
         private const val KEY_OVERLAY_WHITELIST = "overlay_whitelist"
+        private const val KEY_BACKGROUND_LISTENER_ENABLED = "background_listener_enabled"
         private const val KEY_PRIVATE_ZONE_KEY = "private_zone_key"
         private const val KEY_DECOY_ENABLED = "decoy_enabled"
         private const val KEY_DECOY_PIN_HASH = "decoy_pin_hash"
@@ -82,6 +83,10 @@ class AppPreferences @Inject constructor(
     var overlayWhitelistPackages: Set<String>
         get() = prefs.getStringSet(KEY_OVERLAY_WHITELIST, DEFAULT_OVERLAY_WHITELIST) ?: DEFAULT_OVERLAY_WHITELIST
         set(value) = prefs.edit().putStringSet(KEY_OVERLAY_WHITELIST, value).apply()
+
+    var backgroundListenerEnabled: Boolean
+        get() = prefs.getBoolean(KEY_BACKGROUND_LISTENER_ENABLED, true)
+        set(value) = prefs.edit().putBoolean(KEY_BACKGROUND_LISTENER_ENABLED, value).apply()
 
     var privateZoneKeyBase64: String?
         get() = prefs.getString(KEY_PRIVATE_ZONE_KEY, null)

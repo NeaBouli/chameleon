@@ -119,6 +119,13 @@ class ContactExchangeManager @Inject constructor(
         })
     }
 
+    fun stopListening() {
+        listenerWs?.close(1000, "listener disabled")
+        listenerWs = null
+        identified = false
+        pendingFrames.clear()
+    }
+
     private suspend fun parseAndSave(content: String) {
         val uri = URI(content)
         val sxId = uri.path.substringAfterLast('/')

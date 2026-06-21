@@ -16,11 +16,14 @@ import android.content.Intent
 import com.stealthx.chameleon.service.ContactListenerService
 import com.stealthx.crypto.SodiumInitializer
 import com.stealthx.data.identity.StealthXIdentity
+import com.stealthx.data.prefs.AppPreferences
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
+import javax.inject.Inject
 
 @HiltAndroidApp
 class ChameleonApplication : Application() {
+    @Inject lateinit var appPreferences: AppPreferences
 
     override fun onCreate() {
         super.onCreate()
@@ -40,6 +43,8 @@ class ChameleonApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        startForegroundService(Intent(this, ContactListenerService::class.java))
+        if (appPreferences.backgroundListenerEnabled) {
+            startForegroundService(Intent(this, ContactListenerService::class.java))
+        }
     }
 }

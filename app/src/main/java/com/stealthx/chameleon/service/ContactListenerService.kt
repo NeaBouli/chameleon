@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.stealthx.data.exchange.ContactExchangeManager
+import com.stealthx.data.prefs.AppPreferences
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,25 +27,42 @@ import javax.inject.Inject
 class ContactListenerService : Service() {
 
     @Inject lateinit var contactExchangeManager: ContactExchangeManager
+    @Inject lateinit var appPreferences: AppPreferences
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     override fun onCreate() {
         super.onCreate()
         startForeground(NOTIFICATION_ID, buildNotification())
+        if (!appPreferences.backgroundListenerEnabled) {
+            stopListeningService()
+            return
+        }
         contactExchangeManager.startListening()
         scope.launch {
             while (true) {
                 delay(30_000)
+                if (!appPreferences.backgroundListenerEnabled) {
+                    stopListeningService()
+                    return@launch
+                }
                 if (!contactExchangeManager.isConnected) contactExchangeManager.startListening()
             }
         }
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int = START_STICKY
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return if (appPreferences.backgroundListenerEnabled) {
+            START_STICKY
+        } else {
+            stopListeningService()
+            START_NOT_STICKY
+        }
+    }
 
     override fun onDestroy() {
         scope.cancel()
+        contactExchangeManager.stopListening()
         super.onDestroy()
     }
 
@@ -68,6 +86,17 @@ class ContactListenerService : Service() {
             .setSilent(true)
             .setOngoing(true)
             .build()
+    }
+
+    private fun stopListeningService() {
+        contactExchangeManager.stopListening()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            stopForeground(STOP_FOREGROUND_REMOVE)
+        } else {
+            @Suppress("DEPRECATION")
+            stopForeground(true)
+        }
+        stopSelf()
     }
 
     private companion object {
