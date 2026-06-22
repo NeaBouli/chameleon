@@ -39,8 +39,8 @@ android {
         applicationId = "chameleon24.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 6
-        versionName = "0.1.5-alpha"
+        versionCode = 7
+        versionName = "0.1.6-alpha"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "FORCED_TIER", "\"\"")
     }
