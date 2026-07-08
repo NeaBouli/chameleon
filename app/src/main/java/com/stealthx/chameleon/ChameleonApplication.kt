@@ -36,9 +36,12 @@ class ChameleonApplication : Application() {
         // Create per-device identity on first launch — idempotent on subsequent launches
         StealthXIdentity.getOrCreateWithSeed(this)
 
+        val allowDevTierOverride = BuildConfig.DEBUG
         com.stealthx.shared.DevTierOverride.forcedTier =
-            BuildConfig.FORCED_TIER.takeIf { it.isNotBlank() }?.let { AccessTier.valueOf(it) }
-        com.stealthx.shared.DevTierOverride.forceElite = BuildConfig.FORCE_ELITE
+            BuildConfig.FORCED_TIER
+                .takeIf { allowDevTierOverride && it.isNotBlank() }
+                ?.let { AccessTier.valueOf(it) }
+        com.stealthx.shared.DevTierOverride.forceElite = allowDevTierOverride && BuildConfig.FORCE_ELITE
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())

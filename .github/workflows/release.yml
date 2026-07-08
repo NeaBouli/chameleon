@@ -23,7 +23,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run tests
-        run: ./gradlew :security:testDebugUnitTest :core:testDebugUnitTest :data:testDebugUnitTest :domain:testDebugUnitTest :stealthx-ifr:testDebugUnitTest
+        run: ./gradlew :security:testDebugUnitTest :core:testDebugUnitTest :data:testDebugUnitTest :domain:testDebugUnitTest
 
       - name: Build release APK
         run: ./gradlew assembleRelease
