@@ -1,6 +1,6 @@
 # StealthX Platform — Ecosystem Map
 
-## Three Products. One Stack. One Token.
+## Three Products. One Stack. One Website Discount.
 
 | Product | Repo | Status | Type |
 |---------|------|--------|------|
@@ -15,14 +15,15 @@
 - Key Storage: Android Keystore (StrongBox/TEE)
 - KDF: Argon2id
 
-## IFR Token Tier System (Cross-Product)
+## IFR Holder Discount (Cross-Product)
 
-| IFR Lock | SecureCall | SecureChat | Chameleon | Suite |
+| Verified IFR balance | SecureCall | SecureChat | Chameleon | Suite |
 |----------|------------|------------|-----------|-------|
-| 0 | Free | Free | Free | — |
-| >= 2,000 | Pro | Pro | Pro | — |
-| >= 6,000 | Premium | Elite | Elite | — |
-| >= 8,000 | Premium | Elite | Elite | Suite (all) |
+| 0 | Free / normal checkout | Free / normal checkout | Free / normal checkout | - |
+| >= 2,000 | 50% off Pro checkout | 50% off Pro checkout | 50% off Pro checkout | - |
+| >= 6,000 | 50% off Premium checkout | 50% off Elite checkout | 50% off Elite checkout | 50% off Suite checkout |
+
+Wallet verification happens on the websites with a signed browser-wallet request. The public Android apps do not include WalletConnect or in-app IFR unlock logic.
 
 ## Product Structure
 
@@ -55,7 +56,7 @@ StealthX Platform
 |---------|------|--------|-------------|
 | E2E Messaging | Free | v0.1.0-alpha | XChaCha20-Poly1305 + Double Ratchet |
 | QR/NFC Key Exchange | Free | v0.1.0-alpha | Safety Number (6x4) |
-| Unlimited Contacts | Pro | Phase 2 | >=2,000 IFR or EUR 9 Lifetime |
+| Unlimited Contacts | Pro | Phase 2 | EUR 9 Lifetime; IFR holders can verify on the website for 50% checkout |
 | Kaspa Identity | Pro | Phase 2 | On-chain Public Key |
 | 2-Hop Onion Routing | Pro | Phase 2 | Tor Hidden Services |
 | 3-Hop Onion Routing | Elite | Phase 3 | Maximum Anonymity |

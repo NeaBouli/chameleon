@@ -17,9 +17,9 @@ Chameleon encrypts your communications automatically — based on **where you ar
 
 Unlike Signal or WhatsApp which are standalone messengers, Chameleon is a **privacy layer** that works *on top* of any app. It intercepts text via Android's AccessibilityService, encrypts it with XChaCha20-Poly1305, and injects the ciphertext back — transparently.
 
-**Free tier:** Overlay encryption for any app.  
-**Pro tier (IFR Lock ≥ 2,000):** Private Zone + local Messenger mode.  
-**Elite tier (IFR Lock ≥ 6,000):** Geofencing + Decoy Profile + Ghost Mode.
+**Free tier:** Overlay encryption for any app.
+**Pro tier:** Private Zone + local Messenger mode. IFR holders can verify on the website for 50% off checkout.
+**Elite tier:** Geofencing + Decoy Profile + Ghost Mode. IFR holders can verify on the website for 50% off checkout.
 
 ---
 
@@ -44,7 +44,7 @@ Android Keystore      Hardware-backed private key storage (StrongBox/TEE)
 ```
 :app                    Entry point, Hilt DI graph
 :stealthx-crypto        THE ONLY crypto module (XChaCha20, X25519, DR, Argon2id)
-:stealthx-ifr           Internal IFR helpers (not exposed in public app wallet flow)
+:stealthx-ifr           Legacy/internal IFR helpers, not part of the public Android wallet flow
 :security               Android Keystore, Attestation, SecureWipe
 :core                   AccessibilityService (AIDL isolated), Overlay
 :data                   Room + SQLCipher, EncryptedSharedPrefs, SecureFile
@@ -84,7 +84,7 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 | S-01 | ✅ Done | Gradle modules (13), CI/CD, all compile |
 | S-02 | ✅ Done | Security Layer (Keystore, Attestation, Argon2id) |
 | S-03 | ✅ Done | AccessibilityService (AIDL, CryptoService :crypto process) |
-| S-04 | ✅ Done | Data Layer (Room + SQLCipher + IFR HMAC Cache) |
+| S-04 | ✅ Done | Data Layer (Room + SQLCipher + local integrity cache) |
 | S-05 | ✅ Done | Domain Layer (XChaCha20, Double Ratchet HKDF, TierGate, RuleEngine) |
 | S-06 | ✅ Done | IFR web discount model and activation-code unlock path |
 | S-07 | ✅ Done | Compose UI (StealthX Design System, Navigation, Screens) |
@@ -126,7 +126,7 @@ Chameleon targets **OWASP MASVS Level 2** compliance. The full audit package is 
 
 ## Three Rules Never Broken
 
-1. **No internet permission** — except optional, user-initiated IFR verification
+1. **No internet permission by default** — IFR discounts are verified on the website, not inside the public Android app
 2. **Private keys never leave hardware Keystore** (StrongBox or TEE)
 3. **Fail Secure** — on error, encrypt. Never decrypt.
 
