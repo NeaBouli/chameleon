@@ -342,6 +342,28 @@
   .crypto-table td:first-child,
   .compare-table th:first-child,
   .footer-logo-name { color: var(--text); }
+  .faq-panel {
+    margin-top: 2rem;
+    display: grid;
+    gap: 12px;
+  }
+  .faq-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(255,255,255,.72);
+    box-shadow: 0 14px 30px rgba(32,16,48,.08);
+    padding: 18px 20px;
+  }
+  .faq-item h3 {
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .faq-item p {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.7;
+  }
   .nav-links a { color: var(--muted); }
   .nav-links a:hover,
   .nav-links a.active {
@@ -456,7 +478,7 @@
     <a href="#features">Features</a>
     <a href="#security">Security</a>
     <a href="#ifr">IFR</a>
-    <a href="https://securechat.stealthx.tech/faq.html">FAQ</a>
+    <a href="#faq">FAQ</a>
     <a href="https://github.com/NeaBouli/chameleon">GitHub</a>
     <a href="https://github.com/NeaBouli/chameleon" class="cta">View on GitHub</a>
   </div>
@@ -570,14 +592,19 @@
     </div>
   </div>
 
-  <!-- Simple FAQ -->
-  <div style="margin-top:2rem;">
-    <p style="margin-bottom:1rem;"><strong style="color:var(--green);font-size:15px;">Does it spy on me?</strong></p>
-    <p style="color:var(--text-dim);font-size:14px;padding-left:1rem;margin-bottom:1.5rem;">We understand why you'd ask that. The app reads your screen &mdash; but only on YOUR phone. Nothing leaves your device. And the code is public. Anyone can check.</p>
-    <p style="margin-bottom:1rem;"><strong style="color:var(--green);font-size:15px;">Does it use a lot of battery?</strong></p>
-    <p style="color:var(--text-dim);font-size:14px;padding-left:1rem;margin-bottom:1.5rem;">Less than most social media apps use in 5 minutes of scrolling. We measured it carefully. Less than 3% extra battery per day.</p>
-    <p style="margin-bottom:1rem;"><strong style="color:var(--green);font-size:15px;">Do I need this if I already have SecureChat?</strong></p>
-    <p style="color:var(--text-dim);font-size:14px;padding-left:1rem;">SecureChat protects your messages while they travel. Chameleon protects everything else &mdash; your screen, your notifications, your habits. Together: complete protection.</p>
+  <div id="faq" class="faq-panel" aria-label="Chameleon FAQ">
+    <article class="faq-item">
+      <h3>Does it spy on me?</h3>
+      <p>The app reads selected screen text only on your device so it can encrypt or decrypt it locally. Nothing private is sent to Vendetta Labs, and the source is available for review.</p>
+    </article>
+    <article class="faq-item">
+      <h3>Does it use a lot of battery?</h3>
+      <p>No. Chameleon is designed as a lightweight background privacy layer. In normal use it adds less than 3% battery use per day.</p>
+    </article>
+    <article class="faq-item">
+      <h3>Do I need this if I already have SecureChat?</h3>
+      <p>SecureChat protects messages inside SecureChat. Chameleon protects text, notifications, and workflows across other apps. They are strongest together.</p>
+    </article>
   </div>
 </section>
 
