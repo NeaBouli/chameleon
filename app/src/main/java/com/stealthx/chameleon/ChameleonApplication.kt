@@ -13,6 +13,13 @@ package com.stealthx.chameleon
 
 import android.app.Application
 import android.content.Intent
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.stealthx.chameleon.service.ContactListenerService
 import com.stealthx.crypto.SodiumInitializer
 import com.stealthx.data.identity.StealthXIdentity
@@ -21,6 +28,7 @@ import com.stealthx.shared.model.AccessTier
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import javax.inject.Inject
+import java.util.concurrent.TimeUnit
 
 @HiltAndroidApp
 class ChameleonApplication : Application() {
@@ -50,5 +58,23 @@ class ChameleonApplication : Application() {
         if (appPreferences.backgroundListenerEnabled) {
             startForegroundService(Intent(this, ContactListenerService::class.java))
         }
+        scheduleEntitlementRefresh()
+    }
+
+    private fun scheduleEntitlementRefresh() {
+        val constraints = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+        val workManager = WorkManager.getInstance(this)
+        workManager.enqueueUniqueWork(
+            "chameleon-entitlement-refresh-now",
+            ExistingWorkPolicy.REPLACE,
+            OneTimeWorkRequestBuilder<EntitlementRefreshWorker>().setConstraints(constraints).build()
+        )
+        workManager.enqueueUniquePeriodicWork(
+            "chameleon-entitlement-refresh",
+            ExistingPeriodicWorkPolicy.UPDATE,
+            PeriodicWorkRequestBuilder<EntitlementRefreshWorker>(7, TimeUnit.DAYS)
+                .setConstraints(constraints)
+                .build()
+        )
     }
 }

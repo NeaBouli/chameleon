@@ -9,6 +9,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stealthx.data.activation.ActivationCodeClient
+import com.stealthx.data.prefs.AppPreferences
 import com.stealthx.domain.repository.AccessTierRepository
 import com.stealthx.domain.tier.TierGate
 import com.stealthx.shared.model.AccessTier
@@ -32,7 +33,8 @@ sealed class ActivationState {
 class ActivationViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val tierGate: TierGate,
-    private val tierRepository: AccessTierRepository
+    private val tierRepository: AccessTierRepository,
+    private val prefs: AppPreferences
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<ActivationState>(ActivationState.Idle)
@@ -49,6 +51,7 @@ class ActivationViewModel @Inject constructor(
                 if (activation != null) {
                     val accessTier = activation.tier
                     if (accessTier > AccessTier.FREE) {
+                        prefs.entitlementToken = activation.entitlementToken
                         tierRepository.saveTierResult(
                             sourceId = "fiat_entitlement:${activation.productId}",
                             accessWeight = 0L,

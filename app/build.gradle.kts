@@ -141,6 +141,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.work)
     implementation(project(":stealthx-crypto"))
     implementation(project(":stealthx-access"))
     implementation(project(":security"))

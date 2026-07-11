@@ -59,6 +59,7 @@ class AppPreferences @Inject constructor(
         private const val KEY_REAL_PIN_SALT = "real_pin_salt"
         private const val KEY_GEOFENCE_ZONES = "geofence_zones"
         private const val KEY_DECOY_PROFILES = "decoy_profiles_json"
+        private const val KEY_ENTITLEMENT_TOKEN = "fiat_entitlement_token"
         private val DEFAULT_OVERLAY_WHITELIST = setOf(
             "com.whatsapp",
             "org.telegram.messenger",
@@ -119,6 +120,11 @@ class AppPreferences @Inject constructor(
     var geofenceZones: Set<String>
         get() = prefs.getStringSet(KEY_GEOFENCE_ZONES, emptySet()) ?: emptySet()
         set(value) = prefs.edit().putStringSet(KEY_GEOFENCE_ZONES, value).apply()
+
+    var entitlementToken: String?
+        get() = prefs.getString(KEY_ENTITLEMENT_TOKEN, null)
+        set(value) = if (value == null) prefs.edit().remove(KEY_ENTITLEMENT_TOKEN).apply()
+                     else prefs.edit().putString(KEY_ENTITLEMENT_TOKEN, value).apply()
 
     fun clear() {
         prefs.edit().clear().apply()
