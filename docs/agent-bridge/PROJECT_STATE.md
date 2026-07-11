@@ -1,5 +1,12 @@
 # Project State
 
+## 2026-07-11 — Signierter Fiat-Entitlement-Consumer implementiert
+
+- Chameleon verifiziert bezahlte PRO/ELITE-Entitlements mit Ed25519 vor jedem Repository-/TierGate-Update.
+- Server-Revoke verhindert Neuausstellung nach Vollrefund/Dispute; das signierte Ablaufdatum begrenzt bestehenden Offline-Zugriff.
+- Teilrefund fuehrt bewusst zu Review und nicht zu automatischem Rechteentzug.
+- Noch nicht sell ready: sichere automatische Lease-Erneuerung, Runtime-Keypair/Public-Key-Build, Stripe-Testmode E2E, Accountant/Provider und Gio-Launchfreigabe fehlen.
+
 ## 2026-07-11 — Chameleon Payment-/Etimologio-Integration
 
 - Repository Owner: Codex uebernimmt das gesamte oeffentliche Chameleon-Repository, nicht nur Payment.

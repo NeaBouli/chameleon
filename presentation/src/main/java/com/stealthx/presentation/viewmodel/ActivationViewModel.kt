@@ -44,12 +44,17 @@ class ActivationViewModel @Inject constructor(
             return
         }
         _state.value = ActivationState.Loading
-        ActivationCodeClient.activate(context, code) { tierName, error ->
+        ActivationCodeClient.activate(context, code) { activation, error ->
             viewModelScope.launch(Dispatchers.IO) {
-                if (tierName != null) {
-                    val accessTier = try { AccessTier.valueOf(tierName.uppercase()) } catch (_: Exception) { null }
-                    if (accessTier != null && accessTier > AccessTier.FREE) {
-                        tierRepository.saveTierResult("activation_code", 0L, accessTier)
+                if (activation != null) {
+                    val accessTier = activation.tier
+                    if (accessTier > AccessTier.FREE) {
+                        tierRepository.saveTierResult(
+                            sourceId = "fiat_entitlement:${activation.productId}",
+                            accessWeight = 0L,
+                            tier = accessTier,
+                            expiresAtEpochSeconds = activation.expiresAtEpochSeconds
+                        )
                         tierGate.getTier()
                         _state.value = ActivationState.Success(accessTier)
                     } else {
@@ -59,6 +64,9 @@ class ActivationViewModel @Inject constructor(
                     val msg = when (error) {
                         "invalid_code" -> "Invalid or expired code"
                         "already_used" -> "Code already used"
+                        "entitlement_missing" -> "Server entitlement is missing"
+                        "entitlement_not_configured" -> "Secure purchase activation is not configured"
+                        "entitlement_invalid" -> "Entitlement verification failed"
                         "network_error" -> "Connection failed — try again"
                         else -> error ?: "Unknown error"
                     }
