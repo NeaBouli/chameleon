@@ -3,6 +3,14 @@
 
 ---
 
+## 2026-07-11 [Codex]
+### TYPE: MERGE / PAYMENT OWNERSHIP
+### STATUS: MERGED
+
+- Payment entitlement PR #20 was squash-merged to `main` as `f03e01a`.
+- Codex remains responsible for this public repository and its payment/Etimologio integration.
+- No deployment, runtime-key change, payment or activation occurred. Next gates are runtime public-key configuration and cross-repo test-mode E2E.
+
 ## 2026-06-21 [Codex]
 ### TYPE: FIX / AUDIT
 ### STATUS: DONE — BUILT / INSTALLED
