@@ -13,13 +13,9 @@
 
 ## What is Chameleon?
 
-Chameleon encrypts your communications automatically — based on **where you are**, **which app you use**, and **who might be watching**.
+Chameleon is an Android privacy research client under active development. Its local encrypted storage, rule, geofencing, and decoy components are being tested independently.
 
-Unlike Signal or WhatsApp which are standalone messengers, Chameleon is a **privacy layer** that works *on top* of any app. It intercepts text via Android's AccessibilityService, encrypts it with XChaCha20-Poly1305, and injects the ciphertext back — transparently.
-
-**Free tier:** Overlay encryption for any app.
-**Pro tier:** Private Zone + local Messenger mode. IFR holders can verify on the website for 50% off checkout.
-**Elite tier:** Geofencing + Decoy Profile + Ghost Mode. IFR holders can verify on the website for 50% off checkout.
+The cross-device overlay and messenger are currently disabled. Authenticated peer pairing, compatible session establishment, transport identity, accessibility-loop prevention, and physical two-device tests are required before those capabilities can be released or sold.
 
 ---
 
@@ -49,8 +45,8 @@ Android Keystore      Hardware-backed private key storage (StrongBox/TEE)
 :core                   AccessibilityService (AIDL isolated), Overlay
 :data                   Room + SQLCipher, EncryptedSharedPrefs, SecureFile
 :domain                 EncryptionEngine, RuleEngine, TierGate, KeyManager
-:features:overlay       Free — text overlay encryption
-:features:messenger     Pro — local encrypted messenger (no server)
+:features:overlay       Disabled pending cross-device pairing verification
+:features:messenger     Disabled pending session/transport verification
 :features:privatezone   Pro — encrypted file storage
 :features:geofencing    Elite — location-based rule triggers
 :features:decoy         Elite — decoy profile system
@@ -62,15 +58,9 @@ Android Keystore      Hardware-backed private key storage (StrongBox/TEE)
 
 ---
 
-## IFR Holder Discount
+## Paid Access
 
-The public Chameleon app does not run WalletConnect or wallet verification inside Android. IFR holder benefits are handled on the website: buy or hold $IFR, verify a browser wallet, then open Stripe checkout with a 50% discount. The app unlocks through the normal activation-code path.
-
-| Web IFR eligibility | Tier discount | Features |
-|---:|---|---|
-| 0 IFR | Free | Overlay encryption, 5 rules |
-| >= 2,000 IFR | 50% off Pro checkout | + Private Zone, + Messenger |
-| >= 6,000 IFR | 50% off Elite checkout | + Geofencing, + Decoy Profile |
+New paid access is launch-gated. The Android client accepts only server-signed, device-bound entitlements and does not persist paid access from local payment callbacks. Availability will be announced through VLABS after product, payment, refund-revocation, and two-device verification gates pass.
 
 ---
 
@@ -88,9 +78,9 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 | S-05 | ✅ Done | Domain Layer (XChaCha20, Double Ratchet HKDF, TierGate, RuleEngine) |
 | S-06 | ✅ Done | IFR web discount model and activation-code unlock path |
 | S-07 | ✅ Done | Compose UI (StealthX Design System, Navigation, Screens) |
-| S-08 | ✅ Done | Feature Layer (Overlay, Messenger, PrivateZone, Geofencing, Decoy) |
-| S-09 | ✅ Done | Security Hardening + OWASP MASVS L2 Audit |
-| S-10 | ✅ Done | F-Droid + Play Store prep, Release Pipeline, Community |
+| S-08 | In progress | Feature Layer; overlay and messenger remain disabled |
+| S-09 | In progress | Internal hardening; no external MASVS certification claimed |
+| S-10 | Blocked | Distribution pending product verification and license decision |
 
 ---
 
@@ -98,7 +88,7 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 
 **Public Alpha: Q3 2026** — pending external security audit.
 
-- F-Droid: Metadata prepared, submission after audit
+- F-Droid: not eligible under the current source-available license
 - Play Store: Data Safety Form documented, submission after audit
 - GitHub Releases: APK available with each tagged version
 - Source: `git clone https://github.com/NeaBouli/chameleon.git`
@@ -107,7 +97,7 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 
 ## Security Audit
 
-Chameleon targets **OWASP MASVS Level 2** compliance. The full audit package is in [`docs/AUDIT_PACKAGE/`](docs/AUDIT_PACKAGE/).
+Chameleon uses MASVS as an internal review framework. It has not received an external MASVS certification. The working audit package is in [`docs/AUDIT_PACKAGE/`](docs/AUDIT_PACKAGE/).
 
 | Document | Contents |
 |----------|----------|
@@ -126,7 +116,7 @@ Chameleon targets **OWASP MASVS Level 2** compliance. The full audit package is 
 
 ## Three Rules Never Broken
 
-1. **No internet permission by default** — IFR discounts are verified on the website, not inside the public Android app
+1. **Network access is explicit** — the manifest includes internet and nearby-device capabilities for planned transports and entitlement renewal
 2. **Private keys never leave hardware Keystore** (StrongBox or TEE)
 3. **Fail Secure** — on error, encrypt. Never decrypt.
 

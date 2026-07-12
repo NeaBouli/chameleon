@@ -92,8 +92,8 @@ fun DashboardScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                QuickAction(icon = Icons.Default.Shield, label = "Overlay", onClick = onNavigateToOverlay)
-                QuickAction(icon = Icons.Default.Message, label = "Messenger", onClick = onNavigateToMessenger)
+                QuickAction(icon = Icons.Default.Shield, label = "Overlay", enabled = false, onClick = onNavigateToOverlay)
+                QuickAction(icon = Icons.Default.Message, label = "Messenger", enabled = false, onClick = onNavigateToMessenger)
                 QuickAction(icon = Icons.Default.Key, label = "Keys", onClick = onNavigateToKeyExchange)
             }
 
@@ -127,10 +127,19 @@ fun DashboardScreen(
 }
 
 @Composable
-private fun QuickAction(icon: androidx.compose.ui.graphics.vector.ImageVector, label: String, onClick: () -> Unit) {
+private fun QuickAction(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String,
+    enabled: Boolean = true,
+    onClick: () -> Unit
+) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        IconButton(onClick = onClick) {
-            Icon(icon, contentDescription = label, tint = StealthXColors.Primary)
+        IconButton(onClick = onClick, enabled = enabled) {
+            Icon(
+                icon,
+                contentDescription = label,
+                tint = if (enabled) StealthXColors.Primary else StealthXColors.OnSurfaceVariant
+            )
         }
         Text(label, style = MaterialTheme.typography.bodySmall, color = StealthXColors.OnSurfaceVariant)
     }

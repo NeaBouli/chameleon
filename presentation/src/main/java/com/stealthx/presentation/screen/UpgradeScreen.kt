@@ -5,7 +5,6 @@
  */
 package com.stealthx.presentation.screen
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
@@ -25,7 +24,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TextButton
@@ -33,7 +31,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -54,12 +51,7 @@ fun UpgradeScreen(
     vm: UpgradeViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val activity = context as? Activity
     val state by vm.state.collectAsState()
-
-    LaunchedEffect(Unit) {
-        vm.connect()
-    }
 
     fun openUrl(url: String) {
         runCatching {
@@ -104,7 +96,7 @@ fun UpgradeScreen(
                     Text("Chameleon Access", color = StealthXColors.OnSurface)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        "Buy Pro or Elite with Google Play. Activation codes still work from Settings.",
+                        "Paid activation is launch-gated. Existing signed activation codes still work from Settings.",
                         color = StealthXColors.OnSurface.copy(alpha = 0.72f)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -113,23 +105,23 @@ fun UpgradeScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         OutlinedButton(
-                            onClick = { vm.buy(activity, "chameleon_pro_lifetime") },
+                            onClick = {},
+                            enabled = false,
                             modifier = Modifier.weight(1f)
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text("PRO")
-                                Text(state.products["chameleon_pro_lifetime"]?.price ?: "EUR 9", color = StealthXColors.Primary)
-                                Text("lifetime", color = StealthXColors.OnSurface.copy(alpha = 0.72f))
+                                Text("Launch gated", color = StealthXColors.Primary)
                             }
                         }
                         OutlinedButton(
-                            onClick = { vm.buy(activity, "chameleon_elite_lifetime") },
+                            onClick = {},
+                            enabled = false,
                             modifier = Modifier.weight(1f)
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text("ELITE")
-                                Text(state.products["chameleon_elite_lifetime"]?.price ?: "EUR 19", color = Color(0xFFFFD700))
-                                Text("lifetime", color = StealthXColors.OnSurface.copy(alpha = 0.72f))
+                                Text("Launch gated", color = Color(0xFFFFD700))
                             }
                         }
                     }
@@ -139,13 +131,15 @@ fun UpgradeScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         OutlinedButton(
-                            onClick = { vm.buy(activity, "chameleon_pro_monthly") },
+                            onClick = {},
+                            enabled = false,
                             modifier = Modifier.weight(1f)
                         ) {
                             Text("Pro Monthly")
                         }
                         OutlinedButton(
-                            onClick = { vm.buy(activity, "chameleon_elite_monthly") },
+                            onClick = {},
+                            enabled = false,
                             modifier = Modifier.weight(1f)
                         ) {
                             Text("Elite Monthly")
@@ -153,21 +147,19 @@ fun UpgradeScreen(
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     OutlinedButton(
-                        onClick = { vm.buy(activity, "chameleon_elite_activation_code") },
+                        onClick = {},
+                        enabled = false,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Icon(Icons.Default.CreditCard, contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text("Buy Elite Activation Code")
                     }
-                    TextButton(onClick = vm::restorePurchases, enabled = !state.isConnecting) {
-                        Text("Restore Google Play purchases")
+                    TextButton(onClick = {}, enabled = false) {
+                        Text("Google Play verification pending")
                     }
-                    TextButton(onClick = { openUrl("https://chameleon.stealthx.tech/#lifetime") }) {
-                        Text("Website checkout")
-                    }
-                    if (state.isConnecting) {
-                        LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                    TextButton(onClick = { openUrl("https://vlabs.gr/en/shop?focus=security") }) {
+                        Text("Check availability at VLABS")
                     }
                     Text(state.status, color = StealthXColors.OnSurface.copy(alpha = 0.72f))
                 }

@@ -77,7 +77,6 @@ import com.stealthx.shared.model.AccessTier
 fun SettingsScreen(
     onBack: () -> Unit,
     onNavigateToUpgrade: () -> Unit,
-    onNavigateToOverlay: () -> Unit,
     onNavigateToPrivateZone: () -> Unit,
     onNavigateToGeofencing: () -> Unit,
     onNavigateToDecoy: () -> Unit,
@@ -160,9 +159,9 @@ fun SettingsScreen(
                 FeatureRow(
                     icon = Icons.Default.Shield,
                     title = "Overlay Encryption",
-                    subtitle = "Always on — basic protection",
+                    subtitle = "Unavailable until cross-device pairing is verified",
                     locked = false,
-                    onClick = onNavigateToOverlay
+                    comingSoon = true
                 )
             }
 
@@ -269,7 +268,7 @@ fun SettingsScreen(
                 HelpLinkRow(
                     icon = Icons.Default.RocketLaunch,
                     title = "Getting Started",
-                    subtitle = "Activate overlay, set up Private Zone, configure rules",
+                    subtitle = "Alpha status, Private Zone, and local rules",
                     onClick = onNavigateToSetup
                 )
             }

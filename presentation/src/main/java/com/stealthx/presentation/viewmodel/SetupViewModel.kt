@@ -1,27 +1,25 @@
 package com.stealthx.presentation.viewmodel
 
-import android.content.Intent
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.stealthx.core.permission.PermissionManager
-import com.stealthx.core.permission.PermissionState
+import com.stealthx.data.prefs.AppPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class SetupViewModel @Inject constructor(
-    private val permissionManager: PermissionManager
+    private val appPreferences: AppPreferences
 ) : ViewModel() {
 
-    val isInitiallySetup: Boolean = permissionManager.currentState().allGranted
+    val isInitiallySetup: Boolean = appPreferences.isOnboardingDone
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error.asStateFlow()
 
-    val permissionState: StateFlow<PermissionState> = permissionManager
-        .observePermissions()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), permissionManager.currentState())
-
-    fun accessibilitySettingsIntent(): Intent = permissionManager.accessibilitySettingsIntent()
-    fun overlaySettingsIntent(): Intent = permissionManager.overlaySettingsIntent()
+    fun completeSetup(): Boolean {
+        val persisted = appPreferences.markOnboardingDone()
+        _error.value = if (persisted) null else "Could not save setup state. Please try again."
+        return persisted
+    }
 }

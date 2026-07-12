@@ -96,8 +96,48 @@ val verifyNoAppIfrWalletCode = tasks.register("verifyNoAppIfrWalletCode") {
     }
 }
 
+val verifyNoClientSidePaidUnlock = tasks.register("verifyNoClientSidePaidUnlock") {
+    group = "verification"
+    description = "Fail if client-side payment callbacks can persist paid access"
+
+    val upgradeSources = fileTree("presentation/src/main") {
+        include("**/*.kt")
+    }
+    inputs.files(upgradeSources)
+
+    doLast {
+        val billingTerms = listOf(
+            "BillingClient",
+            "PurchasesUpdatedListener",
+            "google_play:",
+        )
+        val hits = upgradeSources.files.flatMap { sourceFile ->
+            val text = sourceFile.readText()
+            billingTerms
+                .filter(text::contains)
+                .map { term -> "${sourceFile.relativeTo(rootDir).invariantSeparatorsPath}: $term" }
+        }.toMutableList()
+
+        val upgradeViewModel = file(
+            "presentation/src/main/java/com/stealthx/presentation/viewmodel/UpgradeViewModel.kt"
+        )
+        if (upgradeViewModel.exists()) {
+            val text = upgradeViewModel.readText()
+            listOf("saveTierResult(", "saveCachedTier(").forEach { term ->
+                if (text.contains(term)) {
+                    hits += "${upgradeViewModel.relativeTo(rootDir).invariantSeparatorsPath}: $term"
+                }
+            }
+        }
+        if (hits.isNotEmpty()) {
+            error("Client-side paid unlock paths are forbidden:\n${hits.joinToString("\n")}")
+        }
+    }
+}
+
 subprojects {
     tasks.matching { it.name == "check" }.configureEach {
         dependsOn(verifyNoAppIfrWalletCode)
+        dependsOn(verifyNoClientSidePaidUnlock)
     }
 }

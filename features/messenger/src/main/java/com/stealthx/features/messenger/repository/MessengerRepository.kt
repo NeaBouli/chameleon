@@ -77,6 +77,7 @@ class MessengerRepository @Inject constructor(
         plaintext: String,
         transportType: MessengerTransportType
     ): DecryptedMessage {
+        check(crossDeviceMessengerEnabled) { CROSS_DEVICE_MESSENGER_DISABLED }
         val contact = contactKeyDao.getById(contactId)
             ?: throw IllegalArgumentException("Contact not found: $contactId")
         val sentAt = System.currentTimeMillis()
@@ -127,6 +128,7 @@ class MessengerRepository @Inject constructor(
     }
 
     suspend fun receiveMessage(contactId: String, message: RatchetMessage, transport: MessengerTransportType): DecryptedMessage {
+        check(crossDeviceMessengerEnabled) { CROSS_DEVICE_MESSENGER_DISABLED }
         val contact = contactKeyDao.getById(contactId)
             ?: throw IllegalArgumentException("Contact not found: $contactId")
         val receivedAt = System.currentTimeMillis()
@@ -231,6 +233,9 @@ class MessengerRepository @Inject constructor(
     }
 
     private companion object {
+        val crossDeviceMessengerEnabled = false
+        const val CROSS_DEVICE_MESSENGER_DISABLED =
+            "Cross-device messenger is unavailable until session establishment and transport identity are verified"
         const val DIRECTION_INCOMING = "INCOMING"
         const val DIRECTION_OUTGOING = "OUTGOING"
         const val STATUS_UNREAD = "UNREAD"

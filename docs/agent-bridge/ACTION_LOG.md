@@ -1,5 +1,16 @@
 # Action Log
 
+## 2026-07-12 — Codex full software readiness audit
+
+- Audited payment activation, overlay, messenger/session establishment, transports, AccessibilityService, public claims, distribution metadata and signed entitlement renewal.
+- Removed the unverified Google Play client unlock and Billing dependency; added a build guard against client-side paid-tier persistence.
+- Disabled overlay by default and enforced the preference inside AccessibilityService. Removed alpha onboarding requests for Accessibility/display-over-apps permissions, disabled overlay/messenger UI and direct navigation, and made messenger repository send/receive fail closed.
+- Corrected public README/site/wiki claims, disabled checkout/wallet controls and removed F-Droid metadata incompatible with the current source-available license.
+- Confirmed automatic signed entitlement renewal already exists and corrected the stale TODO.
+- Verification: 334 test executions, 0 failures, 0 errors, 24 skipped; both source guards, Detekt, Android Lint and `app:assembleDebug` passed (`BUILD SUCCESSFUL`, 1112 Gradle tasks).
+- PR review follow-up: existing `overlay_enabled=true` values now receive a one-time fail-closed migration; setup persistence is checked before navigation; public IFR offers/links and stale permission/workflow instructions were removed in EN/DE; targeted compile, data tests and paid-unlock guard pass.
+- No live payment, purchase, invoice, provider/AADE call, entitlement activation or deployment.
+
 ## 2026-07-11 — Codex Chameleon Fiat-Entitlement-Verifier
 
 - Chameleon akzeptiert bezahlte PRO/ELITE-Tiers nur noch ueber ein Ed25519-signiertes, an Audience `chameleon`, lokale Client-ID, Produkt und Ablauf gebundenes Token.

@@ -119,7 +119,7 @@
 <div class="guide-header">
   <div class="guide-label">Wiki · User Manual</div>
   <h1 class="guide-title">Chameleon <span>User Guide</span></h1>
-  <p class="guide-sub">Chameleon is not a messenger — it's a privacy overlay that encrypts text automatically in any app. This guide covers setup, key exchange, overlay configuration, geofencing, and all settings.</p>
+  <p class="guide-sub">Chameleon is an Android privacy research client. Cross-device overlay and messenger capabilities are disabled in the current alpha pending interoperability tests.</p>
 </div>
 <div class="guide-body">
 
@@ -142,31 +142,14 @@
 <div class="guide-section">
   <div class="section-num">Section 1</div>
   <h2 class="section-heading section-anchor" id="en-what">🦎 What is Chameleon?</h2>
-  <p><strong>Chameleon is not a standalone messenger.</strong> It is a <strong>privacy overlay</strong> that sits on top of any other app — WhatsApp, Telegram, SMS, Signal, browser — and automatically encrypts and decrypts text in real time.</p>
-  <ol style="padding-left:1.5rem;color:var(--text-dim);font-size:14px;margin-bottom:1rem">
-    <li style="margin-bottom:0.5rem">You type a message in WhatsApp (or any other app)</li>
-    <li style="margin-bottom:0.5rem">Chameleon intercepts and encrypts it with XChaCha20-Poly1305</li>
-    <li style="margin-bottom:0.5rem">Your contact (who also has Chameleon) sees the plaintext automatically</li>
-    <li>Everyone else sees random cipher text</li>
-  </ol>
-  <div class="info-box"><strong>vs SecureChat:</strong> Chameleon adds encryption to existing apps. SecureChat replaces them entirely. Both use the same website IFR holder discount model and <code>sx_</code> identity.</div>
+  <p><strong>Chameleon is not a standalone messenger.</strong> The planned cross-device overlay is unavailable in the current alpha until authenticated pairing and two-device tests pass.</p>
+  <div class="info-box"><strong>Current alpha:</strong> Do not rely on Chameleon for messaging or cross-device protection. Use SecureChat for messaging while the overlay protocol is under verification.</div>
 </div>
 
 <div class="guide-section">
   <div class="section-num">Section 2</div>
-  <h2 class="section-heading section-anchor" id="en-prereq">⚙ Prerequisites: Accessibility Service</h2>
-  <p>Chameleon intercepts text via Android's Accessibility Service. <strong>Enable this once before the overlay works.</strong></p>
-  <h3 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:var(--text)">Method 1 — On-device</h3>
-  <ol class="step-list">
-    <li>Open Android Settings</li>
-    <li>Accessibility → Installed Apps</li>
-    <li>Find "Chameleon" → toggle ON</li>
-    <li>Confirm the permission dialog</li>
-  </ol>
-  <h3 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:var(--text)">Method 2 — ADB</h3>
-  <div class="adb">adb shell settings put secure enabled_accessibility_services \
-  com.stealthx.chameleon.debug/com.stealthx.service.ChameleonAccessibilityService</div>
-  <div class="warn-box">Without the Accessibility Service, overlay encryption does not work in external apps.</div>
+  <h2 class="section-heading section-anchor" id="en-prereq">⚙ Alpha permissions</h2>
+  <p>No Accessibility Service or display-over-apps permission is required for the current alpha. Do not grant these sensitive permissions for cross-device protection.</p>
 </div>
 
 <div class="guide-section">
@@ -177,11 +160,11 @@
     <tr><td><strong>Tier badge</strong> (top right)</td><td>FREE / PRO / ELITE</td></tr>
     <tr><td><strong>⚙ Gear</strong> (top right)</td><td>Opens Settings</td></tr>
     <tr><td><strong>Security Level Indicator</strong></td><td>LOW / MEDIUM / HIGH</td></tr>
-    <tr><td><strong>Overlay</strong> (quick action)</td><td>Overlay configuration</td></tr>
-    <tr><td><strong>Messenger</strong> (quick action)</td><td>SecureChat-compatible direct channel entry point</td></tr>
+    <tr><td><strong>Overlay</strong> (quick action)</td><td>Disabled in this release</td></tr>
+    <tr><td><strong>Messenger</strong> (quick action)</td><td>Disabled in this release</td></tr>
     <tr><td><strong>Keys</strong> (quick action)</td><td>Key exchange with contacts</td></tr>
     <tr><td><strong>Active Rules</strong> (list)</td><td>Automation rules — name, trigger type, security level</td></tr>
-    <tr><td><strong>IFR Discount</strong></td><td>Opens the website checkout discount flow</td></tr>
+    <tr><td><strong>Paid access</strong></td><td>Launch-gated</td></tr>
   </table>
 </div>
 
@@ -189,13 +172,13 @@
   <a id="overlay" aria-hidden="true" tabindex="-1" style="display:block;height:0;overflow:hidden"></a>
   <div class="section-num">Section 4</div>
   <h2 class="section-heading section-anchor" id="en-overlay">🛡 Overlay Screen</h2>
-  <p>Configure which apps Chameleon monitors. Shows Accessibility Service status, app whitelist/blacklist. Overlay encryption (XChaCha20) is always on in all tiers.</p>
+  <p>The overlay controls are disabled in this alpha. Do not enable the Accessibility Service for cross-device protection until a verified release is announced.</p>
 </div>
 
 <div class="guide-section">
   <div class="section-num">Section 5</div>
   <h2 class="section-heading section-anchor" id="en-keys">🔑 Key Exchange</h2>
-  <p>One-time setup per contact — must be done before encryption works.</p>
+  <p>Contact QR exchange can be evaluated locally, but it does not activate the disabled overlay or messenger.</p>
   <table>
     <tr><th>Action</th><th>Function</th></tr>
     <tr><td>Show QR code</td><td>Your public key as QR — contact scans this</td></tr>
@@ -206,7 +189,7 @@
     <li>Both open Chameleon → Keys screen</li>
     <li>You show your QR → contact scans it</li>
     <li>Contact shows their QR → you scan it</li>
-    <li>Done. Chameleon auto-encrypts/decrypts between you in any app.</li>
+    <li>Contact keys are stored locally. This does not yet activate the disabled cross-device overlay.</li>
   </ol>
   <div class="tip-box">Do the key exchange in person or via a trusted channel for maximum security.</div>
 </div>
@@ -214,21 +197,14 @@
 <div class="guide-section">
   <div class="section-num">Section 6</div>
   <h2 class="section-heading section-anchor" id="en-messenger">💬 Messenger</h2>
-  <p>Chameleon's messenger entry point opens the StealthX direct-channel flow for private contact communication. SecureChat remains the dedicated messaging product; Chameleon focuses on overlay encryption, context rules and private zones.</p>
+  <p>Chameleon's messenger is disabled until session establishment, peer identity and transport interoperability pass two-device tests. Use SecureChat for messaging.</p>
 </div>
 
 <div class="guide-section">
   <a id="ifr" aria-hidden="true" tabindex="-1" style="display:block;height:0;overflow:hidden"></a>
   <div class="section-num">Section 7</div>
-  <h2 class="section-heading section-anchor" id="en-ifr">💎 IFR Holder Discount</h2>
-  <table>
-    <tr><th>Element</th><th>Function</th></tr>
-    <tr><td>Upgrade screen</td><td>Opens Chameleon web checkout, IFR discount, or Uniswap</td></tr>
-    <tr><td>IFR discount</td><td>Verifies a browser wallet on the website for 50% Stripe checkout</td></tr>
-    <tr><td>Manual address</td><td>Optional website fallback for read-only token balance check</td></tr>
-  </table>
-  <p>Thresholds: ≥ <strong>2,000 IFR → 50% off Pro</strong> · ≥ <strong>6,000 IFR → 50% off Elite</strong><br>
-  Token: <code>0x77e99917Eca8539c62F509ED1193ac36580A6e7B</code> (Ethereum Mainnet)</p>
+  <h2 class="section-heading section-anchor" id="en-ifr">💎 Paid access</h2>
+  <p>Wallet verification, discounts, token purchase links, and Stripe checkout are launch-gated and unavailable.</p>
 </div>
 
 <div class="guide-section">
@@ -239,7 +215,7 @@
   <h3 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:var(--text)">Free <span class="tier-badge free">FREE</span></h3>
   <table>
     <tr><th>Setting</th><th>Detail</th></tr>
-    <tr><td><strong>Overlay Encryption</strong></td><td>XChaCha20-Poly1305 — always on</td></tr>
+    <tr><td><strong>Overlay Encryption</strong></td><td>Disabled pending cross-device verification</td></tr>
     <tr><td><strong>Manual Geofencing</strong></td><td>Up to 3 GPS-based rules — at location X, switch to security mode Y</td></tr>
     <tr><td><strong>Private Zone</strong></td><td>Encrypted local storage — max. 100 MB</td></tr>
   </table>
@@ -264,15 +240,8 @@
 
 <div class="guide-section">
   <div class="section-num">Section 9</div>
-  <h2 class="section-heading section-anchor" id="en-workflow">▶ Daily Workflow</h2>
-  <ol class="step-list">
-    <li><strong>Once:</strong> Enable Accessibility Service (Settings → Accessibility → Chameleon)</li>
-    <li><strong>Once per contact:</strong> Key exchange (Keys screen → mutual QR scan)</li>
-    <li><strong>Everyday:</strong> Open WhatsApp (or any app) — Chameleon is active in the background</li>
-    <li><strong>Write normally</strong> — Chameleon auto-encrypts before sending</li>
-    <li><strong>Incoming messages</strong> from Chameleon contacts — auto-decrypted, shown in plaintext</li>
-    <li><strong>Optional (Pro):</strong> Create rules — e.g. at office location → HIGH security mode</li>
-  </ol>
+  <h2 class="section-heading section-anchor" id="en-workflow">▶ Alpha Workflow</h2>
+  <p>Evaluate local storage, keys, rules, geofencing, and decoy components only. Overlay and messenger actions remain disabled; no sensitive Android permission is required.</p>
 </div>
 
 <div class="guide-section">
@@ -280,7 +249,7 @@
   <h2 class="section-heading section-anchor" id="en-tiers">📊 Tier Comparison</h2>
   <table>
     <tr><th>Feature</th><th><span class="tier-badge free">FREE</span></th><th><span class="tier-badge pro">PRO</span></th><th><span class="tier-badge elite">ELITE</span></th></tr>
-    <tr><td>Overlay Encryption</td><td>✅</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Overlay Encryption</td><td>Disabled</td><td>Disabled</td><td>Disabled</td></tr>
     <tr><td>Manual Geofencing</td><td>3 rules</td><td>∞</td><td>∞</td></tr>
     <tr><td>Private Zone</td><td>100 MB</td><td>∞</td><td>∞</td></tr>
     <tr><td>Automatic Geofencing</td><td>—</td><td>✅</td><td>✅</td></tr>
@@ -289,7 +258,7 @@
     <tr><td>Multi-Decoy Profiles</td><td>—</td><td>—</td><td>✅</td></tr>
     <tr><td>Threat Detection</td><td>—</td><td>—</td><td>✅</td></tr>
     <tr><td>Zero Telemetry</td><td>—</td><td>—</td><td>✅</td></tr>
-    <tr><td>Web IFR discount</td><td>—</td><td>2,000 IFR for 50% checkout</td><td>6,000 IFR for 50% checkout</td></tr>
+    <tr><td>Paid access</td><td>—</td><td>Launch-gated</td><td>Launch-gated</td></tr>
   </table>
 </div>
 
@@ -301,7 +270,7 @@
 <div class="guide-header">
   <div class="guide-label">Wiki · Betriebsanleitung</div>
   <h1 class="guide-title">Chameleon <span>Betriebsanleitung</span></h1>
-  <p class="guide-sub">Chameleon ist kein Messenger — es ist ein Overlay das Text automatisch in jeder anderen App verschlüsselt. Diese Anleitung erklärt Einrichtung, Schlüsselaustausch, Overlay-Konfiguration, Geofencing und alle Einstellungen.</p>
+  <p class="guide-sub">Chameleon ist ein Android-Privacy-Forschungsclient. Cross-Device-Overlay und Messenger sind in dieser Alpha bis zu Interoperabilitätstests deaktiviert.</p>
 </div>
 <div class="guide-body">
 
@@ -309,12 +278,12 @@
   <div class="toc-title">Inhalt</div>
   <ol>
     <li><a href="#de-what">Was ist Chameleon?</a></li>
-    <li><a href="#de-prereq">Voraussetzung: Accessibility Service</a></li>
+    <li><a href="#de-prereq">Alpha-Berechtigungen</a></li>
     <li><a href="#de-dashboard">Dashboard</a></li>
     <li><a href="#de-overlay">Overlay-Screen</a></li>
     <li><a href="#de-keys">Schlüsselaustausch</a></li>
     <li><a href="#de-messenger">Messenger</a></li>
-    <li><a href="#de-ifr">IFR Holder Discount</a></li>
+    <li><a href="#de-ifr">Bezahlzugang</a></li>
     <li><a href="#de-settings">Einstellungen</a></li>
     <li><a href="#de-workflow">Alltäglicher Workflow</a></li>
     <li><a href="#de-tiers">Tier-Vergleich</a></li>
@@ -324,31 +293,14 @@
 <div class="guide-section">
   <div class="section-num">Abschnitt 1</div>
   <h2 class="section-heading section-anchor" id="de-what">🦎 Was ist Chameleon?</h2>
-  <p><strong>Chameleon ist kein eigenständiger Messenger.</strong> Es ist ein <strong>Overlay</strong> das über jede andere App gelegt wird — WhatsApp, Telegram, SMS, Signal, Browser — und Text dort <strong>automatisch in Echtzeit verschlüsselt und entschlüsselt</strong>.</p>
-  <ol style="padding-left:1.5rem;color:var(--text-dim);font-size:14px;margin-bottom:1rem">
-    <li style="margin-bottom:0.5rem">Du schreibst in WhatsApp einen Text</li>
-    <li style="margin-bottom:0.5rem">Chameleon fängt ihn ab und verschlüsselt ihn mit XChaCha20-Poly1305</li>
-    <li style="margin-bottom:0.5rem">Dein Kontakt (mit Chameleon) sieht den Klartext automatisch</li>
-    <li>Alle anderen sehen kryptischen Zeichensalat</li>
-  </ol>
-  <div class="info-box"><strong>vs SecureChat:</strong> Chameleon fügt bestehenden Apps Verschlüsselung hinzu. SecureChat ersetzt sie. Beide nutzen dasselbe Website-IFR-Holder-Rabattmodell und die gleiche <code>sx_</code>-Identität.</div>
+  <p><strong>Chameleon ist kein eigenständiger Messenger.</strong> Das geplante Cross-Device-Overlay ist in dieser Alpha deaktiviert, bis authentifizierte Kopplung und Zwei-Geräte-Tests bestanden sind.</p>
+  <div class="info-box"><strong>Aktuelle Alpha:</strong> Chameleon nicht für Nachrichten oder Cross-Device-Schutz verwenden. Für Nachrichten SecureChat nutzen, während das Overlay-Protokoll verifiziert wird.</div>
 </div>
 
 <div class="guide-section">
   <div class="section-num">Abschnitt 2</div>
-  <h2 class="section-heading section-anchor" id="de-prereq">⚙ Voraussetzung: Accessibility Service</h2>
-  <p>Chameleon fängt Text über den Android Accessibility Service ab. <strong>Einmalig aktivieren bevor das Overlay funktioniert.</strong></p>
-  <h3 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:var(--text)">Methode 1 — Am Gerät</h3>
-  <ol class="step-list">
-    <li>Android-Einstellungen öffnen</li>
-    <li>Barrierefreiheit → Installierte Apps</li>
-    <li>"Chameleon" suchen → Einschalten</li>
-    <li>Berechtigungsdialog bestätigen</li>
-  </ol>
-  <h3 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:var(--text)">Methode 2 — ADB</h3>
-  <div class="adb">adb shell settings put secure enabled_accessibility_services \
-  com.stealthx.chameleon.debug/com.stealthx.service.ChameleonAccessibilityService</div>
-  <div class="warn-box">Ohne aktivierten Accessibility Service funktioniert die Overlay-Verschlüsselung in externen Apps nicht.</div>
+  <h2 class="section-heading section-anchor" id="de-prereq">⚙ Alpha-Berechtigungen</h2>
+  <p>Für die aktuelle Alpha sind weder Accessibility Service noch Einblendungen über anderen Apps erforderlich. Diese sensiblen Berechtigungen nicht für Cross-Device-Schutz erteilen.</p>
 </div>
 
 <div class="guide-section">
@@ -359,24 +311,24 @@
     <tr><td><strong>Tier-Badge</strong> (oben rechts)</td><td>FREE / PRO / ELITE</td></tr>
     <tr><td><strong>⚙ Zahnrad</strong> (oben rechts)</td><td>Öffnet Einstellungen</td></tr>
     <tr><td><strong>SecurityLevelIndicator</strong></td><td>LOW / MEDIUM / HIGH</td></tr>
-    <tr><td><strong>Overlay</strong> (Quick-Action)</td><td>Overlay-Konfiguration</td></tr>
-    <tr><td><strong>Messenger</strong> (Quick-Action)</td><td>SecureChat-kompatibler Direktkanal-Einstieg</td></tr>
+    <tr><td><strong>Overlay</strong> (Quick-Action)</td><td>In diesem Release deaktiviert</td></tr>
+    <tr><td><strong>Messenger</strong> (Quick-Action)</td><td>In diesem Release deaktiviert</td></tr>
     <tr><td><strong>Keys</strong> (Quick-Action)</td><td>Schlüsselaustausch mit Kontakten</td></tr>
     <tr><td><strong>Active Rules</strong> (Liste)</td><td>Aktive Automatisierungsregeln — Name, Trigger, Level</td></tr>
-    <tr><td><strong>IFR-Rabatt</strong></td><td>Öffnet den Website-Checkout-Rabatt-Flow</td></tr>
+    <tr><td><strong>Bezahlzugang</strong></td><td>Launch-gated</td></tr>
   </table>
 </div>
 
 <div class="guide-section">
   <div class="section-num">Abschnitt 4</div>
   <h2 class="section-heading section-anchor" id="de-overlay">🛡 Overlay-Screen</h2>
-  <p>Konfiguration welche Apps Chameleon überwacht. Zeigt Accessibility-Service-Status, App-Whitelist/Blacklist. Overlay-Verschlüsselung (XChaCha20) ist in allen Tiers immer an.</p>
+  <p>Die Overlay-Steuerung ist in dieser Alpha deaktiviert. Den Accessibility Service nicht als Cross-Device-Schutz verwenden, bis ein verifiziertes Release angekündigt ist.</p>
 </div>
 
 <div class="guide-section">
   <div class="section-num">Abschnitt 5</div>
   <h2 class="section-heading section-anchor" id="de-keys">🔑 Schlüsselaustausch</h2>
-  <p>Einmalige Einrichtung pro Kontakt — muss vor der Verschlüsselung durchgeführt werden.</p>
+  <p>Der Kontakt-QR-Austausch kann lokal evaluiert werden, aktiviert aber weder Overlay noch Messenger.</p>
   <table>
     <tr><th>Aktion</th><th>Funktion</th></tr>
     <tr><td>QR-Code anzeigen</td><td>Dein Public Key als QR — Kontakt scannt ihn</td></tr>
@@ -387,7 +339,7 @@
     <li>Beide öffnen Chameleon → Keys-Screen</li>
     <li>Du zeigst deinen QR → Kontakt scannt ihn</li>
     <li>Kontakt zeigt seinen QR → du scannst ihn</li>
-    <li>Fertig. Chameleon verschlüsselt automatisch zwischen euch in jeder App.</li>
+    <li>Die Kontaktschlüssel sind lokal gespeichert. Das deaktivierte Cross-Device-Overlay wird dadurch noch nicht aktiviert.</li>
   </ol>
   <div class="tip-box">Schlüsselaustausch persönlich oder über einen vertrauenswürdigen Kanal durchführen.</div>
 </div>
@@ -395,20 +347,13 @@
 <div class="guide-section">
   <div class="section-num">Abschnitt 6</div>
   <h2 class="section-heading section-anchor" id="de-messenger">💬 Messenger</h2>
-  <p>Der Messenger-Einstieg öffnet den StealthX-Direktkanal für private Kontaktkommunikation. SecureChat bleibt das dedizierte Messaging-Produkt; Chameleon konzentriert sich auf Overlay-Verschlüsselung, Kontextregeln und Private Zones.</p>
+  <p>Der Chameleon-Messenger ist deaktiviert, bis Session-Aufbau, Peer-Identität und Transport-Interoperabilität auf zwei Geräten verifiziert sind. Für Nachrichten SecureChat verwenden.</p>
 </div>
 
 <div class="guide-section">
   <div class="section-num">Abschnitt 7</div>
-  <h2 class="section-heading section-anchor" id="de-ifr">💎 IFR Holder Discount</h2>
-  <table>
-    <tr><th>Element</th><th>Funktion</th></tr>
-    <tr><td>Upgrade-Screen</td><td>Öffnet Chameleon-Webcheckout, IFR-Rabatt oder Uniswap</td></tr>
-    <tr><td>IFR-Rabatt</td><td>Verifiziert eine Browser-Wallet auf der Website für 50% Stripe-Checkout</td></tr>
-    <tr><td>Wallet-Signatur</td><td>Pflichtnachweis im Browser; keine manuelle Adress-Freischaltung</td></tr>
-  </table>
-  <p>Schwellenwerte: ≥ <strong>2.000 IFR → 50% Pro-Rabatt</strong> · ≥ <strong>6.000 IFR → 50% Elite-Rabatt</strong><br>
-  Contract: <code>0x77e99917Eca8539c62F509ED1193ac36580A6e7B</code> (Ethereum Mainnet)</p>
+  <h2 class="section-heading section-anchor" id="de-ifr">💎 Bezahlzugang</h2>
+  <p>Wallet-Verifizierung, Rabatte, Token-Kauflinks und Stripe-Checkout sind launch-gated und nicht verfügbar.</p>
 </div>
 
 <div class="guide-section">
@@ -417,7 +362,7 @@
   <h3 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:var(--text)">Free <span class="tier-badge free">FREE</span></h3>
   <table>
     <tr><th>Einstellung</th><th>Detail</th></tr>
-    <tr><td><strong>Overlay Encryption</strong></td><td>XChaCha20-Poly1305 — immer an</td></tr>
+    <tr><td><strong>Overlay Encryption</strong></td><td>Bis zur Cross-Device-Verifizierung deaktiviert</td></tr>
     <tr><td><strong>Manual Geofencing</strong></td><td>Bis zu 3 GPS-Regeln — an Standort X → Sicherheitsmodus Y</td></tr>
     <tr><td><strong>Private Zone</strong></td><td>Verschlüsselter lokaler Speicher — max. 100 MB</td></tr>
   </table>
@@ -440,15 +385,8 @@
 
 <div class="guide-section">
   <div class="section-num">Abschnitt 9</div>
-  <h2 class="section-heading section-anchor" id="de-workflow">▶ Alltäglicher Workflow</h2>
-  <ol class="step-list">
-    <li><strong>Einmalig:</strong> Accessibility Service aktivieren (Einstellungen → Barrierefreiheit → Chameleon)</li>
-    <li><strong>Einmalig pro Kontakt:</strong> Schlüsselaustausch (Keys-Screen → gegenseitig QR scannen)</li>
-    <li><strong>Täglich:</strong> WhatsApp (oder andere App) öffnen — Chameleon läuft im Hintergrund</li>
-    <li><strong>Normal schreiben</strong> — Chameleon verschlüsselt den Text automatisch</li>
-    <li><strong>Eingehende Nachrichten</strong> von Chameleon-Kontakten werden automatisch entschlüsselt</li>
-    <li><strong>Optional (Pro):</strong> Regeln anlegen — z.B. im Büro → automatisch HIGH-Sicherheitsmodus</li>
-  </ol>
+  <h2 class="section-heading section-anchor" id="de-workflow">▶ Alpha-Workflow</h2>
+  <p>Nur lokale Speicher-, Schlüssel-, Regel-, Geofencing- und Decoy-Komponenten evaluieren. Overlay und Messenger bleiben deaktiviert; eine sensible Android-Berechtigung ist nicht erforderlich.</p>
 </div>
 
 <div class="guide-section">
@@ -456,7 +394,7 @@
   <h2 class="section-heading section-anchor" id="de-tiers">📊 Tier-Vergleich</h2>
   <table>
     <tr><th>Feature</th><th><span class="tier-badge free">FREE</span></th><th><span class="tier-badge pro">PRO</span></th><th><span class="tier-badge elite">ELITE</span></th></tr>
-    <tr><td>Overlay Encryption</td><td>✅</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Overlay Encryption</td><td>Deaktiviert</td><td>Deaktiviert</td><td>Deaktiviert</td></tr>
     <tr><td>Manuelles Geofencing</td><td>3 Regeln</td><td>∞</td><td>∞</td></tr>
     <tr><td>Private Zone</td><td>100 MB</td><td>∞</td><td>∞</td></tr>
     <tr><td>Automatisches Geofencing</td><td>—</td><td>✅</td><td>✅</td></tr>
@@ -465,7 +403,7 @@
     <tr><td>Multi-Decoy-Profile</td><td>—</td><td>—</td><td>✅</td></tr>
     <tr><td>Bedrohungserkennung</td><td>—</td><td>—</td><td>✅</td></tr>
     <tr><td>Zero Telemetry</td><td>—</td><td>—</td><td>✅</td></tr>
-    <tr><td>Web-IFR-Rabatt</td><td>—</td><td>2.000 IFR für 50% Checkout</td><td>6.000 IFR für 50% Checkout</td></tr>
+    <tr><td>Bezahlzugang</td><td>—</td><td>Launch-gated</td><td>Launch-gated</td></tr>
   </table>
 </div>
 

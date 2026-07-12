@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -38,8 +39,6 @@ import com.stealthx.features.geofencing.screen.GeofencingScreen
 import com.stealthx.features.geofencing.screen.GeofencingViewModel
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.stealthx.features.messenger.screen.ConversationScreen
-import com.stealthx.features.messenger.screen.MessengerScreen
 import com.stealthx.features.overlay.screen.OverlayScreen
 import com.stealthx.features.privatezone.screen.PrivateZoneScreen
 import com.stealthx.features.privatezone.screen.PrivateZoneViewModel
@@ -68,8 +67,6 @@ fun StealthXNavGraph(navController: NavHostController) {
     val settingsVm: SettingsViewModel = hiltViewModel()
     val setupVm: SetupViewModel = hiltViewModel()
     val currentTier by dashboardVm.currentTier.collectAsState()
-    val overlayEnabled by settingsVm.overlayEnabled.collectAsState()
-    val overlayWhitelist by settingsVm.overlayWhitelist.collectAsState()
 
     val startDestination = remember {
         when {
@@ -93,28 +90,17 @@ fun StealthXNavGraph(navController: NavHostController) {
         composable(Screen.Overlay.route) {
             FeatureScaffold(title = "Overlay", onBack = { navController.popBackStack() }) { modifier ->
                 OverlayScreen(
-                    overlayEnabled = overlayEnabled,
-                    overlayWhitelistPackages = overlayWhitelist,
-                    onOverlayEnabledChange = settingsVm::setOverlayEnabled,
-                    onPackageEnabledChange = settingsVm::setOverlayPackageEnabled,
                     modifier = modifier
                 )
             }
         }
 
         composable(Screen.Messenger.route) {
-            TierGatedContent(
-                currentTier = currentTier,
-                requiredTier = AccessTier.PRO,
-                featureName = "Encrypted Messenger",
-                onUnlockClicked = { navController.navigate(Screen.Upgrade.route) }
-            ) {
-                MessengerScreen(
-                    onBack = { navController.popBackStack() },
-                    onOpenConversation = { contactId ->
-                        navController.navigate("conversation/$contactId")
-                    },
-                    onAddContact = { navController.navigate(Screen.AddContact.route) }
+            FeatureScaffold(title = "Messenger", onBack = { navController.popBackStack() }) { modifier ->
+                Text(
+                    "Cross-device messaging is unavailable in this release.",
+                    modifier = modifier.padding(24.dp),
+                    color = StealthXColors.OnSurface
                 )
             }
         }
@@ -123,9 +109,13 @@ fun StealthXNavGraph(navController: NavHostController) {
             route = Screen.Conversation.ROUTE,
             arguments = listOf(navArgument("contactId") { type = NavType.StringType })
         ) {
-            ConversationScreen(
-                onBack = { navController.popBackStack() }
-            )
+            FeatureScaffold(title = "Messenger", onBack = { navController.popBackStack() }) { modifier ->
+                Text(
+                    "Cross-device messaging is unavailable in this release.",
+                    modifier = modifier.padding(24.dp),
+                    color = StealthXColors.OnSurface
+                )
+            }
         }
 
         composable(Screen.PrivateZone.route) {
@@ -246,7 +236,6 @@ fun StealthXNavGraph(navController: NavHostController) {
             SettingsScreen(
                 onBack = { navController.popBackStack() },
                 onNavigateToUpgrade = { navController.navigate(Screen.Upgrade.route) },
-                onNavigateToOverlay = { navController.navigate(Screen.Overlay.route) },
                 onNavigateToPrivateZone = { navController.navigate(Screen.PrivateZone.route) },
                 onNavigateToGeofencing = { navController.navigate(Screen.Geofencing.route) },
                 onNavigateToDecoy = { navController.navigate(Screen.Decoy.route) },

@@ -36,12 +36,14 @@ In a world where every app you open, every permission you grant, every location 
 
 We built something different.
 
-Chameleon is your personal privacy layer. It doesn't just protect you — it adapts with you.
+Chameleon is an Android privacy research client under active development.
 
 Automated rules that respond to your environment.
 Geofenced zones that lock down your most sensitive data.
 Decoy profiles that shield your real identity.
-SecureChat-compatible privacy controls for encrypted workflows.
+Local encrypted storage and privacy controls for evaluation.
+
+Cross-device overlay and messenger functions are disabled in this alpha until interoperability is verified.
 
 No telemetry. No analytics. No compromise.
 

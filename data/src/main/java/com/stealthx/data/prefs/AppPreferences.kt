@@ -49,6 +49,7 @@ class AppPreferences @Inject constructor(
         private const val KEY_ONBOARDING_DONE = "onboarding_done"
         private const val KEY_SECURITY_LEVEL_DEFAULT = "security_level_default"
         private const val KEY_OVERLAY_ENABLED = "overlay_enabled"
+        private const val KEY_OVERLAY_DISABLED_MIGRATION = "overlay_disabled_alpha_migration"
         private const val KEY_OVERLAY_WHITELIST = "overlay_whitelist"
         private const val KEY_BACKGROUND_LISTENER_ENABLED = "background_listener_enabled"
         private const val KEY_PRIVATE_ZONE_KEY = "private_zone_key"
@@ -69,16 +70,28 @@ class AppPreferences @Inject constructor(
         )
     }
 
+    init {
+        if (!prefs.getBoolean(KEY_OVERLAY_DISABLED_MIGRATION, false)) {
+            prefs.edit()
+                .putBoolean(KEY_OVERLAY_ENABLED, false)
+                .putBoolean(KEY_OVERLAY_DISABLED_MIGRATION, true)
+                .apply()
+        }
+    }
+
     var isOnboardingDone: Boolean
         get() = prefs.getBoolean(KEY_ONBOARDING_DONE, false)
         set(value) = prefs.edit().putBoolean(KEY_ONBOARDING_DONE, value).apply()
+
+    fun markOnboardingDone(): Boolean =
+        prefs.edit().putBoolean(KEY_ONBOARDING_DONE, true).commit()
 
     var defaultSecurityLevel: String
         get() = prefs.getString(KEY_SECURITY_LEVEL_DEFAULT, "PROTECTED") ?: "PROTECTED"
         set(value) = prefs.edit().putString(KEY_SECURITY_LEVEL_DEFAULT, value).apply()
 
     var overlayEnabled: Boolean
-        get() = prefs.getBoolean(KEY_OVERLAY_ENABLED, true)
+        get() = prefs.getBoolean(KEY_OVERLAY_ENABLED, false)
         set(value) = prefs.edit().putBoolean(KEY_OVERLAY_ENABLED, value).apply()
 
     var overlayWhitelistPackages: Set<String>
