@@ -1,5 +1,16 @@
 # BRIDGE — chameleon
 
+## 2026-07-12 [Codex] — Full software readiness audit
+
+- Chameleon is **not sell-ready**. Cross-device overlay and messenger were found non-interoperable and are now fail-closed in the Android client and public sales surfaces.
+- Overlay blockers: no authenticated shared peer key/recipient selection, device-local random overlay key, no verified security-level activation path, and no physical loop-free AccessibilityService test matrix.
+- Messenger blockers: incompatible initiator/receiver session derivation, transports not started, peer identity/discovery mismatches, and no two-device repository/transport integration test.
+- Removed the client-side Google Play paid-tier persistence path and Billing dependency. Paid access remains server-signed and device-bound; a Gradle guard rejects future client-side paid unlock callbacks.
+- Existing automatic signed entitlement refresh is implemented at startup and every seven days; the older TODO claiming it was missing was stale.
+- Public checkout/wallet actions and direct product claims are launch-gated. Current source-available license does not authorize F-Droid distribution, so public F-Droid metadata was removed.
+- Verification passed: 334 tests, 0 failures/errors, 24 skipped; payment/IFR source guards, Detekt, Android Lint and debug APK build all green.
+- No secret, customer/tax data, payment, entitlement activation, network provider request, AADE request, deployment, or real purchase was performed.
+
 ## Public Payment Data Boundary
 
 - This repository is public. Operational payment/Etimologio information is stored only in private `NeaBouli/vlabs` at `docs/finance-integrations/projects/chameleon.md`.

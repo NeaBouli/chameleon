@@ -1,11 +1,19 @@
 # Project State
 
+## 2026-07-12 — Full client/product audit: not sell-ready
+
+- Cross-device overlay and messenger are disabled in UI, navigation, preferences and repository send/receive paths because current implementations cannot interoperate safely between devices.
+- Google Play Billing client unlock was removed. Local purchase callbacks can no longer persist PRO/ELITE; paid access remains restricted to signed device-bound server entitlements.
+- Automatic entitlement refresh already exists at app start and on a seven-day WorkManager schedule. The previous state entry listing renewal as missing was outdated.
+- Public checkout/wallet controls are disabled and claims were corrected. F-Droid metadata was removed because the current source-available license does not permit third-party build/distribution.
+- Release remains blocked on protocol/session repair, physical two-device tests, runtime entitlement key/E2E, license decision, accountant/provider mapping and controlled launch approval.
+
 ## 2026-07-11 — Signierter Fiat-Entitlement-Consumer implementiert
 
 - Chameleon verifiziert bezahlte PRO/ELITE-Entitlements mit Ed25519 vor jedem Repository-/TierGate-Update.
 - Server-Revoke verhindert Neuausstellung nach Vollrefund/Dispute; das signierte Ablaufdatum begrenzt bestehenden Offline-Zugriff.
 - Teilrefund fuehrt bewusst zu Review und nicht zu automatischem Rechteentzug.
-- Noch nicht sell ready: sichere automatische Lease-Erneuerung, Runtime-Keypair/Public-Key-Build, Stripe-Testmode E2E, Accountant/Provider und Gio-Launchfreigabe fehlen.
+- Noch nicht sell ready: Runtime-Keypair/Public-Key-Build, Stripe-Testmode E2E, Accountant/Provider und Gio-Launchfreigabe fehlen. Automatische Lease-Erneuerung ist implementiert.
 
 ## 2026-07-11 — Chameleon Payment-/Etimologio-Integration
 

@@ -119,7 +119,7 @@
 <div class="guide-header">
   <div class="guide-label">Wiki · User Manual</div>
   <h1 class="guide-title">Chameleon <span>User Guide</span></h1>
-  <p class="guide-sub">Chameleon is not a messenger — it's a privacy overlay that encrypts text automatically in any app. This guide covers setup, key exchange, overlay configuration, geofencing, and all settings.</p>
+  <p class="guide-sub">Chameleon is an Android privacy research client. Cross-device overlay and messenger capabilities are disabled in the current alpha pending interoperability tests.</p>
 </div>
 <div class="guide-body">
 
@@ -142,7 +142,7 @@
 <div class="guide-section">
   <div class="section-num">Section 1</div>
   <h2 class="section-heading section-anchor" id="en-what">🦎 What is Chameleon?</h2>
-  <p><strong>Chameleon is not a standalone messenger.</strong> It is a <strong>privacy overlay</strong> that sits on top of any other app — WhatsApp, Telegram, SMS, Signal, browser — and automatically encrypts and decrypts text in real time.</p>
+  <p><strong>Chameleon is not a standalone messenger.</strong> The planned cross-device overlay is unavailable in the current alpha until authenticated pairing and two-device tests pass.</p>
   <ol style="padding-left:1.5rem;color:var(--text-dim);font-size:14px;margin-bottom:1rem">
     <li style="margin-bottom:0.5rem">You type a message in WhatsApp (or any other app)</li>
     <li style="margin-bottom:0.5rem">Chameleon intercepts and encrypts it with XChaCha20-Poly1305</li>
@@ -189,7 +189,7 @@
   <a id="overlay" aria-hidden="true" tabindex="-1" style="display:block;height:0;overflow:hidden"></a>
   <div class="section-num">Section 4</div>
   <h2 class="section-heading section-anchor" id="en-overlay">🛡 Overlay Screen</h2>
-  <p>Configure which apps Chameleon monitors. Shows Accessibility Service status, app whitelist/blacklist. Overlay encryption (XChaCha20) is always on in all tiers.</p>
+  <p>The overlay controls are disabled in this alpha. Do not enable the Accessibility Service for cross-device protection until a verified release is announced.</p>
 </div>
 
 <div class="guide-section">
@@ -206,7 +206,7 @@
     <li>Both open Chameleon → Keys screen</li>
     <li>You show your QR → contact scans it</li>
     <li>Contact shows their QR → you scan it</li>
-    <li>Done. Chameleon auto-encrypts/decrypts between you in any app.</li>
+    <li>Contact keys are stored locally. This does not yet activate the disabled cross-device overlay.</li>
   </ol>
   <div class="tip-box">Do the key exchange in person or via a trusted channel for maximum security.</div>
 </div>
@@ -214,7 +214,7 @@
 <div class="guide-section">
   <div class="section-num">Section 6</div>
   <h2 class="section-heading section-anchor" id="en-messenger">💬 Messenger</h2>
-  <p>Chameleon's messenger entry point opens the StealthX direct-channel flow for private contact communication. SecureChat remains the dedicated messaging product; Chameleon focuses on overlay encryption, context rules and private zones.</p>
+  <p>Chameleon's messenger is disabled until session establishment, peer identity and transport interoperability pass two-device tests. Use SecureChat for messaging.</p>
 </div>
 
 <div class="guide-section">
@@ -301,7 +301,7 @@
 <div class="guide-header">
   <div class="guide-label">Wiki · Betriebsanleitung</div>
   <h1 class="guide-title">Chameleon <span>Betriebsanleitung</span></h1>
-  <p class="guide-sub">Chameleon ist kein Messenger — es ist ein Overlay das Text automatisch in jeder anderen App verschlüsselt. Diese Anleitung erklärt Einrichtung, Schlüsselaustausch, Overlay-Konfiguration, Geofencing und alle Einstellungen.</p>
+  <p class="guide-sub">Chameleon ist ein Android-Privacy-Forschungsclient. Cross-Device-Overlay und Messenger sind in dieser Alpha bis zu Interoperabilitätstests deaktiviert.</p>
 </div>
 <div class="guide-body">
 
@@ -324,7 +324,7 @@
 <div class="guide-section">
   <div class="section-num">Abschnitt 1</div>
   <h2 class="section-heading section-anchor" id="de-what">🦎 Was ist Chameleon?</h2>
-  <p><strong>Chameleon ist kein eigenständiger Messenger.</strong> Es ist ein <strong>Overlay</strong> das über jede andere App gelegt wird — WhatsApp, Telegram, SMS, Signal, Browser — und Text dort <strong>automatisch in Echtzeit verschlüsselt und entschlüsselt</strong>.</p>
+  <p><strong>Chameleon ist kein eigenständiger Messenger.</strong> Das geplante Cross-Device-Overlay ist in dieser Alpha deaktiviert, bis authentifizierte Kopplung und Zwei-Geräte-Tests bestanden sind.</p>
   <ol style="padding-left:1.5rem;color:var(--text-dim);font-size:14px;margin-bottom:1rem">
     <li style="margin-bottom:0.5rem">Du schreibst in WhatsApp einen Text</li>
     <li style="margin-bottom:0.5rem">Chameleon fängt ihn ab und verschlüsselt ihn mit XChaCha20-Poly1305</li>
@@ -370,7 +370,7 @@
 <div class="guide-section">
   <div class="section-num">Abschnitt 4</div>
   <h2 class="section-heading section-anchor" id="de-overlay">🛡 Overlay-Screen</h2>
-  <p>Konfiguration welche Apps Chameleon überwacht. Zeigt Accessibility-Service-Status, App-Whitelist/Blacklist. Overlay-Verschlüsselung (XChaCha20) ist in allen Tiers immer an.</p>
+  <p>Die Overlay-Steuerung ist in dieser Alpha deaktiviert. Den Accessibility Service nicht als Cross-Device-Schutz verwenden, bis ein verifiziertes Release angekündigt ist.</p>
 </div>
 
 <div class="guide-section">
@@ -387,7 +387,7 @@
     <li>Beide öffnen Chameleon → Keys-Screen</li>
     <li>Du zeigst deinen QR → Kontakt scannt ihn</li>
     <li>Kontakt zeigt seinen QR → du scannst ihn</li>
-    <li>Fertig. Chameleon verschlüsselt automatisch zwischen euch in jeder App.</li>
+    <li>Die Kontaktschlüssel sind lokal gespeichert. Das deaktivierte Cross-Device-Overlay wird dadurch noch nicht aktiviert.</li>
   </ol>
   <div class="tip-box">Schlüsselaustausch persönlich oder über einen vertrauenswürdigen Kanal durchführen.</div>
 </div>
@@ -395,7 +395,7 @@
 <div class="guide-section">
   <div class="section-num">Abschnitt 6</div>
   <h2 class="section-heading section-anchor" id="de-messenger">💬 Messenger</h2>
-  <p>Der Messenger-Einstieg öffnet den StealthX-Direktkanal für private Kontaktkommunikation. SecureChat bleibt das dedizierte Messaging-Produkt; Chameleon konzentriert sich auf Overlay-Verschlüsselung, Kontextregeln und Private Zones.</p>
+  <p>Der Chameleon-Messenger ist deaktiviert, bis Session-Aufbau, Peer-Identität und Transport-Interoperabilität auf zwei Geräten verifiziert sind. Für Nachrichten SecureChat verwenden.</p>
 </div>
 
 <div class="guide-section">

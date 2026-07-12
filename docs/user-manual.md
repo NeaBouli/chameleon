@@ -133,7 +133,7 @@ After Stripe checkout, Chameleon unlocks through the normal activation-code path
 Controls the core text encryption feature.
 
 **Overlay Active**
-Master toggle for the entire overlay encryption system. When off, Chameleon does not intercept any text in any app. Default: On.
+The overlay master toggle is disabled in the current alpha. Default: Off. Cross-device pairing and physical-device interoperability must be verified before release.
 
 **Whitelisted Apps**
 
@@ -144,7 +144,7 @@ Pre-configured apps (each with an on/off toggle):
 - Discord
 - Gmail
 
-Toggle any app on to enable text interception in that app. Toggle off to disable it.
+Per-app interception controls are disabled in the current alpha.
 
 **Custom Apps**
 To add any other app, enter its package name in the input field (e.g., `com.custom.messenger`) and tap **Add**. The package name must contain at least one dot. All added apps appear in the list with their own toggle.

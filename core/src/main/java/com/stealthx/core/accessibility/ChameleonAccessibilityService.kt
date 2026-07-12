@@ -64,6 +64,7 @@ class ChameleonAccessibilityService : AccessibilityService() {
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         event ?: return
+        if (!appPreferences.overlayEnabled) return
         val packageName = event.packageName?.toString() ?: return
         if (!isPackageWhitelisted(packageName)) return
 

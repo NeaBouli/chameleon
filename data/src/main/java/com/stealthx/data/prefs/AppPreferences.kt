@@ -78,7 +78,7 @@ class AppPreferences @Inject constructor(
         set(value) = prefs.edit().putString(KEY_SECURITY_LEVEL_DEFAULT, value).apply()
 
     var overlayEnabled: Boolean
-        get() = prefs.getBoolean(KEY_OVERLAY_ENABLED, true)
+        get() = prefs.getBoolean(KEY_OVERLAY_ENABLED, false)
         set(value) = prefs.edit().putBoolean(KEY_OVERLAY_ENABLED, value).apply()
 
     var overlayWhitelistPackages: Set<String>

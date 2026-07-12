@@ -16,8 +16,7 @@
 - [ ] APK size within acceptable range (<25 MB)
 
 ### Distribution
-- [ ] F-Droid metadata submitted (fdroid/metadata/com.stealthx.chameleon.yml)
-- [ ] F-Droid build reproducibility verified
+- [ ] License reconciled before considering F-Droid distribution
 - [ ] Play Store listing prepared (screenshots, description)
 - [ ] Play Store Data Safety Form completed
 - [ ] Privacy policy published at stealthx.tech/chameleon/privacy
@@ -36,7 +35,6 @@
 - [ ] Issue templates configured
 
 ### Post-Release
-- [ ] Monitor F-Droid build pipeline
 - [ ] Monitor Play Store review
 - [ ] Announce on StealthX channels
 - [ ] Update IFR ecosystem documentation

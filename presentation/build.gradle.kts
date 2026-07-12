@@ -45,7 +45,6 @@ dependencies {
     implementation(libs.androidx.biometric)
     implementation(libs.zxing.android)
     implementation(libs.okhttp)
-    implementation(libs.play.billing)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     debugImplementation(libs.compose.ui.tooling)

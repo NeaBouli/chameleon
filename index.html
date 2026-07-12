@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chameleon — Privacy OS · StealthX Platform</title>
-<meta name="description" content="Chameleon: context-aware privacy overlay for Android. Encrypts automatically based on location, app, and context. Part of the SecureChat ecosystem.">
+<meta name="description" content="Chameleon Android privacy research client. Cross-device overlay and messenger capabilities are disabled in the current alpha pending interoperability verification.">
 <meta name="keywords" content="privacy OS, context-aware encryption, overlay encryption, Android privacy, XChaCha20, geofencing, decoy profile, SecureChat, IFR Token, source-available">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
 <meta name="author" content="NeaBouli / StealthX Platform">
@@ -22,16 +22,16 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Chameleon — StealthX Platform">
 <meta property="og:title" content="Chameleon — Privacy OS · StealthX Platform">
-<meta property="og:description" content="Context-aware privacy overlay for Android. Encrypts automatically based on location, app, and context. Part of the SecureChat ecosystem.">
+<meta property="og:description" content="Android privacy research client. Cross-device capabilities are disabled pending interoperability verification.">
 <meta property="og:url" content="https://chameleon.stealthx.tech/">
 <meta property="og:image" content="https://chameleon.stealthx.tech/chameleon-logo.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Chameleon — Privacy OS · StealthX Platform">
-<meta name="twitter:description" content="Context-aware privacy overlay for Android. Encrypts automatically based on location, app, and context.">
+<meta name="twitter:description" content="Android privacy research client with cross-device capabilities disabled pending verification.">
 <meta name="twitter:image" content="https://chameleon.stealthx.tech/chameleon-logo.png">
 <link rel="alternate" hreflang="en" href="https://chameleon.stealthx.tech/">
 <link rel="alternate" hreflang="x-default" href="https://chameleon.stealthx.tech/">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Chameleon","applicationCategory":"SecurityApplication","operatingSystem":"Android 8.0+","description":"Context-aware privacy overlay for Android. Encrypts automatically based on location, app, and context. Part of the SecureChat ecosystem.","url":"https://chameleon.stealthx.tech/","author":{"@type":"Organization","name":"Vendetta Labs","url":"https://stealthx.tech"},"license":"https://github.com/NeaBouli/chameleon/blob/main/LICENSE"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Chameleon","applicationCategory":"SecurityApplication","operatingSystem":"Android 8.0+","description":"Android privacy research client. Cross-device overlay and messenger capabilities are disabled in the current alpha pending interoperability verification.","url":"https://chameleon.stealthx.tech/","author":{"@type":"Organization","name":"Vendetta Labs","url":"https://stealthx.tech"},"license":"https://github.com/NeaBouli/chameleon/blob/main/LICENSE"}</script>
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" href="chameleon-logo.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -557,7 +557,7 @@
     <div class="feature-card">
       <div class="feature-icon">&#9881;&#65039;</div>
       <h3>Tell it your rules. Once.</h3>
-      <p>Open the app and set simple rules. &ldquo;When I'm on public WiFi &rarr; protect everything.&rdquo; &ldquo;When I open my messages &rarr; hide the content.&rdquo; &ldquo;When I leave home &rarr; switch on full protection.&rdquo; That's it. You're done.</p>
+      <p>Local rules, encrypted storage, geofencing, and decoy components can be evaluated in the alpha. Cross-device message protection remains disabled.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">&#128065;&#65039;</div>
@@ -595,11 +595,11 @@
   <div id="faq" class="faq-panel" aria-label="Chameleon FAQ">
     <article class="faq-item">
       <h3>Does it spy on me?</h3>
-      <p>The app reads selected screen text only on your device so it can encrypt or decrypt it locally. Nothing private is sent to Vendetta Labs, and the source is available for review.</p>
+      <p>The disabled overlay path is designed for on-device text processing. Its data-flow and supported-app behavior still require physical-device verification before release.</p>
     </article>
     <article class="faq-item">
       <h3>Does it use a lot of battery?</h3>
-      <p>No. Chameleon is designed as a lightweight background privacy layer. In normal use it adds less than 3% battery use per day.</p>
+      <p>Battery impact has not yet been validated across the supported-device matrix.</p>
     </article>
     <article class="faq-item">
       <h3>Do I need this if I already have SecureChat?</h3>
@@ -613,24 +613,24 @@
 <!-- FEATURES -->
 <section id="features">
   <div class="section-label">Capabilities</div>
-  <h2 class="section-title">Context-aware privacy, zero effort.</h2>
-  <p class="section-sub">Chameleon adapts your privacy level automatically. No manual toggles. No forgotten settings. Just protection that follows you.</p>
+  <h2 class="section-title">Privacy components under verification.</h2>
+  <p class="section-sub">The alpha exposes local components for testing while cross-device protection stays disabled.</p>
 
   <div class="feature-grid">
     <div class="feature-card">
       <div class="feature-icon">🔒</div>
       <h3>Overlay Encryption</h3>
-      <p>Encrypts text in ANY app via Android AccessibilityService. Type normally — Chameleon encrypts before the text leaves your keyboard. Works with every messenger, email, and note app.</p>
+      <p>Cross-device overlay research for supported Android apps. This capability is disabled in the current alpha until authenticated pairing and physical two-device tests pass.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">⚙️</div>
       <h3>Rule-Based Automation</h3>
-      <p>Define encryption rules by WiFi network, GPS location, or active app. Connect to public WiFi? Encryption activates. Open a specific app? Privacy mode engages. Zero manual steps.</p>
+      <p>Define local rules by WiFi network, GPS location, or active app. Rule-to-overlay activation remains unavailable until the overlay protocol is verified.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🗄️</div>
       <h3>Private Zone</h3>
-      <p>Encrypted file storage powered by XChaCha20-Poly1305. Photos, documents, notes — everything locked behind military-grade encryption. Accessible only with your master key.</p>
+      <p>Local file storage uses XChaCha20-Poly1305 and remains subject to the external security review required before release.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🎭</div>
@@ -640,12 +640,12 @@
     <div class="feature-card">
       <div class="feature-icon">📍</div>
       <h3>Geofencing</h3>
-      <p>Privacy level changes automatically based on your physical location. At home? Relaxed mode. At work or traveling? Maximum encryption. Define zones once, forget forever.</p>
+      <p>Geofence rules can change local state. Cross-device encryption effects remain disabled pending end-to-end verification.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🔑</div>
       <h3>IFR Holder Discount</h3>
-      <p>Verify IFR in the browser for 50% off Chameleon checkout. The Android app stays wallet-free and unlocks through normal activation.</p>
+      <p>Paid access and discounts are launch-gated until product and entitlement verification is complete.</p>
     </div>
   </div>
 </section>
@@ -672,8 +672,8 @@
       <h3>With Chameleon</h3>
       <ul>
         <li>Notifications encrypted by overlay — no previews leak</li>
-        <li>App content hidden automatically when switching</li>
-        <li>Automatic encryption rules — set once, forget forever</li>
+        <li>App-content protection remains under verification</li>
+        <li>Cross-device encryption rules are disabled in this alpha</li>
         <li>Decoy profile activates with wrong PIN — real data invisible</li>
       </ul>
     </div>
@@ -784,14 +784,14 @@
         <h3>Verify for Stripe discount</h3>
         <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;">Same backend eligibility as SecureChat and SecureCall. The Android app receives only the activation code after Stripe checkout.</p>
         <div class="ifr-wallet-actions">
-          <button id="connectIfrWallet" class="btn btn-primary" type="button">Connect Wallet</button>
-          <button id="disconnectIfrWallet" class="btn btn-secondary" type="button">Disconnect Wallet</button>
+          <button id="connectIfrWallet" class="btn btn-disabled" type="button" disabled>Verification launch-gated</button>
+          <button id="disconnectIfrWallet" class="btn btn-disabled" type="button" disabled>Unavailable</button>
         </div>
         <input id="ifrWalletAddress" type="text" readonly placeholder="Connected wallet address" style="width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,.28);background:#f8fafc;color:#07111f;margin-bottom:10px;font-weight:700;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">
         <div class="ifr-actions">
-          <button class="btn btn-primary" type="button" data-checkout-tier="chameleon_pro_lifetime" data-ifr-discount="true">Pro 50% Checkout</button>
-          <button class="btn btn-primary" type="button" data-checkout-tier="chameleon_elite_lifetime" data-ifr-discount="true" style="background:var(--gold);border-color:var(--gold);color:#000;">Elite 50% Checkout</button>
-          <button class="btn btn-secondary" type="button" data-checkout-tier="stealthx_suite_lifetime" data-ifr-discount="true" style="color:var(--gold);border-color:var(--gold);">Suite 50% Checkout</button>
+          <button class="btn btn-disabled" type="button" disabled>Pro launch-gated</button>
+          <button class="btn btn-disabled" type="button" disabled>Elite launch-gated</button>
+          <button class="btn btn-disabled" type="button" disabled>Suite launch-gated</button>
         </div>
         <p id="ifrDiscountStatus" style="font-size:13px;color:var(--text);font-weight:700;text-align:center;margin-top:10px;line-height:1.45;">Connect MetaMask, Phantom, or any WalletConnect-compatible Ethereum wallet. The backend applies the discount only after verifying wallet ownership and IFR balance.</p>
       </div>
@@ -820,7 +820,7 @@
         <li>Early adopter pricing</li>
       </ul>
       <br>
-      <button type="button" data-checkout-tier="chameleon_pro_lifetime" style="display:block;width:100%;text-align:center;padding:10px;border:1px solid var(--green);border-radius:8px;background:var(--green);color:#000;font-weight:700;font-size:14px;cursor:pointer;">Buy Pro Lifetime</button>
+      <button type="button" disabled class="btn btn-disabled" style="display:block;width:100%;">Launch-gated</button>
     </div>
     <div class="tier-card featured">
       <div style="font-size:11px;font-weight:700;letter-spacing:1px;background:var(--gold);color:#000;display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:0.8rem;">LIMITED — 100 Licenses at &euro;19</div>
@@ -834,7 +834,7 @@
         <li>Early adopter pricing</li>
       </ul>
       <br>
-      <button type="button" data-checkout-tier="chameleon_elite_lifetime" style="display:block;width:100%;text-align:center;padding:10px;border:1px solid var(--gold);border-radius:8px;background:var(--gold);color:#000;font-weight:700;font-size:14px;cursor:pointer;">Buy Elite Lifetime</button>
+      <button type="button" disabled class="btn btn-disabled" style="display:block;width:100%;">Launch-gated</button>
     </div>
   </div>
 
@@ -842,7 +842,7 @@
     <h3 style="font-size:1.3rem;color:var(--gold);margin-bottom:0.5rem;">StealthX Suite &mdash; &euro;54 one-time</h3>
     <p style="color:var(--text-dim);font-size:14px;margin-bottom:1rem;">SecureChat Elite + Chameleon Elite + SecureCall Premium. Everything. Forever.</p>
     <p style="color:var(--muted);font-size:13px;margin-bottom:1.5rem;">IFR holders can verify above for 50% off Suite checkout.</p>
-    <button type="button" data-checkout-tier="stealthx_suite_lifetime" style="display:inline-block;padding:10px 24px;border:1px solid var(--gold);border-radius:8px;background:var(--gold);color:#000;font-weight:700;font-size:14px;cursor:pointer;">Buy Suite Lifetime</button>
+    <button type="button" disabled class="btn btn-disabled">Launch-gated</button>
   </div>
 
   <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:1.5rem;">Wallet verification happens only on the website. Chameleon stays free of wallet code and unlocks through activation codes. All lifetime prices limited to 100 licenses.</p>
@@ -854,7 +854,7 @@
 <section id="download" style="text-align:center;">
   <div class="section-label">Deploy</div>
   <h2 class="section-title">Get Chameleon.</h2>
-  <p class="section-sub" style="margin:0 auto 2rem;">Chameleon Android APK v0.1.6-alpha is available on GitHub Releases. One APK covers Free, Pro, and Elite; paid plans unlock with an activation code after checkout.</p>
+  <p class="section-sub" style="margin:0 auto 2rem;">Chameleon Android APK v0.1.6-alpha is available for evaluation. New paid access and cross-device capabilities are launch-gated.</p>
 
   <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:2rem;">
     <a href="https://github.com/NeaBouli/chameleon/releases/download/v0.1.6-alpha-chameleon/Chameleon-LATEST.apk" class="btn btn-primary">Download APK (v0.1.6-alpha)</a>
@@ -911,6 +911,7 @@
 
 <script>
 (function(){
+	  return;
 	  var API='https://api.stealthx.tech';
   var WC_PROJECT_ID='32f56abaa4b1d7f59fb1571c0c0a551f';
   var WC_ESM_URL='https://esm.sh/@walletconnect/ethereum-provider@2.17.3';
