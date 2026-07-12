@@ -671,7 +671,7 @@
     <div class="integration-col with">
       <h3>With Chameleon</h3>
       <ul>
-        <li>Notifications encrypted by overlay — no previews leak</li>
+        <li>Notification protection remains disabled and under verification</li>
         <li>App-content protection remains under verification</li>
         <li>Cross-device encryption rules are disabled in this alpha</li>
         <li>Decoy profile activates with wrong PIN — real data invisible</li>
@@ -708,13 +708,13 @@
 <!-- IFR -->
 <section id="ifr">
   <div class="section-label">Inferno Integration</div>
-  <h2 class="section-title">IFR Holder Discount.</h2>
-  <p class="section-sub">Buy IFR on Uniswap, verify your wallet in the browser, then open Stripe with a 50% discount. No WalletConnect runs inside the Android app.</p>
+  <h2 class="section-title">IFR integration is launch-gated.</h2>
+  <p class="section-sub">No token purchase, wallet verification, discount, or Stripe checkout is available from this site.</p>
 
   <div class="tier-grid">
     <div class="tier-card">
       <div class="tier-name">Free</div>
-      <div class="tier-lock"><span>0 IFR</span> — forever</div>
+      <div class="tier-lock">Alpha evaluation only</div>
       <ul class="tier-features">
         <li>Overlay encryption (basic)</li>
         <li>3 automation rules</li>
@@ -724,7 +724,7 @@
     </div>
     <div class="tier-card featured">
       <div class="tier-name" style="color:var(--green)">Pro</div>
-      <div class="tier-lock">Hold <span>&ge; 2,000 IFR</span> — 50% Pro checkout</div>
+      <div class="tier-lock">Paid access launch-gated</div>
       <ul class="tier-features">
         <li>Everything in Free</li>
         <li>Unlimited automation rules</li>
@@ -736,7 +736,7 @@
     </div>
     <div class="tier-card">
       <div class="tier-name" style="color:var(--gold)">Elite</div>
-      <div class="tier-lock">Hold <span>&ge; 6,000 IFR</span> — 50% Elite checkout</div>
+      <div class="tier-lock">Paid access launch-gated</div>
       <ul class="tier-features">
         <li>Everything in Pro</li>
         <li>Multi-decoy profiles</li>
@@ -751,7 +751,7 @@
         <div>
           <div class="value-badge">Best Value</div>
           <div class="tier-name" style="color:var(--gold)">StealthX Suite</div>
-          <div class="tier-lock">Hold <span>&ge; 6,000 IFR</span> — 50% Suite checkout</div>
+          <div class="tier-lock">Suite checkout launch-gated</div>
         </div>
         <ul class="tier-features">
           <li>SecureCall Premium (lifetime)</li>
@@ -761,7 +761,7 @@
           <li>Everything. One browser verification.</li>
         </ul>
         <div>
-          <a href="https://app.uniswap.org/explore/tokens/ethereum/0x77e99917Eca8539c62F509ED1193ac36580A6e7B" class="btn btn-secondary" style="width:100%;text-align:center;color:var(--gold);border-color:var(--gold);" target="_blank" rel="noopener">Buy $IFR</a>
+          <span class="btn btn-disabled" style="display:block;width:100%;text-align:center;">Unavailable</span>
           <div class="ifr-token-logo"><img src="https://ifrunit.tech/assets/ifr_icon_256.png" alt="IFR token logo" width="96" height="96" loading="lazy"></div>
         </div>
       </div>
@@ -771,29 +771,28 @@
   <div class="ifr-box">
     <div class="ifr-grid">
       <div class="ifr-card">
-        <h3>Buy IFR</h3>
+        <h3>IFR access</h3>
         <ul class="tier-features">
-          <li>Open $IFR on Uniswap</li>
-          <li>Hold at least 2,000 IFR for Pro discount</li>
-          <li>Hold at least 6,000 IFR for Elite or Suite discount</li>
+          <li>Token purchase is unavailable from this site</li>
+          <li>Discount verification is launch-gated</li>
+          <li>Checkout is launch-gated</li>
         </ul>
-        <a href="https://app.uniswap.org/explore/tokens/ethereum/0x77e99917Eca8539c62F509ED1193ac36580A6e7B" class="btn btn-secondary" style="width:100%;text-align:center;" target="_blank" rel="noopener">Buy $IFR on Uniswap</a>
+        <span class="btn btn-disabled" style="display:block;width:100%;text-align:center;">Unavailable</span>
         <div class="ifr-token-logo"><img src="https://ifrunit.tech/assets/ifr_icon_256.png" alt="IFR token logo" width="96" height="96" loading="lazy"></div>
       </div>
       <div class="ifr-card">
-        <h3>Verify for Stripe discount</h3>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;">Same backend eligibility as SecureChat and SecureCall. The Android app receives only the activation code after Stripe checkout.</p>
+        <h3>Verification unavailable</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;">Wallet verification and Stripe checkout are disabled until the controlled launch gates pass.</p>
         <div class="ifr-wallet-actions">
           <button id="connectIfrWallet" class="btn btn-disabled" type="button" disabled>Verification launch-gated</button>
           <button id="disconnectIfrWallet" class="btn btn-disabled" type="button" disabled>Unavailable</button>
         </div>
-        <input id="ifrWalletAddress" type="text" readonly placeholder="Connected wallet address" style="width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,.28);background:#f8fafc;color:#07111f;margin-bottom:10px;font-weight:700;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">
         <div class="ifr-actions">
           <button class="btn btn-disabled" type="button" disabled>Pro launch-gated</button>
           <button class="btn btn-disabled" type="button" disabled>Elite launch-gated</button>
           <button class="btn btn-disabled" type="button" disabled>Suite launch-gated</button>
         </div>
-        <p id="ifrDiscountStatus" style="font-size:13px;color:var(--text);font-weight:700;text-align:center;margin-top:10px;line-height:1.45;">Connect MetaMask, Phantom, or any WalletConnect-compatible Ethereum wallet. The backend applies the discount only after verifying wallet ownership and IFR balance.</p>
+        <p id="ifrDiscountStatus" style="font-size:13px;color:var(--text);font-weight:700;text-align:center;margin-top:10px;line-height:1.45;">Launch-gated. No wallet connection or checkout is active.</p>
       </div>
     </div>
   </div>
@@ -804,15 +803,14 @@
 <!-- LIFETIME PRICING -->
 <section id="lifetime">
   <div class="section-label">Lifetime</div>
-  <h2 class="section-title">Prefer a one-time payment?</h2>
-  <p class="section-sub">No IFR tokens needed. Pay once. Yours forever.</p>
+  <h2 class="section-title">Planned access options.</h2>
+  <p class="section-sub">Prices and availability are not active until launch approval.</p>
 
   <div class="tier-grid">
     <div class="tier-card featured">
-      <div style="font-size:11px;font-weight:700;letter-spacing:1px;background:var(--green);color:#000;display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:0.8rem;">LIMITED — 100 Licenses at &euro;9</div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;background:var(--green);color:#000;display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:0.8rem;">PLANNED</div>
       <div class="tier-name" style="color:var(--green);">Chameleon Pro Lifetime</div>
-      <div style="font-size:2rem;font-weight:900;color:var(--text);margin:0.5rem 0;">&euro;9 <span style="font-size:14px;color:var(--muted);font-weight:400;">one-time</span></div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:1rem;">Price rises with every sale &rarr; max &euro;14.99 at sellout</p>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:1rem;">Price and availability are not active.</p>
       <ul class="tier-features">
         <li>Everything in Pro</li>
         <li>No subscription &mdash; pay once</li>
@@ -823,10 +821,9 @@
       <button type="button" disabled class="btn btn-disabled" style="display:block;width:100%;">Launch-gated</button>
     </div>
     <div class="tier-card featured">
-      <div style="font-size:11px;font-weight:700;letter-spacing:1px;background:var(--gold);color:#000;display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:0.8rem;">LIMITED — 100 Licenses at &euro;19</div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;background:var(--gold);color:#000;display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:0.8rem;">PLANNED</div>
       <div class="tier-name" style="color:var(--gold);">Chameleon Elite Lifetime</div>
-      <div style="font-size:2rem;font-weight:900;color:var(--text);margin:0.5rem 0;">&euro;19 <span style="font-size:14px;color:var(--muted);font-weight:400;">one-time</span></div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:1rem;">Price rises with every sale &rarr; max &euro;23.99 at sellout</p>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:1rem;">Price and availability are not active.</p>
       <ul class="tier-features">
         <li>Everything in Elite</li>
         <li>No subscription &mdash; pay once</li>
@@ -839,13 +836,13 @@
   </div>
 
   <div style="margin-top:2rem;background:rgba(255,184,0,0.05);border:1px solid rgba(255,184,0,0.2);border-radius:12px;padding:2rem;text-align:center;">
-    <h3 style="font-size:1.3rem;color:var(--gold);margin-bottom:0.5rem;">StealthX Suite &mdash; &euro;54 one-time</h3>
+    <h3 style="font-size:1.3rem;color:var(--gold);margin-bottom:0.5rem;">StealthX Suite &mdash; planned</h3>
     <p style="color:var(--text-dim);font-size:14px;margin-bottom:1rem;">SecureChat Elite + Chameleon Elite + SecureCall Premium. Everything. Forever.</p>
-    <p style="color:var(--muted);font-size:13px;margin-bottom:1.5rem;">IFR holders can verify above for 50% off Suite checkout.</p>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:1.5rem;">Suite checkout is launch-gated.</p>
     <button type="button" disabled class="btn btn-disabled">Launch-gated</button>
   </div>
 
-  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:1.5rem;">Wallet verification happens only on the website. Chameleon stays free of wallet code and unlocks through activation codes. All lifetime prices limited to 100 licenses.</p>
+  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:1.5rem;">No wallet verification or paid activation is available from this site.</p>
 </section>
 
 <hr class="divider">
@@ -879,7 +876,7 @@
         <h4>Product</h4>
         <a href="#features">Features</a>
         <a href="#security">Security</a>
-        <a href="https://app.uniswap.org/explore/tokens/ethereum/0x77e99917Eca8539c62F509ED1193ac36580A6e7B" target="_blank" rel="noopener">Buy $IFR</a>
+        <span>IFR access unavailable</span>
         <a href="#download">Download</a>
       </div>
       <div class="footer-col">
@@ -893,7 +890,7 @@
         <a href="https://stealthx.tech">SecureCall</a>
         <a href="https://securechat.stealthx.tech">SecureChat</a>
         <a href="https://chameleon.stealthx.tech">Chameleon</a>
-        <a href="https://app.uniswap.org/explore/tokens/ethereum/0x77e99917Eca8539c62F509ED1193ac36580A6e7B" target="_blank" rel="noopener">Buy $IFR</a>
+        <span>IFR access unavailable</span>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>

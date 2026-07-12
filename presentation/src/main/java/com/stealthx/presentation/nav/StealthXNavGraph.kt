@@ -98,7 +98,7 @@ fun StealthXNavGraph(navController: NavHostController) {
         composable(Screen.Messenger.route) {
             FeatureScaffold(title = "Messenger", onBack = { navController.popBackStack() }) { modifier ->
                 Text(
-                    "Cross-device messaging is unavailable until session establishment and transport identity are verified.",
+                    "Cross-device messaging is unavailable in this release.",
                     modifier = modifier.padding(24.dp),
                     color = StealthXColors.OnSurface
                 )
@@ -236,7 +236,6 @@ fun StealthXNavGraph(navController: NavHostController) {
             SettingsScreen(
                 onBack = { navController.popBackStack() },
                 onNavigateToUpgrade = { navController.navigate(Screen.Upgrade.route) },
-                onNavigateToOverlay = { navController.navigate(Screen.Overlay.route) },
                 onNavigateToPrivateZone = { navController.navigate(Screen.PrivateZone.route) },
                 onNavigateToGeofencing = { navController.navigate(Screen.Geofencing.route) },
                 onNavigateToDecoy = { navController.navigate(Screen.Decoy.route) },

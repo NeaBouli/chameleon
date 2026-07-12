@@ -9,6 +9,7 @@
 - Existing automatic signed entitlement refresh is implemented at startup and every seven days; the older TODO claiming it was missing was stale.
 - Public checkout/wallet actions and direct product claims are launch-gated. Current source-available license does not authorize F-Droid distribution, so public F-Droid metadata was removed.
 - Verification passed: 334 tests, 0 failures/errors, 24 skipped; payment/IFR source guards, Detekt, Android Lint and debug APK build all green.
+- PR review hardening also migrates previously enabled overlays to off, verifies onboarding persistence before navigation, and removes remaining public offer/permission claims; targeted re-verification passed.
 - No secret, customer/tax data, payment, entitlement activation, network provider request, AADE request, deployment, or real purchase was performed.
 
 ## Public Payment Data Boundary

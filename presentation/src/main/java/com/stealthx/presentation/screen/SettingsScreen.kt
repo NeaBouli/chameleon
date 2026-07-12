@@ -77,7 +77,6 @@ import com.stealthx.shared.model.AccessTier
 fun SettingsScreen(
     onBack: () -> Unit,
     onNavigateToUpgrade: () -> Unit,
-    onNavigateToOverlay: () -> Unit,
     onNavigateToPrivateZone: () -> Unit,
     onNavigateToGeofencing: () -> Unit,
     onNavigateToDecoy: () -> Unit,
