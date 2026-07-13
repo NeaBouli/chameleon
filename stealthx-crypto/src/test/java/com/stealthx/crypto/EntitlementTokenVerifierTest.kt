@@ -20,6 +20,21 @@ class EntitlementTokenVerifierTest {
     }
 
     @Test
+    fun `accepts canonical Node server Chameleon token`() {
+        val publicKey = "740mZDWfdYLeK5peW746i9QiLApdp6IoH2KcGrNDtMY"
+        val serverToken = "dj0xCmlzcz1zdGVhbHRoeAphdWQ9Y2hhbWVsZW9uCnN1Yj1zeF90ZXN0X2RldmljZV8xCnRpZXI9RUxJVEUKcHJvZHVjdD1jaGFtZWxlb25fZWxpdGVfbGlmZXRpbWUKaWF0PTE3MjAwMDAwMDAKZXhwPTE3MjI1OTIwMDAKb3JkZXI9OGQzNmQ3MWQ2NTZmNGE5OWIwZjZiMmNlNDEzYjdlNTg.u9vw79BYUIZS3wYKcU6fFknHYz9tiMdWaXQqZCQOlVZhVqOHoTXKq1TbUuFaFJ5URKJyesPKSj0vaeDubkUUDg"
+        val result = EntitlementTokenVerifier.verify(
+            serverToken,
+            publicKey,
+            "chameleon",
+            "sx_test_device_1",
+            1_720_000_010L
+        )
+        assertEquals(AccessTier.ELITE, result.tier)
+        assertEquals("chameleon_elite_lifetime", result.productId)
+    }
+
+    @Test
     fun `SecureChat copied and expired tokens fail closed`() {
         assertThrows(IllegalArgumentException::class.java) {
             EntitlementTokenVerifier.verify(token(product = "securechat_pro_lifetime"), b64(keyPair.first), "chameleon", "sx_device_1", now)

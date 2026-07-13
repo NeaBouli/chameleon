@@ -18,5 +18,6 @@
 - [ ] Source-Available/GPL-Dateikopf-Konflikt rechtlich entscheiden; bis dahin keine F-Droid-Auslieferung.
 - [ ] Private Runtime-Secrets setzen und Stripe-Testmode E2E durchfuehren.
 - [ ] Runtime-Ed25519-Public-Key in Release-Build setzen; Private Key bleibt ausschliesslich auf dem Signaling-Server.
+- [x] Kanonischen Node-Signer-Token als echte Cross-Repo-Kompatibilitaetsregression im Kotlin-Verifier pruefen.
 - [ ] Accountant Mapping sowie Gio Launch-/Deployment-Freigabe; erst danach `Coming Soon` entfernen.
 - [ ] Reviewer nach Handover: Security-/Regression-Review des Entitlement-Verifiers und der `TierGate`-Integration.
