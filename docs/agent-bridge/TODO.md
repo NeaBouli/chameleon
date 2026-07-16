@@ -19,5 +19,6 @@
 - [ ] Private Runtime-Secrets setzen und Stripe-Testmode E2E durchfuehren.
 - [ ] Runtime-Ed25519-Public-Key in Release-Build setzen; Private Key bleibt ausschliesslich auf dem Signaling-Server.
 - [x] Kanonischen Node-Signer-Token als echte Cross-Repo-Kompatibilitaetsregression im Kotlin-Verifier pruefen.
+- [x] Produkt und Tier im Kotlin-Verifier auf die kanonischen Chameleon-Paare fest binden.
 - [ ] Accountant Mapping sowie Gio Launch-/Deployment-Freigabe; erst danach `Coming Soon` entfernen.
 - [ ] Reviewer nach Handover: Security-/Regression-Review des Entitlement-Verifiers und der `TierGate`-Integration.

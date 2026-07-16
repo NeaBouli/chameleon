@@ -1,5 +1,10 @@
 # BRIDGE — chameleon
 
+## 2026-07-16 — Entitlement product/tier binding (Codex)
+
+- Chameleon accepts only canonical Pro/PRO and Elite/ELITE signed entitlement pairs; mismatches and unknown products fail closed.
+- Operational payment/provider details remain in private VLABS. No secret, customer data, purchase, provider request or deployment.
+
 ## 2026-07-13 [Codex] — Payment entitlement compatibility
 
 - Chameleon Pro/Elite is recognized by the shared signed VLABS fulfillment server with product-specific delivery, duplicate and revoke handling.

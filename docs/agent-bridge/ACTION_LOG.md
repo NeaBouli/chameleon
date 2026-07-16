@@ -1,5 +1,10 @@
 # Action Log
 
+## 2026-07-16 — Codex entitlement mapping hardening
+
+- Canonical Chameleon product/tier pairs are enforced with mismatch regression tests.
+- Private provider operations remain in VLABS; no secret, purchase, external request or deployment.
+
 ## 2026-07-12 — Codex full software readiness audit
 
 - Audited payment activation, overlay, messenger/session establishment, transports, AccessibilityService, public claims, distribution metadata and signed entitlement renewal.

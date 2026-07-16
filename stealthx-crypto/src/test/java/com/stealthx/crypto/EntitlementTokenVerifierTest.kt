@@ -47,10 +47,36 @@ class EntitlementTokenVerifierTest {
         }
     }
 
-    private fun token(product: String = "chameleon_pro_lifetime", expiresAt: Long = now + 2_592_000): String {
+    @Test
+    fun `product and tier mismatch fails closed`() {
+        assertThrows(IllegalArgumentException::class.java) {
+            EntitlementTokenVerifier.verify(
+                token(product = "chameleon_pro_lifetime", tier = "ELITE"),
+                b64(keyPair.first),
+                "chameleon",
+                "sx_device_1",
+                now
+            )
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            EntitlementTokenVerifier.verify(
+                token(product = "chameleon_unknown_lifetime", tier = "PRO"),
+                b64(keyPair.first),
+                "chameleon",
+                "sx_device_1",
+                now
+            )
+        }
+    }
+
+    private fun token(
+        product: String = "chameleon_pro_lifetime",
+        tier: String = "PRO",
+        expiresAt: Long = now + 2_592_000
+    ): String {
         val audience = if (product.startsWith("chameleon_")) "chameleon" else "securechat"
         val payload = listOf(
-            "v=1", "iss=stealthx", "aud=$audience", "sub=sx_device_1", "tier=PRO",
+            "v=1", "iss=stealthx", "aud=$audience", "sub=sx_device_1", "tier=$tier",
             "product=$product", "iat=${now - 10}", "exp=$expiresAt",
             "order=${MessageDigest.getInstance("SHA-256").digest("order".toByteArray()).joinToString("") { "%02x".format(it) }.take(32)}"
         ).joinToString("\n")
