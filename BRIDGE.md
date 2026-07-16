@@ -2972,3 +2972,33 @@ Note:
   `BUILD SUCCESSFUL`.
 - Runtime Public Key, Server Private Key und Cross-Repo Test-E2E bleiben externe
   Gates. Keine Zahlung, Aktivierung oder Deployment.
+
+## 2026-07-16 21:38 EEST - CODEX TERMINAL SEO FOLLOW-UP AFTER RELEASE HARDENING
+
+Type: STATUS/FIX
+
+Scope:
+- Public Chameleon crawler files and bridge sync after remote release-hardening commit `769bd3a`.
+- No Android app code, Play Console, Stripe, AADE/myDATA/e-timologio, secret, server, or device mutation.
+
+Changed:
+- `robots.txt`: added crawler access and sitemap pointer for `chameleon.stealthx.tech`.
+- `sitemap.xml`: added Chameleon root, IFR page, wiki root, user manual, and legacy manual URL.
+- `docs/user-manual.md`: kept launch-gated wording for website IFR discount.
+
+Integration note:
+- Remote `769bd3a fix: gate unfinished Chameleon sales features` already launch-gated the public IFR/payment copy more broadly.
+- During rebase, CODEX kept the newer remote release-hardening versions for conflicting public pages and retained only the non-overlapping SEO/manual follow-up.
+
+Verification:
+- `git diff --check` passed before the first commit attempt.
+- Edited public HTML pages parsed with Python `HTMLParser` before rebase.
+- Python XML parser loaded the Chameleon sitemap with 5 URLs.
+- Live public smoke: `https://chameleon.stealthx.tech/` -> HTTP 200.
+
+Commit:
+- `6d00c56 docs: gate public IFR checkout copy`
+
+Open next steps:
+- Full Chameleon device/function QA before fresh APK/AAB release artifacts.
+- Keep Android app wallet/IFR-free; discounts stay website-side and launch-gated until VLABS finance gates are approved.
