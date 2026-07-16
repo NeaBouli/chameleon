@@ -26,7 +26,7 @@ Beyond message encryption, Chameleon provides a context-aware rule engine that a
 
 ## Tier Overview
 
-Chameleon does not verify wallets inside the Android app. IFR holders verify on the website for a 50% Stripe checkout discount, then unlock with an activation code.
+Chameleon does not verify wallets inside the Android app. IFR holder website verification for a 50% Stripe checkout discount is planned, but launch-gated until payment, accounting, and production configuration are approved. Unlocks use activation codes.
 
 | Feature | Free | Pro (≥ 2,000 IFR) | Elite (≥ 6,000 IFR) |
 |---|---|---|---|
@@ -68,7 +68,7 @@ The Dashboard shows your current security level. You can set it manually by tapp
 
 ### Step 4 — Unlock Features (Optional)
 
-If you hold IFR tokens, open Settings → **IFR Holder Discount** to visit the website, verify a browser wallet, and start discounted Stripe checkout.
+If you hold IFR tokens, open Settings → **IFR Holder Discount** to visit the website. Browser-wallet verification and discounted Stripe checkout are planned, but currently launch-gated.
 
 ---
 
@@ -118,11 +118,11 @@ The top section of Settings shows your current tier and provides access to the I
 Shows your current app tier and links to website purchase, IFR discount, and activation-code unlock.
 
 *Website IFR discount:*
-Tap **IFR Holder Discount**. The website connects MetaMask or accepts a wallet address, then the backend checks IFR balance read-only on Ethereum Mainnet before opening Stripe checkout.
+Tap **IFR Holder Discount**. Browser-wallet verification and discounted Stripe checkout are launch-gated until payment, accounting, and production configuration are approved.
 
-- ≥ 6,000 IFR held → 50% off Elite checkout
-- ≥ 2,000 IFR held → 50% off Pro checkout
-- < 2,000 IFR → normal checkout remains available
+- Planned: ≥ 6,000 IFR held → 50% off Elite checkout
+- Planned: ≥ 2,000 IFR held → 50% off Pro checkout
+- Until launch approval, checkout remains disabled.
 
 After Stripe checkout, Chameleon unlocks through the normal activation-code path. WalletConnect is not used inside the Android app.
 
