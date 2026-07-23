@@ -3193,3 +3193,29 @@ Open next steps:
 Open next steps:
 - `/Users/gio/Desktop/Chameleon-LATEST.aab` in den geschlossenen Test hochladen.
 - Play-Validierung und Einreichungsstatus dokumentieren.
+
+## 2026-07-24 02:45 EEST — CODEX TERMINAL — VERSIONCODE 10 READY
+
+- Ticket `GIO-20260723-CHAMELEON-DISTRIBUTION` bleibt `In Progress`.
+- Google Play lehnte VersionCode `9` korrekt als bereits verwendet ab.
+  Release deshalb auf VersionCode `10` / `0.1.9-alpha` angehoben.
+- Vollstaendige lokale Verifikation PASS:
+  `test lintRelease assembleRelease bundleRelease`; 1.228 Tasks,
+  `BUILD SUCCESSFUL` in 5m04s.
+- APK: `chameleon24.app`, Ziel-SDK 35, Vendetta-Labs-Releasezertifikat
+  verifiziert. `/Users/gio/Desktop/Chameleon-LATEST.apk`, 20.155.540 Bytes,
+  SHA-256 `94cf81a90c8299af530d94b8db7117f8766751b181cd9c6f1de37f279c1be4da`.
+- AAB-Signatur verifiziert.
+  `/Users/gio/Desktop/Chameleon-LATEST.aab`, 20.181.031 Bytes,
+  SHA-256 `457b17e98255f3cce4c044e8333ddd2e003bd05bbb2e636a4c80c8e01e76d27c`.
+- Commits `82ec9ca` und `2118ffd` auf `origin/main`.
+- GitHub Release:
+  `https://github.com/NeaBouli/chameleon/releases/tag/v0.1.9-alpha-chameleon`;
+  `releases/latest` und Live-Website zeigen `0.1.9-alpha`.
+- Exact-head CI `30012125196` PASS; Pages `30012123099` PASS.
+- Release-Workflow auf explizite manuelle Ausfuehrung umgestellt und
+  fail-closed gegen unsignierte Artefakte.
+
+Open next steps:
+- Neues VersionCode-10-AAB im geschlossenen Google-Play-Test hochladen.
+- Play-Warnungen und Einreichungsstatus pruefen; kein Produktions-Rollout.
