@@ -3013,3 +3013,27 @@ Open next steps:
 - Bekannte Produktgrenzen bleiben transparent: Closed Test ist fuer Validierung; noch nicht
   sell-ready deklarierte Funktionen werden dadurch nicht als produktionsreif eingestuft.
 - Kein Produktions-Rollout. WoizZ und fremde Geraete-Arbeit bleiben unangetastet.
+
+## 2026-07-23 12:02 EEST — CODEX TERMINAL — PLAY SETUP PARTIAL / REVIEW ACCESS BLOCKER
+
+- Neue, codegenaue Privacy Policy unter `https://chameleon.stealthx.tech/privacy.html`
+  veroeffentlicht und live mit HTTP 200 verifiziert; Sitemap ergaenzt (Commit `40c16ea`).
+- Play Console gespeichert: Privacy Policy, keine Werbung, keine Behoerden-App, keine
+  Finanzfunktionen, keine Gesundheitsfunktionen; Kategorie `Tools`.
+- Zielgruppe/IARC/Closed Test bleiben durch die korrekte App-Zugriffsangabe blockiert: Die App
+  enthaelt Pro/Elite-Zugriffsstufen, daher fordert Google einen dauerhaft gueltigen Prueferzugang,
+  der uneingeschraenkten Zugriff auf kostenpflichtige Inhalte gibt. Ein solcher Review-Code ist
+  aktuell nicht vorhanden. `Kein eingeschraenkter Zugriff` wurde bewusst nicht falsch angegeben.
+- Englische Store-Texte vorbereitet. Medien erstellt unter
+  `/Users/gio/Desktop/Chameleon-PlayStore-Screenshots/`: vier echte 1440x2560-S7-Aufnahmen sowie
+  eine 1024x500-Vorstellungsgrafik. Upload ist noch nicht gespeichert.
+- Nicht verteilbaren Build-Typ `storeScreenshot` mit eigener Package-ID
+  `chameleon24.app.screenshots` ergaenzt. Nur dieser Build deaktiviert `FLAG_SECURE`; regulaere
+  Builds bleiben geschuetzt. Voller Debug-Unit-Testlauf plus `assembleStoreScreenshot`:
+  `BUILD SUCCESSFUL` (10m17s).
+- Temporaeres Screenshot-Package nach den Aufnahmen erfolgreich vom S7 entfernt; regulaeres
+  `chameleon24.app.elite` wieder gestartet. WoizZ nicht gestartet oder veraendert.
+
+Open next steps:
+- Entscheidung/Einrichtung eines dauerhaft gueltigen Google-Review-Entitlements fuer Pro/Elite.
+- Danach App-Zugriff, Zielgruppe, IARC, Datensicherheit, Store-Medien und Closed-Test-AAB finalisieren.
