@@ -86,7 +86,7 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 
 ## Download
 
-**Public Alpha: v0.1.8-alpha** — evaluation build; external security audit remains pending.
+**Public Alpha: v0.1.9-alpha** — evaluation build; external security audit remains pending.
 
 - F-Droid: not eligible under the current source-available license
 - Play Store: closed testing submitted; public listing is not live
