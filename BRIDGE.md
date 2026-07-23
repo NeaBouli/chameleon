@@ -3153,3 +3153,17 @@ Open next steps:
 Open next steps:
 - Google-Pruefung abwarten.
 - GitHub Actions bei verfuegbaren kompatiblen Major-Versionen aktualisieren.
+
+## 2026-07-23 23:24 EEST — CODEX TERMINAL — DISTRIBUTION ROLLOUT STARTED
+
+- Ticket `GIO-20260723-CHAMELEON-DISTRIBUTION` uebernommen.
+- Scope: verifiziertes Release `9` / `0.1.8-alpha` als aktuelle APK ueber
+  Chameleon-Website und GitHub Release bereitstellen und das AAB in den
+  geschlossenen Google-Play-Test hochladen.
+- Kein Produktions-Rollout. Kontakt- und Feedbackadresse bleibt
+  `kaspartisan@proton.me`.
+
+Open next steps:
+- Release-APK gegen Quellstand und Signatur pruefen.
+- Website-/GitHub-Links aktualisieren und live testen.
+- AAB im geschlossenen Play-Test hochladen und Play-Validierung pruefen.

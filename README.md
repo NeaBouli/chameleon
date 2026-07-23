@@ -86,11 +86,11 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 
 ## Download
 
-**Public Alpha: Q3 2026** — pending external security audit.
+**Public Alpha: v0.1.8-alpha** — evaluation build; external security audit remains pending.
 
 - F-Droid: not eligible under the current source-available license
-- Play Store: Data Safety Form documented, submission after audit
-- GitHub Releases: APK available with each tagged version
+- Play Store: closed testing submitted; public listing is not live
+- GitHub Releases: [download the latest signed APK](https://github.com/NeaBouli/chameleon/releases/latest/download/Chameleon-LATEST.apk)
 - Source: `git clone https://github.com/NeaBouli/chameleon.git`
 
 ---

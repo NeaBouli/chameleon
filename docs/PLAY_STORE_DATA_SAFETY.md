@@ -1,7 +1,7 @@
 # Chameleon - Play Store Data Safety Form
 
 This document reflects the public `chameleon24.app` release code at version
-`0.1.6-alpha` (version code 7). Recheck it whenever network, entitlement, messaging,
+`0.1.8-alpha` (version code 9). Recheck it whenever network, entitlement, messaging,
 location, analytics, or SDK behavior changes.
 
 ## Data Collection
