@@ -3064,3 +3064,24 @@ Open next steps:
   Zielgruppe, Datensicherheit, geschlossener Test und AAB-Upload finalisieren.
 - Store-Medien manuell im Play-Asset-Dialog hochladen oder Browser-Dateiauswahl erneut versuchen;
   echte Tablet-Screenshots bleiben ausstehend.
+
+## 2026-07-23 12:35 EEST — CODEX TERMINAL — DATA SAFETY DRAFT / LIVE VERIFIED
+
+- Google-Play-Datensicherheit als codegenauer Entwurf vollstaendig ausgefuellt:
+  Datenerhebung `Ja`, Transportverschluesselung `Ja`, keine Konten, Loeschanfragen ueber
+  `https://chameleon.stealthx.tech/privacy.html`.
+- Deklariert: optionale genaue Standortdaten via Google Play services (erhoben/geteilt,
+  App-Funktion), pseudonyme Nutzer-ID (erhoben, erforderlich, App-Funktion und Sicherheit),
+  optionale Aktivierungs-/Entitlementdaten (erhoben, App-Funktion und Sicherheit), optionaler
+  Anzeigename und verschluesselte In-App-Nachrichten (sitzungsspezifisch, App-Funktion).
+- Vorschau bestaetigt Standort unter geteilt/erfasst sowie Nutzer-ID und sonstige Daten unter
+  erfasst. Endgueltiges Senden ist in Play deaktiviert, bis Zielgruppe abgeschlossen ist;
+  Zielgruppe verlangt wiederum zuerst einen Google-Reviewer-Zugang fuer eingeschraenkte Inhalte.
+- Commit `c662201` auf `origin/main`; exact-head Chameleon CI `29965729971` SUCCESS und Pages
+  `29965729538` SUCCESS. Live-Privacy-Datei mit Cache-Buster byte-identisch zur lokalen Datei;
+  Relay-, Google-Location- und Loeschkontakt-Text live verifiziert.
+
+Open next steps:
+- Dauerhaftes Reviewer-Elite-Entitlement autorisieren/einrichten und in Play dokumentieren.
+- Kontoinhaber akzeptiert IARC-Bedingung; danach Zielgruppe, Data-Safety-Senden und Closed Test.
+- Store-Medien/echte Tablet-Screenshots und AAB-Upload bleiben offen.
