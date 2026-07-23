@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -31,6 +32,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -57,6 +59,7 @@ fun GeofencingScreen(
     var latitude by remember { mutableStateOf("") }
     var longitude by remember { mutableStateOf("") }
     var radius by remember { mutableStateOf("100") }
+    var pendingLocationRequest by remember { mutableStateOf<LocationPermissionRequest?>(null) }
     val context = LocalContext.current
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -72,6 +75,53 @@ fun GeofencingScreen(
         ActivityResultContracts.StartActivityForResult()
     ) {
         onPermissionResult()
+    }
+
+    pendingLocationRequest?.let { request ->
+        AlertDialog(
+            onDismissRequest = { pendingLocationRequest = null },
+            title = { Text("Location privacy") },
+            text = {
+                Text(
+                    "Chameleon uses location to activate privacy rules when you enter or leave " +
+                        "geofence zones you create. For reliable zone changes, this can include " +
+                        "location access while the app is closed or not in use. Location is " +
+                        "optional, is not stored on our servers, and can be disabled at any time."
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        pendingLocationRequest = null
+                        when (request) {
+                            LocationPermissionRequest.FOREGROUND ->
+                                permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+
+                            LocationPermissionRequest.BACKGROUND ->
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                    settingsLauncher.launch(
+                                        Intent(
+                                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                            Uri.fromParts("package", context.packageName, null)
+                                        )
+                                    )
+                                } else {
+                                    backgroundPermissionLauncher.launch(
+                                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                                    )
+                                }
+                        }
+                    }
+                ) {
+                    Text("Continue")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { pendingLocationRequest = null }) {
+                    Text("Not now")
+                }
+            }
+        )
     }
 
     LazyColumn(
@@ -99,7 +149,9 @@ fun GeofencingScreen(
 
             if (!state.hasFineLocationPermission) {
                 Button(
-                    onClick = { permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION) },
+                    onClick = {
+                        pendingLocationRequest = LocationPermissionRequest.FOREGROUND
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFB800))
                 ) {
@@ -121,16 +173,7 @@ fun GeofencingScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
                     onClick = {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                            settingsLauncher.launch(
-                                Intent(
-                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                    Uri.fromParts("package", context.packageName, null)
-                                )
-                            )
-                        } else {
-                            backgroundPermissionLauncher.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-                        }
+                        pendingLocationRequest = LocationPermissionRequest.BACKGROUND
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFB800))
@@ -243,4 +286,9 @@ fun GeofencingScreen(
             }
         }
     }
+}
+
+private enum class LocationPermissionRequest {
+    FOREGROUND,
+    BACKGROUND
 }

@@ -3102,3 +3102,39 @@ Open next steps:
   App-Zugriff und Zielgruppe korrekt abschliessen.
 - Anschliessend den bereits gespeicherten Data-Safety-Entwurf senden und Closed Test einrichten.
 - Store-Medien hochladen; echte Tablet-Screenshots bleiben gesondert ausstehend.
+
+## 2026-07-23 23:02 EEST — CODEX TERMINAL — CLOSED TEST SUBMITTED
+
+- Dauerhaftes Google-Reviewer-Elite-Entitlement serverseitig eingerichtet und im
+  Play-App-Zugriff hinterlegt. Keine Reviewer-Credentials oder Secrets im Repository.
+- Kontakt-, Store- und Feedbackadresse auf `kaspartisan@proton.me` vereinheitlicht.
+- Store-Eintrag, Icon, Feature Graphic, vier echte Smartphone-Screenshots, App-Zugriff,
+  Zielgruppe 18+, IARC, Data Safety, Privacy Policy, Werbe-ID (`Nein`), Kategorie
+  `Tools`, Hintergrundstandort und Foreground Services abgeschlossen.
+- Release-Build auf Version `9` / `0.1.8-alpha` angehoben. Regulärer Release entfernt
+  ungenutzte `SYSTEM_ALERT_WINDOW`, Accessibility-Service und Location-FGS-Deklarationen;
+  der optionale DATA_SYNC-Foreground-Service fuer den nutzergesteuerten
+  Background Contact Listener bleibt.
+- Geofencing zeigt vor Vordergrund- und Hintergrundstandort eine deutliche, optionale
+  Datenschutzerklaerung. Review-Nachweise, beide nicht gelistet:
+  - `https://youtube.com/shorts/cik-u04bBX4` — Geofencing/Standort, 30 Sekunden.
+  - `https://youtube.com/shorts/zfuoLJS8rBE` — Background Contact Listener.
+- Verifikation PASS:
+  `test`, `lintRelease`, `assembleRelease`, `bundleRelease` (1228 Tasks);
+  `assembleStoreScreenshot`; Manifest-Pruefung des Release-Artefakts bestaetigt
+  kein `BIND_ACCESSIBILITY_SERVICE`, kein `SYSTEM_ALERT_WINDOW` und kein
+  `FOREGROUND_SERVICE_LOCATION`.
+- Artefakt:
+  `/Users/gio/Desktop/Chameleon-LATEST.aab`, SHA-256
+  `866e406e207b3a035e1a50a32a6f8e54d20e373f8e9b2b0c0d5af321b651fc6d`.
+- Der aktive interne Legacy-Track `5 (0.1.4-alpha)` verursachte die zwei
+  Accessibility-Validierungsfehler und wurde pausiert. Danach waren alle Release-Fehler
+  behoben; nur die harmlose Mapping-Datei-Warnung blieb, da R8 fuer diesen Build
+  deaktiviert ist.
+- Geschlossener Alpha-Test: Griechenland, bestehende E-Mail-Testerliste,
+  `9 (0.1.8-alpha)`. 14 Aenderungen wurden erfolgreich zur Google-Pruefung gesendet.
+  Kein Produktions-Rollout.
+
+Open next steps:
+- Google-Pruefung abwarten und eventuelle Reviewer-Rueckfragen bearbeiten.
+- Nach Freigabe Closed-Test-Install und Entitlement-Flow mit einem Testkonto pruefen.
