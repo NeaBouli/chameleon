@@ -3085,3 +3085,20 @@ Open next steps:
 - Dauerhaftes Reviewer-Elite-Entitlement autorisieren/einrichten und in Play dokumentieren.
 - Kontoinhaber akzeptiert IARC-Bedingung; danach Zielgruppe, Data-Safety-Senden und Closed Test.
 - Store-Medien/echte Tablet-Screenshots und AAB-Upload bleiben offen.
+
+## 2026-07-23 19:15 EEST — CODEX TERMINAL — CHAMELEON IARC COMPLETED
+
+- Nach dem vom Kontoinhaber ausgefuehrten Reload blieb die IARC-Zustimmung aktiviert;
+  `contact@stealthx.tech` und Kategorie `Alle anderen App-Typen` wurden wieder eingetragen.
+- Der codegenaue Fragebogen wurde gespeichert und von Google Play als `Abgeschlossen`
+  bestaetigt. Einstufungen: Brasilien 0, ESRB Everyone, PEGI 3, USK 0 und IARC/Google Play 3.
+- Die deaktivierten/fail-closed Messenger-Pfade wurden nicht als nutzbare Kommunikationsfunktion
+  deklariert. Chameleon teilt keine exakten Live-Standorte mit anderen Nutzern, verkauft keine
+  digitalen Produkte innerhalb der App und enthaelt keine Krypto-/NFT-/Auszahlungsfunktion.
+- Kein Produktions-Rollout und keine Store-Aenderung zur Ueberpruefung eingereicht.
+
+Open next steps:
+- Dauerhaftes Google-Reviewer-Elite-Entitlement entscheiden und einrichten; danach
+  App-Zugriff und Zielgruppe korrekt abschliessen.
+- Anschliessend den bereits gespeicherten Data-Safety-Entwurf senden und Closed Test einrichten.
+- Store-Medien hochladen; echte Tablet-Screenshots bleiben gesondert ausstehend.
