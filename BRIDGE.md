@@ -3138,3 +3138,18 @@ Open next steps:
 Open next steps:
 - Google-Pruefung abwarten und eventuelle Reviewer-Rueckfragen bearbeiten.
 - Nach Freigabe Closed-Test-Install und Entitlement-Flow mit einem Testkonto pruefen.
+
+## 2026-07-23 23:11 EEST — CODEX TERMINAL — CI VERIFIED
+
+- GitHub Actions Run `29998019224` fuer Commit `a462acd` ist erfolgreich:
+  Security Pattern Scan, Debug-APK-Build, Unit-Tests und Artefakt-Upload PASS.
+- Run: `https://github.com/NeaBouli/chameleon/actions/runs/29998019224`.
+- Einziger Hinweis: `actions/checkout@v4`, `actions/setup-java@v4` und
+  `actions/upload-artifact@v4` deklarieren noch Node 20 und werden von GitHub mit
+  Node 24 ausgefuehrt. Das blockiert den aktuellen Build nicht, bleibt aber
+  Workflow-Wartung.
+- Kontakt- und Feedbackadresse bleibt `kaspartisan@proton.me`.
+
+Open next steps:
+- Google-Pruefung abwarten.
+- GitHub Actions bei verfuegbaren kompatiblen Major-Versionen aktualisieren.
