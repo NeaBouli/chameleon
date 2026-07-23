@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Chameleon</title>
+  <meta name="description" content="Privacy policy for the Chameleon Android application.">
+  <link rel="canonical" href="https://chameleon.stealthx.tech/privacy.html">
+  <style>
+    :root { color-scheme: dark; --bg:#0a0a0f; --surface:#101923; --border:#263746; --text:#edf2f7; --muted:#a9b7c4; --green:#00e889; --cyan:#35c9ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    nav { border-bottom:1px solid var(--border); background:#0a0a0ff2; }
+    .nav-inner, main, footer { width:min(920px,calc(100% - 32px)); margin:auto; }
+    .nav-inner { min-height:58px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    nav a { color:var(--muted); text-decoration:none; }
+    nav a:first-child { color:var(--green); font-weight:800; font-size:18px; }
+    main { padding:56px 0 64px; }
+    h1 { font-size:clamp(34px,7vw,54px); line-height:1.08; margin:0 0 12px; }
+    h2 { margin:34px 0 10px; font-size:22px; color:var(--green); }
+    p, li { color:var(--muted); }
+    a { color:var(--cyan); }
+    .meta { color:var(--muted); margin-bottom:34px; }
+    .notice { padding:18px 20px; border:1px solid var(--border); background:var(--surface); border-radius:8px; }
+    footer { padding:24px 0 40px; border-top:1px solid var(--border); color:var(--muted); }
+  </style>
+</head>
+<body>
+  <nav><div class="nav-inner"><a href="/">Chameleon</a><a href="/wiki/">Documentation</a></div></nav>
+  <main>
+    <h1>Privacy Policy</h1>
+    <p class="meta">Effective: July 23, 2026</p>
+    <p class="notice">Chameleon is designed for local processing. It has no advertising SDK,
+      analytics SDK, crash-reporting SDK or Android advertising-ID integration.</p>
+
+    <h2>Data processed on your device</h2>
+    <p>Encryption keys, rules, geofences, contact keys, encrypted files, decoy profiles and app
+      preferences are stored locally. Location is used only on the device when you enable a
+      geofence. Camera and NFC access are optional and used for contact-key exchange. Chameleon
+      does not read or upload your Android address book.</p>
+
+    <h2>Limited network processing</h2>
+    <p>When the contact listener is enabled, Chameleon sends a pseudonymous Chameleon identifier
+      to the StealthX signalling service so another Chameleon user can deliver a signed public-key
+      bundle that you explicitly exchange. Public keys, an optional display handle and routing
+      identifiers may be processed transiently for this purpose. Private keys never leave the
+      device.</p>
+    <p>If you enter a purchase activation code, the code and pseudonymous device-bound identifier
+      are sent to the StealthX service. A signed entitlement token may later be sent to renew or
+      revoke that entitlement. This is used only to provide paid app access and prevent fraud.</p>
+
+    <h2>No sale, advertising or tracking</h2>
+    <p>We do not sell personal data, use it for targeted advertising or share it with advertising
+      networks. Network traffic is encrypted in transit. Chameleon does not use the Android
+      advertising ID.</p>
+
+    <h2>Retention and deletion</h2>
+    <p>Local data remains until you delete it in the app, clear Chameleon storage or uninstall the
+      app. Transient signalling data is used only to complete the requested exchange. Purchase and
+      entitlement records may be retained as required for account security, fraud prevention,
+      refunds, tax and legal obligations.</p>
+
+    <h2>Children</h2>
+    <p>Chameleon is intended for adults and is not directed to children.</p>
+
+    <h2>Security and current alpha scope</h2>
+    <p>The current release is a closed alpha. Some cross-device capabilities remain disabled until
+      interoperability and two-device testing are complete. Security measures reduce risk but no
+      software can guarantee absolute security.</p>
+
+    <h2>Contact</h2>
+    <p>Questions or deletion requests can be submitted through the
+      <a href="https://github.com/NeaBouli/chameleon/issues">Chameleon issue tracker</a> or the
+      <a href="https://stealthx.tech/#contact">StealthX contact page</a>.</p>
+  </main>
+  <footer>Chameleon is a Vendetta Labs / StealthX Platform product.</footer>
+</body>
+</html>

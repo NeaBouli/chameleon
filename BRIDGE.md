@@ -3002,3 +3002,14 @@ Commit:
 Open next steps:
 - Full Chameleon device/function QA before fresh APK/AAB release artifacts.
 - Keep Android app wallet/IFR-free; discounts stay website-side and launch-gated until VLABS finance gates are approved.
+
+## 2026-07-23 11:24 EEST — CODEX TERMINAL — PLAY CLOSED TEST SETUP STARTED
+
+- Google-Play-App `ChameLeon` / Package `chameleon24.app` geoeffnet und Dashboardstand
+  verifiziert: App-Entwurf, `0/11` Pflichtaufgaben, geschlossener Test noch gesperrt, 0 Tester
+  eingeschrieben.
+- Ziel dieses Blocks: Richtlinien- und Store-Angaben anhand des aktuellen Codes ausfuellen,
+  anschliessend `Chameleon-LATEST.aab` in einen geschlossenen Test hochladen.
+- Bekannte Produktgrenzen bleiben transparent: Closed Test ist fuer Validierung; noch nicht
+  sell-ready deklarierte Funktionen werden dadurch nicht als produktionsreif eingestuft.
+- Kein Produktions-Rollout. WoizZ und fremde Geraete-Arbeit bleiben unangetastet.
