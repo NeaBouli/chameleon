@@ -3167,3 +3167,29 @@ Open next steps:
 - Release-APK gegen Quellstand und Signatur pruefen.
 - Website-/GitHub-Links aktualisieren und live testen.
 - AAB im geschlossenen Play-Test hochladen und Play-Validierung pruefen.
+
+## 2026-07-23 23:40 EEST — CODEX TERMINAL — APK DISTRIBUTION LIVE / PLAY BROWSER PENDING
+
+- Ticket `GIO-20260723-CHAMELEON-DISTRIBUTION` bleibt `In Progress`.
+- Release `v0.1.8-alpha-chameleon` mit der signierten
+  `Chameleon-LATEST.apk` veroeffentlicht:
+  `https://github.com/NeaBouli/chameleon/releases/tag/v0.1.8-alpha-chameleon`.
+- APK-Metadaten: `chameleon24.app`, VersionCode `9`, Version
+  `0.1.8-alpha`, Ziel-SDK 35. SHA-256:
+  `d7a1253f1fe361682b0e83cbc8a34307f60a117e07676dd5c4562ed73e69855a`.
+- Website und README nutzen
+  `https://github.com/NeaBouli/chameleon/releases/latest/download/Chameleon-LATEST.apk`.
+  Live-Download erneut geladen: 20.155.536 Bytes und identischer SHA-256.
+- Commits: `431362d` (Download-/Release-Links), `06bb88e`
+  (Release-Workflow fail-closed gegen unsignierte APKs).
+- Exact-head CI `30000137284` PASS; Pages `30000136412` PASS.
+- Tag-Run `29999960535` wurde vor jedem Artefakt-Upload abgebrochen, weil der
+  bisherige Workflow ohne Signing-Konfiguration ein unsigniertes Artefakt haette
+  anhaengen koennen. Das GitHub Release enthaelt exakt die lokal mit dem
+  Vendetta-Labs-Releasezertifikat verifizierte APK.
+- AAB-Upload wartet auf einen verbundenen, angemeldeten In-App-Browser mit der
+  Google Play Console. Kein Produktions-Rollout.
+
+Open next steps:
+- `/Users/gio/Desktop/Chameleon-LATEST.aab` in den geschlossenen Test hochladen.
+- Play-Validierung und Einreichungsstatus dokumentieren.
