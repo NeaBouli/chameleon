@@ -48,6 +48,13 @@
     <p>If you enter a purchase activation code, the code and pseudonymous device-bound identifier
       are sent to the StealthX service. A signed entitlement token may later be sent to renew or
       revoke that entitlement. This is used only to provide paid app access and prevent fraud.</p>
+    <p>If you choose the server relay for messaging, Chameleon sends recipient and message routing
+      identifiers together with an end-to-end encrypted message payload. The relay processes
+      ciphertext for delivery and does not receive the message plaintext.</p>
+    <p>Optional geofencing uses the Google Play services Location SDK. Chameleon provides the
+      geofence coordinates you configure to that on-device service; Chameleon does not send your
+      location to StealthX. Google's handling of information through Play services is governed by
+      Google's applicable privacy terms.</p>
 
     <h2>No sale, advertising or tracking</h2>
     <p>We do not sell personal data, use it for targeted advertising or share it with advertising
@@ -69,7 +76,8 @@
       software can guarantee absolute security.</p>
 
     <h2>Contact</h2>
-    <p>Questions or deletion requests can be submitted through the
+    <p>Questions or deletion requests can be sent to
+      <a href="mailto:contact@stealthx.tech">contact@stealthx.tech</a>, submitted through the
       <a href="https://github.com/NeaBouli/chameleon/issues">Chameleon issue tracker</a> or the
       <a href="https://stealthx.tech/#contact">StealthX contact page</a>.</p>
   </main>

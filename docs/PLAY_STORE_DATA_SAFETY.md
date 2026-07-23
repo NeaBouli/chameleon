@@ -1,45 +1,77 @@
-# Chameleon — Play Store Data Safety Form
+# Chameleon - Play Store Data Safety Form
+
+This document reflects the public `chameleon24.app` release code at version
+`0.1.6-alpha` (version code 7). Recheck it whenever network, entitlement, messaging,
+location, analytics, or SDK behavior changes.
 
 ## Data Collection
 
 | Question | Answer |
 |----------|--------|
-| Does your app collect or share user data? | No |
-| Does your app collect any of the required data types? | No |
+| Does the app collect or share user data? | Yes - limited data is transmitted off-device for app functionality |
+| Is collected data encrypted in transit? | Yes |
+| Can users request deletion? | Yes - through the privacy-policy contact channels |
 
-## Data Types
+## Data Types To Declare
 
-| Data Type | Collected | Shared | Purpose |
-|-----------|-----------|--------|---------|
-| Location | No* | No | *Geofencing is local-only, never sent to server |
-| Contacts | No | No | Contact keys stored locally, never uploaded |
-| Messages | No | No | All messages local, no server |
-| Photos | No | No | Private Zone photos encrypted locally |
-| Files | No | No | Encrypted locally, never uploaded |
-| Device identifiers | No | No | No analytics, no telemetry |
-| Crash logs | No | No | No crash reporting SDK |
+| Play data type | Collected | Shared | Required | Purpose |
+|----------------|-----------|--------|----------|---------|
+| Personal info - User IDs | Yes | No* | Required for the default contact listener | App functionality; account management; security and fraud prevention |
+| Personal info - Other info (activation code and entitlement token) | Yes | No | Optional; only after paid activation | App functionality; account management; security and fraud prevention |
+| Personal info - Name (optional display handle) | Yes | No* | Optional | Contact exchange and app functionality |
+| Messages | Yes | No* | Optional; only when the user sends through the server relay | App functionality |
+| Precise location | Yes** | Yes** | Optional; only after location permission and geofence setup | App functionality |
 
-## Encryption
+`*` User-directed contact bundles and encrypted message delivery go to the recipient
+selected by the user. Under Google Play's user-initiated transfer exception this is
+not declared as third-party sharing, but it is still collected because it leaves the
+device through the StealthX relay.
 
-| Question | Answer |
-|----------|--------|
-| Is data encrypted in transit? | N/A — no network data by default |
-| Is data encrypted at rest? | Yes — SQLCipher + XChaCha20-Poly1305 |
+`**` Chameleon does not send location to StealthX. It supplies geofence coordinates to
+the Google Play services Location SDK. The conservative Play declaration treats this
+SDK processing as collected and shared with the service provider. Confirm against the
+current Google Play services Location data-safety guidance before every submission.
 
-## Data Deletion
+## Data Not Collected
 
-Users can delete all data by:
-1. Clearing app data in Android Settings
-2. Uninstalling the app
-3. Using the in-app "Clear All Data" function
+- Android contacts or address book
+- Photos, videos, or user files
+- Payment-card, bank-account, wallet, or purchase-history data
+- Advertising ID
+- Analytics, crash logs, diagnostics, or advertising data
+- Accessibility-captured content (processed locally only)
 
-## IFR Token Verification
+## Processing Details
 
-The public app does not perform wallet verification for IFR discounts. IFR discounts are verified on the website before Stripe checkout.
-- **Data received:** Locked token amount (public on blockchain)
-- **Storage:** Cached locally with HMAC tamper protection
-- **No account, no registration, no server**
+- A persistent pseudonymous `sx_...` identifier is sent to
+  `wss://api.stealthx.tech/signal` for contact routing and relay operation.
+- Signed public-key bundles can include routing identifiers, public keys, a timestamp,
+  and an optional display handle. Private keys never leave the device.
+- Server-relayed messages contain recipient/message identifiers and end-to-end encrypted
+  ratchet payloads. The relay receives ciphertext, not message plaintext.
+- Paid activation sends a user-entered activation code and pseudonymous device-bound ID.
+  Entitlement refresh later sends the signed entitlement token.
+- Network endpoints use HTTPS or WSS. Activation and contact exchange additionally use
+  certificate pinning; the message relay uses WSS and application-layer encryption.
+
+## Storage And Deletion
+
+- Local structured data uses SQLCipher; sensitive preferences use Android encrypted
+  preferences. Cloud backup and device transfer are disabled.
+- Users can delete contacts/messages in the app and can delete all local data by clearing
+  app storage or uninstalling Chameleon.
+- The current app has no user account or in-app server-deletion control. Server-side
+  deletion requests use the contact channels in the privacy policy.
+- Purchase and entitlement records may be retained for security, fraud prevention,
+  refunds, tax, and legal obligations.
+
+## SDK Inventory Relevant To Data Safety
+
+- Google Play services Location (optional geofencing)
+- OkHttp (StealthX HTTPS/WSS network transport)
+- No Firebase, advertising, analytics, crash-reporting, Stripe, RevenueCat, or Google
+  Play Billing SDK is included.
 
 ## Privacy Policy
 
-URL: https://stealthx.tech/chameleon/privacy
+URL: https://chameleon.stealthx.tech/privacy.html

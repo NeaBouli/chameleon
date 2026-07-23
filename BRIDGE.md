@@ -3037,3 +3037,30 @@ Open next steps:
 Open next steps:
 - Entscheidung/Einrichtung eines dauerhaft gueltigen Google-Review-Entitlements fuer Pro/Elite.
 - Danach App-Zugriff, Zielgruppe, IARC, Datensicherheit, Store-Medien und Closed-Test-AAB finalisieren.
+
+## 2026-07-23 12:15 EEST — CODEX TERMINAL — PLAY DRAFT / DATA-SAFETY CORRECTION
+
+- Englischer Standard-Store-Text fuer Chameleon in Google Play als Entwurf gespeichert.
+- Oeffentliche Store-Kontaktdaten gespeichert: `contact@stealthx.tech` und
+  `chameleon.stealthx.tech`; Kategorie bleibt App / Tools.
+- Medienupload konnte nicht abgeschlossen werden: Der Play-Asset-Dialog erschien, der Browser
+  stellte den nativen Dateiauswahldialog in dieser Sitzung aber nicht steuerbar bereit. Icon,
+  1024x500-Grafik und vier echte S7-Aufnahmen bleiben unter den bereits dokumentierten Desktop-
+  Pfaden vorbereitet. Ein isolierter API-35-Emulator blieb beim Boot offline und wurde beendet;
+  daher keine unechten Tablet-Aufnahmen als bestanden deklariert.
+- IARC Schritt 1 fachlich vorbereitet: `contact@stealthx.tech` und Kategorie `Alle anderen
+  App-Typen`. Die separate IARC-Nutzungsbedingung wurde nicht stellvertretend akzeptiert und
+  wartet auf den Kontoinhaber.
+- Read-only Codeaudit widerlegte die alte Data-Safety-Angabe `keine Datenerhebung`: Pseudonyme
+  `sx_`-ID, optionale Aktivierungs-/Entitlementdaten und verschluesselte Relay-Nachrichten
+  verlassen das Geraet; optionale Geofences nutzen Google Play services Location.
+- `docs/PLAY_STORE_DATA_SAFETY.md` und `privacy.html` wurden auf diese realen Datenpfade,
+  Loeschkontakt, Verschluesselung, SDK-Grenzen und konservative Location-Angabe korrigiert.
+- Lokal PASS: HTML-Parser fuer `privacy.html`, `git diff --check`.
+
+Open next steps:
+- Kontoinhaber akzeptiert die Chameleon-IARC-Bedingung im offenen Play-Formular.
+- Dauerhaftes Google-Reviewer-Elite-Entitlement entscheiden/einrichten; erst danach App-Zugriff,
+  Zielgruppe, Datensicherheit, geschlossener Test und AAB-Upload finalisieren.
+- Store-Medien manuell im Play-Asset-Dialog hochladen oder Browser-Dateiauswahl erneut versuchen;
+  echte Tablet-Screenshots bleiben ausstehend.
