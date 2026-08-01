@@ -19,7 +19,7 @@ val localProps = Properties().also { props ->
 
 android {
     namespace = "com.stealthx.chameleon"
-    compileSdk = 35
+    compileSdk = 36
 
     signingConfigs {
         create("release") {
@@ -38,9 +38,9 @@ android {
     defaultConfig {
         applicationId = "chameleon24.app"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 10
-        versionName = "0.1.9-alpha"
+        targetSdk = 36
+        versionCode = 11
+        versionName = "0.1.10-alpha"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "FORCED_TIER", "\"\"")
         buildConfigField("Boolean", "ALLOW_SCREENSHOTS", "false")
