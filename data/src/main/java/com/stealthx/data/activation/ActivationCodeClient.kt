@@ -27,8 +27,7 @@ object ActivationCodeClient {
         val entitlementToken: String
     )
 
-    // Leaf pin: api.stealthx.tech (Let's Encrypt, expires 2026-08-14 — rotate before then)
-    // Backup pin: Let's Encrypt R12 intermediate CA (stable across leaf rotations)
+    // Primary api.stealthx.tech SPKI plus the Let's Encrypt R12 intermediate backup.
     private val certPinner = CertificatePinner.Builder()
         .add("api.stealthx.tech", "sha256/1e85xNSEj+dcImOJS0iNkfMZOrZdvJJzzPCqT1/CZDc=")
         .add("api.stealthx.tech", "sha256/kZwN96eHtZftBWrOZUsd6cA4es80n3NzSk/XtYz2EqQ=")

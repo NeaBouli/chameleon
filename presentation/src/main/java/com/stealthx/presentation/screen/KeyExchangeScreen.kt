@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Nfc
+import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -66,7 +67,10 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun KeyExchangeScreen(onBack: () -> Unit) {
+fun KeyExchangeScreen(
+    onBack: () -> Unit,
+    onAddContact: () -> Unit
+) {
     val context = LocalContext.current
     var identity by remember { mutableStateOf<StealthXId?>(null) }
     var qrUri by remember { mutableStateOf<String?>(null) }
@@ -102,6 +106,11 @@ fun KeyExchangeScreen(onBack: () -> Unit) {
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onAddContact) {
+                        Icon(Icons.Default.PersonAdd, contentDescription = "Add contact")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(

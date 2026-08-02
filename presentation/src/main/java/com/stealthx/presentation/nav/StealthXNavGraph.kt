@@ -248,7 +248,8 @@ fun StealthXNavGraph(navController: NavHostController) {
 
         composable(Screen.KeyExchange.route) {
             KeyExchangeScreen(
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onAddContact = { navController.navigate(Screen.AddContact.route) }
             )
         }
 

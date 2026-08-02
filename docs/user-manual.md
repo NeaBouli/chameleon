@@ -1,398 +1,141 @@
-# Chameleon — User Manual
+# Chameleon User Manual
 
-**Version 0.1.0-alpha · StealthX Platform**
+**Version 0.1.10-alpha · Android 8+ · StealthX Platform**
 
----
+## Current Alpha Scope
 
-## What Is Chameleon?
+Chameleon is an Android privacy research client. This alpha is intended for
+controlled evaluation of onboarding, local identity exchange, settings, the
+background contact listener, activation-code handling, and decoy components.
 
-Chameleon is a context-aware privacy layer for Android. It does not replace your existing apps — it runs silently on top of them. Using Android's Accessibility Service, Chameleon intercepts text as you type in any whitelisted app (WhatsApp, Telegram, Signal, Gmail, and others), encrypts it in real time using XChaCha20-Poly1305, and reinjects the ciphertext. Your recipient sees encrypted text. No one between you and them — not the app, not the platform, not your carrier — can read it.
+The following capabilities are not available in this release:
 
-Beyond message encryption, Chameleon provides a context-aware rule engine that automatically adjusts your security level based on your location, active app, WiFi network, time of day, or connected Bluetooth device. It also includes a Private Zone (encrypted file vault), a Decoy Profile system, and geofencing.
+- overlay encryption and Accessibility Service integration;
+- cross-device messenger sessions;
+- automatic APP, WiFi, Bluetooth, time, or location rule enforcement;
+- Private Zone file storage;
+- geofencing;
+- advanced threat detection;
+- in-app wallet, WalletConnect, IFR, token, discount, or payment handling.
 
----
+Unavailable controls are marked `SOON` or launch-gated. Do not rely on dormant
+engine modules as released functionality.
 
-## How It Works
+## First Start
 
-**Overlay Encryption:** Chameleon's Accessibility Service watches for text input events in whitelisted apps. When you type and send a message, the service intercepts the content, passes it to an isolated crypto process (running separately from the main app via AIDL), and receives back the encrypted ciphertext. This ciphertext is injected into the text field in place of your original text. You hit send. The recipient receives the encrypted string.
+1. Open Chameleon.
+2. Read the alpha notice.
+3. Select **Watch Intro** or **Skip -> Register**.
+4. Select **Continue** to finish setup.
+5. The dashboard opens and setup remains completed after an app restart.
 
-**Decryption:** The recipient uses their own Chameleon instance, which recognizes the ciphertext format and decrypts it on display — also through the Accessibility Service, transparently.
-
-**Rule Engine:** You define rules that associate a trigger (location, app, WiFi, time, Bluetooth) with a security level (Public, Protected, Private, Camouflage). Chameleon evaluates all active rules at any given moment and applies the highest matching security level. This is fail-secure: the highest level always wins.
-
-**Security Isolation:** The Accessibility Service contains no cryptographic code. All encryption and key management happen in an isolated `:crypto` process. Even if the Accessibility Service were compromised, your keys remain protected.
-
----
-
-## Tier Overview
-
-Chameleon does not verify wallets inside the Android app. IFR holder website verification for a 50% Stripe checkout discount is planned, but launch-gated until payment, accounting, and production configuration are approved. Unlocks use activation codes.
-
-| Feature | Free | Pro (≥ 2,000 IFR) | Elite (≥ 6,000 IFR) |
-|---|---|---|---|
-| Overlay encryption | Yes | Yes | Yes |
-| Whitelisted apps | Yes | Yes | Yes |
-| Manual geofencing | 3 zones max | Unlimited | Unlimited |
-| Private Zone | 100 MB cap | Unlimited | Unlimited |
-| Automation rules | No | Yes | Yes |
-| Automatic geofencing triggers | No | Yes | Yes |
-| Decoy profile | No | No | Yes |
-| Multi-decoy profiles | No | No | Yes |
-| Advanced threat detection | No | No | Yes |
-| Zero telemetry mode | No | No | Yes |
-
----
-
-## First-Time Setup
-
-### Step 1 — Enable the Accessibility Service
-
-Chameleon's overlay encryption requires Android's Accessibility Service permission. Without it, the app can display its dashboard but cannot intercept or encrypt any text.
-
-To enable it:
-1. Open Android **Settings**
-2. Go to **Accessibility**
-3. Find **Chameleon** in the list of installed services
-4. Tap it and toggle **Use service** on
-5. Confirm the system warning
-
-The Accessibility Service must remain enabled for overlay encryption to function. If Android disables it (e.g., after an update), return to Accessibility Settings and re-enable it.
-
-### Step 2 — Configure the Overlay
-
-Open Chameleon → **Settings** → **Overlay Encryption**. Toggle **Overlay Active** on. Enable the apps you want Chameleon to monitor (WhatsApp, Telegram, Signal, Discord, Gmail are pre-configured).
-
-### Step 3 — Set Your Security Level (Optional)
-
-The Dashboard shows your current security level. You can set it manually by tapping the level indicator. To have Chameleon set it automatically based on context, configure the Rule Engine (Pro tier).
-
-### Step 4 — Unlock Features (Optional)
-
-If you hold IFR tokens, open Settings → **IFR Holder Discount** to visit the website. Browser-wallet verification and discounted Stripe checkout are planned, but currently launch-gated.
-
----
+Chameleon does not ask for Accessibility or display-over-apps access in this
+alpha.
 
 ## Dashboard
 
-The Dashboard is the home screen. It shows:
+The dashboard shows:
 
-- **Current security level** — color-coded icon (green, yellow, orange, or red)
-- **Tier badge** — top right (FREE, PRO, or ELITE)
-- **Active Rules** — a list of automation rules currently matching your context
-- **Quick action buttons** — Overlay, Messenger, Keys
+- the current local security-state indicator;
+- the current access tier;
+- disabled Overlay and Messenger research actions;
+- **Keys**, which opens local identity exchange;
+- Settings.
 
----
+Automation rules shown by older documentation are not active in this release.
 
-## Security Levels
+## Identity And Contacts
 
-Chameleon uses four security levels:
+Open **Keys** from the dashboard to view the local StealthX ID and QR code.
 
-| Level | Color | Description |
-|---|---|---|
-| **Public** | Green | No encryption. Use only in fully trusted, private environments. |
-| **Protected** | Yellow | Standard encryption. The default level. |
-| **Private** | Orange | High encryption with stricter key parameters. |
-| **Camouflage** | Red | Maximum protection. All security features active. Stealth mode. |
+- **Invite via Secure Link** opens Android's share sheet.
+- **Share via NFC** writes the identity URI to a writable NFC tag.
+- The add-contact icon in the top bar opens the contact import screen.
 
-When multiple rules are active simultaneously, the highest security level always takes precedence.
+The contact import screen supports:
 
----
+- scanning a StealthX QR code;
+- reading a StealthX identity from an NFC tag;
+- pasting a `stealthx://add/...` identity bundle.
 
-## Settings — Complete Reference
+Imported bundles must have valid structure, key lengths, and Ed25519 signature.
+Invalid or duplicate identities are rejected.
 
-Access Settings from the gear icon on the Dashboard.
+## Settings
 
----
+### Background Contact Listener
 
-### IFR Token (Tier Upgrade)
+The switch controls whether secure contact exchange remains active after the
+app leaves the foreground. Turning it off stops the foreground service. The
+choice persists across app restarts.
 
-The top section of Settings shows your current tier and provides access to the IFR unlock flow.
+This listener is functional network traffic, not analytics. Chameleon contains
+no analytics SDK and performs no usage tracking.
 
-**Current Tier** — Displayed as a badge (FREE / PRO / ELITE).
+### Access
 
-**Upgrade button** — Opens the IFR Unlock screen (visible when not on Elite).
+Paid access is launch-gated. Availability and pricing are published on the
+Chameleon website when the product, entitlement, payment, accounting, and
+refund-revocation gates are complete.
 
-**IFR Unlock Screen:**
+The Android app accepts only server-signed, device-bound activation codes. It
+does not connect wallets or verify IFR balances.
 
-*Tier Status Card:*
-Shows your current app tier and links to website purchase, IFR discount, and activation-code unlock.
+### Decoy Components
 
-*Website IFR discount:*
-Tap **IFR Holder Discount**. Browser-wallet verification and discounted Stripe checkout are launch-gated until payment, accounting, and production configuration are approved.
+Decoy Profile and Multi-Decoy Profiles are controlled Elite test features. A
+real PIN opens the normal app; a configured decoy PIN opens an empty decoy
+screen. Raw PINs are not stored.
 
-- Planned: ≥ 6,000 IFR held → 50% off Elite checkout
-- Planned: ≥ 2,000 IFR held → 50% off Pro checkout
-- Until launch approval, checkout remains disabled.
+Do not configure a decoy profile unless the test entitlement remains available.
+Tier-expiry recovery is still a release gate.
 
-After Stripe checkout, Chameleon unlocks through the normal activation-code path. WalletConnect is not used inside the Android app.
+## Permissions
 
----
-
-### Overlay Encryption
-
-Controls the core text encryption feature.
-
-**Overlay Active**
-The overlay master toggle is disabled in the current alpha. Default: Off. Cross-device pairing and physical-device interoperability must be verified before release.
-
-**Whitelisted Apps**
-
-Pre-configured apps (each with an on/off toggle):
-- WhatsApp
-- Telegram
-- Signal
-- Discord
-- Gmail
-
-Per-app interception controls are disabled in the current alpha.
-
-**Custom Apps**
-To add any other app, enter its package name in the input field (e.g., `com.custom.messenger`) and tap **Add**. The package name must contain at least one dot. All added apps appear in the list with their own toggle.
-
-*How to find a package name:* In Android Settings → Apps, find the app and look at the URL in the Google Play Store link, or use a package name finder app.
-
-**Security properties of the overlay window:**
-- FLAG_SECURE: The overlay itself cannot be screenshotted.
-- FLAG_NOT_FOCUSABLE: The overlay never steals keyboard focus from the underlying app.
-- Overlay is never drawn on the lock screen.
-
----
-
-### Private Zone
-
-An encrypted file vault stored locally on your device. Files stored here are encrypted with XChaCha20-Poly1305. File names on disk are SHA-256 hashed — the original names are never written to storage unencrypted.
-
-The vault key is generated randomly on first use and stored in encrypted SharedPreferences (AES-256-GCM). It is never uploaded or backed up.
-
-**File count** — Shown at the top of the screen ("X encrypted files").
-
-**File list** — Scrollable list of all stored files, each showing its name and "Encrypted vault item" label.
-
-**Import File**
-Opens the system file picker. Select any file type. The file is encrypted and stored in the vault. The original file is not deleted from its source location — you must delete it manually if needed.
-
-**Secure Photo**
-Opens the camera. Take a photo. It is immediately compressed to JPEG (92% quality) and stored encrypted as `photo_TIMESTAMP.jpg`. The photo is never saved to your gallery or camera roll.
-
-**Storage Limits:**
-- Free tier: 100 MB total. An error is shown if you exceed the limit.
-- Pro and Elite: Unlimited.
-
----
-
-### Geofencing
-
-Define geographic zones. When you are physically inside a zone, the Rule Engine can use it as a trigger. On Pro and Elite, geofencing can trigger automatic security level changes.
-
-**Free tier:** Up to 3 zones.
-**Pro / Elite:** Unlimited zones.
-
-**Permissions required:**
-
-Before you can add zones, Chameleon needs location access.
-
-1. Tap **Allow Location** → grants `ACCESS_FINE_LOCATION` at runtime.
-2. On Android 10+: Tap **Allow Background Location** → on Android 11 and above, this redirects you to Android Settings where you must choose "Allow all the time" for Chameleon. On Android 10, the permission is requested directly.
-
-Background location is required for geofencing to trigger when Chameleon is not in the foreground.
-
-**Adding a Zone:**
-
-Fill in all four fields and tap **Add Geofence Zone**:
-
-- **Zone name** — A label for this zone (e.g., "Home", "Office", "Airport").
-- **Latitude** — Between -90.0 and 90.0.
-- **Longitude** — Between -180.0 and 180.0.
-- **Radius (meters)** — Minimum 100 meters (enforced by Android's geofencing API). GPS accuracy is typically ±5–10 meters.
-
-Each zone appears as a card showing: name, coordinates, and radius.
-
-*Note on accuracy:* GPS drift means the effective boundary is approximately ±10 meters around the specified radius. For office buildings or other enclosed spaces, set a radius of at least 150–200 meters to account for GPS uncertainty indoors.
-
----
-
-### Rule Engine *(Pro and Elite)*
-
-The Rule Engine lets you define context-aware triggers that automatically set your security level.
-
-This setting is locked on Free tier. Tap **Unlock** to open the IFR unlock flow.
-
-**Rule Trigger Types:**
-
-| Trigger | How It Works |
+| Permission | Current use |
 |---|---|
-| **App** | Rule activates when a specific app is in the foreground (e.g., "when Telegram is open → Private") |
-| **WiFi** | Rule activates when connected to a specific SSID (e.g., "when on 'CoffeeShop_WiFi' → Camouflage") |
-| **Location** | Rule activates when inside a named geofence zone (e.g., "when at Work → Protected") |
-| **Time** | Rule activates during a time window (e.g., "weekdays 09:00–17:00 → Protected") |
-| **Bluetooth** | Rule activates when a specific Bluetooth device is connected (e.g., "when car BT is connected → Protected") |
+| Camera | Requested only when scanning a contact QR code |
+| NFC | Reads or writes StealthX identity tags on supported devices |
+| Notifications | Supports the optional foreground contact listener |
+| Boot completed | Restores the listener when it was enabled |
+| Biometric/fingerprint | Reserved for local security flows |
+| Location and Bluetooth declarations | Dormant while geofencing and messenger remain launch-gated |
 
-**Conflict Resolution:**
-If multiple rules are active at the same time, Chameleon applies the highest security level among all matching rules. It never downgrades. If no rules match, the default level is Protected.
+## Privacy And Storage
 
-*Example:* You have a rule "Work WiFi → Protected" and another rule "Evening hours → Private". If both apply at the same time (working late), the result is Private — the higher of the two.
-
-**Dashboard display:**
-Active rules are listed on the Dashboard under "Active Rules", showing the rule name, trigger type, and resulting security level.
-
----
-
-### Decoy Profile *(Elite only)*
-
-The Decoy Profile creates a second, empty identity accessible via a wrong PIN. If someone forces you to unlock the device, you enter the decoy PIN and they see a clean, empty app with no messages, no files, and no zones configured.
-
-This setting is locked on Free and Pro tiers.
-
-**Setup:**
-
-1. **Real PIN** — Enter 4–12 digits. This is the PIN that unlocks your actual data.
-2. **Decoy PIN** — Enter 4–12 digits. Must not match your Real PIN. This is the PIN that shows the empty decoy.
-3. **Confirm Decoy PIN** — Re-enter the decoy PIN to confirm.
-4. Tap **Save Decoy Profile**.
-
-Status changes to **"Status: Enabled"** (green).
-
-**How it works on launch:**
-When Decoy is enabled, Chameleon shows a PIN unlock screen on every launch.
-- Enter the Real PIN → actual profile loads (all data accessible)
-- Enter the Decoy PIN → decoy mode loads (empty profile, no data visible)
-- In decoy mode, tap **Lock** to return to the PIN screen
-
-**To disable:**
-Return to Settings → Decoy Profile → tap **Disable Decoy Profile**.
-
-**PIN storage:**
-Both PINs are hashed with Argon2id (64 MB memory cost, 3 iterations) with a unique random salt per PIN. The hashes and salts are stored in encrypted SharedPreferences. The raw PINs are never stored.
-
----
-
-### About
-
-- Version: 0.1.0-alpha
-- License: Source-Available
-- Platform: StealthX
-
----
-
-## Permissions Reference
-
-| Permission | Purpose | When Requested |
-|---|---|---|
-| Accessibility Service | Text interception for overlay encryption | Manual (Android Settings) |
-| System Alert Window | Overlay display over other apps | Checked at overlay activation |
-| Camera | QR code scanning for key exchange | On demand |
-| NFC | Key exchange via NFC (future) | On demand |
-| Fine Location | Geofencing zone detection | Runtime, when adding first zone |
-| Background Location | Geofencing while app is in background | Runtime, after fine location granted |
-| Foreground Service | Location tracking worker for geofencing | Declared, no prompt |
-| Biometric | Optional PIN/face/fingerprint auth | Declared, used if configured |
-| Vibrate | Security alert haptics | Declared, no prompt |
-| Boot Completed | Auto-restart rule engine after reboot | Declared, no prompt |
-
-Chameleon does not request wallet connectivity for discounts. IFR verification happens on the website; the app receives only an activation code after checkout.
-
----
-
-## Common Workflows
-
-### Enable Overlay Encryption on WhatsApp
-
-1. Open Chameleon → Settings → Overlay Encryption.
-2. Ensure **Overlay Active** is toggled on.
-3. Find WhatsApp in the whitelist and ensure its toggle is on.
-4. Open WhatsApp.
-5. Type a message and tap Send.
-6. Your contact receives the encrypted ciphertext. They need Chameleon to decrypt it automatically.
-
-### Import a Secret File
-
-1. Settings → Private Zone.
-2. Tap **Import File**.
-3. Navigate to the file in the system picker and select it.
-4. The file is encrypted and added to the vault.
-5. After confirming it appears in the list, delete the original from its source location if needed.
-
-### Take a Secure Photo
-
-1. Settings → Private Zone.
-2. Tap **Secure Photo**.
-3. The camera opens. Take the photo.
-4. The photo is stored encrypted in the vault and never appears in your gallery.
-
-### Set Up a Geofence Zone
-
-1. Settings → Geofencing.
-2. Grant location permissions if prompted.
-3. Enter a zone name, latitude, longitude, and radius.
-4. Tap **Add Geofence Zone**.
-5. The zone appears in the list and is now available as a trigger in the Rule Engine (Pro).
-
-### Create a Decoy Profile (Elite)
-
-1. Settings → Decoy Profile.
-2. Enter your Real PIN (digits only, 4–12 characters).
-3. Enter a Decoy PIN (different from Real PIN).
-4. Re-enter the Decoy PIN to confirm.
-5. Tap **Save Decoy Profile**.
-6. Force-close and reopen the app.
-7. A PIN screen appears — enter the Decoy PIN to test the empty decoy state.
-
-### Unlock Pro Tier via Web Discount
-
-1. Settings → tap the Upgrade button (top of Settings).
-2. On the upgrade screen, tap **Verify IFR for 50% Stripe Discount**.
-3. Your browser opens the Chameleon checkout website.
-4. Connect MetaMask in the browser or paste a wallet address fallback.
-5. The backend verifies IFR balance read-only on Ethereum and opens Stripe with the eligible discount.
-6. Enter the activation code after checkout to unlock Pro or Elite.
-
----
-
-## Security Architecture — Brief Overview
-
-**Cryptographic primitives:**
-- XChaCha20-Poly1305 — authenticated encryption for messages and vault files
-- X25519 — ephemeral Diffie-Hellman key exchange
-- Ed25519 — public key signing and contact verification
-- Argon2id — PIN and passphrase hashing (memory-hard, GPU-resistant)
-- HMAC-SHA256 — IFR cache integrity validation
-- AES-256-GCM — encrypted SharedPreferences (AndroidX Security Crypto)
-
-**Key storage:**
-- Android Keystore (TEE or StrongBox) — hardware-backed storage for master keys
-- Private keys never exported to plaintext, never leave the hardware boundary
-- Vault key (Private Zone) — 32 random bytes stored in encrypted SharedPreferences
-
-**Process isolation:**
-- Accessibility Service and crypto engine run in separate processes
-- Separated via AIDL (Android Interface Definition Language)
-- A compromised Accessibility Service cannot access keys or perform decryption
-
-**Three rules Chameleon never breaks:**
-1. On any error, encrypt — never fall back to plaintext silently.
-2. Private keys never leave Android Keystore.
-3. The highest security level always wins when multiple rules conflict.
-
----
+- Screenshots are blocked in the normal release build.
+- App preferences use encrypted SharedPreferences.
+- Local structured data uses SQLCipher.
+- Contact identity bundles contain public keys and signatures, not private keys.
+- No wallet state is stored in the Android app.
+- No analytics SDK or advertising SDK is included.
 
 ## Troubleshooting
 
-**Overlay is not encrypting my text**
-Check that the Accessibility Service is still enabled: Android Settings → Accessibility → Chameleon → Use service: On. Android may disable accessibility services after certain system updates or security policy changes.
+**The add-contact screen rejects a bundle**
 
-Also verify that the target app is in your whitelist (Settings → Overlay Encryption) and that **Overlay Active** is toggled on.
+Use a complete `stealthx://add/...` identity generated by a current StealthX
+app. Modified, malformed, unsigned, and duplicate bundles are rejected.
 
-**Geofencing is not triggering**
-Ensure background location is granted: Android Settings → Apps → Chameleon → Permissions → Location → set to "Allow all the time". On some devices (Samsung, Huawei, Xiaomi), additional battery optimization settings must be disabled for background services to run reliably.
+**NFC does not react**
 
-**The Decoy PIN screen is not appearing**
-Decoy must be enabled and saved correctly. Open Settings → Decoy Profile and confirm the status shows "Status: Enabled" (green). Force-close the app (not just minimize it) and reopen.
+Confirm that the device supports NFC and that NFC is enabled. Chameleon reads
+NDEF identity tags; it does not use the removed Android Beam phone-to-phone
+feature.
 
-**My files are not showing in Private Zone**
-Files imported into the vault are never written to the regular file system — they exist only in the encrypted vault directory. They will not appear in your gallery, file manager, or any other app.
+**The contact listener is not running**
 
-**My tier shows Free after verifying IFR**
-Verify the wallet on chameleon.stealthx.tech/#ifr. If you need IFR, use the Uniswap link there, then start the discounted Stripe checkout.
+Open Settings and enable **Background Contact Listener**. Device battery policy
+may still restrict long-running background work.
 
-**The app crashes when opening on a new device**
-If Decoy Profile was enabled on a previous installation and you reinstall, the hashed PINs are gone. The app will open normally (no PIN screen) since there is no profile to unlock. Reconfigure Decoy if needed.
+**A feature is marked SOON or launch-gated**
+
+It is intentionally unavailable in this alpha. The current status is listed in
+the app, README, website, and release notes.
+
+## Support
+
+- Website: <https://chameleon.stealthx.tech/>
+- Wiki: <https://chameleon.stealthx.tech/wiki/>
+- Source: <https://github.com/NeaBouli/chameleon>
+- Contact: `kaspartisan@proton.me`

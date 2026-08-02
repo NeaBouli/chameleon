@@ -163,6 +163,12 @@ fun SettingsScreen(
                     locked = false,
                     comingSoon = true
                 )
+                FeatureRow(
+                    icon = Icons.Default.Shield,
+                    title = "Zero Telemetry",
+                    subtitle = "No analytics SDK or usage tracking",
+                    locked = false
+                )
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -172,18 +178,20 @@ fun SettingsScreen(
                 FeatureRow(
                     icon = Icons.Default.AutoFixHigh,
                     title = "Unlimited Automation Rules",
-                    subtitle = "Context-aware triggers",
+                    subtitle = "Unavailable until trigger enforcement is verified",
                     locked = currentTier < AccessTier.PRO,
                     onLockedClick = onNavigateToUpgrade,
-                    onClick = onNavigateToAutomationRules
+                    onClick = onNavigateToAutomationRules,
+                    comingSoon = true
                 )
                 FeatureRow(
                     icon = Icons.Default.Storage,
                     title = "Private Zone",
-                    subtitle = "100 MB encrypted vault",
+                    subtitle = "Unavailable until secure retrieve and delete are verified",
                     locked = currentTier < AccessTier.PRO,
                     onLockedClick = onNavigateToUpgrade,
-                    onClick = onNavigateToPrivateZone
+                    onClick = onNavigateToPrivateZone,
+                    comingSoon = true
                 )
             }
 
@@ -203,11 +211,12 @@ fun SettingsScreen(
                 FeatureRow(
                     icon = Icons.Default.MyLocation,
                     title = "Geofencing",
-                    subtitle = "Location-triggered encryption rules",
+                    subtitle = "Unavailable until rule enforcement is verified",
                     locked = currentTier < AccessTier.ELITE,
                     onLockedClick = onNavigateToUpgrade,
                     onClick = onNavigateToGeofencing,
-                    eliteTier = true
+                    eliteTier = true,
+                    comingSoon = true
                 )
                 FeatureRow(
                     icon = Icons.Default.FaceRetouchingNatural,
@@ -227,14 +236,6 @@ fun SettingsScreen(
                     eliteTier = true,
                     comingSoon = true
                 )
-                FeatureRow(
-                    icon = Icons.Default.Shield,
-                    title = "Zero Telemetry",
-                    subtitle = "No analytics, no logs",
-                    locked = currentTier < AccessTier.ELITE,
-                    onLockedClick = onNavigateToUpgrade,
-                    eliteTier = true
-                )
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -244,7 +245,7 @@ fun SettingsScreen(
                 HelpLinkRow(
                     icon = Icons.Default.CreditCard,
                     title = "Buy Lifetime Access",
-                    subtitle = "Pro EUR 9 · Elite EUR 19 · Stripe checkout",
+                    subtitle = "Availability and pricing are published on the website",
                     onClick = { openUrl("https://chameleon.stealthx.tech/#lifetime") }
                 )
                 HelpLinkRow(
@@ -268,7 +269,7 @@ fun SettingsScreen(
                 HelpLinkRow(
                     icon = Icons.Default.RocketLaunch,
                     title = "Getting Started",
-                    subtitle = "Alpha status, Private Zone, and local rules",
+                    subtitle = "Alpha status and currently available features",
                     onClick = onNavigateToSetup
                 )
             }

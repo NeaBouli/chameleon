@@ -216,32 +216,30 @@
   <table>
     <tr><th>Setting</th><th>Detail</th></tr>
     <tr><td><strong>Overlay Encryption</strong></td><td>Disabled pending cross-device verification</td></tr>
-    <tr><td><strong>Manual Geofencing</strong></td><td>Up to 3 GPS-based rules — at location X, switch to security mode Y</td></tr>
-    <tr><td><strong>Private Zone</strong></td><td>Encrypted local storage — max. 100 MB</td></tr>
+    <tr><td><strong>Zero Telemetry</strong></td><td>No analytics SDK or usage tracking</td></tr>
   </table>
   <a id="rules" aria-hidden="true" tabindex="-1" style="display:block;height:0;overflow:hidden"></a>
   <a id="decoy" aria-hidden="true" tabindex="-1" style="display:block;height:0;overflow:hidden"></a>
   <h3 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:var(--text)">Pro <span class="tier-badge pro">PRO</span></h3>
   <table>
     <tr><th>Setting</th><th>Detail</th></tr>
-    <tr><td><strong>Unlimited Automation Rules</strong></td><td>No cap on rules</td></tr>
-    <tr><td><strong>Private Zone Unlimited</strong></td><td>No 100 MB cap</td></tr>
+    <tr><td><strong>Unlimited Automation Rules</strong></td><td>Launch-gated until trigger enforcement is verified</td></tr>
+    <tr><td><strong>Private Zone</strong></td><td>Launch-gated until secure retrieve and delete are verified</td></tr>
     <tr><td><strong>Decoy Profile</strong></td><td>ELITE feature for plausible-deniability profiles</td></tr>
-    <tr><td><strong>Automatic Geofencing</strong></td><td>GPS triggers activate without manual configuration</td></tr>
+    <tr><td><strong>Geofencing</strong></td><td>Launch-gated until rule enforcement is verified</td></tr>
   </table>
   <h3 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:var(--text)">Elite <span class="tier-badge elite">ELITE</span></h3>
   <table>
     <tr><th>Setting</th><th>Detail</th></tr>
     <tr><td><strong>Multi-Decoy Profiles</strong></td><td>Multiple fake profiles for different scenarios</td></tr>
     <tr><td><strong>Advanced Threat Detection</strong></td><td>Roadmap feature marked SOON in the app</td></tr>
-    <tr><td><strong>Zero Telemetry</strong></td><td>No data collected or transmitted</td></tr>
   </table>
 </div>
 
 <div class="guide-section">
   <div class="section-num">Section 9</div>
   <h2 class="section-heading section-anchor" id="en-workflow">▶ Alpha Workflow</h2>
-  <p>Evaluate local storage, keys, rules, geofencing, and decoy components only. Overlay and messenger actions remain disabled; no sensitive Android permission is required.</p>
+  <p>Evaluate onboarding, local identity exchange, settings, the background contact listener, and decoy components only. Overlay, messenger, automation, Private Zone, and geofencing actions remain disabled until their end-to-end gates pass.</p>
 </div>
 
 <div class="guide-section">
@@ -250,14 +248,13 @@
   <table>
     <tr><th>Feature</th><th><span class="tier-badge free">FREE</span></th><th><span class="tier-badge pro">PRO</span></th><th><span class="tier-badge elite">ELITE</span></th></tr>
     <tr><td>Overlay Encryption</td><td>Disabled</td><td>Disabled</td><td>Disabled</td></tr>
-    <tr><td>Manual Geofencing</td><td>3 rules</td><td>∞</td><td>∞</td></tr>
-    <tr><td>Private Zone</td><td>100 MB</td><td>∞</td><td>∞</td></tr>
-    <tr><td>Automatic Geofencing</td><td>—</td><td>✅</td><td>✅</td></tr>
-    <tr><td>Unlimited Rules</td><td>—</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Geofencing</td><td>Disabled</td><td>Disabled</td><td>Launch-gated</td></tr>
+    <tr><td>Private Zone</td><td>Disabled</td><td>Launch-gated</td><td>Launch-gated</td></tr>
+    <tr><td>Unlimited Rules</td><td>—</td><td>Launch-gated</td><td>Launch-gated</td></tr>
     <tr><td>Decoy Profile</td><td>—</td><td>—</td><td>✅</td></tr>
     <tr><td>Multi-Decoy Profiles</td><td>—</td><td>—</td><td>✅</td></tr>
-    <tr><td>Threat Detection</td><td>—</td><td>—</td><td>✅</td></tr>
-    <tr><td>Zero Telemetry</td><td>—</td><td>—</td><td>✅</td></tr>
+    <tr><td>Threat Detection</td><td>—</td><td>—</td><td>Roadmap</td></tr>
+    <tr><td>Zero Telemetry</td><td>✅</td><td>✅</td><td>✅</td></tr>
     <tr><td>Paid access</td><td>—</td><td>Launch-gated</td><td>Launch-gated</td></tr>
   </table>
 </div>
@@ -363,30 +360,28 @@
   <table>
     <tr><th>Einstellung</th><th>Detail</th></tr>
     <tr><td><strong>Overlay Encryption</strong></td><td>Bis zur Cross-Device-Verifizierung deaktiviert</td></tr>
-    <tr><td><strong>Manual Geofencing</strong></td><td>Bis zu 3 GPS-Regeln — an Standort X → Sicherheitsmodus Y</td></tr>
-    <tr><td><strong>Private Zone</strong></td><td>Verschlüsselter lokaler Speicher — max. 100 MB</td></tr>
+    <tr><td><strong>Zero Telemetry</strong></td><td>Kein Analytics-SDK und kein Nutzungs-Tracking</td></tr>
   </table>
   <h3 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:var(--text)">Pro <span class="tier-badge pro">PRO</span></h3>
   <table>
     <tr><th>Einstellung</th><th>Detail</th></tr>
-    <tr><td><strong>Unlimited Automation Rules</strong></td><td>Unbegrenzte Regeln</td></tr>
-    <tr><td><strong>Private Zone Unlimited</strong></td><td>Kein 100 MB Limit</td></tr>
+    <tr><td><strong>Unlimited Automation Rules</strong></td><td>Launch-gated, bis die Trigger-Durchsetzung verifiziert ist</td></tr>
+    <tr><td><strong>Private Zone</strong></td><td>Launch-gated, bis sicheres Abrufen und Löschen verifiziert sind</td></tr>
     <tr><td><strong>Decoy Profile</strong></td><td>ELITE-Feature für Plausible-Deniability-Profile</td></tr>
-    <tr><td><strong>Automatic Geofencing</strong></td><td>GPS-Trigger ohne manuelle Konfiguration</td></tr>
+    <tr><td><strong>Geofencing</strong></td><td>Launch-gated, bis die Regel-Durchsetzung verifiziert ist</td></tr>
   </table>
   <h3 style="margin:1.2rem 0 0.5rem;font-size:0.95rem;color:var(--text)">Elite <span class="tier-badge elite">ELITE</span></h3>
   <table>
     <tr><th>Einstellung</th><th>Detail</th></tr>
     <tr><td><strong>Multi-Decoy Profiles</strong></td><td>Mehrere Fake-Profile für verschiedene Szenarien</td></tr>
     <tr><td><strong>Advanced Threat Detection</strong></td><td>Roadmap-Funktion, in der App als SOON markiert</td></tr>
-    <tr><td><strong>Zero Telemetry</strong></td><td>Keinerlei Daten gesammelt oder gesendet</td></tr>
   </table>
 </div>
 
 <div class="guide-section">
   <div class="section-num">Abschnitt 9</div>
   <h2 class="section-heading section-anchor" id="de-workflow">▶ Alpha-Workflow</h2>
-  <p>Nur lokale Speicher-, Schlüssel-, Regel-, Geofencing- und Decoy-Komponenten evaluieren. Overlay und Messenger bleiben deaktiviert; eine sensible Android-Berechtigung ist nicht erforderlich.</p>
+  <p>Nur Onboarding, lokalen Identitätsaustausch, Einstellungen, den Hintergrund-Kontaktlistener und Decoy-Komponenten evaluieren. Overlay, Messenger, Automation, Private Zone und Geofencing bleiben bis zu ihren End-to-End-Gates deaktiviert.</p>
 </div>
 
 <div class="guide-section">
@@ -395,14 +390,13 @@
   <table>
     <tr><th>Feature</th><th><span class="tier-badge free">FREE</span></th><th><span class="tier-badge pro">PRO</span></th><th><span class="tier-badge elite">ELITE</span></th></tr>
     <tr><td>Overlay Encryption</td><td>Deaktiviert</td><td>Deaktiviert</td><td>Deaktiviert</td></tr>
-    <tr><td>Manuelles Geofencing</td><td>3 Regeln</td><td>∞</td><td>∞</td></tr>
-    <tr><td>Private Zone</td><td>100 MB</td><td>∞</td><td>∞</td></tr>
-    <tr><td>Automatisches Geofencing</td><td>—</td><td>✅</td><td>✅</td></tr>
-    <tr><td>Unbegrenzte Regeln</td><td>—</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Geofencing</td><td>Deaktiviert</td><td>Deaktiviert</td><td>Launch-gated</td></tr>
+    <tr><td>Private Zone</td><td>Deaktiviert</td><td>Launch-gated</td><td>Launch-gated</td></tr>
+    <tr><td>Unbegrenzte Regeln</td><td>—</td><td>Launch-gated</td><td>Launch-gated</td></tr>
     <tr><td>Decoy-Profil</td><td>—</td><td>—</td><td>✅</td></tr>
     <tr><td>Multi-Decoy-Profile</td><td>—</td><td>—</td><td>✅</td></tr>
-    <tr><td>Bedrohungserkennung</td><td>—</td><td>—</td><td>✅</td></tr>
-    <tr><td>Zero Telemetry</td><td>—</td><td>—</td><td>✅</td></tr>
+    <tr><td>Bedrohungserkennung</td><td>—</td><td>—</td><td>Roadmap</td></tr>
+    <tr><td>Zero Telemetry</td><td>✅</td><td>✅</td><td>✅</td></tr>
     <tr><td>Bezahlzugang</td><td>—</td><td>Launch-gated</td><td>Launch-gated</td></tr>
   </table>
 </div>

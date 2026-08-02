@@ -7,6 +7,7 @@ package com.stealthx.presentation.screen
 
 import android.content.ClipboardManager
 import android.content.Context
+import android.nfc.NfcAdapter
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -66,8 +67,10 @@ fun AddContactScreen(
     vm: AddContactViewModel = hiltViewModel()
 ) {
     var qrContent by remember { mutableStateOf("") }
+    var inputHint by remember { mutableStateOf<String?>(null) }
     val state by vm.uiState.collectAsState()
     val context = LocalContext.current
+    val hasNfc = remember(context) { NfcAdapter.getDefaultAdapter(context) != null }
     val nfcUri by NfcUriRelay.uri.collectAsState()
 
     val scanLauncher = rememberLauncherForActivityResult(ScanContract()) { result ->
@@ -83,6 +86,7 @@ fun AddContactScreen(
         val uri = nfcUri ?: return@LaunchedEffect
         NfcUriRelay.consume()
         qrContent = uri
+        inputHint = "NFC contact received. Verifying identity…"
         vm.addFromQrContent(uri)
     }
 
@@ -124,6 +128,7 @@ fun AddContactScreen(
                 subtitle = "Fastest way to add a contact",
                 enabled = true,
                 onClick = {
+                    inputHint = null
                     scanLauncher.launch(
                         ScanOptions()
                             .setDesiredBarcodeFormats(ScanOptions.QR_CODE)
@@ -135,9 +140,15 @@ fun AddContactScreen(
             OptionCard(
                 icon = Icons.Default.Nfc,
                 title = "NFC Tap",
-                subtitle = "Tap phones together to exchange identity",
-                enabled = true,
-                onClick = {}
+                subtitle = if (hasNfc) {
+                    "Hold an NFC tag containing a StealthX identity to this device"
+                } else {
+                    "NFC is not available on this device"
+                },
+                enabled = hasNfc,
+                onClick = {
+                    inputHint = "Ready for NFC. Hold the identity tag near the back of this device."
+                }
             )
             OptionCard(
                 icon = Icons.Default.Edit,
@@ -145,9 +156,15 @@ fun AddContactScreen(
                 subtitle = "stealthx://add/... signed bundle",
                 enabled = true,
                 onClick = {
+                    inputHint = null
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     val pasted = clipboard.primaryClip?.getItemAt(0)?.text?.toString().orEmpty()
-                    if (pasted.isNotEmpty()) qrContent = pasted
+                    qrContent = pasted
+                    inputHint = if (pasted.isEmpty()) {
+                        "Clipboard does not contain contact data."
+                    } else {
+                        null
+                    }
                 }
             )
 
@@ -165,6 +182,11 @@ fun AddContactScreen(
 
             state.errorMessage?.let {
                 Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+            }
+            if (state.errorMessage == null && state.statusMessage == null) {
+                inputHint?.let {
+                    Text(it, color = StealthXColors.OnSurfaceVariant, style = MaterialTheme.typography.bodySmall)
+                }
             }
             state.statusMessage?.let {
                 Text(it, color = Color(0xFF00C853), style = MaterialTheme.typography.bodySmall)

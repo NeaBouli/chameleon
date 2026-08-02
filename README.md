@@ -40,15 +40,15 @@ Android Keystore      Hardware-backed private key storage (StrongBox/TEE)
 ```
 :app                    Entry point, Hilt DI graph
 :stealthx-crypto        THE ONLY crypto module (XChaCha20, X25519, DR, Argon2id)
-:stealthx-ifr           Legacy/internal IFR helpers, not part of the public Android wallet flow
+:stealthx-access        Signed entitlement verification and access policy
 :security               Android Keystore, Attestation, SecureWipe
 :core                   AccessibilityService (AIDL isolated), Overlay
 :data                   Room + SQLCipher, EncryptedSharedPrefs, SecureFile
 :domain                 EncryptionEngine, RuleEngine, TierGate, KeyManager
 :features:overlay       Disabled pending cross-device pairing verification
 :features:messenger     Disabled pending session/transport verification
-:features:privatezone   Pro — encrypted file storage
-:features:geofencing    Elite — location-based rule triggers
+:features:privatezone   Launch-gated pending secure retrieve/delete verification
+:features:geofencing    Launch-gated pending rule-enforcement verification
 :features:decoy         Elite — decoy profile system
 :presentation           Jetpack Compose UI, StealthX Design System
 :shared                 Data models, utilities (no dependencies)
@@ -78,7 +78,7 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 | S-05 | ✅ Done | Domain Layer (XChaCha20, Double Ratchet HKDF, TierGate, RuleEngine) |
 | S-06 | ✅ Done | IFR web discount model and activation-code unlock path |
 | S-07 | ✅ Done | Compose UI (StealthX Design System, Navigation, Screens) |
-| S-08 | In progress | Feature Layer; overlay and messenger remain disabled |
+| S-08 | In progress | Overlay, messenger, automation, Private Zone and geofencing remain launch-gated |
 | S-09 | In progress | Internal hardening; no external MASVS certification claimed |
 | S-10 | Blocked | Distribution pending product verification and license decision |
 
