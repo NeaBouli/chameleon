@@ -90,7 +90,7 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 
 - F-Droid: not eligible under the current source-available license
 - Play Store: closed testing submitted; public listing is not live
-- GitHub Releases: [download the latest signed APK](https://github.com/NeaBouli/chameleon/releases/download/v0.1.10-alpha-chameleon/Chameleon-LATEST.apk)
+- GitHub Releases: [download the current published alpha (v0.1.10)](https://github.com/NeaBouli/chameleon/releases/download/v0.1.10-alpha-chameleon/Chameleon-LATEST.apk)
 - Source: `git clone https://github.com/NeaBouli/chameleon.git`
 
 ---

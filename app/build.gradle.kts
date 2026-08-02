@@ -39,8 +39,8 @@ android {
         applicationId = "chameleon24.app"
         minSdk = 26
         targetSdk = 36
-        versionCode = 11
-        versionName = "0.1.10-alpha"
+        versionCode = 12
+        versionName = "0.1.11-alpha"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "FORCED_TIER", "\"\"")
         buildConfigField("Boolean", "ALLOW_SCREENSHOTS", "false")
