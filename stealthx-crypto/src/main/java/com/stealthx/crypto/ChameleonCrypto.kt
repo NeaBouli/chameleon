@@ -11,6 +11,7 @@ import com.goterl.lazysodium.interfaces.Sign
 import com.goterl.lazysodium.interfaces.KeyExchange
 // SodiumInitializer is in this package — no import needed
 import com.stealthx.shared.model.EncryptedPayload
+import java.security.MessageDigest
 import java.util.Arrays
 
 /**
@@ -193,6 +194,19 @@ object ChameleonCrypto {
         return Pair(pubKey, secKey)
     }
 
+    fun isValidX25519KeyPair(publicKey: ByteArray, privateKey: ByteArray): Boolean {
+        if (publicKey.size != KeyExchange.PUBLICKEYBYTES ||
+            privateKey.size != KeyExchange.SECRETKEYBYTES
+        ) return false
+        val derivedPublicKey = ByteArray(KeyExchange.PUBLICKEYBYTES)
+        return try {
+            sodium.cryptoScalarMultBase(derivedPublicKey, privateKey) &&
+                MessageDigest.isEqual(publicKey, derivedPublicKey)
+        } finally {
+            wipeBytes(derivedPublicKey)
+        }
+    }
+
     /**
      * Compute X25519 shared secret.
      * @param myPrivateKey  Our private key (32 bytes)
@@ -216,6 +230,19 @@ object ChameleonCrypto {
         val secKey = ByteArray(Sign.SECRETKEYBYTES)
         sodium.cryptoSignKeypair(pubKey, secKey)
         return Pair(pubKey, secKey)
+    }
+
+    fun isValidSigningKeyPair(publicKey: ByteArray, privateKey: ByteArray): Boolean {
+        if (publicKey.size != Sign.PUBLICKEYBYTES || privateKey.size != Sign.SECRETKEYBYTES) {
+            return false
+        }
+        val derivedPublicKey = ByteArray(Sign.PUBLICKEYBYTES)
+        return try {
+            sodium.cryptoSignEd25519SkToPk(derivedPublicKey, privateKey) &&
+                MessageDigest.isEqual(publicKey, derivedPublicKey)
+        } finally {
+            wipeBytes(derivedPublicKey)
+        }
     }
 
     /**

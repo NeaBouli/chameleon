@@ -103,7 +103,7 @@ class ContactExchangeManager @Inject constructor(
                         "CONTACT_EXCHANGE" -> {
                             val bundle = json.optString("bundle")
                             if (bundle.startsWith("stealthx://add/")) {
-                                ioScope.launch { parseAndSave(bundle) }
+                                ioScope.launch { runCatching { parseAndSave(bundle) } }
                             }
                         }
                     }
@@ -148,6 +148,7 @@ class ContactExchangeManager @Inject constructor(
         val handle    = params["h"]?.takeIf { it.isNotEmpty() }
 
         if (x25519.size != 32 || ed25519.size != 32 || signature.size != 64) return
+        if (!StealthXIdentity.isIdBoundToPublicKey(sxId, ed25519)) return
 
         val payload = buildString {
             append(sxId); append("|")

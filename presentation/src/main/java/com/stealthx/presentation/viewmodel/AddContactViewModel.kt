@@ -99,6 +99,9 @@ class AddContactViewModel @Inject constructor(
         require(x25519.size == 32)    { "Invalid X25519 key length: ${x25519.size} (expected 32)" }
         require(ed25519.size == 32)   { "Invalid Ed25519 key length: ${ed25519.size} (expected 32)" }
         require(signature.size == 64) { "Invalid signature length: ${signature.size} (expected 64)" }
+        require(StealthXIdentity.isIdBoundToPublicKey(sxId, ed25519)) {
+            "StealthX ID is not bound to the supplied identity key"
+        }
 
         val payload = buildString {
             append(sxId); append("|")

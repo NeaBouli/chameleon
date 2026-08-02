@@ -41,8 +41,9 @@ class ChameleonApplication : Application() {
         // Must happen in Application.onCreate(), not lazily.
         SodiumInitializer.ensureInit()
 
-        // Create per-device identity on first launch — idempotent on subsequent launches
-        StealthXIdentity.getOrCreateWithSeed(this)
+        // Integrity failures must not crash the whole app. Identity-dependent features
+        // remain unavailable until the preserved identity state can be repaired explicitly.
+        runCatching { StealthXIdentity.getOrCreateWithSeed(this) }
 
         val allowDevTierOverride = BuildConfig.DEBUG
         com.stealthx.shared.DevTierOverride.forcedTier =

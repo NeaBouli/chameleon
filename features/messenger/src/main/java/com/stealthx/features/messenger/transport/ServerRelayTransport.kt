@@ -71,7 +71,7 @@ class ServerRelayTransport @Inject constructor(
 
     override suspend fun startListening() {
         if (_isConnected) return
-        val sxId = StealthXIdentity.getOrCreateWithSeed(context).raw
+        val sxId = StealthXIdentity.get(context)?.raw ?: return
         val request = Request.Builder()
             .url("$SIGNAL_URL?sxId=$sxId")
             .build()

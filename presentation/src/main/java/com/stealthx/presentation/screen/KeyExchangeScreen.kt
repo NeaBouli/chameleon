@@ -76,6 +76,7 @@ fun KeyExchangeScreen(
     var qrUri by remember { mutableStateOf<String?>(null) }
     var inviteUrl by remember { mutableStateOf<String?>(null) }
     var qrBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var identityUnavailable by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(true) }
     val nfcState by NfcWriteRelay.state.collectAsState()
 
@@ -84,18 +85,26 @@ fun KeyExchangeScreen(
     }
 
     LaunchedEffect(Unit) {
-        data class IdState(val id: StealthXId?, val uri: String?, val url: String?, val bitmap: Bitmap?)
+        data class IdState(
+            val id: StealthXId?,
+            val uri: String?,
+            val url: String?,
+            val bitmap: Bitmap?,
+            val unavailable: Boolean
+        )
         val result = withContext(Dispatchers.IO) {
-            val id = runCatching { StealthXIdentity.getOrCreateWithSeed(context) }.getOrNull()
+            val identityResult = runCatching { StealthXIdentity.getOrCreateWithSeed(context) }
+            val id = identityResult.getOrNull()
             val uri = if (id != null) runCatching { StealthXIdentity.createQrContent(context) }.getOrNull() else null
             val url = if (id != null) runCatching { StealthXIdentity.createInviteUrl(context) }.getOrNull() else null
             val bitmap = if (uri != null) runCatching { generateQrBitmap(uri) }.getOrNull() else null
-            IdState(id, uri, url, bitmap)
+            IdState(id, uri, url, bitmap, identityResult.isFailure || (id != null && uri == null))
         }
         identity = result.id
         qrUri = result.uri
         inviteUrl = result.url
         qrBitmap = result.bitmap
+        identityUnavailable = result.unavailable
         isLoading = false
     }
 
@@ -151,6 +160,15 @@ fun KeyExchangeScreen(
                 color = StealthXColors.OnSurfaceVariant,
                 textAlign = TextAlign.Center
             )
+            if (identityUnavailable) {
+                Spacer(Modifier.height(12.dp))
+                Text(
+                    "Identity integrity check failed. Your existing identity was preserved and sharing is disabled. Contact support before resetting app data.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                    textAlign = TextAlign.Center
+                )
+            }
             Spacer(Modifier.height(24.dp))
 
             Surface(
