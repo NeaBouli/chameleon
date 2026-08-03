@@ -16,6 +16,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -28,6 +30,7 @@ import java.net.URLDecoder
 import java.util.Base64
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -58,6 +61,10 @@ class ContactExchangeManager @Inject constructor(
     @Volatile private var listenerWs: WebSocket? = null
     @Volatile private var identified = false
     private val pendingFrames = ConcurrentLinkedQueue<String>()
+    private val incomingLock = Mutex()
+    private val listenerStateLock = Any()
+    private val listenerGeneration = AtomicLong(0L)
+    @Volatile private var recoveryPaused = false
 
     val isConnected: Boolean get() = listenerWs != null
 
@@ -83,12 +90,15 @@ class ContactExchangeManager @Inject constructor(
         }
     }
 
-    fun startListening() {
+    fun startListening() = synchronized(listenerStateLock) {
+        if (recoveryPaused) return@synchronized
         if (listenerWs != null) return
         val mySxId = StealthXIdentity.get(context)?.raw ?: return
+        val connectionGeneration = listenerGeneration.get()
         val req = Request.Builder().url(SIGNAL_URL).build()
         listenerWs = listenClient.newWebSocket(req, object : WebSocketListener() {
             override fun onOpen(ws: WebSocket, response: Response) {
+                if (!isCurrentConnection(ws, connectionGeneration)) return
                 ws.send(JSONObject().apply {
                     put("type", "IDENTIFY")
                     put("sxId", mySxId)
@@ -96,6 +106,7 @@ class ContactExchangeManager @Inject constructor(
             }
 
             override fun onMessage(ws: WebSocket, text: String) {
+                if (!isCurrentConnection(ws, connectionGeneration)) return
                 runCatching {
                     val json = JSONObject(text)
                     when (json.optString("type")) {
@@ -103,7 +114,9 @@ class ContactExchangeManager @Inject constructor(
                         "CONTACT_EXCHANGE" -> {
                             val bundle = json.optString("bundle")
                             if (bundle.startsWith("stealthx://add/")) {
-                                ioScope.launch { parseAndSave(bundle) }
+                                ioScope.launch {
+                                    runCatching { parseAndSave(bundle, connectionGeneration) }
+                                }
                             }
                         }
                     }
@@ -111,68 +124,109 @@ class ContactExchangeManager @Inject constructor(
             }
 
             override fun onFailure(ws: WebSocket, t: Throwable, response: Response?) {
-                listenerWs = null; identified = false
+                clearListenerIfCurrent(ws)
             }
 
             override fun onClosed(ws: WebSocket, code: Int, reason: String) {
-                listenerWs = null; identified = false
+                clearListenerIfCurrent(ws)
             }
         })
     }
 
-    fun stopListening() {
+    private fun isCurrentConnection(ws: WebSocket, generation: Long): Boolean =
+        listenerWs === ws && generation == listenerGeneration.get()
+
+    private fun clearListenerIfCurrent(ws: WebSocket) = synchronized(listenerStateLock) {
+        if (listenerWs === ws) {
+            listenerWs = null
+            identified = false
+        }
+    }
+
+    fun stopListening() = synchronized(listenerStateLock) {
+        stopListeningLocked()
+    }
+
+    private fun stopListeningLocked() {
+        listenerGeneration.incrementAndGet()
         listenerWs?.close(1000, "listener disabled")
         listenerWs = null
         identified = false
         pendingFrames.clear()
     }
 
-    private suspend fun parseAndSave(content: String) {
-        val uri = URI(content)
-        val sxId = uri.path.substringAfterLast('/')
-        SxIdValidator.requireValid(sxId)
+    suspend fun <T> withIncomingPaused(block: suspend () -> T): T =
+        incomingLock.withLock {
+            synchronized(listenerStateLock) {
+                recoveryPaused = true
+                stopListeningLocked()
+            }
+            try {
+                block()
+            } finally {
+                // Invalidate frames delivered by a socket while its close was in flight.
+                listenerGeneration.incrementAndGet()
+            }
+        }
 
-        val params = uri.rawQuery
-            ?.split("&")
-            ?.associate { part ->
-                val eq = part.indexOf('=')
-                if (eq < 0) part to ""
-                else part.substring(0, eq) to URLDecoder.decode(part.substring(eq + 1), "UTF-8")
-            } ?: emptyMap()
-
-        val decoder = Base64.getUrlDecoder()
-        val x25519   = decoder.decode(params["x"] ?: return)
-        val ed25519  = decoder.decode(params["e"] ?: return)
-        val signature = decoder.decode(params["s"] ?: return)
-        val createdAt = params["c"]?.toLongOrNull() ?: return
-        val handle    = params["h"]?.takeIf { it.isNotEmpty() }
-
-        if (x25519.size != 32 || ed25519.size != 32 || signature.size != 64) return
-
-        val payload = buildString {
-            append(sxId); append("|")
-            append(handle ?: ""); append("|")
-            append(x25519.joinToString("")  { b: Byte -> "%02x".format(b.toInt() and 0xFF) }); append("|")
-            append(ed25519.joinToString("") { b: Byte -> "%02x".format(b.toInt() and 0xFF) }); append("|")
-            append(createdAt.toString())
-        }.toByteArray(Charsets.UTF_8)
-
-        val isVerified = runCatching { ChameleonCrypto.verify(payload, signature, ed25519) }.getOrDefault(false)
-        if (!isVerified) return
-
-        if (contactKeyDao.getById(sxId) != null) return
-
-        contactKeyDao.upsert(
-            ContactKeyEntity(
-                id          = sxId,
-                displayName = handle ?: sxId,
-                identityKey = ed25519,
-                dhPublicKey = x25519,
-                signature   = signature,
-                isVerified  = true,
-                createdAt   = createdAt,
-                lastUsedAt  = null
-            )
-        )
+    fun resumeAfterRecovery(startListener: Boolean) = synchronized(listenerStateLock) {
+        listenerGeneration.incrementAndGet()
+        recoveryPaused = false
+        if (startListener) startListening()
     }
+
+    private suspend fun parseAndSave(content: String, generation: Long) =
+        incomingLock.withLock {
+            if (generation != listenerGeneration.get()) return@withLock
+            val uri = URI(content)
+            val sxId = uri.path.substringAfterLast('/')
+            SxIdValidator.requireValid(sxId)
+
+            val params = uri.rawQuery
+                ?.split("&")
+                ?.associate { part ->
+                    val eq = part.indexOf('=')
+                    if (eq < 0) part to ""
+                    else part.substring(0, eq) to URLDecoder.decode(part.substring(eq + 1), "UTF-8")
+                } ?: emptyMap()
+
+            val decoder = Base64.getUrlDecoder()
+            val x25519 = decoder.decode(params["x"] ?: return@withLock)
+            val ed25519 = decoder.decode(params["e"] ?: return@withLock)
+            val signature = decoder.decode(params["s"] ?: return@withLock)
+            val createdAt = params["c"]?.toLongOrNull() ?: return@withLock
+            val handle = params["h"]?.takeIf { it.isNotEmpty() }
+
+            if (x25519.size != 32 || ed25519.size != 32 || signature.size != 64) return@withLock
+            if (!StealthXIdentity.isIdBoundToPublicKey(sxId, ed25519)) return@withLock
+
+            val payload = buildString {
+                append(sxId); append("|")
+                append(handle ?: ""); append("|")
+                append(x25519.joinToString("") { b: Byte -> "%02x".format(b.toInt() and 0xFF) }); append("|")
+                append(ed25519.joinToString("") { b: Byte -> "%02x".format(b.toInt() and 0xFF) }); append("|")
+                append(createdAt.toString())
+            }.toByteArray(Charsets.UTF_8)
+
+            val isVerified = runCatching {
+                ChameleonCrypto.verify(payload, signature, ed25519)
+            }.getOrDefault(false)
+            if (!isVerified) return@withLock
+
+            if (contactKeyDao.getById(sxId) != null) return@withLock
+            if (generation != listenerGeneration.get()) return@withLock
+
+            contactKeyDao.upsert(
+                ContactKeyEntity(
+                    id = sxId,
+                    displayName = handle ?: sxId,
+                    identityKey = ed25519,
+                    dhPublicKey = x25519,
+                    signature = signature,
+                    isVerified = true,
+                    createdAt = createdAt,
+                    lastUsedAt = null
+                )
+            )
+        }
 }

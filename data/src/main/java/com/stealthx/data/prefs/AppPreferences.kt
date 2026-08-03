@@ -139,6 +139,9 @@ class AppPreferences @Inject constructor(
         set(value) = if (value == null) prefs.edit().remove(KEY_ENTITLEMENT_TOKEN).apply()
                      else prefs.edit().putString(KEY_ENTITLEMENT_TOKEN, value).apply()
 
+    fun clearEntitlementToken(): Boolean =
+        prefs.edit().remove(KEY_ENTITLEMENT_TOKEN).commit()
+
     fun clear() {
         prefs.edit().clear().apply()
     }

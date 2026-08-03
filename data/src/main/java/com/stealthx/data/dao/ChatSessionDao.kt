@@ -21,4 +21,7 @@ interface ChatSessionDao {
 
     @Query("DELETE FROM chat_sessions WHERE contact_id = :contactId")
     suspend fun delete(contactId: String)
+
+    @Query("DELETE FROM chat_sessions")
+    suspend fun deleteAll()
 }

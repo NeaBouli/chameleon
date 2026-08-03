@@ -56,6 +56,7 @@ import com.stealthx.presentation.viewmodel.SetupViewModel
 import com.stealthx.presentation.theme.StealthXColors
 import com.stealthx.presentation.viewmodel.DashboardViewModel
 import com.stealthx.presentation.viewmodel.SettingsViewModel
+import com.stealthx.presentation.viewmodel.IdentityRecoveryViewModel
 import com.stealthx.shared.model.AccessTier
 import java.io.ByteArrayOutputStream
 
@@ -247,9 +248,11 @@ fun StealthXNavGraph(navController: NavHostController) {
         }
 
         composable(Screen.KeyExchange.route) {
+            val identityRecoveryViewModel: IdentityRecoveryViewModel = hiltViewModel()
             KeyExchangeScreen(
                 onBack = { navController.popBackStack() },
-                onAddContact = { navController.navigate(Screen.AddContact.route) }
+                onAddContact = { navController.navigate(Screen.AddContact.route) },
+                recoveryViewModel = identityRecoveryViewModel
             )
         }
 

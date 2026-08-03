@@ -33,4 +33,7 @@ interface ContactKeyDao {
 
     @Query("DELETE FROM contact_keys WHERE id = :id")
     suspend fun deleteById(id: String)
+
+    @Query("DELETE FROM contact_keys")
+    suspend fun deleteAll()
 }

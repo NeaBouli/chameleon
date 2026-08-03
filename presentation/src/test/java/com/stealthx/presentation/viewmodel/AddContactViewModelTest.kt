@@ -10,6 +10,7 @@ import com.stealthx.crypto.ChameleonCrypto
 import com.stealthx.data.dao.ContactKeyDao
 import com.stealthx.data.entity.ContactKeyEntity
 import com.stealthx.data.exchange.ContactExchangeManager
+import com.stealthx.data.identity.StealthXIdentity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -45,7 +46,7 @@ class AddContactViewModelTest {
     private val validX25519   = ByteArray(32) { (it + 1).toByte() }
     private val validEd25519  = ByteArray(32) { (it + 10).toByte() }
     private val validSig      = ByteArray(64) { (it + 5).toByte() }
-    private val validSxId     = "sx_aB3dE7gH9"
+    private val validSxId     = StealthXIdentity.idForPublicKey(validEd25519)
     private val validCreatedAt = 1716249600000L
 
     private fun b64url(bytes: ByteArray): String = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes)
@@ -148,6 +149,18 @@ class AddContactViewModelTest {
         assertFalse(state.contactAdded)
         assertNotNull(state.errorMessage)
         assertTrue(state.errorMessage!!.contains("signature"), "Expected 'signature' in: ${state.errorMessage}")
+    }
+
+    @Test
+    @DisplayName("rejects sx_ ID that is not derived from the supplied Ed25519 key")
+    fun `rejects identity key binding mismatch`() = runTest {
+        val differentId = StealthXIdentity.idForPublicKey(ByteArray(32) { 99 })
+        vm.addFromQrContent(validUri(sxId = differentId))
+        advanceUntilIdle()
+
+        assertFalse(vm.uiState.value.contactAdded)
+        assertTrue(vm.uiState.value.errorMessage?.contains("not bound") == true)
+        coVerify(exactly = 0) { dao.upsert(any()) }
     }
 
     // ── FIX 2: fail-closed on invalid signature ───────────────────────────────

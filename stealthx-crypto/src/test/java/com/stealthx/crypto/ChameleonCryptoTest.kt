@@ -130,6 +130,18 @@ class ChameleonCryptoTest {
     }
 
     @Test
+    fun `x25519 keypair validation rejects a different public key`() {
+        val (publicKey, privateKey) = ChameleonCrypto.generateX25519KeyPair()
+        val (otherPublicKey, otherPrivateKey) = ChameleonCrypto.generateX25519KeyPair()
+
+        assertTrue(ChameleonCrypto.isValidX25519KeyPair(publicKey, privateKey))
+        assertFalse(ChameleonCrypto.isValidX25519KeyPair(otherPublicKey, privateKey))
+
+        ChameleonCrypto.wipeBytes(privateKey)
+        ChameleonCrypto.wipeBytes(otherPrivateKey)
+    }
+
+    @Test
     @DisplayName("Ed25519 sign and verify roundtrip")
     fun `ed25519 signature valid`() {
         val (pub, priv) = ChameleonCrypto.generateSigningKeyPair()
@@ -137,6 +149,18 @@ class ChameleonCryptoTest {
         val signature   = ChameleonCrypto.sign(message, priv)
 
         assertTrue(ChameleonCrypto.verify(message, signature, pub))
+    }
+
+    @Test
+    fun `ed25519 keypair validation rejects a different public key`() {
+        val (publicKey, privateKey) = ChameleonCrypto.generateSigningKeyPair()
+        val (otherPublicKey, otherPrivateKey) = ChameleonCrypto.generateSigningKeyPair()
+
+        assertTrue(ChameleonCrypto.isValidSigningKeyPair(publicKey, privateKey))
+        assertFalse(ChameleonCrypto.isValidSigningKeyPair(otherPublicKey, privateKey))
+
+        ChameleonCrypto.wipeBytes(privateKey)
+        ChameleonCrypto.wipeBytes(otherPrivateKey)
     }
 
     @Test
