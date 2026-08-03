@@ -111,6 +111,40 @@ object StealthXIdentity {
         }.getOrNull()
     }
 
+    fun resetIrrecoverable(
+        context: Context,
+        expectedReason: IdentityIntegrityReason
+    ) = synchronized(lock) {
+        resetIrrecoverable(getEncryptedPrefs(context), expectedReason)
+    }
+
+    internal fun resetIrrecoverable(
+        prefs: SharedPreferences,
+        expectedReason: IdentityIntegrityReason
+    ) {
+        require(expectedReason.isUserRecoverable) {
+            "Persistence failures require storage support, not identity reset"
+        }
+        if (persistenceFailed) {
+            throw IdentityIntegrityException(IdentityIntegrityReason.PERSISTENCE_FAILED)
+        }
+
+        val actualReason = try {
+            resolve(prefs, createIfMissing = false)?.let { resolved ->
+                resolved.wipePrivateKeys()
+            }
+            null
+        } catch (error: IdentityIntegrityException) {
+            error.reason
+        }
+        check(actualReason == expectedReason) {
+            "Identity state changed before recovery"
+        }
+
+        commit(prefs.edit().clear())
+        persistenceFailed = false
+    }
+
     fun isIdBoundToPublicKey(sxId: String, ed25519Public: ByteArray): Boolean {
         if (ed25519Public.size != 32) return false
         return sxId == idForPublicKey(ed25519Public)

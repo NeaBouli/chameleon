@@ -14,6 +14,9 @@ enum class IdentityIntegrityReason {
     PERSISTENCE_FAILED
 }
 
+val IdentityIntegrityReason.isUserRecoverable: Boolean
+    get() = this != IdentityIntegrityReason.PERSISTENCE_FAILED
+
 class IdentityIntegrityException(
     val reason: IdentityIntegrityReason
 ) : SecurityException("Identity integrity check failed (${reason.name})")
