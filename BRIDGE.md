@@ -3219,3 +3219,20 @@ Open next steps:
 Open next steps:
 - Neues VersionCode-10-AAB im geschlossenen Google-Play-Test hochladen.
 - Play-Warnungen und Einreichungsstatus pruefen; kein Produktions-Rollout.
+
+## 2026-08-06 03:30 EEST — CODEX SOL — WEB-ONLY IFR SALES SURFACE
+
+- Ticket `GIO-20260806-STEALTHX-WEB-IFR-CHECKOUT`; branch
+  `fix/gh-42-web-ifr-checkout`; status: source ready for review, production blocked.
+- Chameleon landing and Wiki now expose IFR only as a browser-purchase benefit. Connect,
+  Disconnect, signed verification and Pro/Elite checkout use the shared browser client; the
+  address is read-only, Suite is unavailable and no wallet state enters Android.
+- Added a neutral payment-return page that waits for signed server fulfillment. Mobile 375 px
+  browser verification has zero horizontal overflow and readable controls.
+- PASS: shared JS syntax; identical shared-script SHA-256 across all three sites;
+  `git diff --check`; Gradle `verifyNoAppIfrWalletCode`. No Android source/artifact, payment
+  activation, secret, deployment or live checkout was touched.
+- Blocked before live sale: VLABS AADE/myDATA/e-timologio; production entitlement signing and
+  runtime configuration; repeated-discount enforcement policy.
+
+`READY FOR REVIEW — DO NOT ACTIVATE PAYMENTS`
