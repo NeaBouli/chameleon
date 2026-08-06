@@ -3244,3 +3244,12 @@ Open next steps:
   payment activation.
 
 `REVIEW IN PROGRESS`
+
+## 2026-08-06 03:40 EEST — CODEX SOL — REVIEW FIXES
+
+- GitHub Build & Test and Security Pattern Scan passed. Valid CodeRabbit findings were fixed:
+  API timeouts, safe signature fallback, reconnect button state and backend-aligned landing/Wiki
+  availability wording.
+- No payment activation, deployment, secret or Android source change.
+
+`REVIEW FIX CI RERUN REQUIRED`
