@@ -3300,3 +3300,19 @@ Open next steps:
   fresh-main replacement merges.
 
 `FRESH-MAIN SECURITY PR READY`
+
+## 2026-08-09 12:11 EEST — CODEX SOL — LEGACY ENTITLEMENT SALVAGE MERGED
+
+- Fresh-main PR #28 merged as `7649ea7c6b62d3c9ffa172acb2b7d19431911e10`; exact-main CI run
+  `31305071767` and Pages run `31305071387` PASS, including Build & Test and Security Pattern
+  Scan.
+- Obsolete PR #24 was commented and closed as superseded. Its relevant product-to-tier binding
+  was ported and tested; the stale branch itself was not merged.
+- Product decision is final for current web sales: every successfully verified IFR holder may
+  receive the provider-defined discount on every eligible checkout. There is no per-wallet
+  reuse limit. Verification remains browser/server-side before purchase; Android apps remain
+  free of IFR and wallet mechanisms.
+- No production deployment, runtime secret, Play release or live payment mutation occurred.
+  VLABS fiscal/AADE and private production fulfillment remain a separate readiness gate.
+
+`TASK COMPLETE — TARGET STOP ACTIVE`
