@@ -40,11 +40,12 @@ object EntitlementTokenVerifier {
         val product = requireNotNull(claims["product"]).also {
             require(it.matches(Regex("^chameleon_[a-z0-9_]{1,100}$"))) { "Invalid Chameleon entitlement product" }
         }
-        val tier = when (claims["tier"]) {
-            "PRO" -> AccessTier.PRO
-            "ELITE" -> AccessTier.ELITE
-            else -> throw IllegalArgumentException("Invalid Chameleon entitlement tier")
+        val tier = when (product) {
+            "chameleon_pro_lifetime" -> AccessTier.PRO
+            "chameleon_elite_lifetime" -> AccessTier.ELITE
+            else -> throw IllegalArgumentException("Invalid Chameleon entitlement product")
         }
+        require(claims["tier"] == tier.name) { "Chameleon entitlement product/tier mismatch" }
         val issuedAt = claims["iat"]?.toLongOrNull() ?: throw IllegalArgumentException("Invalid entitlement issue time")
         val expiresAt = claims["exp"]?.toLongOrNull() ?: throw IllegalArgumentException("Invalid entitlement expiry")
         require(issuedAt <= nowEpochSeconds + 60) { "Entitlement issued in the future" }
