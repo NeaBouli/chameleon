@@ -283,6 +283,7 @@
     .ifr-grid,
     .ifr-wallet-actions,
     .ifr-actions { grid-template-columns:1fr; }
+    .crypto-table { display:block; max-width:100%; overflow-x:auto; }
   }
 
   /* Light StealthX product layout override, aligned with /securecall product.css */
@@ -645,7 +646,7 @@
     <div class="feature-card">
       <div class="feature-icon">🔑</div>
       <h3>IFR Holder Discount</h3>
-      <p>Paid access and discounts are launch-gated until product and entitlement verification is complete.</p>
+      <p>IFR holder verification is browser-only before purchase and never part of the Android app.</p>
     </div>
   </div>
 </section>
@@ -706,10 +707,10 @@
 <hr class="divider">
 
 <!-- IFR -->
-<section id="ifr">
-  <div class="section-label">Inferno Integration</div>
-  <h2 class="section-title">IFR integration is launch-gated.</h2>
-  <p class="section-sub">No token purchase, wallet verification, discount, or Stripe checkout is available from this site.</p>
+<section id="ifr" data-ifr-checkout data-ifr-product="Chameleon">
+  <div class="section-label">Browser Purchase Benefit</div>
+  <h2 class="section-title">50% IFR holder discount at browser checkout.</h2>
+  <p class="section-sub">Connect and sign in this browser before purchase. The server checks the IFR balance read-only on Ethereum Mainnet. Chameleon remains completely wallet-free.</p>
 
   <div class="tier-grid">
     <div class="tier-card">
@@ -724,17 +725,17 @@
     </div>
     <div class="tier-card featured">
       <div class="tier-name" style="color:var(--green)">Pro</div>
-      <div class="tier-lock">Paid access launch-gated</div>
+      <div class="tier-lock">Hold at least 2,000 IFR for 50% checkout</div>
       <ul class="tier-features">
         <li>Everything in Free</li>
-        <li>Paid access remains launch-gated</li>
+        <li>50% checkout after signed browser verification when secure payment is available</li>
         <li>Automation remains under verification</li>
         <li>Private Zone remains under verification</li>
       </ul>
     </div>
     <div class="tier-card">
       <div class="tier-name" style="color:var(--gold)">Elite</div>
-      <div class="tier-lock">Paid access launch-gated</div>
+      <div class="tier-lock">Hold at least 6,000 IFR for 50% checkout</div>
       <ul class="tier-features">
         <li>Everything in Pro</li>
         <li>Decoy components in controlled testing</li>
@@ -754,7 +755,7 @@
           <li>SecureChat Elite (lifetime)</li>
           <li>Chameleon Elite (lifetime)</li>
           <li>All future StealthX products</li>
-          <li>Everything. One browser verification.</li>
+          <li>Suite fulfillment is not enabled yet</li>
         </ul>
         <div>
           <span class="btn btn-disabled" style="display:block;width:100%;text-align:center;">Unavailable</span>
@@ -767,28 +768,28 @@
   <div class="ifr-box">
     <div class="ifr-grid">
       <div class="ifr-card">
-        <h3>IFR access</h3>
+        <h3>Buy IFR</h3>
         <ul class="tier-features">
-          <li>Token purchase is unavailable from this site</li>
-          <li>Discount verification is launch-gated</li>
-          <li>Checkout is launch-gated</li>
+          <li>Open IFR on Uniswap</li>
+          <li>Hold at least 2,000 IFR for Pro</li>
+          <li>Hold at least 6,000 IFR for Elite</li>
         </ul>
-        <span class="btn btn-disabled" style="display:block;width:100%;text-align:center;">Unavailable</span>
+        <a href="https://app.uniswap.org/explore/tokens/ethereum/0x77e99917Eca8539c62F509ED1193ac36580A6e7B" class="btn btn-secondary" style="display:block;width:100%;text-align:center;" target="_blank" rel="noopener">Buy IFR on Uniswap</a>
         <div class="ifr-token-logo"><img src="https://ifrunit.tech/assets/ifr_icon_256.png" alt="IFR token logo" width="96" height="96" loading="lazy"></div>
       </div>
       <div class="ifr-card">
-        <h3>Verification unavailable</h3>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;">Wallet verification and Stripe checkout are disabled until the controlled launch gates pass.</p>
+        <h3>Verify for Stripe discount</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;">Connect a browser wallet. No manual address proof is accepted and no wallet state is stored in the Android app.</p>
         <div class="ifr-wallet-actions">
-          <button id="connectIfrWallet" class="btn btn-disabled" type="button" disabled>Verification launch-gated</button>
-          <button id="disconnectIfrWallet" class="btn btn-disabled" type="button" disabled>Unavailable</button>
+          <button class="btn btn-primary" type="button" data-ifr-connect>Connect wallet</button>
+          <button class="btn btn-secondary" type="button" data-ifr-disconnect disabled>Disconnect</button>
         </div>
+        <input type="text" readonly data-ifr-address aria-label="Connected wallet address" placeholder="Connected wallet address" style="width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,.28);background:#111827;color:#f8fafc;margin-bottom:10px;font-weight:700;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">
         <div class="ifr-actions">
-          <button class="btn btn-disabled" type="button" disabled>Pro launch-gated</button>
-          <button class="btn btn-disabled" type="button" disabled>Elite launch-gated</button>
-          <button class="btn btn-disabled" type="button" disabled>Suite launch-gated</button>
+          <button class="btn btn-primary" type="button" data-ifr-tier="chameleon_pro_lifetime">Pro 50% checkout</button>
+          <button class="btn btn-primary" type="button" data-ifr-tier="chameleon_elite_lifetime">Elite 50% checkout</button>
         </div>
-        <p id="ifrDiscountStatus" style="font-size:13px;color:var(--text);font-weight:700;text-align:center;margin-top:10px;line-height:1.45;">Launch-gated. No wallet connection or checkout is active.</p>
+        <p data-ifr-status role="status" aria-live="polite" style="font-size:13px;color:var(--text);font-weight:700;text-align:center;margin-top:10px;line-height:1.45;">Connect a wallet to prepare signed browser verification. Checkout availability is controlled by the secure payment backend.</p>
       </div>
     </div>
   </div>
@@ -872,7 +873,7 @@
         <h4>Product</h4>
         <a href="#features">Features</a>
         <a href="#security">Security</a>
-        <span>IFR access unavailable</span>
+        <a href="#ifr">IFR holder discount</a>
         <a href="#download">Download</a>
       </div>
       <div class="footer-col">
@@ -886,7 +887,7 @@
         <a href="https://stealthx.tech">SecureCall</a>
         <a href="https://securechat.stealthx.tech">SecureChat</a>
         <a href="https://chameleon.stealthx.tech">Chameleon</a>
-        <span>IFR access unavailable</span>
+        <a href="#ifr">IFR browser checkout</a>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
@@ -902,183 +903,8 @@
   </div>
 </footer>
 
+<script type="module" src="js/ifr-checkout.js"></script>
 <script>
-(function(){
-	  return;
-	  var API='https://api.stealthx.tech';
-  var WC_PROJECT_ID='32f56abaa4b1d7f59fb1571c0c0a551f';
-  var WC_ESM_URL='https://esm.sh/@walletconnect/ethereum-provider@2.17.3';
-  var RPC_URL='https://eth.llamarpc.com';
-  var ifrProvider=null;
-  var ifrAddress='';
-  function setIfrStatus(message){
-    var status=document.getElementById('ifrDiscountStatus');
-    if(status)status.textContent=message;
-  }
-  function balanceText(value){return value?(' Balance: '+value+' IFR.'):""}
-  function checkoutError(data){
-    var error=(data&&data.error)||'Checkout unavailable';
-    if(error==='ifr_not_eligible')return 'No eligible IFR balance found for this wallet.'+balanceText(data.balanceAmount);
-    if(error==='ifr_tier_too_low')return 'IFR balance found, but tier is too low. Required: '+(data.requiredTier||'higher tier')+'. Current: '+(data.walletTier||'none')+'.'+balanceText(data.balanceAmount);
-    if(error==='wallet_signature_required')return 'Wallet signature is required before IFR discount checkout can open.';
-    if(error==='wallet_signature_invalid')return 'Wallet signature could not be verified. Please reconnect and sign again.';
-    if(error==='wallet_challenge_expired')return 'Wallet verification expired. Please tap checkout again and sign the new request.';
-    if(error==='invalid_wallet_challenge'||error==='wallet_challenge_mismatch')return 'Wallet verification mismatch. Please reconnect the wallet and try again.';
-    if(error==='rate_limited')return 'Too many checkout attempts. Please wait a few minutes and try again.';
-    return error;
-  }
-  function injectedProviders(){
-    var list=[];
-    if(window.ethereum&&Array.isArray(window.ethereum.providers))list=list.concat(window.ethereum.providers);
-    if(window.ethereum)list.push(window.ethereum);
-    if(window.phantom&&window.phantom.ethereum)list.push(window.phantom.ethereum);
-    return list.filter(function(provider,index,all){return provider&&provider.request&&all.indexOf(provider)===index});
-  }
-  function preferredProvider(){
-    var providers=injectedProviders();
-    if(!providers.length)return null;
-    return providers.find(function(provider){return provider.isMetaMask})||
-      providers.find(function(provider){return provider.isPhantom})||
-      providers.find(function(provider){return provider.isCoinbaseWallet})||
-      providers[0];
-  }
-  async function switchMainnet(provider){
-    try{await provider.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x1'}]})}catch(e){}
-  }
-  async function connectInjectedWallet(){
-    var provider=preferredProvider();
-    if(!provider)return null;
-    setIfrStatus('Connecting browser wallet...');
-    var accounts=await provider.request({method:'eth_requestAccounts'});
-    if(!accounts||!accounts[0])throw new Error('No wallet account returned.');
-    await switchMainnet(provider);
-    ifrProvider=provider;
-    ifrAddress=accounts[0];
-    return ifrAddress;
-  }
-  async function connectWalletConnect(){
-    setIfrStatus('Opening WalletConnect...');
-    var mod=await import(WC_ESM_URL);
-    var EthereumProvider=mod.EthereumProvider||mod.default;
-    if(!EthereumProvider)throw new Error('WalletConnect provider unavailable.');
-    var provider=await EthereumProvider.init({
-      projectId:WC_PROJECT_ID,
-      optionalChains:[1],
-      showQrModal:true,
-      rpcMap:{1:RPC_URL},
-      methods:['eth_requestAccounts','personal_sign','wallet_switchEthereumChain'],
-      events:['accountsChanged','chainChanged','disconnect'],
-      metadata:{name:'Chameleon IFR Discount',description:'Read-only IFR holder discount verification for Chameleon checkout.',url:location.origin,icons:[location.origin+'/favicon.ico']},
-      qrModalOptions:{themeMode:'dark'}
-    });
-    var accounts=await provider.enable();
-    if(!accounts||!accounts[0])throw new Error('No wallet account returned.');
-    await switchMainnet(provider);
-    ifrProvider=provider;
-    ifrAddress=accounts[0];
-    return ifrAddress;
-  }
-  async function connectIfrWallet(){
-    if(ifrProvider&&ifrAddress)return ifrAddress;
-    var input=document.getElementById('ifrWalletAddress');
-    var walletAddress;
-    try{walletAddress=await connectInjectedWallet()}catch(e){
-      if(e&&e.code===4001)throw e;
-      console.warn('Injected wallet connect failed, falling back to WalletConnect',e);
-    }
-    if(!walletAddress)walletAddress=await connectWalletConnect();
-    if(input)input.value=walletAddress;
-    setIfrStatus('Wallet connected: '+walletAddress.slice(0,6)+'...'+walletAddress.slice(-4)+'. Choose Pro, Elite, or Suite checkout.');
-    return walletAddress;
-  }
-  async function disconnectIfrWallet(){
-    var provider=ifrProvider;
-    ifrProvider=null;
-    ifrAddress='';
-    var input=document.getElementById('ifrWalletAddress');
-    if(input)input.value='';
-    try{if(provider&&provider.disconnect)await provider.disconnect()}catch(e){}
-    setIfrStatus('Wallet disconnected. Connect a wallet to verify IFR discount eligibility.');
-  }
-  async function signIfrDiscount(tier){
-    var walletAddress=await connectIfrWallet();
-    var challengeResponse=await fetch(API+'/stripe/ifr-discount-challenge',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({tier:tier,walletAddress:walletAddress})
-    });
-    var challenge=await challengeResponse.json().catch(function(){return{}});
-    if(!challengeResponse.ok||!challenge.message||!challenge.nonce)throw new Error(challenge.error||'Wallet challenge unavailable');
-    var status=document.getElementById('ifrDiscountStatus');
-    if(status)status.textContent='Sign the wallet message to prove ownership...';
-    if(!ifrProvider)throw new Error('Wallet is not connected.');
-    var signature;
-    try{signature=await ifrProvider.request({method:'personal_sign',params:[challenge.message,walletAddress]})}
-    catch(e){signature=await ifrProvider.request({method:'personal_sign',params:[walletAddress,challenge.message]})}
-    return {walletAddress:walletAddress,walletNonce:challenge.nonce,walletSignature:signature};
-  }
-  async function startCheckout(button){
-    if(!button||button.disabled)return;
-    var label=button.textContent;
-    button.disabled=true;
-    button.textContent='Opening Stripe...';
-    try{
-      var payload={tier:button.dataset.checkoutTier};
-      if(button.dataset.ifrDiscount==='true'){
-        button.textContent='Signing wallet...';
-        setIfrStatus('Preparing wallet proof...');
-        payload.ifrDiscount=true;
-        Object.assign(payload,await signIfrDiscount(payload.tier));
-        button.textContent='Checking IFR...';
-        setIfrStatus('Checking IFR balance on Ethereum Mainnet...');
-      }
-      var r=await fetch(API+'/stripe/create-dynamic-checkout',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(payload)
-      });
-      var d=await r.json().catch(function(){return{}});
-      if(!r.ok||!d.url)throw new Error(checkoutError(d));
-      var status=document.getElementById('ifrDiscountStatus');
-      if(status&&d.ifrDiscountApplied)status.textContent='IFR eligible: '+(d.ifrTier||'verified')+balanceText(d.ifrBalanceAmount)+' Opening Stripe with 50% discount...';
-      setTimeout(function(){window.location.href=d.url},900);
-    }catch(e){
-      button.textContent='Try again';
-      button.disabled=false;
-      button.title=e.message;
-      var status=document.getElementById('ifrDiscountStatus');
-      if(status)status.textContent=e.message;
-      setTimeout(function(){ if(!button.disabled) button.textContent=label; },2500);
-    }
-  }
-  document.querySelectorAll('[data-checkout-tier]').forEach(function(button){
-    button.addEventListener('click',function(){startCheckout(button);});
-  });
-  var connectButton=document.getElementById('connectIfrWallet');
-	  if(connectButton){
-    connectButton.addEventListener('click',async function(){
-      var label=connectButton.textContent;
-      connectButton.disabled=true;
-      connectButton.textContent='Connecting...';
-      try{
-        var address=await connectIfrWallet();
-        var status=document.getElementById('ifrDiscountStatus');
-        if(status)status.textContent='Wallet connected: '+address.slice(0,6)+'...'+address.slice(-4)+'. Choose Pro, Elite, or Suite checkout.';
-        connectButton.textContent='Wallet connected';
-      }catch(e){
-        connectButton.disabled=false;
-        connectButton.textContent=label;
-        var status=document.getElementById('ifrDiscountStatus');
-        if(status)status.textContent=e.message;
-      }
-	    });
-	  }
-  var disconnectButton=document.getElementById('disconnectIfrWallet');
-  if(disconnectButton){
-    disconnectButton.addEventListener('click',function(){disconnectIfrWallet();});
-  }
-})();
-
 // Chameleon encryption animation
 (function() {
   const msgs = document.getElementById('chatMessages');

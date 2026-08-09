@@ -3219,3 +3219,45 @@ Open next steps:
 Open next steps:
 - Neues VersionCode-10-AAB im geschlossenen Google-Play-Test hochladen.
 - Play-Warnungen und Einreichungsstatus pruefen; kein Produktions-Rollout.
+
+## 2026-08-06 03:30 EEST — CODEX SOL — WEB-ONLY IFR SALES SURFACE
+
+- Ticket `GIO-20260806-STEALTHX-WEB-IFR-CHECKOUT`; branch
+  `fix/gh-42-web-ifr-checkout`; status: source ready for review, production blocked.
+- Chameleon landing and Wiki now expose IFR only as a browser-purchase benefit. Connect,
+  Disconnect, signed verification and Pro/Elite checkout use the shared browser client; the
+  address is read-only, Suite is unavailable and no wallet state enters Android.
+- Added a neutral payment-return page that waits for signed server fulfillment. Mobile 375 px
+  browser verification has zero horizontal overflow and readable controls.
+- PASS: shared JS syntax; identical shared-script SHA-256 across all three sites;
+  `git diff --check`; Gradle `verifyNoAppIfrWalletCode`. No Android source/artifact, payment
+  activation, secret, deployment or live checkout was touched.
+- Blocked before live sale: VLABS AADE/myDATA/e-timologio; production entitlement signing and
+  runtime configuration; repeated-discount enforcement policy.
+
+`READY FOR REVIEW — DO NOT ACTIVATE PAYMENTS`
+
+## 2026-08-06 03:33 EEST — CODEX SOL — PR OPEN
+
+- PR `https://github.com/NeaBouli/chameleon/pull/26`, implementation commit `f8396b5`.
+- GitHub build/test, security-pattern and CodeRabbit checks started. No merge, deployment or
+  payment activation.
+
+`REVIEW IN PROGRESS`
+
+## 2026-08-06 03:40 EEST — CODEX SOL — REVIEW FIXES
+
+- GitHub Build & Test and Security Pattern Scan passed. Valid CodeRabbit findings were fixed:
+  API timeouts, safe signature fallback, reconnect button state and backend-aligned landing/Wiki
+  availability wording.
+- No payment activation, deployment, secret or Android source change.
+
+`REVIEW FIX CI RERUN REQUIRED`
+
+## 2026-08-06 03:47 EEST — CODEX SOL — REVIEW SOURCE GREEN
+
+- Implementation head `e8de12c`; PR #26 Build & Test and Security Pattern Scan PASS. Valid
+  CodeRabbit findings were fixed; final bot status is green/rate-limited.
+- Ready for human review only. No merge, deploy, secret or payment activation.
+
+`SOURCE REVIEW GREEN — PRODUCTION BLOCKED`
