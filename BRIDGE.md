@@ -3261,3 +3261,15 @@ Open next steps:
 - Ready for human review only. No merge, deploy, secret or payment activation.
 
 `SOURCE REVIEW GREEN — PRODUCTION BLOCKED`
+
+## 2026-08-09 11:09 EEST — CODEX SOL — WEB IFR MERGED
+
+- Gio granted explicit owner/admin approval for the exact reviewed PR #26 head `aad6a1c`.
+- PR #26 merged to `main` as `4bc017f85e525b34b161a33db07ec1bb534556cb`.
+- Exact-main Chameleon CI, Security Pattern Scan and GitHub Pages deployment PASS. Live
+  `https://chameleon.stealthx.tech/` exposes the browser-only IFR controls and returns HTTP 200.
+- No Android wallet/IFR code, payment activation, runtime secret or Android artifact changed.
+- Remaining gates: VLABS fiscal transmission, production entitlement provisioning and
+  server-side repeated-discount enforcement.
+
+`MERGED AND VERIFIED — LIVE PAYMENT STILL BLOCKED`
