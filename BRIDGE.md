@@ -1,5 +1,17 @@
 # BRIDGE — chameleon
 
+## 2026-08-12 — Private Finance Ownership Refreshed
+
+- Codex remains responsible for commercial integration coordination. Detailed
+  payment, fiscal, provider and release records are maintained only in private
+  `NeaBouli/vlabs` at
+  `docs/finance-integrations/projects/chameleon.md`.
+- Chameleon remains `STANDBY / IN DEVELOPMENT`; no sales activation is
+  authorized and all product/security/device/runtime/release gates remain
+  closed.
+- Keep this public repository limited to generic disabled-state and ownership
+  references; do not add operational finance or identity data.
+
 ## 2026-07-12 [Codex] — Full software readiness audit
 
 - Chameleon is **not sell-ready**. Cross-device overlay and messenger were found non-interoperable and are now fail-closed in the Android client and public sales surfaces.
