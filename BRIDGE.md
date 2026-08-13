@@ -1,5 +1,14 @@
 # BRIDGE — chameleon
 
+## 2026-08-13 — Public security audit handoff — OPEN
+
+- A private VLABS operator audit records unresolved dependency-coverage work.
+  No live secret compromise was confirmed by the covered current-checkout
+  review.
+- Obtain a bounded, no-secrets task from the operator and preserve existing
+  identity, crypto, billing and physical-device release gates. Do not publish
+  finding details, raw scanner evidence or private runtime values here.
+
 ## 2026-07-12 [Codex] — Full software readiness audit
 
 - Chameleon is **not sell-ready**. Cross-device overlay and messenger were found non-interoperable and are now fail-closed in the Android client and public sales surfaces.
