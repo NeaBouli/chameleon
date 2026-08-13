@@ -3516,3 +3516,14 @@ Open next steps:
 - Bash syntax and diff validation pass.
 
 `ABI-SPLIT APK SELECTION DETERMINISTIC — HOSTED RERUN REQUIRED`
+
+---
+
+## 2026-08-13 21:48 EEST — CODEX SOL — KVM ACCELERATION RESTORED
+
+- Emulator-runner logs reported hardware acceleration unavailable because the earlier KVM
+  permission step was lost when manual boot orchestration was replaced.
+- The established KVM udev permission step is restored before the pinned emulator runner.
+  Boot remains bounded at 900 seconds. YAML and diff validation pass.
+
+`HARDWARE-ACCELERATED HOSTED EMULATION RESTORED`
