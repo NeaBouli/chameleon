@@ -3415,3 +3415,17 @@ Open next steps:
   metadata correction; required review and the separate private-audit release gate remain.
 
 `FRESH-RUNNER DEPENDENCY METADATA GREEN — HOSTED PR RERUN REQUIRED`
+
+---
+
+## 2026-08-13 19:14 EEST — CODEX SOL — PR REVIEW HARDENING
+
+- All four Chameleon checkout steps now set `persist-credentials: false`.
+- Sol verified that the reported root-check aggregation concern is not present: every
+  subproject `check` depends on both mandatory guards, and the exact local root
+  `./gradlew check` release chain already executed 1,527 tasks with both guards. No
+  redundant task graph was added.
+- Ruby YAML parsing, checkout-configuration inspection and `git diff --check` pass. Hosted
+  PR checks remain authoritative for emulator execution.
+
+`ACTIONABLE PR REVIEW ITEM FIXED — HOSTED CHECKS REQUIRED`
