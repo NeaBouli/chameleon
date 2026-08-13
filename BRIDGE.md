@@ -3505,3 +3505,14 @@ Open next steps:
 - Bash syntax and diff validation pass.
 
 `APK DISCOVERY DETERMINISTIC AND DIAGNOSTIC — HOSTED RERUN REQUIRED`
+
+---
+
+## 2026-08-13 21:18 EEST — CODEX SOL — ABI-SPLIT APK SELECTION
+
+- The shared harness now also handles valid ABI-split output sets: within the expected variant
+  directory it prefers one universal artifact, otherwise one x86_64 artifact, and fails on
+  unresolved ambiguity. Existing exact-path behavior is unchanged.
+- Bash syntax and diff validation pass.
+
+`ABI-SPLIT APK SELECTION DETERMINISTIC — HOSTED RERUN REQUIRED`
