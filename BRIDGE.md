@@ -3541,3 +3541,30 @@ Open next steps:
   and the complete exact-head CI matrix. No production or runtime action is in scope.
 
 `TEST EXECUTION GREEN — PERSISTED EVIDENCE RERUN REQUIRED`
+
+---
+
+## 2026-08-14 00:45 EEST — CODEX SOL — DEPENDENCY AUTOMATION TRIAGE
+
+- GitHub reports zero open Dependabot vulnerability alerts. The five generated Gradle PRs are
+  routine version maintenance and all currently fail at least one required build/emulator gate;
+  none is a required security patch and none was merged during triage.
+- Dependabot now groups minor/patch updates, limits open PRs, and ignores automatic major
+  version-update PRs for Gradle and pinned GitHub Actions. Security updates remain eligible.
+- Required verification: YAML parse, CI/release gates, independent review and exact-main
+  verification. No runtime, Play or production action is in scope.
+
+`DEPENDENCY POLICY PATCH IN VALIDATION`
+
+---
+
+## 2026-08-14 00:48 EEST — CODEX SOL — DEPENDENCY POLICY LOCALLY GREEN
+
+- Dependabot YAML parsing and `git diff --check` PASS. The change affects automation policy only;
+  Android source, dependencies and release artifacts are byte-unchanged.
+- Kimi K3 review was attempted but unavailable due provider quota HTTP 403. Claude Code supplied
+  the permitted focused read-only fallback review and returned APPROVED with no schema defect.
+- Next: protected PR, exact-head checks, merge only after green review, then exact-main checks and
+  stale automation-PR reconciliation.
+
+`LOCAL VALIDATION COMPLETE — PROTECTED PR NEXT`
