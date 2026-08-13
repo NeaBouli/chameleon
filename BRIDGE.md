@@ -3395,3 +3395,23 @@ Open next steps:
   26/36 instrumentation and normal PR review/checks remain pre-merge gates.
 
 `POST-REVIEW SOURCE GREEN — PR NEXT`
+
+---
+
+## 2026-08-13 19:10 EEST — CODEX SOL — FRESH-RUNNER METADATA CORRECTION
+
+- The first hosted PR build exposed dependency checksums absent from metadata generated against
+  the warm local Gradle cache. No source or application behavior was implicated.
+- Sol regenerated strict SHA-256 verification metadata against an empty Gradle user home.
+  `check lintRelease assembleDebug assembleDebugAndroidTest` passed in 26m42s
+  (1,816 tasks).
+- The exact strict release chain `check lintRelease bundleRelease assembleRelease` passed in
+  9m43s (1,527 tasks). Release APK/AAB ZIP and signature gates passed; expected warnings are
+  limited to the intentionally short-lived self-signed CI identity.
+- GitHub dependency graph/vulnerability alerts were enabled for this repository through the
+  authorized repository-admin API. The endpoint verified with HTTP 204 and the rerun Dependency
+  Review job passed.
+- Temporary CI-only signing material was removed. PR #32 will rerun hosted checks after this
+  metadata correction; required review and the separate private-audit release gate remain.
+
+`FRESH-RUNNER DEPENDENCY METADATA GREEN — HOSTED PR RERUN REQUIRED`
