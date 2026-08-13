@@ -3429,3 +3429,16 @@ Open next steps:
   PR checks remain authoritative for emulator execution.
 
 `ACTIONABLE PR REVIEW ITEM FIXED — HOSTED CHECKS REQUIRED`
+
+---
+
+## 2026-08-13 19:22 EEST — CODEX SOL — LINUX AAPT2 VERIFICATION COVERAGE
+
+- The final hosted build progressed beyond the prior metadata gap and identified the remaining
+  platform-specific AAPT2 Linux classifier. Sol resolved the exact pinned classifier from the
+  configured Google repository using Gradle's verification writer.
+- Strict metadata now includes its Gradle-generated SHA-256 entry. XML and diff validation pass,
+  all three repositories produced the same checksum, and the temporary init script was removed.
+- No dependency version or application code changed. A final hosted rerun remains required.
+
+`CROSS-PLATFORM VERIFICATION METADATA COMPLETE — HOSTED RERUN REQUIRED`
