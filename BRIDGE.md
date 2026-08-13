@@ -3481,3 +3481,16 @@ Open next steps:
 - YAML, extracted shell syntax, immutable action pins and diff validation pass.
 
 `STREAMING INSTALL PATH REMOVED — HOSTED RERUN REQUIRED`
+
+---
+
+## 2026-08-13 20:53 EEST — CODEX SOL — SINGLE-SHELL SMOKE HARNESS
+
+- API 26 built and installed both APKs successfully, then the emulator action split
+  `am instrument -w -r` at the continuation and failed before tests. API 36 exceeded the
+  600-second boot limit.
+- A repository-local strict Bash harness now preserves the full install/instrument/result flow
+  in one shell. The action invokes it with one folded command; boot remains bounded at 900
+  seconds. Bash syntax, YAML folding, immutable action pins and diff validation pass.
+
+`SINGLE-SHELL INSTRUMENTATION HARNESS READY — HOSTED RERUN REQUIRED`
