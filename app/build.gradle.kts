@@ -18,6 +18,10 @@ val localProps = Properties().also { props ->
 }
 
 android {
+    adbOptions {
+        timeOutInMs = 600_000
+    }
+
     namespace = "com.stealthx.chameleon"
     compileSdk = 36
 

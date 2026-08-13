@@ -3456,3 +3456,15 @@ Open next steps:
 - Workflow YAML, immutable action pins and diff validation pass. Hosted execution is required.
 
 `EMULATOR BOOT FLOW BOUNDED — HOSTED RERUN REQUIRED`
+
+---
+
+## 2026-08-13 20:09 EEST — CODEX SOL — BOUNDED ADB INSTALL TIMEOUT
+
+- SecureChat API 26 proved that a large debug APK can exceed Ddmlib's default shell timeout
+  during package installation even after a healthy emulator boot. Chameleon uses the same AGP
+  installation mechanism and similarly broad multi-module APK, so the bounded correction applies.
+- Android's AGP 8.11.1 `adbOptions.timeOutInMs` is set to 600,000 ms. Local Gradle
+  configuration validation passes. No runtime behavior or production timeout changed.
+
+`ADB INSTALL WINDOW BOUNDED AT TEN MINUTES — HOSTED RERUN REQUIRED`
