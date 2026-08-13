@@ -3468,3 +3468,16 @@ Open next steps:
   configuration validation passes. No runtime behavior or production timeout changed.
 
 `ADB INSTALL WINDOW BOUNDED AT TEN MINUTES — HOSTED RERUN REQUIRED`
+
+---
+
+## 2026-08-13 20:28 EEST — CODEX SOL — NON-STREAMING INSTRUMENTATION
+
+- Hosted evidence showed UTP ignored the AGP ADB timeout and can fail in its streaming split
+  commit before executing tests. The ineffective Gradle timeout setting was removed.
+- The bounded emulator runner now assembles both APKs, installs each with
+  `adb install --no-streaming` under an external 600-second limit, invokes the declared
+  AndroidJUnitRunner directly and requires an `OK` result with at least one test.
+- YAML, extracted shell syntax, immutable action pins and diff validation pass.
+
+`STREAMING INSTALL PATH REMOVED — HOSTED RERUN REQUIRED`
