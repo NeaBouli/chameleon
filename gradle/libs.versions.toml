@@ -47,7 +47,7 @@ compose-ui-tooling              = { group = "androidx.compose.ui", name = "ui-to
 compose-ui-tooling-preview      = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-material3               = { group = "androidx.compose.material3", name = "material3" }
 compose-icons-extended          = { group = "androidx.compose.material", name = "material-icons-extended" }
-compose-activity                = { group = "androidx.activity", name = "activity-compose", version = "1.9.3" }
+compose-activity                = { group = "androidx.activity", name = "activity-compose", version = "1.13.0" }
 compose-navigation              = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 compose-lifecycle               = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 compose-hilt-navigation         = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.2.0" }
