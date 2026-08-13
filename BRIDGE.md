@@ -3316,3 +3316,82 @@ Open next steps:
   VLABS fiscal/AADE and private production fulfillment remain a separate readiness gate.
 
 `TASK COMPLETE — TARGET STOP ACTIVE`
+
+---
+
+## 2026-08-13 — KIMI K3 (bounded local implementation for Codex Sol) — CI/SECURITY GATES
+
+- Branch `fix/security-gates-20260813`. Scope limited to `.github/workflows/ci.yml`,
+  `.github/workflows/release.yml`, new `.github/dependabot.yml`, and this Bridge entry.
+  No Android source, crypto/auth/entitlement logic, runtime config, website, release,
+  deployment, credential, secret or payment surface was touched.
+- `ci.yml`: test step replaced by root `./gradlew check`, so every module check (unit
+  tests, lint, detekt) runs and `verifyNoAppIfrWalletCode` + `verifyNoClientSidePaidUnlock`
+  are mandatory. Added top-level `permissions: contents: read` and a concurrency group
+  (`cancel-in-progress: true`). Existing timeouts, triggers and security-scan job kept.
+- `release.yml`: build step is now `./gradlew check lintRelease bundleRelease assembleRelease`
+  before artifact validation. Validation verifies both `app-release.apk` and
+  `app-release.aab` exist; existing fail-closed `apksigner verify` on the APK is preserved.
+  Both artifacts are uploaded (`Chameleon-LATEST.apk`, `Chameleon-LATEST.aab`) and attached
+  to the draft GitHub Release. Top-level `contents: read`, job-level `contents: write`,
+  concurrency group (`cancel-in-progress: false`). Trigger stays `workflow_dispatch` only.
+  No signing values added or exposed; signing stays local `local.properties`-driven.
+- `dependabot.yml` (new): `gradle` and `github-actions` ecosystems, `monthly` interval.
+- Action pinning: `actions/checkout`, `actions/setup-java`, `actions/upload-artifact` and
+  `softprops/action-gh-release` pinned to the exact commit SHAs their major tags resolved
+  to via read-only `git ls-remote` (e.g. checkout `11d5960a...` # v4, setup-java
+  `cf277c60...` # v4, upload-artifact `ea165f8d...` # v4, action-gh-release `3bb12739...`
+  # v2). Tags are mutable; the pinned SHAs are immutable. Major tags are lightweight, so
+  tag SHA == commit SHA. Note: SHAs pin today's tag target, not the latest point release.
+- Checks run locally, all PASS:
+  - Python `yaml.safe_load` on all three YAML files: OK.
+  - `./gradlew verifyNoAppIfrWalletCode verifyNoClientSidePaidUnlock --no-daemon`:
+    BUILD SUCCESSFUL, 2/2 tasks executed.
+  - `ANDROID_HOME=/Users/gio/Library/Android/sdk ./gradlew check --dry-run`: both guard
+    tasks present in the `check` task graph.
+  - `git diff --check`: clean.
+- Full `./gradlew check` (lint + all tests) was not run locally; it executes in CI.
+- No commit, push, merge, deployment, release, payment, secret or external write performed.
+
+`LOCAL CI-GATE HARDENING READY FOR CODEX SOL REVIEW`
+
+---
+
+## 2026-08-13 18:03 EEST — CODEX SOL — KIMI HANDOFF CORRECTED AND VERIFIED → REVIEW
+
+- **Branch:** `fix/security-gates-20260813` from exact `origin/main` `cdaf88d` in an isolated
+  worktree; the user's dirty primary checkout was not modified.
+- Sol reviewed Kimi K3's bounded implementation line by line and supersedes only its historical
+  draft-release description above: the final `release.yml` is verification-only, has no GitHub
+  Release publishing or write permission, uses an ephemeral CI identity, labels outputs CI-only,
+  retains them seven days and always removes signing data. Earlier append-only text remains intact.
+- Root CI requires all module checks and both `verifyNoAppIfrWalletCode` and
+  `verifyNoClientSidePaidUnlock`. All actions are immutable upstream-verified SHAs. Dependency
+  review, monthly Dependabot, API 26/36 emulator instrumentation and a `MainActivity` smoke test
+  were added, together with the official wrapper checksum, dependency checksum metadata,
+  version-catalog test dependencies and regeneration guidance.
+- **Tests:** Kimi's focused guard/dry-run/YAML checks PASS. Sol metadata-generation full chain
+  PASS in 28m58s (1,613 tasks); final metadata-enforced full chain PASS in 24m16s (1,613 tasks),
+  including all module checks/lints, both guards, debug APK, Android-test APK, release APK and
+  AAB. APK/AAB ZIP and signature gates PASS. Static workflow/XML/action-pin/diff/temp-file and
+  configured high-risk secret-pattern checks PASS. Temporary local signing files were removed.
+- No app logic, crypto/auth, entitlement, runtime credential, production, deployment, payment,
+  Play publishing or private-audit finding changed. API 26/36 emulator execution and normal PR
+  review/checks remain required before merge; the generic private-operator audit gate remains.
+
+`LOCAL HARDENING GREEN — NORMAL PR AND REQUIRED REVIEW NEXT`
+
+---
+
+## 2026-08-13 18:15 EEST — CODEX SOL — POST-REVIEW CI CORRECTIONS VERIFIED
+
+- Sol applied the independent cross-repository review findings to Chameleon: workflow
+  concurrency uses only valid contexts, SDK/emulator/ADB/`apksigner` calls use deterministic
+  SDK paths, and AAB verification requires concrete JAR signature entries.
+- Post-correction validation: all workflow YAML and Gradle verification XML parse, every action
+  reference is a 40-character immutable SHA, no invalid top-level matrix reference remains,
+  `git diff --check` passes, and no temporary signing file remains.
+- Full local build/test/signature results remain the green results recorded above. Hosted API
+  26/36 instrumentation and normal PR review/checks remain pre-merge gates.
+
+`POST-REVIEW SOURCE GREEN — PR NEXT`

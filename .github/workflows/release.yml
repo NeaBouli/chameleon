@@ -1,49 +1,87 @@
-name: Release Build
+name: Release Verification
 
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   release:
-    name: Build Release APK & Bundle
+    name: Verify Release APK & Bundle
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: gradle
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6.3.0
 
       - name: Grant execute permission
         run: chmod +x gradlew
 
-      - name: Run tests
-        run: ./gradlew :security:testDebugUnitTest :core:testDebugUnitTest :data:testDebugUnitTest :domain:testDebugUnitTest
-
-      - name: Build release APK
-        run: ./gradlew assembleRelease
-
-      - name: Verify signed release APK
+      - name: Create ephemeral CI signing identity
+        shell: bash
         run: |
+          set -euo pipefail
+          keystore="${RUNNER_TEMP}/chameleon-ci-only.jks"
+          password="$(openssl rand -hex 24)"
+          keytool -genkeypair -noprompt \
+            -keystore "$keystore" \
+            -storepass "$password" \
+            -keypass "$password" \
+            -alias chameleon-ci \
+            -keyalg RSA -keysize 3072 -validity 2 \
+            -dname "CN=CI Verification Only"
+          printf 'KEYSTORE_PATH=%s\nKEYSTORE_PASS=%s\nKEY_ALIAS=%s\n' \
+            "$keystore" "$password" "chameleon-ci" > local.properties
+
+      # Root `check` enforces verifyNoAppIfrWalletCode and
+      # verifyNoClientSidePaidUnlock in every module, then lintRelease,
+      # bundleRelease (AAB) and assembleRelease (APK) build the artifacts.
+      - name: Root check, lint and release builds
+        run: ./gradlew check lintRelease bundleRelease assembleRelease
+
+      - name: Verify CI-signed release APK & AAB
+        run: |
+          set -euo pipefail
           test -f app/build/outputs/apk/release/app-release.apk
+          test -f app/build/outputs/bundle/release/app-release.aab
           APKSIGNER="$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -1)"
           test -n "$APKSIGNER"
           "$APKSIGNER" verify --verbose app/build/outputs/apk/release/app-release.apk
-          cp app/build/outputs/apk/release/app-release.apk Chameleon-LATEST.apk
+          jarsigner -verify app/build/outputs/bundle/release/app-release.aab
+          entries="$(unzip -Z1 app/build/outputs/bundle/release/app-release.aab)"
+          grep -Eq '^META-INF/[^/]+\.SF$' <<< "$entries"
+          grep -Eq '^META-INF/[^/]+\.(RSA|DSA|EC)$' <<< "$entries"
+          unzip -tq app/build/outputs/apk/release/app-release.apk
+          unzip -tq app/build/outputs/bundle/release/app-release.aab
+          cp app/build/outputs/apk/release/app-release.apk Chameleon-CI-ONLY.apk
+          cp app/build/outputs/bundle/release/app-release.aab Chameleon-CI-ONLY.aab
 
-      - name: Upload release APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: chameleon-release-${{ github.ref_name }}
-          path: Chameleon-LATEST.apk
+      - name: Remove ephemeral signing material
+        if: always()
+        run: rm -f local.properties "${RUNNER_TEMP}/chameleon-ci-only.jks"
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+      - name: Upload short-lived verification artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          files: Chameleon-LATEST.apk
-          draft: true
-          generate_release_notes: true
+          name: chameleon-ci-only-release-verification
+          path: |
+            Chameleon-CI-ONLY.apk
+            Chameleon-CI-ONLY.aab
+          if-no-files-found: error
+          retention-days: 7

@@ -66,3 +66,10 @@ chore: short description
 ## License
 
 Chameleon is licensed under the StealthX Source-Available License. You may read and inspect the source code for transparency and security review, but you may not copy, modify, build, run, distribute, rebrand, host, or use Chameleon without prior written permission from Vendetta Labs.
+## Gradle dependency verification
+
+Dependencies are checksum-locked in `gradle/verification-metadata.xml`. When a reviewed
+dependency update changes the graph, rerun the same affected Gradle CI tasks with
+`--write-verification-metadata sha256`, inspect the metadata diff for only the expected
+component/version changes, and then rerun the tasks without the write flag. Do not accept
+unrelated checksum churn.
