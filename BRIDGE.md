@@ -3316,3 +3316,228 @@ Open next steps:
   VLABS fiscal/AADE and private production fulfillment remain a separate readiness gate.
 
 `TASK COMPLETE — TARGET STOP ACTIVE`
+
+---
+
+## 2026-08-13 — KIMI K3 (bounded local implementation for Codex Sol) — CI/SECURITY GATES
+
+- Branch `fix/security-gates-20260813`. Scope limited to `.github/workflows/ci.yml`,
+  `.github/workflows/release.yml`, new `.github/dependabot.yml`, and this Bridge entry.
+  No Android source, crypto/auth/entitlement logic, runtime config, website, release,
+  deployment, credential, secret or payment surface was touched.
+- `ci.yml`: test step replaced by root `./gradlew check`, so every module check (unit
+  tests, lint, detekt) runs and `verifyNoAppIfrWalletCode` + `verifyNoClientSidePaidUnlock`
+  are mandatory. Added top-level `permissions: contents: read` and a concurrency group
+  (`cancel-in-progress: true`). Existing timeouts, triggers and security-scan job kept.
+- `release.yml`: build step is now `./gradlew check lintRelease bundleRelease assembleRelease`
+  before artifact validation. Validation verifies both `app-release.apk` and
+  `app-release.aab` exist; existing fail-closed `apksigner verify` on the APK is preserved.
+  Both artifacts are uploaded (`Chameleon-LATEST.apk`, `Chameleon-LATEST.aab`) and attached
+  to the draft GitHub Release. Top-level `contents: read`, job-level `contents: write`,
+  concurrency group (`cancel-in-progress: false`). Trigger stays `workflow_dispatch` only.
+  No signing values added or exposed; signing stays local `local.properties`-driven.
+- `dependabot.yml` (new): `gradle` and `github-actions` ecosystems, `monthly` interval.
+- Action pinning: `actions/checkout`, `actions/setup-java`, `actions/upload-artifact` and
+  `softprops/action-gh-release` pinned to the exact commit SHAs their major tags resolved
+  to via read-only `git ls-remote` (e.g. checkout `11d5960a...` # v4, setup-java
+  `cf277c60...` # v4, upload-artifact `ea165f8d...` # v4, action-gh-release `3bb12739...`
+  # v2). Tags are mutable; the pinned SHAs are immutable. Major tags are lightweight, so
+  tag SHA == commit SHA. Note: SHAs pin today's tag target, not the latest point release.
+- Checks run locally, all PASS:
+  - Python `yaml.safe_load` on all three YAML files: OK.
+  - `./gradlew verifyNoAppIfrWalletCode verifyNoClientSidePaidUnlock --no-daemon`:
+    BUILD SUCCESSFUL, 2/2 tasks executed.
+  - `ANDROID_HOME=/Users/gio/Library/Android/sdk ./gradlew check --dry-run`: both guard
+    tasks present in the `check` task graph.
+  - `git diff --check`: clean.
+- Full `./gradlew check` (lint + all tests) was not run locally; it executes in CI.
+- No commit, push, merge, deployment, release, payment, secret or external write performed.
+
+`LOCAL CI-GATE HARDENING READY FOR CODEX SOL REVIEW`
+
+---
+
+## 2026-08-13 18:03 EEST — CODEX SOL — KIMI HANDOFF CORRECTED AND VERIFIED → REVIEW
+
+- **Branch:** `fix/security-gates-20260813` from exact `origin/main` `cdaf88d` in an isolated
+  worktree; the user's dirty primary checkout was not modified.
+- Sol reviewed Kimi K3's bounded implementation line by line and supersedes only its historical
+  draft-release description above: the final `release.yml` is verification-only, has no GitHub
+  Release publishing or write permission, uses an ephemeral CI identity, labels outputs CI-only,
+  retains them seven days and always removes signing data. Earlier append-only text remains intact.
+- Root CI requires all module checks and both `verifyNoAppIfrWalletCode` and
+  `verifyNoClientSidePaidUnlock`. All actions are immutable upstream-verified SHAs. Dependency
+  review, monthly Dependabot, API 26/36 emulator instrumentation and a `MainActivity` smoke test
+  were added, together with the official wrapper checksum, dependency checksum metadata,
+  version-catalog test dependencies and regeneration guidance.
+- **Tests:** Kimi's focused guard/dry-run/YAML checks PASS. Sol metadata-generation full chain
+  PASS in 28m58s (1,613 tasks); final metadata-enforced full chain PASS in 24m16s (1,613 tasks),
+  including all module checks/lints, both guards, debug APK, Android-test APK, release APK and
+  AAB. APK/AAB ZIP and signature gates PASS. Static workflow/XML/action-pin/diff/temp-file and
+  configured high-risk secret-pattern checks PASS. Temporary local signing files were removed.
+- No app logic, crypto/auth, entitlement, runtime credential, production, deployment, payment,
+  Play publishing or private-audit finding changed. API 26/36 emulator execution and normal PR
+  review/checks remain required before merge; the generic private-operator audit gate remains.
+
+`LOCAL HARDENING GREEN — NORMAL PR AND REQUIRED REVIEW NEXT`
+
+---
+
+## 2026-08-13 18:15 EEST — CODEX SOL — POST-REVIEW CI CORRECTIONS VERIFIED
+
+- Sol applied the independent cross-repository review findings to Chameleon: workflow
+  concurrency uses only valid contexts, SDK/emulator/ADB/`apksigner` calls use deterministic
+  SDK paths, and AAB verification requires concrete JAR signature entries.
+- Post-correction validation: all workflow YAML and Gradle verification XML parse, every action
+  reference is a 40-character immutable SHA, no invalid top-level matrix reference remains,
+  `git diff --check` passes, and no temporary signing file remains.
+- Full local build/test/signature results remain the green results recorded above. Hosted API
+  26/36 instrumentation and normal PR review/checks remain pre-merge gates.
+
+`POST-REVIEW SOURCE GREEN — PR NEXT`
+
+---
+
+## 2026-08-13 19:10 EEST — CODEX SOL — FRESH-RUNNER METADATA CORRECTION
+
+- The first hosted PR build exposed dependency checksums absent from metadata generated against
+  the warm local Gradle cache. No source or application behavior was implicated.
+- Sol regenerated strict SHA-256 verification metadata against an empty Gradle user home.
+  `check lintRelease assembleDebug assembleDebugAndroidTest` passed in 26m42s
+  (1,816 tasks).
+- The exact strict release chain `check lintRelease bundleRelease assembleRelease` passed in
+  9m43s (1,527 tasks). Release APK/AAB ZIP and signature gates passed; expected warnings are
+  limited to the intentionally short-lived self-signed CI identity.
+- GitHub dependency graph/vulnerability alerts were enabled for this repository through the
+  authorized repository-admin API. The endpoint verified with HTTP 204 and the rerun Dependency
+  Review job passed.
+- Temporary CI-only signing material was removed. PR #32 will rerun hosted checks after this
+  metadata correction; required review and the separate private-audit release gate remain.
+
+`FRESH-RUNNER DEPENDENCY METADATA GREEN — HOSTED PR RERUN REQUIRED`
+
+---
+
+## 2026-08-13 19:14 EEST — CODEX SOL — PR REVIEW HARDENING
+
+- All four Chameleon checkout steps now set `persist-credentials: false`.
+- Sol verified that the reported root-check aggregation concern is not present: every
+  subproject `check` depends on both mandatory guards, and the exact local root
+  `./gradlew check` release chain already executed 1,527 tasks with both guards. No
+  redundant task graph was added.
+- Ruby YAML parsing, checkout-configuration inspection and `git diff --check` pass. Hosted
+  PR checks remain authoritative for emulator execution.
+
+`ACTIONABLE PR REVIEW ITEM FIXED — HOSTED CHECKS REQUIRED`
+
+---
+
+## 2026-08-13 19:22 EEST — CODEX SOL — LINUX AAPT2 VERIFICATION COVERAGE
+
+- The final hosted build progressed beyond the prior metadata gap and identified the remaining
+  platform-specific AAPT2 Linux classifier. Sol resolved the exact pinned classifier from the
+  configured Google repository using Gradle's verification writer.
+- Strict metadata now includes its Gradle-generated SHA-256 entry. XML and diff validation pass,
+  all three repositories produced the same checksum, and the temporary init script was removed.
+- No dependency version or application code changed. A final hosted rerun remains required.
+
+`CROSS-PLATFORM VERIFICATION METADATA COMPLETE — HOSTED RERUN REQUIRED`
+
+---
+
+## 2026-08-13 19:45 EEST — CODEX SOL — EMULATOR RUNNER CORRECTION
+
+- Both manual API 26/36 jobs remained indefinitely in `adb wait-for-device`; the existing
+  deadline started only after that unbounded call and therefore could not protect the job.
+- The manual emulator orchestration was replaced by established
+  `ReactiveCircus/android-emulator-runner` v2.38.0 pinned to immutable commit
+  `a421e43855164a8197daf9d8d40fe71c6996bb0d`, with a 600-second boot timeout. Compile platform
+  and build-tools 36 are provisioned explicitly before the same connected smoke-test task.
+- Workflow YAML, immutable action pins and diff validation pass. Hosted execution is required.
+
+`EMULATOR BOOT FLOW BOUNDED — HOSTED RERUN REQUIRED`
+
+---
+
+## 2026-08-13 20:09 EEST — CODEX SOL — BOUNDED ADB INSTALL TIMEOUT
+
+- SecureChat API 26 proved that a large debug APK can exceed Ddmlib's default shell timeout
+  during package installation even after a healthy emulator boot. Chameleon uses the same AGP
+  installation mechanism and similarly broad multi-module APK, so the bounded correction applies.
+- Android's AGP 8.11.1 `adbOptions.timeOutInMs` is set to 600,000 ms. Local Gradle
+  configuration validation passes. No runtime behavior or production timeout changed.
+
+`ADB INSTALL WINDOW BOUNDED AT TEN MINUTES — HOSTED RERUN REQUIRED`
+
+---
+
+## 2026-08-13 20:28 EEST — CODEX SOL — NON-STREAMING INSTRUMENTATION
+
+- Hosted evidence showed UTP ignored the AGP ADB timeout and can fail in its streaming split
+  commit before executing tests. The ineffective Gradle timeout setting was removed.
+- The bounded emulator runner now assembles both APKs, installs each with
+  `adb install --no-streaming` under an external 600-second limit, invokes the declared
+  AndroidJUnitRunner directly and requires an `OK` result with at least one test.
+- YAML, extracted shell syntax, immutable action pins and diff validation pass.
+
+`STREAMING INSTALL PATH REMOVED — HOSTED RERUN REQUIRED`
+
+---
+
+## 2026-08-13 20:53 EEST — CODEX SOL — SINGLE-SHELL SMOKE HARNESS
+
+- API 26 built and installed both APKs successfully, then the emulator action split
+  `am instrument -w -r` at the continuation and failed before tests. API 36 exceeded the
+  600-second boot limit.
+- A repository-local strict Bash harness now preserves the full install/instrument/result flow
+  in one shell. The action invokes it with one folded command; boot remains bounded at 900
+  seconds. Bash syntax, YAML folding, immutable action pins and diff validation pass.
+
+`SINGLE-SHELL INSTRUMENTATION HARNESS READY — HOSTED RERUN REQUIRED`
+
+---
+
+## 2026-08-13 21:05 EEST — CODEX SOL — APK PATH RESOLUTION HARDENED
+
+- The shared harness now resolves a missing requested APK by exact basename under the workspace,
+  requires exactly one non-empty match and prints path/size before installation. Ambiguity fails
+  explicitly. This makes action working-directory differences deterministic.
+- Bash syntax and diff validation pass.
+
+`APK DISCOVERY DETERMINISTIC AND DIAGNOSTIC — HOSTED RERUN REQUIRED`
+
+---
+
+## 2026-08-13 21:18 EEST — CODEX SOL — ABI-SPLIT APK SELECTION
+
+- The shared harness now also handles valid ABI-split output sets: within the expected variant
+  directory it prefers one universal artifact, otherwise one x86_64 artifact, and fails on
+  unresolved ambiguity. Existing exact-path behavior is unchanged.
+- Bash syntax and diff validation pass.
+
+`ABI-SPLIT APK SELECTION DETERMINISTIC — HOSTED RERUN REQUIRED`
+
+---
+
+## 2026-08-13 21:48 EEST — CODEX SOL — KVM ACCELERATION RESTORED
+
+- Emulator-runner logs reported hardware acceleration unavailable because the earlier KVM
+  permission step was lost when manual boot orchestration was replaced.
+- The established KVM udev permission step is restored before the pinned emulator runner.
+  Boot remains bounded at 900 seconds. YAML and diff validation pass.
+
+`HARDWARE-ACCELERATED HOSTED EMULATION RESTORED`
+
+---
+
+## 2026-08-13 22:04 EEST — CODEX SOL — INSTRUMENTATION EVIDENCE FIX
+
+- Hosted API 26 and API 36 smoke tests passed on exact head `600c75b`, while the shared
+  harness still removed its raw result before the artifact upload could collect it.
+- The harness now persists raw `am instrument` output beneath the uploaded Android
+  test-results tree. Strict pipeline failure propagation and the non-zero test-count assertion
+  remain unchanged.
+- Required verification: shell syntax, hosted API 26/API 36 rerun, non-empty evidence upload,
+  and the complete exact-head CI matrix. No production or runtime action is in scope.
+
+`TEST EXECUTION GREEN — PERSISTED EVIDENCE RERUN REQUIRED`

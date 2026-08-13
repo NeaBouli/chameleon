@@ -179,5 +179,9 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(libs.room.runtime)
 
+    androidTestImplementation(libs.androidx.test.core.ktx)
+    androidTestImplementation(libs.androidx.test.junit.ktx)
+    androidTestImplementation(libs.androidx.test.runner)
+
     implementation(libs.timber)
 }
