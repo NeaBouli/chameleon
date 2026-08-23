@@ -3568,3 +3568,16 @@ Open next steps:
   stale automation-PR reconciliation.
 
 `LOCAL VALIDATION COMPLETE — PROTECTED PR NEXT`
+
+---
+
+## 2026-08-23 11:35 EEST — CODEX SOL — GOOGLE PLAY TARGET API CHECK
+
+- **Ticket:** `STEALTHX-20260823-PLAY-API36-MATRIX`; **Type:** EXTERNAL / STATUS;
+  **Status:** Clear.
+- Read-only Play Console policy status reports no warning or violation for Chameleon.
+- Active closed-Alpha bundle v13 (`0.1.12-alpha`) targets SDK 36. Current source also uses compile
+  and target SDK 36.
+- No Play artifact, release or track was changed.
+
+`CHAMELEON API36 COMPLIANT — NO ACTION REQUIRED`
