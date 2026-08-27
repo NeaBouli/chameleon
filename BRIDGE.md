@@ -3661,3 +3661,11 @@ Open next steps:
 - Stripe production activation and Greek VAT/AADE/myDATA/e-timologio remain the sole intentionally deferred implementation block pending owner data and separately bounded production authorization.
 
 `LOCAL PRE-SALE SCOPE GREEN — EXACT-HEAD CI, REVIEW AND EXTERNAL GATES REMAIN`
+
+## 2026-08-27 07:52 EEST — CODEX SOL — CI DEPENDENCY VERIFICATION CORRECTED
+
+- Exact-head CI exposed a repository verification-metadata gap before compilation: the Gradle Plugin Portal serves a semantically equivalent minimal Kotlin Android plugin-marker POM with a different byte checksum than Maven Central.
+- The official Plugin Portal artifact was fetched directly, compared with the already approved Maven artifact and its SHA-256 was added as a second allowed checksum for that exact coordinate only. No dependency version or repository changed.
+- Local `assembleDebug` verification PASS after the metadata update: 430 tasks, `BUILD SUCCESSFUL`. Exact-head CI rerun remains required.
+
+`CI METADATA GAP FIXED LOCALLY — EXACT-HEAD RERUN PENDING`
