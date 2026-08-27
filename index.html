@@ -707,7 +707,7 @@
 <hr class="divider">
 
 <!-- IFR -->
-<section id="ifr" data-ifr-checkout data-ifr-product="Chameleon">
+<section id="ifr" data-ifr-checkout data-ifr-product="Chameleon" data-ifr-enabled="false">
   <div class="section-label">Browser Purchase Benefit</div>
   <h2 class="section-title">Planned seller-set IFR holder discount.</h2>
   <p class="section-sub">Browser verification and discounted checkout are currently disabled pending payment and Greek fiscal approval. Chameleon remains completely wallet-free.</p>
@@ -778,13 +778,14 @@
         <div class="ifr-token-logo"><img src="https://ifrunit.tech/assets/ifr_icon_256.png" alt="IFR token logo" width="96" height="96" loading="lazy"></div>
       </div>
       <div class="ifr-card">
-        <h3>Verify for Stripe discount</h3>
-        <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;">Connect a browser wallet. No manual address proof is accepted and no wallet state is stored in the Android app.</p>
+        <h3>Planned Stripe discount verification</h3>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;">When launched, the flow will require a signed browser wallet. No manual address proof will be accepted and no wallet state will be stored in the Android app.</p>
         <div class="ifr-wallet-actions">
           <button class="btn btn-primary" type="button" data-ifr-connect disabled>Connect wallet</button>
           <button class="btn btn-secondary" type="button" data-ifr-disconnect disabled>Disconnect</button>
         </div>
-        <input type="text" readonly data-ifr-address aria-label="Connected wallet address" placeholder="Connected wallet address" style="width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,.28);background:#111827;color:#f8fafc;margin-bottom:10px;font-weight:700;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">
+        <label for="chameleon-ifr-address" style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px;">Connected wallet address (available after launch)</label>
+        <input id="chameleon-ifr-address" type="text" readonly data-ifr-address placeholder="Connected wallet address" style="width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,.28);background:#111827;color:#f8fafc;margin-bottom:10px;font-weight:700;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">
         <div class="ifr-actions">
           <button class="btn btn-primary" type="button" data-ifr-tier="chameleon_pro_lifetime" disabled>Pro discounted checkout</button>
           <button class="btn btn-primary" type="button" data-ifr-tier="chameleon_elite_lifetime" disabled>Elite discounted checkout</button>

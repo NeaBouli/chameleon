@@ -3669,3 +3669,11 @@ Open next steps:
 - Local `assembleDebug` verification PASS after the metadata update: 430 tasks, `BUILD SUCCESSFUL`. Exact-head CI rerun remains required.
 
 `CI METADATA GAP FIXED LOCALLY — EXACT-HEAD RERUN PENDING`
+
+## 2026-08-27 08:22 EEST — CODEX SOL — CLOSED CHECKOUT RUNTIME GATE VERIFIED
+
+- Public copy now consistently describes the IFR purchase benefit as planned. A central `data-ifr-enabled=false` runtime gate returns before wallet/checkout handlers bind; all controls remain disabled even if markup and script load normally.
+- Node syntax and closed-gate regression PASS: no handlers, no network path and all controls disabled. The regression is wired into Chameleon CI. Browser PASS at `1440x900` and `390x844`: zero console errors, visible standby state and no horizontal overflow.
+- No Android source or signed candidate changed after the already verified TLS release build. Server-side checkout authorization remains part of the intentionally deferred Stripe + Greek VAT/AADE/myDATA/e-timologio implementation block.
+
+`FINAL LOCAL REVIEW FIXES GREEN — EXACT-HEAD CI AND NORMAL REVIEW REQUIRED`
