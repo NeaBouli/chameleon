@@ -3650,3 +3650,14 @@ Open next steps:
 - Direct `:app:preReleaseBuild` verification PASS and visibly executed `verifyNoReleaseTierOverrides`. Live GitHub `releases/latest/download/Chameleon-LATEST.apk` resolves to stable `v0.1.9-alpha`; candidate `v0.1.13-alpha` remains unpublished.
 
 `FINAL TIER GUARD PASS — NO LOCAL RELEASE BLOCKER`
+
+## 2026-08-27 07:45 EEST — CODEX SOL + KIMI K3 — RELAY TLS AND PRE-SALE GATES VERIFIED
+
+- CodeRabbit's final finding was confirmed and fixed: activation, contact exchange and WebSocket relay clients now share one pinned `api.stealthx.tech` OkHttp factory. Kimi independently verified module boundaries, all call sites and the live three-certificate pin set.
+- New central pinning tests and messenger compile PASS (76 tasks). Complete final gate PASS: 1,670 Gradle tasks covering tests, checks, Release Lint, IFR/wallet and tier guards, signed base/Free/Pro/Elite APKs plus Play AAB.
+- Public IFR verification/checkout is explicitly planned and disabled until payment and fiscal approval. Local browser verification PASS for desktop `1440x900` and mobile `390x844`: controls disabled, standby status visible, no horizontal overflow.
+- Refreshed candidate hashes: AAB `d1e95ff76cfe75c6a4fe5f33975eb19b31b31fbdeb4f91a0f3988290773d21ba`; base APK `44da8ee6f08784dd42ce396e7640c0630164a7935f0bf890b62af574000e711a`; Free APK `822fcc183070522731b24d7396d505aa7350f64a5856140cfb024fcf0d543570`; Pro APK `ca53b0572c44e2dcaafedd49eb6cceb52a445257f27bc1ac2a58a3fec4b765e8`; Elite APK `a28559992f4642428c19b137907335f074bbc59ebab1cd2c2c9191f76a4d2894`.
+- Physical authenticated overlay/messenger and activation-code E2E remain open; S7/Tab S4 are reserved by Woizz and S10 is absent. Normal PR approval/merge, Google closed-test review/duration and post-merge release/site publication remain external gates.
+- Stripe production activation and Greek VAT/AADE/myDATA/e-timologio remain the sole intentionally deferred implementation block pending owner data and separately bounded production authorization.
+
+`LOCAL PRE-SALE SCOPE GREEN — EXACT-HEAD CI, REVIEW AND EXTERNAL GATES REMAIN`

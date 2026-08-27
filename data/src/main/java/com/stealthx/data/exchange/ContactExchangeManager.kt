@@ -10,6 +10,7 @@ import com.stealthx.crypto.ChameleonCrypto
 import com.stealthx.data.dao.ContactKeyDao
 import com.stealthx.data.entity.ContactKeyEntity
 import com.stealthx.data.identity.StealthXIdentity
+import com.stealthx.data.network.StealthXApiTls
 import com.stealthx.shared.SxIdValidator
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -18,8 +19,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import okhttp3.CertificatePinner
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
@@ -43,18 +42,10 @@ class ContactExchangeManager @Inject constructor(
         const val SIGNAL_URL = "wss://api.stealthx.tech/signal"
     }
 
-    // Primary api.stealthx.tech SPKI plus the Let's Encrypt R12 intermediate backup.
-    private val certPinner = CertificatePinner.Builder()
-        .add("api.stealthx.tech", "sha256/1e85xNSEj+dcImOJS0iNkfMZOrZdvJJzzPCqT1/CZDc=")
-        .add("api.stealthx.tech", "sha256/nWN7PSep5XDQdge5zK24CnCRXHr3KvzhKEGxsdqCX9E=")
-        .add("api.stealthx.tech", "sha256/fk6IOKit1ild5647BH06ujSIq5XbCgqlbYl6ANhhi88=")
-        .build()
-
-    private val listenClient = OkHttpClient.Builder()
+    private val listenClient = StealthXApiTls.newClientBuilder()
         .connectTimeout(10, TimeUnit.SECONDS)
         .readTimeout(0, TimeUnit.SECONDS)
         .pingInterval(30, TimeUnit.SECONDS)
-        .certificatePinner(certPinner)
         .build()
 
     private val ioScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
