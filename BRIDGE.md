@@ -3615,3 +3615,12 @@ Open next steps:
 - Public page browser check PASS with no horizontal overflow; release copy now points to `releases/latest/download/Chameleon-LATEST.apk` and displays v0.1.13.
 - Kimi K3 independently reviewed the ecosystem block; Sol integrated and retested the findings. Artifacts are under `/Users/gio/Desktop/aab apk/presale-2026-08-27/`.
 - Open gates: authenticated two-device overlay/messenger matrix, Google closed-test duration/review, release-asset publication/site deployment, Stripe + Greek tax block on explicit standby.
+
+## 2026-08-27 04:36 EEST — CODEX TERMINAL — RELEASE HANDOFF — PR OPEN
+
+- Reviewed implementation committed as `35d4aa9f5d402388d229116a71ce29e153de0c73` and pushed on `fix/presale-complete-20260826`.
+- Normal protected review opened: https://github.com/NeaBouli/chameleon/pull/41
+- PR is open and mergeable. Dependency Review is PASS; build/test, security scan and instrumented API 26/36 checks are running. Independent approving review remains required.
+- No merge, release-asset publication, site deployment, Play mutation or payment/tax activation occurred.
+
+`PR 41 OPEN — CI AND INDEPENDENT REVIEW PENDING`
