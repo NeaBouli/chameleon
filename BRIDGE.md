@@ -3631,3 +3631,22 @@ Open next steps:
 - PR remains open and mergeable with `REVIEW_REQUIRED`; no approving independent review exists yet. No merge or external release action was attempted.
 
 `PR 41 CI GREEN — APPROVING REVIEW REQUIRED`
+
+## 2026-08-27 06:31 EEST — CODEX SOL + KIMI K3 — ENTITLEMENT AND PIN HARDENING VERIFIED
+
+- Kimi confirmed the prior signable Pro/Elite tier override was a real sales-model bypass. All signable base/internal/Free/Pro/Elite compatibility variants now require server-signed, device-bound activation; only debug/screenshot builds may force a tier. A new Gradle guard enforces this boundary.
+- Live `api.stealthx.tech` TLS was inspected: the leaf is valid through October 2026 and its SPKI matches. Chameleon now also carries the current Let's Encrypt intermediate/root backup pins already used by SecureChat.
+- Public README, ecosystem, landing and wiki copy now distinguishes published `v0.1.9-alpha` from candidate `v0.1.13-alpha`, documents one-APK activation and removes fixed 50% promises.
+- Full verification PASS after one storage-only interruption and generated-output cleanup: 1,615 Gradle tasks including all checks/tests, Release Lint, IFR/wallet and release-tier guards, signed base AAB/APK and signed compatibility APKs. Generated BuildConfig values confirm all signable overrides are disabled.
+- Final AAB SHA-256: `635d4b5271cc80d695c6d3eab4e803a1a4509e71a450260255a425b49b43985c`. Package `chameleon24.app`, versionCode `14`, versionName `0.1.13-alpha`, API 36 and release certificate were reverified. Desktop candidates are refreshed.
+- S7 and Tab S4 remain occupied by Woizz and were not disturbed; S10 is absent. Authenticated two-device overlay/messenger and activation-code E2E remain open and are not claimed.
+- Remaining gates: normal PR approval/merge and exact-head CI rerun; physical matrix; Google closed-test review/duration; GitHub Release/site publication. Stripe and Greek VAT/AADE/myDATA/e-timologio remain on explicit standby.
+
+`SERVER-SIGNED ONE-APK MODEL LOCALLY GREEN — PROTECTED AND PHYSICAL GATES OPEN`
+
+## 2026-08-27 06:38 EEST — CODEX SOL + KIMI K3 — FINAL GUARD REVIEW PASS
+
+- Sol applied Kimi's final guard-hardening criteria to Chameleon as well: all tier declarations are parsed across the complete app build script, the sole enabled declaration must be inside Debug, runtime conjunctions are asserted, and every `pre*ReleaseBuild` depends on the guard.
+- Direct `:app:preReleaseBuild` verification PASS and visibly executed `verifyNoReleaseTierOverrides`. Live GitHub `releases/latest/download/Chameleon-LATEST.apk` resolves to stable `v0.1.9-alpha`; candidate `v0.1.13-alpha` remains unpublished.
+
+`FINAL TIER GUARD PASS — NO LOCAL RELEASE BLOCKER`

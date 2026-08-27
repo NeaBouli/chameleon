@@ -65,14 +65,15 @@ android {
             buildConfigField("String", "FORCED_TIER", "\"ELITE\"")
             matchingFallbacks += listOf("debug")
         }
+        // Legacy package variants remain for QA compatibility; access always comes from a server-signed entitlement.
         create("internalRelease") {
             initWith(getByName("release"))
             signingConfig = signingConfigs.getByName("release")
             applicationIdSuffix = ".internal"
             versionNameSuffix = "-internal"
-            buildConfigField("Boolean", "FORCE_ELITE", "true")
-            buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "true")
-            buildConfigField("String", "FORCED_TIER", "\"ELITE\"")
+            buildConfigField("Boolean", "FORCE_ELITE", "false")
+            buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "false")
+            buildConfigField("String", "FORCED_TIER", "\"\"")
             matchingFallbacks += listOf("release")
         }
         create("freeTierRelease") {
@@ -81,8 +82,8 @@ android {
             applicationIdSuffix = ".free"
             versionNameSuffix = "-free"
             buildConfigField("Boolean", "FORCE_ELITE", "false")
-            buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "true")
-            buildConfigField("String", "FORCED_TIER", "\"FREE\"")
+            buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "false")
+            buildConfigField("String", "FORCED_TIER", "\"\"")
             matchingFallbacks += listOf("release")
         }
         create("proTierRelease") {
@@ -91,8 +92,8 @@ android {
             applicationIdSuffix = ".pro"
             versionNameSuffix = "-pro"
             buildConfigField("Boolean", "FORCE_ELITE", "false")
-            buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "true")
-            buildConfigField("String", "FORCED_TIER", "\"PRO\"")
+            buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "false")
+            buildConfigField("String", "FORCED_TIER", "\"\"")
             matchingFallbacks += listOf("release")
         }
         create("eliteTierRelease") {
@@ -100,9 +101,9 @@ android {
             signingConfig = signingConfigs.getByName("release")
             applicationIdSuffix = ".elite"
             versionNameSuffix = "-elite"
-            buildConfigField("Boolean", "FORCE_ELITE", "true")
-            buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "true")
-            buildConfigField("String", "FORCED_TIER", "\"ELITE\"")
+            buildConfigField("Boolean", "FORCE_ELITE", "false")
+            buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "false")
+            buildConfigField("String", "FORCED_TIER", "\"\"")
             matchingFallbacks += listOf("release")
         }
         release {

@@ -55,7 +55,7 @@ StealthX Platform
 |---------|------|--------|-------------|
 | E2E Messaging | Free | v0.1.0-alpha | XChaCha20-Poly1305 + Double Ratchet |
 | QR/NFC Key Exchange | Free | v0.1.0-alpha | Safety Number (6x4) |
-| Unlimited Contacts | Pro | Phase 2 | EUR 9 Lifetime; IFR holders can verify on the website for 50% checkout |
+| Unlimited Contacts | Pro | Phase 2 | EUR 9 Lifetime; IFR holders can verify on the website for the seller-set discount displayed at checkout |
 | Kaspa Identity | Pro | Phase 2 | On-chain Public Key |
 | 2-Hop Onion Routing | Pro | Phase 2 | Tor Hidden Services |
 | 3-Hop Onion Routing | Elite | Phase 3 | Maximum Anonymity |

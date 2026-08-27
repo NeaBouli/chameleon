@@ -30,7 +30,8 @@ object ActivationCodeClient {
     // Primary api.stealthx.tech SPKI plus the Let's Encrypt R12 intermediate backup.
     private val certPinner = CertificatePinner.Builder()
         .add("api.stealthx.tech", "sha256/1e85xNSEj+dcImOJS0iNkfMZOrZdvJJzzPCqT1/CZDc=")
-        .add("api.stealthx.tech", "sha256/kZwN96eHtZftBWrOZUsd6cA4es80n3NzSk/XtYz2EqQ=")
+        .add("api.stealthx.tech", "sha256/nWN7PSep5XDQdge5zK24CnCRXHr3KvzhKEGxsdqCX9E=")
+        .add("api.stealthx.tech", "sha256/fk6IOKit1ild5647BH06ujSIq5XbCgqlbYl6ANhhi88=")
         .build()
 
     private val client by lazy {
