@@ -86,11 +86,11 @@ See [LOGBUCH.md](LOGBUCH.md) for the live development log.
 
 ## Download
 
-**Public Alpha: v0.1.10-alpha** — Android 16 evaluation build; external security audit remains pending.
+**Public Alpha: v0.1.13-alpha** — Android 16 evaluation build; external security audit remains pending.
 
 - F-Droid: not eligible under the current source-available license
 - Play Store: closed testing submitted; public listing is not live
-- GitHub Releases: [download the current published alpha (v0.1.10)](https://github.com/NeaBouli/chameleon/releases/download/v0.1.10-alpha-chameleon/Chameleon-LATEST.apk)
+- GitHub Releases: [download the current published alpha (v0.1.13)](https://github.com/NeaBouli/chameleon/releases/latest/download/Chameleon-LATEST.apk)
 - Source: `git clone https://github.com/NeaBouli/chameleon.git`
 
 ---

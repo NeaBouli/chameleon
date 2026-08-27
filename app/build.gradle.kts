@@ -39,10 +39,11 @@ android {
         applicationId = "chameleon24.app"
         minSdk = 26
         targetSdk = 36
-        versionCode = 13
-        versionName = "0.1.12-alpha"
+        versionCode = 14
+        versionName = "0.1.13-alpha"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "FORCED_TIER", "\"\"")
+        buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "false")
         buildConfigField("Boolean", "ALLOW_SCREENSHOTS", "false")
     }
 
@@ -52,6 +53,7 @@ android {
             isDebuggable = true
             isMinifyEnabled = false
             buildConfigField("Boolean", "FORCE_ELITE", "true")
+            buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "true")
             buildConfigField("String", "FORCED_TIER", "\"ELITE\"")
         }
         create("storeScreenshot") {
@@ -69,6 +71,7 @@ android {
             applicationIdSuffix = ".internal"
             versionNameSuffix = "-internal"
             buildConfigField("Boolean", "FORCE_ELITE", "true")
+            buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "true")
             buildConfigField("String", "FORCED_TIER", "\"ELITE\"")
             matchingFallbacks += listOf("release")
         }
@@ -78,6 +81,7 @@ android {
             applicationIdSuffix = ".free"
             versionNameSuffix = "-free"
             buildConfigField("Boolean", "FORCE_ELITE", "false")
+            buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "true")
             buildConfigField("String", "FORCED_TIER", "\"FREE\"")
             matchingFallbacks += listOf("release")
         }
@@ -87,6 +91,7 @@ android {
             applicationIdSuffix = ".pro"
             versionNameSuffix = "-pro"
             buildConfigField("Boolean", "FORCE_ELITE", "false")
+            buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "true")
             buildConfigField("String", "FORCED_TIER", "\"PRO\"")
             matchingFallbacks += listOf("release")
         }
@@ -96,6 +101,7 @@ android {
             applicationIdSuffix = ".elite"
             versionNameSuffix = "-elite"
             buildConfigField("Boolean", "FORCE_ELITE", "true")
+            buildConfigField("Boolean", "ALLOW_TIER_OVERRIDE", "true")
             buildConfigField("String", "FORCED_TIER", "\"ELITE\"")
             matchingFallbacks += listOf("release")
         }

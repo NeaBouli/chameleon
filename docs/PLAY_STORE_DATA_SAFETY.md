@@ -1,7 +1,7 @@
 # Chameleon - Play Store Data Safety Form
 
-This document reflects the published `chameleon24.app` alpha at version
-`0.1.10-alpha` (version code 11). Recheck it whenever network, entitlement, messaging,
+This document reflects the `chameleon24.app` closed-alpha candidate at version
+`0.1.13-alpha` (version code 14). Recheck it whenever network, entitlement, messaging,
 location, analytics, or SDK behavior changes.
 
 ## Data Collection
@@ -19,13 +19,13 @@ location, analytics, or SDK behavior changes.
 | Personal info - User IDs | Yes | No* | Required for the default contact listener | App functionality; account management; security and fraud prevention |
 | Personal info - Other info (activation code and entitlement token) | Yes | No | Optional; only after paid activation | App functionality; account management; security and fraud prevention |
 | Personal info - Name (optional display handle) | Yes | No* | Optional | Contact exchange and app functionality |
-| Messages | Yes | No* | Optional; only when the user sends through the server relay | App functionality |
+| Messages | No | No | Not available in this alpha | - |
 | Precise location | Yes** | Yes** | Optional; only after location permission and geofence setup | App functionality |
 
-`*` User-directed contact bundles and encrypted message delivery go to the recipient
-selected by the user. Under Google Play's user-initiated transfer exception this is
-not declared as third-party sharing, but it is still collected because it leaves the
-device through the StealthX relay.
+`*` User-directed signed contact bundles go to the recipient selected by the user.
+Under Google Play's user-initiated transfer exception this is not declared as
+third-party sharing, but it is still collected because it leaves the device through
+the StealthX relay.
 
 `**` Chameleon does not send location to StealthX. It supplies geofence coordinates to
 the Google Play services Location SDK. The conservative Play declaration treats this
@@ -47,8 +47,8 @@ current Google Play services Location data-safety guidance before every submissi
   `wss://api.stealthx.tech/signal` for contact routing and relay operation.
 - Signed public-key bundles can include routing identifiers, public keys, a timestamp,
   and an optional display handle. Private keys never leave the device.
-- Server-relayed messages contain recipient/message identifiers and end-to-end encrypted
-  ratchet payloads. The relay receives ciphertext, not message plaintext.
+- Cross-device messaging is disabled in this alpha. Reassess the Messages declaration
+  before enabling any relay send/receive path.
 - Paid activation sends a user-entered activation code and pseudonymous device-bound ID.
   Entitlement refresh later sends the signed entitlement token.
 - Network endpoints use HTTPS or WSS. Activation and contact exchange additionally use

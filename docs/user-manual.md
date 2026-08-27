@@ -1,6 +1,6 @@
 # Chameleon User Manual
 
-**Version 0.1.10-alpha · Android 8+ · StealthX Platform**
+**Version 0.1.13-alpha · Android 8+ · StealthX Platform**
 
 ## Current Alpha Scope
 

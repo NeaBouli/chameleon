@@ -17,13 +17,12 @@
 
 ## IFR Holder Discount (Cross-Product)
 
-| Verified IFR balance | SecureCall | SecureChat | Chameleon | Suite |
+| Verified IFR status | SecureCall | SecureChat | Chameleon | Suite |
 |----------|------------|------------|-----------|-------|
-| 0 | Free / normal checkout | Free / normal checkout | Free / normal checkout | - |
-| >= 2,000 | 50% off Pro checkout | 50% off Pro checkout | 50% off Pro checkout | - |
-| >= 6,000 | 50% off Premium checkout | 50% off Elite checkout | 50% off Elite checkout | 50% off Suite checkout |
+| No IFR balance | Free / normal checkout | Free / normal checkout | Free / normal checkout | - |
+| Positive IFR balance | Seller-defined discount | Seller-defined discount | Seller-defined discount | Unavailable until bundle fulfillment launches |
 
-Wallet verification happens on the websites with a signed browser-wallet request. The public Android apps do not include WalletConnect or in-app IFR unlock logic.
+Wallet verification happens on the websites with a signed browser-wallet request. Any positive IFR balance is eligible for the discount offered at checkout; there is no token-amount tier threshold. The public Android apps do not include WalletConnect or in-app IFR unlock logic.
 
 ## Product Structure
 

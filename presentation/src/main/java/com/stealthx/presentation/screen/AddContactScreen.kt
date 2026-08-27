@@ -76,8 +76,10 @@ fun AddContactScreen(
     val scanLauncher = rememberLauncherForActivityResult(ScanContract()) { result ->
         result.contents?.let { content ->
             qrContent = content
-            if (content.startsWith("stealthx://add/")) {
-                vm.addFromQrContent(content)
+            inputHint = if (content.startsWith("stealthx://add/")) {
+                "Contact scanned. Review the identity and tap Add Contact to confirm."
+            } else {
+                "The scanned content is not a valid StealthX contact link."
             }
         }
     }
@@ -86,8 +88,7 @@ fun AddContactScreen(
         val uri = nfcUri ?: return@LaunchedEffect
         NfcUriRelay.consume()
         qrContent = uri
-        inputHint = "NFC contact received. Verifying identity…"
-        vm.addFromQrContent(uri)
+        inputHint = "Contact link received. Review the identity and tap Add Contact to confirm."
     }
 
     LaunchedEffect(state.contactAdded) {

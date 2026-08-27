@@ -3528,6 +3528,20 @@ Open next steps:
 
 `HARDWARE-ACCELERATED HOSTED EMULATION RESTORED`
 
+## 2026-08-17 04:12 EEST — CODEX SOL — PHYSICAL LIFECYCLE AND LINK QA CHECKPOINT
+
+- Fresh Free/Pro/Elite tier releases were assigned to S7/S4/S10. Correct tiers, IFR/wallet
+  absence, foreground listener start/stop and alpha-disabled feature presentation were verified.
+- Removed unsafe foreground-service startup from Application creation, centralized crash-safe
+  startup from valid lifecycle/boot contexts, declared the service type, and added VIEW routing.
+- The first physical link retest exposed a navigation-ready race. Navigation now observes the
+  current back-stack entry before consuming the pending identity. Full release unit/lint and all
+  tier APK builds pass; the S7 physically opens a signed `stealthx://add` link in Add Contact.
+- A 500-event stability run per connected Free/Pro package produced no captured app crash or ANR.
+  S10 disconnected before corrected Elite installation/retest. No production or Play action.
+
+`LINK AND LISTENER FIXES VERIFIED ON S7/S4 — S10 RETEST OPEN`
+
 ---
 
 ## 2026-08-13 22:04 EEST — CODEX SOL — INSTRUMENTATION EVIDENCE FIX
@@ -3568,3 +3582,36 @@ Open next steps:
   stale automation-PR reconciliation.
 
 `LOCAL VALIDATION COMPLETE — PROTECTED PR NEXT`
+
+---
+
+## 2026-08-17 EEST — CODEX SOL — THREE-DEVICE RELEASE QA START
+
+- Central ticket `GIO-20260817-STEALTHX-3X3-QA` is in progress against exact
+  `origin/main` `00581325bec7` in an isolated worktree; the divergent canonical
+  worktree remains untouched.
+- Connected matrix: S7/API 26 = Free, Tab S4/API 29 = Pro, S10/API 31 = Elite.
+  Fresh installs follow successful unit, lint, release, package and signature gates.
+- Kimi K3 identified an unsafe application-start foreground-service path on newer
+  Android versions. Sol confirmed the code path and will apply and verify a bounded
+  crash-safe startup correction before physical testing.
+
+`THREE-DEVICE QA IN PROGRESS — STARTUP FIX REQUIRED`
+
+## 2026-08-26 23:01 EEST — CODEX SOL — PRE-SALE COMPLETION BLOCK ACTIVE
+
+- **Ticket:** `GIO-20260826-STEALTHX-PRESALE-COMPLETE`; **Type:** AUDIT / FIX / TEST / RELEASE; **Status:** In Progress.
+- Scope: close every independently solvable Chameleon readiness gap across code, UI, public documentation, artifacts, CI and three-device QA.
+- Stripe, VAT, AADE/myDATA and e-timologio remain on standby. The prior physical-QA correction is being reconciled against current `origin/main` in this isolated worktree.
+- Kimi K3 is providing independent cross-repository review; Sol owns integration and final verification.
+
+`PRE-SALE COMPLETION IN PROGRESS — PAYMENT AND TAX ACTIVATION EXCLUDED`
+## 2026-08-27 04:31 EEST — CODEX TERMINAL — FIX/STATUS — PRE-SALE CANDIDATE VERIFIED
+
+- Chameleon Android remains fully IFR-/wallet-free. Version `0.1.13-alpha` / versionCode `14`, package `chameleon24.app`, compile/target API 36.
+- Full Gradle gate PASS after one storage-only retry: 1,448 tasks covering unit tests, all module checks, Release Lint, IFR/wallet guards and debug assembly. Signed base/Free/Pro/Elite release APKs plus Play AAB built and certificate/package metadata verified.
+- Listener lifecycle and deep-link confirmation fixes are included. Cross-device overlay/messenger remain intentionally disabled/launch-gated until authenticated pairing and interoperability are physically proven.
+- S10 disconnected before Chameleon installation; S7/S4 were occupied by Woizz and were not touched. No physical device result is claimed for this candidate.
+- Public page browser check PASS with no horizontal overflow; release copy now points to `releases/latest/download/Chameleon-LATEST.apk` and displays v0.1.13.
+- Kimi K3 independently reviewed the ecosystem block; Sol integrated and retested the findings. Artifacts are under `/Users/gio/Desktop/aab apk/presale-2026-08-27/`.
+- Open gates: authenticated two-device overlay/messenger matrix, Google closed-test duration/review, release-asset publication/site deployment, Stripe + Greek tax block on explicit standby.

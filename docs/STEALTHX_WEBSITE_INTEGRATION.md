@@ -7,16 +7,18 @@ Add a new product section for Chameleon alongside SecureCall:
 
 - Hero: "Chameleon — Privacy That Adapts"
 - Tagline: "Context-aware encryption for any Android app"
-- Key features: Overlay encryption, Rule-based triggers, IFR tier system
+- Key features: Overlay encryption, Rule-based triggers, browser-only IFR holder discount
 - CTA: "Download on F-Droid" / "Get on Play Store" (when available)
 
-### 2. IFR Tier Table Update
-Add Chameleon tiers to the existing IFR ecosystem table:
+### 2. IFR Holder Discount Table Update
+Add Chameleon to the browser-only IFR holder discount table:
 
-| App | FREE | PRO (2,000 IFR) | ELITE (6,000 IFR) |
-|-----|------|-----------------|-------------------|
-| SecureCall | 15 min calls | Unlimited | + Ghost Mode |
-| **Chameleon** | Overlay encryption | + Messenger + Private Zone | + Geofencing + Decoy |
+| App | FREE | PRO | ELITE |
+|-----|------|-----|-------|
+| SecureCall | 15 min calls | Seller-defined IFR holder discount | Seller-defined IFR holder discount |
+| **Chameleon** | Overlay encryption | Seller-defined IFR holder discount | Seller-defined IFR holder discount |
+
+Any positive IFR balance is eligible. The Android apps contain no wallet or IFR verification code.
 
 ### 3. Download Page
 Create `/chameleon` page with:
