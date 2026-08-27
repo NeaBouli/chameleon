@@ -3624,3 +3624,10 @@ Open next steps:
 - No merge, release-asset publication, site deployment, Play mutation or payment/tax activation occurred.
 
 `PR 41 OPEN — CI AND INDEPENDENT REVIEW PENDING`
+
+## 2026-08-27 04:46 EEST — CODEX TERMINAL — CI — ALL REQUIRED CHECKS GREEN
+
+- PR `#41` exact head `e5dfa3eb0bda9f13b38c5eed1d1c6e0cf2356497` passed Build & Test, Dependency Review, Security Pattern Scan and instrumented smoke tests on API 26 and API 36.
+- PR remains open and mergeable with `REVIEW_REQUIRED`; no approving independent review exists yet. No merge or external release action was attempted.
+
+`PR 41 CI GREEN — APPROVING REVIEW REQUIRED`
