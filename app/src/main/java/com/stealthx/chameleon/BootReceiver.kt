@@ -10,7 +10,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.stealthx.chameleon.service.ContactListenerService
+import com.stealthx.chameleon.service.ListenerStartup
 import com.stealthx.data.prefs.AppPreferences
 import com.stealthx.features.geofencing.engine.GeofenceTransitionReceiver
 import com.stealthx.features.geofencing.engine.GeofencingEngine
@@ -35,12 +35,7 @@ class BootReceiver : BroadcastReceiver() {
 
         // Restart ContactListenerService only when the user keeps background delivery enabled.
         if (appPreferences.backgroundListenerEnabled) {
-            val serviceIntent = Intent(context, ContactListenerService::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(serviceIntent)
-            } else {
-                context.startService(serviceIntent)
-            }
+            ListenerStartup.startSafely(context)
         }
 
         // S-08: Re-register geofences if Elite tier (GMS loses them after reboot).

@@ -34,16 +34,19 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.stealthx.data.NfcUriRelay
 import com.stealthx.data.NfcWriteRelay
+import com.stealthx.data.prefs.AppPreferences
 import com.stealthx.features.decoy.screen.DecoyAuthViewModel
 import com.stealthx.features.decoy.screen.DecoyModeScreen
 import com.stealthx.features.decoy.screen.DecoyUnlockScreen
 import com.stealthx.presentation.nav.StealthXNavGraph
 import com.stealthx.presentation.theme.StealthXTheme
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val decoyAuthViewModel: DecoyAuthViewModel by viewModels()
+    @Inject lateinit var appPreferences: AppPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +89,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (appPreferences.backgroundListenerEnabled) {
+            com.stealthx.chameleon.service.ListenerStartup.startSafely(this)
+        }
         NfcAdapter.getDefaultAdapter(this)?.enableForegroundDispatch(
             this,
             android.app.PendingIntent.getActivity(
@@ -106,6 +112,11 @@ class MainActivity : ComponentActivity() {
 
     private fun handleNfcIntent(intent: Intent?) {
         when (intent?.action) {
+            Intent.ACTION_VIEW -> {
+                intent.dataString
+                    ?.takeIf { it.startsWith("stealthx://add/") }
+                    ?.let(NfcUriRelay::post)
+            }
             NfcAdapter.ACTION_NDEF_DISCOVERED,
             NfcAdapter.ACTION_TAG_DISCOVERED -> {
                 val writeUri = NfcWriteRelay.pendingUri

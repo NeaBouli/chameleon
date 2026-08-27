@@ -3528,6 +3528,20 @@ Open next steps:
 
 `HARDWARE-ACCELERATED HOSTED EMULATION RESTORED`
 
+## 2026-08-17 04:12 EEST — CODEX SOL — PHYSICAL LIFECYCLE AND LINK QA CHECKPOINT
+
+- Fresh Free/Pro/Elite tier releases were assigned to S7/S4/S10. Correct tiers, IFR/wallet
+  absence, foreground listener start/stop and alpha-disabled feature presentation were verified.
+- Removed unsafe foreground-service startup from Application creation, centralized crash-safe
+  startup from valid lifecycle/boot contexts, declared the service type, and added VIEW routing.
+- The first physical link retest exposed a navigation-ready race. Navigation now observes the
+  current back-stack entry before consuming the pending identity. Full release unit/lint and all
+  tier APK builds pass; the S7 physically opens a signed `stealthx://add` link in Add Contact.
+- A 500-event stability run per connected Free/Pro package produced no captured app crash or ANR.
+  S10 disconnected before corrected Elite installation/retest. No production or Play action.
+
+`LINK AND LISTENER FIXES VERIFIED ON S7/S4 — S10 RETEST OPEN`
+
 ---
 
 ## 2026-08-13 22:04 EEST — CODEX SOL — INSTRUMENTATION EVIDENCE FIX
@@ -3568,3 +3582,98 @@ Open next steps:
   stale automation-PR reconciliation.
 
 `LOCAL VALIDATION COMPLETE — PROTECTED PR NEXT`
+
+---
+
+## 2026-08-17 EEST — CODEX SOL — THREE-DEVICE RELEASE QA START
+
+- Central ticket `GIO-20260817-STEALTHX-3X3-QA` is in progress against exact
+  `origin/main` `00581325bec7` in an isolated worktree; the divergent canonical
+  worktree remains untouched.
+- Connected matrix: S7/API 26 = Free, Tab S4/API 29 = Pro, S10/API 31 = Elite.
+  Fresh installs follow successful unit, lint, release, package and signature gates.
+- Kimi K3 identified an unsafe application-start foreground-service path on newer
+  Android versions. Sol confirmed the code path and will apply and verify a bounded
+  crash-safe startup correction before physical testing.
+
+`THREE-DEVICE QA IN PROGRESS — STARTUP FIX REQUIRED`
+
+## 2026-08-26 23:01 EEST — CODEX SOL — PRE-SALE COMPLETION BLOCK ACTIVE
+
+- **Ticket:** `GIO-20260826-STEALTHX-PRESALE-COMPLETE`; **Type:** AUDIT / FIX / TEST / RELEASE; **Status:** In Progress.
+- Scope: close every independently solvable Chameleon readiness gap across code, UI, public documentation, artifacts, CI and three-device QA.
+- Stripe, VAT, AADE/myDATA and e-timologio remain on standby. The prior physical-QA correction is being reconciled against current `origin/main` in this isolated worktree.
+- Kimi K3 is providing independent cross-repository review; Sol owns integration and final verification.
+
+`PRE-SALE COMPLETION IN PROGRESS — PAYMENT AND TAX ACTIVATION EXCLUDED`
+## 2026-08-27 04:31 EEST — CODEX TERMINAL — FIX/STATUS — PRE-SALE CANDIDATE VERIFIED
+
+- Chameleon Android remains fully IFR-/wallet-free. Version `0.1.13-alpha` / versionCode `14`, package `chameleon24.app`, compile/target API 36.
+- Full Gradle gate PASS after one storage-only retry: 1,448 tasks covering unit tests, all module checks, Release Lint, IFR/wallet guards and debug assembly. Signed base/Free/Pro/Elite release APKs plus Play AAB built and certificate/package metadata verified.
+- Listener lifecycle and deep-link confirmation fixes are included. Cross-device overlay/messenger remain intentionally disabled/launch-gated until authenticated pairing and interoperability are physically proven.
+- S10 disconnected before Chameleon installation; S7/S4 were occupied by Woizz and were not touched. No physical device result is claimed for this candidate.
+- Public page browser check PASS with no horizontal overflow; release copy now points to `releases/latest/download/Chameleon-LATEST.apk` and displays v0.1.13.
+- Kimi K3 independently reviewed the ecosystem block; Sol integrated and retested the findings. Artifacts are under `/Users/gio/Desktop/aab apk/presale-2026-08-27/`.
+- Open gates: authenticated two-device overlay/messenger matrix, Google closed-test duration/review, release-asset publication/site deployment, Stripe + Greek tax block on explicit standby.
+
+## 2026-08-27 04:36 EEST — CODEX TERMINAL — RELEASE HANDOFF — PR OPEN
+
+- Reviewed implementation committed as `35d4aa9f5d402388d229116a71ce29e153de0c73` and pushed on `fix/presale-complete-20260826`.
+- Normal protected review opened: https://github.com/NeaBouli/chameleon/pull/41
+- PR is open and mergeable. Dependency Review is PASS; build/test, security scan and instrumented API 26/36 checks are running. Independent approving review remains required.
+- No merge, release-asset publication, site deployment, Play mutation or payment/tax activation occurred.
+
+`PR 41 OPEN — CI AND INDEPENDENT REVIEW PENDING`
+
+## 2026-08-27 04:46 EEST — CODEX TERMINAL — CI — ALL REQUIRED CHECKS GREEN
+
+- PR `#41` exact head `e5dfa3eb0bda9f13b38c5eed1d1c6e0cf2356497` passed Build & Test, Dependency Review, Security Pattern Scan and instrumented smoke tests on API 26 and API 36.
+- PR remains open and mergeable with `REVIEW_REQUIRED`; no approving independent review exists yet. No merge or external release action was attempted.
+
+`PR 41 CI GREEN — APPROVING REVIEW REQUIRED`
+
+## 2026-08-27 06:31 EEST — CODEX SOL + KIMI K3 — ENTITLEMENT AND PIN HARDENING VERIFIED
+
+- Kimi confirmed the prior signable Pro/Elite tier override was a real sales-model bypass. All signable base/internal/Free/Pro/Elite compatibility variants now require server-signed, device-bound activation; only debug/screenshot builds may force a tier. A new Gradle guard enforces this boundary.
+- Live `api.stealthx.tech` TLS was inspected: the leaf is valid through October 2026 and its SPKI matches. Chameleon now also carries the current Let's Encrypt intermediate/root backup pins already used by SecureChat.
+- Public README, ecosystem, landing and wiki copy now distinguishes published `v0.1.9-alpha` from candidate `v0.1.13-alpha`, documents one-APK activation and removes fixed 50% promises.
+- Full verification PASS after one storage-only interruption and generated-output cleanup: 1,615 Gradle tasks including all checks/tests, Release Lint, IFR/wallet and release-tier guards, signed base AAB/APK and signed compatibility APKs. Generated BuildConfig values confirm all signable overrides are disabled.
+- Final AAB SHA-256: `635d4b5271cc80d695c6d3eab4e803a1a4509e71a450260255a425b49b43985c`. Package `chameleon24.app`, versionCode `14`, versionName `0.1.13-alpha`, API 36 and release certificate were reverified. Desktop candidates are refreshed.
+- S7 and Tab S4 remain occupied by Woizz and were not disturbed; S10 is absent. Authenticated two-device overlay/messenger and activation-code E2E remain open and are not claimed.
+- Remaining gates: normal PR approval/merge and exact-head CI rerun; physical matrix; Google closed-test review/duration; GitHub Release/site publication. Stripe and Greek VAT/AADE/myDATA/e-timologio remain on explicit standby.
+
+`SERVER-SIGNED ONE-APK MODEL LOCALLY GREEN — PROTECTED AND PHYSICAL GATES OPEN`
+
+## 2026-08-27 06:38 EEST — CODEX SOL + KIMI K3 — FINAL GUARD REVIEW PASS
+
+- Sol applied Kimi's final guard-hardening criteria to Chameleon as well: all tier declarations are parsed across the complete app build script, the sole enabled declaration must be inside Debug, runtime conjunctions are asserted, and every `pre*ReleaseBuild` depends on the guard.
+- Direct `:app:preReleaseBuild` verification PASS and visibly executed `verifyNoReleaseTierOverrides`. Live GitHub `releases/latest/download/Chameleon-LATEST.apk` resolves to stable `v0.1.9-alpha`; candidate `v0.1.13-alpha` remains unpublished.
+
+`FINAL TIER GUARD PASS — NO LOCAL RELEASE BLOCKER`
+
+## 2026-08-27 07:45 EEST — CODEX SOL + KIMI K3 — RELAY TLS AND PRE-SALE GATES VERIFIED
+
+- CodeRabbit's final finding was confirmed and fixed: activation, contact exchange and WebSocket relay clients now share one pinned `api.stealthx.tech` OkHttp factory. Kimi independently verified module boundaries, all call sites and the live three-certificate pin set.
+- New central pinning tests and messenger compile PASS (76 tasks). Complete final gate PASS: 1,670 Gradle tasks covering tests, checks, Release Lint, IFR/wallet and tier guards, signed base/Free/Pro/Elite APKs plus Play AAB.
+- Public IFR verification/checkout is explicitly planned and disabled until payment and fiscal approval. Local browser verification PASS for desktop `1440x900` and mobile `390x844`: controls disabled, standby status visible, no horizontal overflow.
+- Refreshed candidate hashes: AAB `d1e95ff76cfe75c6a4fe5f33975eb19b31b31fbdeb4f91a0f3988290773d21ba`; base APK `44da8ee6f08784dd42ce396e7640c0630164a7935f0bf890b62af574000e711a`; Free APK `822fcc183070522731b24d7396d505aa7350f64a5856140cfb024fcf0d543570`; Pro APK `ca53b0572c44e2dcaafedd49eb6cceb52a445257f27bc1ac2a58a3fec4b765e8`; Elite APK `a28559992f4642428c19b137907335f074bbc59ebab1cd2c2c9191f76a4d2894`.
+- Physical authenticated overlay/messenger and activation-code E2E remain open; S7/Tab S4 are reserved by Woizz and S10 is absent. Normal PR approval/merge, Google closed-test review/duration and post-merge release/site publication remain external gates.
+- Stripe production activation and Greek VAT/AADE/myDATA/e-timologio remain the sole intentionally deferred implementation block pending owner data and separately bounded production authorization.
+
+`LOCAL PRE-SALE SCOPE GREEN — EXACT-HEAD CI, REVIEW AND EXTERNAL GATES REMAIN`
+
+## 2026-08-27 07:52 EEST — CODEX SOL — CI DEPENDENCY VERIFICATION CORRECTED
+
+- Exact-head CI exposed a repository verification-metadata gap before compilation: the Gradle Plugin Portal serves a semantically equivalent minimal Kotlin Android plugin-marker POM with a different byte checksum than Maven Central.
+- The official Plugin Portal artifact was fetched directly, compared with the already approved Maven artifact and its SHA-256 was added as a second allowed checksum for that exact coordinate only. No dependency version or repository changed.
+- Local `assembleDebug` verification PASS after the metadata update: 430 tasks, `BUILD SUCCESSFUL`. Exact-head CI rerun remains required.
+
+`CI METADATA GAP FIXED LOCALLY — EXACT-HEAD RERUN PENDING`
+
+## 2026-08-27 08:22 EEST — CODEX SOL — CLOSED CHECKOUT RUNTIME GATE VERIFIED
+
+- Public copy now consistently describes the IFR purchase benefit as planned. A central `data-ifr-enabled=false` runtime gate returns before wallet/checkout handlers bind; all controls remain disabled even if markup and script load normally.
+- Node syntax and closed-gate regression PASS: no handlers, no network path and all controls disabled. The regression is wired into Chameleon CI. Browser PASS at `1440x900` and `390x844`: zero console errors, visible standby state and no horizontal overflow.
+- No Android source or signed candidate changed after the already verified TLS release build. Server-side checkout authorization remains part of the intentionally deferred Stripe + Greek VAT/AADE/myDATA/e-timologio implementation block.
+
+`FINAL LOCAL REVIEW FIXES GREEN — EXACT-HEAD CI AND NORMAL REVIEW REQUIRED`

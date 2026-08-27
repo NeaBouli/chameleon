@@ -12,7 +12,6 @@
 package com.stealthx.chameleon
 
 import android.app.Application
-import android.content.Intent
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
@@ -20,20 +19,15 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.stealthx.chameleon.service.ContactListenerService
 import com.stealthx.crypto.SodiumInitializer
 import com.stealthx.data.identity.StealthXIdentity
-import com.stealthx.data.prefs.AppPreferences
 import com.stealthx.shared.model.AccessTier
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
-import javax.inject.Inject
 import java.util.concurrent.TimeUnit
 
 @HiltAndroidApp
 class ChameleonApplication : Application() {
-    @Inject lateinit var appPreferences: AppPreferences
-
     override fun onCreate() {
         super.onCreate()
 
@@ -45,7 +39,7 @@ class ChameleonApplication : Application() {
         // remain unavailable until the preserved identity state can be repaired explicitly.
         runCatching { StealthXIdentity.getOrCreateWithSeed(this) }
 
-        val allowDevTierOverride = BuildConfig.DEBUG
+        val allowDevTierOverride = BuildConfig.ALLOW_TIER_OVERRIDE
         com.stealthx.shared.DevTierOverride.forcedTier =
             BuildConfig.FORCED_TIER
                 .takeIf { allowDevTierOverride && it.isNotBlank() }
@@ -56,9 +50,8 @@ class ChameleonApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        if (appPreferences.backgroundListenerEnabled) {
-            startForegroundService(Intent(this, ContactListenerService::class.java))
-        }
+        // Application.onCreate may run while Android considers the process backgrounded.
+        // Foreground entry points and the boot receiver own listener recovery instead.
         scheduleEntitlementRefresh()
     }
 

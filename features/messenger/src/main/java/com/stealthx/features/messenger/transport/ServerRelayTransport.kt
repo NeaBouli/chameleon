@@ -10,11 +10,11 @@
 package com.stealthx.features.messenger.transport
 
 import com.stealthx.data.identity.StealthXIdentity
+import com.stealthx.data.network.StealthXApiTls
 import com.stealthx.shared.model.RatchetMessage
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
@@ -39,7 +39,7 @@ class ServerRelayTransport @Inject constructor(
 
     override val type = MessengerTransportType.SERVER_RELAY
 
-    private val client = OkHttpClient.Builder()
+    private val client = StealthXApiTls.newClientBuilder()
         .pingInterval(30, TimeUnit.SECONDS)
         .build()
 

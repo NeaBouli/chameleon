@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -31,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.stealthx.features.decoy.screen.DecoySetupScreen
 import com.stealthx.features.decoy.screen.DecoySetupViewModel
 import com.stealthx.features.decoy.screen.MultiDecoyScreen
@@ -42,6 +44,7 @@ import androidx.navigation.navArgument
 import com.stealthx.features.overlay.screen.OverlayScreen
 import com.stealthx.features.privatezone.screen.PrivateZoneScreen
 import com.stealthx.features.privatezone.screen.PrivateZoneViewModel
+import com.stealthx.data.NfcUriRelay
 import com.stealthx.access.compose.TierGatedContent
 import com.stealthx.presentation.screen.AddContactScreen
 import com.stealthx.presentation.screen.AddRuleScreen
@@ -68,6 +71,18 @@ fun StealthXNavGraph(navController: NavHostController) {
     val settingsVm: SettingsViewModel = hiltViewModel()
     val setupVm: SetupViewModel = hiltViewModel()
     val currentTier by dashboardVm.currentTier.collectAsState()
+    val pendingContactUri by NfcUriRelay.uri.collectAsState()
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = currentBackStackEntry?.destination?.route
+
+    LaunchedEffect(pendingContactUri, currentRoute) {
+        if (pendingContactUri != null &&
+            currentRoute != null &&
+            currentRoute != Screen.AddContact.route
+        ) {
+            navController.navigate(Screen.AddContact.route)
+        }
+    }
 
     val startDestination = remember {
         when {

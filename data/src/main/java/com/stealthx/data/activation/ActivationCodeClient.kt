@@ -9,8 +9,7 @@ import android.content.Context
 import com.stealthx.crypto.EntitlementTokenVerifier
 import com.stealthx.data.BuildConfig
 import com.stealthx.data.identity.StealthXIdentity
-import okhttp3.CertificatePinner
-import okhttp3.OkHttpClient
+import com.stealthx.data.network.StealthXApiTls
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
@@ -27,17 +26,10 @@ object ActivationCodeClient {
         val entitlementToken: String
     )
 
-    // Primary api.stealthx.tech SPKI plus the Let's Encrypt R12 intermediate backup.
-    private val certPinner = CertificatePinner.Builder()
-        .add("api.stealthx.tech", "sha256/1e85xNSEj+dcImOJS0iNkfMZOrZdvJJzzPCqT1/CZDc=")
-        .add("api.stealthx.tech", "sha256/kZwN96eHtZftBWrOZUsd6cA4es80n3NzSk/XtYz2EqQ=")
-        .build()
-
     private val client by lazy {
-        OkHttpClient.Builder()
+        StealthXApiTls.newClientBuilder()
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
-            .certificatePinner(certPinner)
             .build()
     }
 
