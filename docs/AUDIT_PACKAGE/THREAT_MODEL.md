@@ -17,7 +17,7 @@
 | **Device thief** | Physical access, unlocked | Biometric auth, per-use Keystore, SQLCipher |
 | **Device thief** | Physical access, locked | Hardware Keystore (TEE/StrongBox), encrypted DB |
 | **Malicious app** | Same device, different process | AIDL isolation, process=":crypto", exported=false |
-| **Network attacker** | Man-in-the-middle | No cleartext traffic, no internet permission by default |
+| **Network attacker** | Man-in-the-middle | TLS transport, end-to-end encrypted payloads, no cleartext application protocol |
 | **Cloud backup** | Google Drive access | allowBackup=false, data_extraction_rules excludes all |
 | **Forensic analyst** | Full disk image | SQLCipher, SecureMemoryWipe, no plaintext on disk |
 | **Coercion** | Forced unlock | Decoy profile (ELITE), plausible deniability |

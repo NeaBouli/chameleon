@@ -1,0 +1,31 @@
+# Chameleon - StealthX Platform
+> Local-first Android privacy research client with encrypted storage, rules, geofencing and decoy components.
+> Current alpha features and network use are described at https://chameleon.stealthx.tech/privacy.html.
+
+## Current Status
+- Public GitHub APK: v0.1.9-alpha
+- Google Play: v0.1.13-alpha available only to selected closed testers
+- Target platform: Android 8.0+; current Play build targets Android 16 / API 36
+- Overlay and cross-device messenger paths remain disabled pending interoperability and physical-device verification
+
+## Privacy And Network Use
+- Rules, geofences, private keys, encrypted files and settings are stored locally
+- Optional contact exchange, encrypted message relay and activation verification use limited encrypted network processing
+- No advertising SDK, analytics SDK, crash-reporting SDK or Android advertising-ID integration
+- Private keys never leave the device; relayed message content is end-to-end encrypted
+
+## Paid Access And IFR
+- One Android app covers Free, Pro and Elite
+- Paid access uses a server-signed, device-bound activation code
+- No WalletConnect, wallet address input, Ethereum RPC lookup or IFR tier cache exists in the Android app
+- The planned IFR holder discount is browser-only before purchase and currently disabled pending payment and Greek fiscal approval
+- Any positive IFR balance qualifies for the seller-displayed discount; there is no token-amount tier threshold
+
+## Links
+- Website: https://chameleon.stealthx.tech/
+- FAQ: https://chameleon.stealthx.tech/faq.html
+- Wiki: https://chameleon.stealthx.tech/wiki/
+- Privacy: https://chameleon.stealthx.tech/privacy.html
+- GitHub: https://github.com/NeaBouli/chameleon
+- SecureCall: https://stealthx.tech/
+- SecureChat: https://securechat.stealthx.tech/

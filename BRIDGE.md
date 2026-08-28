@@ -3677,3 +3677,19 @@ Open next steps:
 - No Android source or signed candidate changed after the already verified TLS release build. Server-side checkout authorization remains part of the intentionally deferred Stripe + Greek VAT/AADE/myDATA/e-timologio implementation block.
 
 `FINAL LOCAL REVIEW FIXES GREEN — EXACT-HEAD CI AND NORMAL REVIEW REQUIRED`
+
+## 2026-08-29 01:57 EEST — CODEX SOL — PUBLIC CONTENT CORRECTION READY FOR REVIEW
+
+- Replaced the false all-local/no-network landing claim with the documented local-first,
+  limited encrypted network model and corrected contact/privacy links.
+- Added current `/faq.html` and `/llms.txt`, aligned GitHub/Play release status, canonicals,
+  wiki links and sitemap dates. Retired WalletConnect/on-chain IFR audit material now
+  documents the browser-only pre-purchase boundary and server-signed activation model.
+- Local verification PASS: XML sitemap parse, `git diff --check`, stale-claim guards and
+  eight-page local link/fragment scan with zero broken targets. New FAQ passed desktop and
+  375px mobile DOM/layout checks with zero horizontal overflow.
+- Work is isolated from the dirty/behind main worktree on branch
+  `docs/public-content-sync-20260829`. GitHub review, CI and live Pages verification
+  remain pending.
+
+`PUBLIC CONTENT CORRECTION IMPLEMENTED / LOCAL GATES PASS / REVIEW PENDING`
