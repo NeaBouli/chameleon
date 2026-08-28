@@ -1,6 +1,6 @@
 # Chameleon - IFR Purchase Discount Boundary
 
-_Current as of 2026-08-29. This document replaces the retired in-app IFR design._
+_Current as of 2026-08-28. This document replaces the retired in-app IFR design._
 
 ## Current Product Boundary
 
