@@ -9,7 +9,6 @@ _Assessed: 2026-04-15_
 | lazysodium-android | 5.1.0 | MPL-2.0 | libsodium wrapper (XChaCha20, X25519, Argon2id) | No known CVEs |
 | JNA | 5.14.0 | Apache-2.0 / LGPL-2.1 | JNI bridge for lazysodium | No known CVEs |
 | SQLCipher | 4.5.4 | BSD-3 | Database encryption | No known CVEs |
-| web3j-core | 4.12.0 | Apache-2.0 | Ethereum RPC (eth_call only) | No known CVEs |
 
 ## Android Dependencies
 
@@ -38,6 +37,6 @@ _Assessed: 2026-04-15_
 ## Supply Chain Notes
 
 - All dependencies from Maven Central or Google Maven
-- No JitPack dependencies in production (only attempted for WalletConnect, currently disabled)
+- No JitPack, WalletConnect or Ethereum RPC dependency is present in the current production graph
 - `gradle/libs.versions.toml` is the single source of truth for all versions
 - Dependabot integration recommended for automated CVE monitoring

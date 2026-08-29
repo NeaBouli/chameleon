@@ -15,7 +15,6 @@ All cryptographic operations are implemented in the `:stealthx-crypto` module vi
 | Ed25519 | Digital signatures | lazysodium | 32B public, 64B private |
 | Argon2id | Password-based KDF | lazysodium | 64MB memory, 3 iterations |
 | HKDF-SHA256 | Key derivation (Double Ratchet) | javax.crypto.Mac | RFC 5869 |
-| HMAC-SHA256 | IFR cache tamper detection | Android Keystore | Hardware-backed key |
 
 ## XChaCha20-Poly1305 Details
 
@@ -51,7 +50,7 @@ Based on [Signal's Double Ratchet specification](https://signal.org/docs/specifi
 - **Android Keystore:** Hardware-backed (StrongBox or TEE fallback)
 - **Per-use authentication:** `setUserAuthenticationValidityDurationSeconds(-1)`
 - **Database key:** AES-256-GCM wrapped in Keystore, used as SQLCipher passphrase
-- **HMAC key:** Hardware Keystore, used for IFR cache tamper detection
+- **Activation verification:** paid access uses an Ed25519 server signature verified against the embedded public key; no wallet or IFR state is stored in the app
 
 ## Memory Wiping
 

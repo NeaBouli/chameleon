@@ -30,14 +30,14 @@ Changes to these modules require **additional security review**:
 | `:stealthx-crypto` | Project maintainer + crypto review |
 | `:security` | Project maintainer + crypto review |
 | `:core` (AIDL/IPC) | Project maintainer |
-| `:stealthx-ifr` (IFR/HMAC) | Project maintainer |
+| `:stealthx-access` and activation verification | Project maintainer |
 
 ### What Triggers Security Review
 
 - Any change to encryption/decryption logic
 - Any change to key management or storage
 - Any change to AIDL interface definitions
-- Any change to IFR tier verification or HMAC
+- Any change to activation signatures, entitlement verification or access-tier persistence
 - Any change to ProGuard rules
 - Any new dependency addition
 

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ - Chameleon</title>
+  <meta name="description" content="Frequently asked questions about Chameleon privacy processing, network use, Android permissions, paid access and release availability.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://chameleon.stealthx.tech/faq.html">
+  <style>
+    :root{color-scheme:dark;--bg:#0a0a0f;--surface:#101923;--border:#263746;--text:#edf2f7;--muted:#a9b7c4;--orange:#ff6b35;--cyan:#35c9ff}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}
+    nav{border-bottom:1px solid var(--border);background:#0a0a0ff2}.nav-inner,main,footer{width:min(920px,calc(100% - 32px));margin:auto}
+    .nav-inner{min-height:62px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}.brand{color:var(--orange);font-size:19px;font-weight:800;margin-right:auto}
+    nav a{color:var(--muted);text-decoration:none}nav a[aria-current="page"],nav a:hover{color:var(--text)}main{padding:56px 0 72px}
+    h1{font-size:clamp(36px,7vw,58px);line-height:1.05;margin:0 0 14px}h2{font-size:20px;color:var(--orange);margin:0 0 8px;letter-spacing:0}
+    .lead{color:var(--muted);max-width:720px;margin:0 0 38px}.faq{padding:22px 0;border-top:1px solid var(--border)}.faq p{color:var(--muted);margin:0;max-width:780px}
+    a{color:var(--cyan)}footer{padding:24px 0 40px;border-top:1px solid var(--border);color:var(--muted)}
+    @media(max-width:640px){.nav-inner{gap:14px;padding:10px 0}.brand{width:100%}main{padding-top:38px}}
+  </style>
+</head>
+<body>
+  <nav><div class="nav-inner">
+    <a class="brand" href="./">Chameleon</a>
+    <a href="./#features">Features</a><a href="./#security">Security</a>
+    <a href="wiki/">Wiki</a><a href="faq.html" aria-current="page">FAQ</a>
+    <a href="https://stealthx.tech">SecureCall</a><a href="https://securechat.stealthx.tech">SecureChat</a>
+  </div></nav>
+  <main>
+    <h1>Frequently Asked Questions</h1>
+    <p class="lead">Current answers for the Chameleon Android alpha. Claims here reflect the current app, privacy policy and distribution status.</p>
+
+    <section class="faq"><h2>Does everything stay on my phone?</h2><p>Rules, geofences, private keys, encrypted files and app settings stay on the device. Optional contact exchange, encrypted message relay and activation verification use limited encrypted network processing. Private keys and message plaintext are not sent to StealthX.</p></section>
+    <section class="faq"><h2>Does Chameleon use advertising or analytics?</h2><p>No. The current app has no advertising SDK, analytics SDK, crash-reporting SDK or advertising-ID integration.</p></section>
+    <section class="faq"><h2>Is cross-app overlay protection ready?</h2><p>Not yet. Overlay and cross-device messenger paths remain disabled in the current alpha until interoperability and physical-device verification are complete. Do not rely on the alpha for cross-device protection.</p></section>
+    <section class="faq"><h2>How are Pro and Elite activated?</h2><p>One Android app contains all access levels. A purchase produces a server-signed, device-bound activation code. The app does not connect a wallet or calculate a tier from token holdings.</p></section>
+    <section class="faq"><h2>How does the IFR holder discount work?</h2><p>The planned discount is verified only in the browser before purchase. Any positive IFR balance qualifies for the discount displayed by the seller; there is no token-amount tier threshold. Verification and checkout remain disabled until payment and Greek fiscal integration are approved.</p></section>
+    <section class="faq"><h2>Where can I install Chameleon?</h2><p>The public GitHub APK is v0.1.9-alpha. Version 0.1.13-alpha is available only to selected Google Play closed testers. The Play listing is not publicly available.</p></section>
+    <section class="faq"><h2>Where is the complete privacy description?</h2><p>Read the current <a href="privacy.html">privacy policy</a> and the <a href="wiki/">Chameleon wiki</a>. Security issues can be reported through the <a href="https://github.com/NeaBouli/chameleon/security">GitHub security page</a>.</p></section>
+  </main>
+  <footer>Chameleon is a Vendetta Labs / StealthX Platform product.</footer>
+</body>
+</html>

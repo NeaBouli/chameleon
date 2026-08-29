@@ -17,7 +17,7 @@
 │   crypto    │   Keystore, Wipe  │  A11y, AIDL, IPC  │
 ├─────────────┤                   ├───────────────────┤
 │ :stealthx-  │    :data          │                   │
-│   ifr       │  Room+SQLCipher   │                   │
+│   access    │  Room+SQLCipher   │                   │
 ├─────────────┴───────────────────┴───────────────────┤
 │  :shared — Models, Extensions (zero dependencies)   │
 └─────────────────────────────────────────────────────┘
@@ -33,9 +33,9 @@
 | :domain | :stealthx-crypto, :shared | :data (interfaces only) |
 | :core | :stealthx-crypto, :security, :shared | :data |
 | :data | :domain, :stealthx-crypto, :security, :shared | :core |
-| :stealthx-ifr | :stealthx-crypto, :domain, :shared | :data, :security |
-| :features:* | :domain, :data, :stealthx-ifr, :shared | :stealthx-crypto |
-| :presentation | :domain, :features:*, :stealthx-ifr, :shared | :data, :core |
+| :stealthx-access | :shared | network, wallet and payment code |
+| :features:* | :domain, :data, :shared | :stealthx-crypto |
+| :presentation | :domain, :features:*, :shared | :data, :core |
 | :app | all | — |
 
 ## AIDL Process Isolation
@@ -53,12 +53,16 @@ The `CryptoService` runs in `android:process=":crypto"` — a separate Android p
 - Encrypt/decrypt text
 - Return `ProcessTextResult` via AIDL
 
-## IFR Tier Gating
+## Paid Access Gating
 
 All feature access control flows through `TierGate` in `:domain`:
 
 ```
-TierGatedContent (Composable) → TierGate.getTier() → IfrTierRepository → Room DB + HMAC validation
+TierGatedContent (Composable) -> TierGate.getTier() -> AccessTierRepository -> verified server-signed activation cache
 ```
 
 No `if(isPro)` or `if(isElite)` anywhere in feature code.
+
+The Android app has no wallet connector, IFR balance lookup or token-derived access tier.
+Any IFR holder discount is handled in the browser before purchase and results only in the
+same server-signed activation credential used by ordinary checkout.

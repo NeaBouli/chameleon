@@ -18,7 +18,7 @@
 - **No external audit completed yet** — code has not been reviewed by a third-party security firm
 - **AccessibilityService trust** — the service has broad text access; the package whitelist is the only control
 - **Single-device model** — keys do not sync across devices; loss of device = loss of keys
-- **IFR cache offline** — tier is cached locally; if cache is tampered AND HMAC key is compromised, tier could be spoofed (requires hardware Keystore breach)
+- **Offline entitlement cache** — paid access relies on a locally cached, server-signed activation credential; expiry and revocation refresh depend on network availability
 
 ## Recommended Auditor
 

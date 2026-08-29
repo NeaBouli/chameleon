@@ -26,7 +26,7 @@ The F-Droid build flavor excludes:
 
 | Anti-Feature | Applies | Reason |
 |-------------|---------|--------|
-| NonFreeNet | Yes | Optional IFR verification requires Ethereum RPC (user-initiated) |
+| NonFreeNet | Yes | Activation verification and optional encrypted relay use the StealthX service; the app contains no wallet or Ethereum RPC client |
 | NonFreeDep | No | All dependencies are FOSS (F-Droid flavor excludes Play Services) |
 | Tracking | No | No analytics, telemetry, or crash reporting |
 | Ads | No | No advertising |
