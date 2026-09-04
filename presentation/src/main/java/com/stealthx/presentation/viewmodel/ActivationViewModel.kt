@@ -71,6 +71,8 @@ class ActivationViewModel @Inject constructor(
                         "entitlement_not_configured" -> "Secure purchase activation is not configured"
                         "entitlement_invalid" -> "Entitlement verification failed"
                         "network_error" -> "Connection failed — try again"
+                        "timeout" -> "Verification timed out — try again"
+                        "invalid_response" -> "Invalid verification response"
                         else -> error ?: "Unknown error"
                     }
                     _state.value = ActivationState.Error(msg)
