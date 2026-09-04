@@ -3714,3 +3714,21 @@ Open next steps:
   Pages deployment and live verification wait on merge.
 
 `PR 42 TECHNICALLY GREEN / INDEPENDENT REVIEW REQUIRED`
+
+## 2026-09-04 20:16 EEST — CODEX SOL — ENTITLEMENT CLIENT HARDENING READY FOR REVIEW
+
+- Made activation refresh single-callback and timeout-bounded; malformed, stale or
+  failed responses now remain fail-closed and trigger runtime downgrade.
+- Full CI-equivalent matrix PASS: check, release lint, debug/release APK and release
+  AAB (1583 tasks).
+- Existing release identity produced valid API-36 artifacts for package
+  `chameleon24.app` code 14 and Free package `chameleon24.app.free` code 14.
+- S7 Free update/install PASS; activity started and remained resumed, process alive.
+  Settings inspection found no IFR, wallet, WalletConnect or MetaMask UI references;
+  unavailable Free-tier functions remain visibly disabled.
+- Only S7 was attached. Cross-device messaging/feature flows, activation/restore/revoke,
+  Play license-tester lifecycle and S10/S4 coverage remain external gates. No product
+  is PRODUCT_READY or FINANCE_READY; commerce remains disabled.
+- Kimi K3 was unavailable due weekly quota (HTTP 403); Sol completed review and tests.
+
+`LOCAL CODE/TEST GATES PASS / S7 SMOKE PASS / REVIEW AND MULTI-DEVICE E2E GATES OPEN`
