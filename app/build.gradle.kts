@@ -187,6 +187,9 @@ dependencies {
     implementation(libs.room.runtime)
 
     androidTestImplementation(libs.androidx.test.core.ktx)
+    // StorageUpgradeProbeTest opens the :data Room/SQLCipher database directly.
+    androidTestImplementation(libs.room.runtime)
+    androidTestImplementation(libs.sqlite.ktx)
     androidTestImplementation(libs.androidx.test.junit.ktx)
     androidTestImplementation(libs.androidx.test.runner)
 
