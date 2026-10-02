@@ -17,7 +17,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * Two-phase dependency-upgrade probe for the native crypto binding (lazysodium over JNA)
+ * Two-phase dependency-upgrade probe for the native libsodium binding (JNA), used via the
+ * stealthx-crypto API only,
  * and the SQLCipher database. Skipped unless `storageUpgradePhase` is passed:
  *
  *  1. build/install the PREVIOUS dependency set, run with `-e storageUpgradePhase write`
