@@ -3741,3 +3741,15 @@ Open next steps:
 - `docs/AUDIT_PACKAGE/BUILDER_REGISTRY.md` already reflects the current state; no change needed.
 - Open owner question: ECOSYSTEM.md says any positive IFR balance qualifies, while SecureCall code and
   stealth docs use 2,000 / 6,000 IFR hold thresholds.
+
+## 2026-10-03 — CLAUDE CODE — IFR ELIGIBILITY RULE DECIDED (hold model)
+
+- Decision (owner delegated): StealthX keeps the **hold model**. Any positive IFR token balance
+  (`balanceOf`, 9 decimals) qualifies for the seller-set discount, verified only in the browser
+  checkout with a signed nonce. The checkout stays launch-gated. The Android apps contain no IFR or wallet logic, and PRO/ELITE
+  access comes only from signed activation credentials.
+- Retired: the 2,000 / 6,000 IFR tier thresholds and IFRLock lookups. Remaining mentions are marked as
+  historical. This resolves the open question in the previous entry.
+- Launch gate added: because a dust balance qualifies, the seller documents a minimum-balance or
+  per-wallet limit decision before the discounted checkout is enabled.
+- Files: CLAUDE_CODE_START.md, docs/SECURECALL_ANALYSIS.md, docs/AUDIT_PACKAGE/IFR_INTEGRATION_SECURITY.md, docs/PRICING.md.

@@ -157,8 +157,9 @@ BuilderRegistry: 0xdfe6636DA47F8949330697e1dC5391267CEf0EE3
 IFR Token:       0x77e99917Eca8539c62F509ED1193ac36580A6e7B
 Chain ID:        1 (Ethereum Mainnet)
 Decimals:        9
-PRO Threshold:   2_000 × 10^9 = 2_000_000_000_000
-ELITE Threshold: 6_000 × 10^9 = 6_000_000_000_000
+IFR rule:        hold model: any positive IFR token balance (balanceOf), checked only in the
+                 browser checkout; seller-set discount; launch-gated. The Android app has
+                 no IFR logic. Retired: 2,000 / 6,000 IFR tier thresholds and IFRLock lookups.
 ```
 
 ---
