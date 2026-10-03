@@ -67,9 +67,9 @@ Verifikation:
 - S10 nicht verbunden.
 
 Desktop-Artefakte:
-- `/Users/gio/Desktop/Chameleon-LATEST.aab`
-- `/Users/gio/Desktop/Chameleon-Release-LATEST.apk`
-- `/Users/gio/Desktop/Chameleon-Internal-LATEST.apk` (Test, FORCE_ELITE)
+- `~/Desktop/Chameleon-LATEST.aab`
+- `~/Desktop/Chameleon-Release-LATEST.apk`
+- `~/Desktop/Chameleon-Internal-LATEST.apk` (Test, FORCE_ELITE)
 
 Audit-Details: `docs/SETTINGS_AUDIT_2026-06-21.md`
 
@@ -734,36 +734,36 @@ Decoy Mode deliberately via Settings when ready.
 ### TYPE: REVIEW
 
 **[HIGH] FINDING: Chameleon IFR verifier calls obsolete lockedAmount contract method**
-File: `/Users/gio/Desktop/repos/chameleon/stealthx-ifr/src/main/java/com/stealthx/ifr/verifier/IFRLockVerifier.kt:51`
+File: `~/Desktop/repos/chameleon/stealthx-ifr/src/main/java/com/stealthx/ifr/verifier/IFRLockVerifier.kt:51`
 STATUS: **FIXED** — Commit 5b59c14 (2026-05-18)
 `lockedAmount` → `lockedBalance` in verifier + error message. Tests GREEN.
 Linear: NEW
 
 **[HIGH] FINDING: Chameleon sx_ IDs are not derived from Ed25519 public keys**
-File: `/Users/gio/Desktop/repos/chameleon/data/src/main/java/com/stealthx/data/identity/StealthXIdentity.kt:42`
+File: `~/Desktop/repos/chameleon/data/src/main/java/com/stealthx/data/identity/StealthXIdentity.kt:42`
 STATUS: **FIXED** — Commit f427d1e (2026-05-18)
 Ed25519 keypair now generated first; sx_ID = sx_ + deriveShortId(edPublicHex). Option B backward-compat (existing installs unchanged).
 Linear: NEW
 
 **[HIGH] FINDING: Chameleon Settings tier promises diverge from enforcement**
-File: `/Users/gio/Desktop/repos/chameleon/presentation/src/main/java/com/stealthx/presentation/screen/SettingsScreen.kt:140`
+File: `~/Desktop/repos/chameleon/presentation/src/main/java/com/stealthx/presentation/screen/SettingsScreen.kt:140`
 Description: Settings lists Decoy Profile under Pro but the row and route require Elite. It also presents Manual Geofencing and Private Zone as Free while navigation gates Geofencing to Elite and Private Zone to Pro.
 Fix: Align UI and enforcement: either implement Free capped paths and Pro Decoy/Geofencing, or move/copy features to the tier actually enforced.
 Linear: NEW
 
 **[MEDIUM] FINDING: Chameleon IFR ABI constant still references lockedAmount**
-File: `/Users/gio/Desktop/repos/chameleon/stealthx-ifr/src/main/java/com/stealthx/ifr/IFRConstants.kt:61`
+File: `~/Desktop/repos/chameleon/stealthx-ifr/src/main/java/com/stealthx/ifr/IFRConstants.kt:61`
 STATUS: **N/A** — ABI already had `lockedBalance` when checked 2026-05-18. Codex finding was stale. IFRConstantsTest:105 asserts `lockedBalance` present and `lockedAmount` absent — passes.
 Linear: NEW
 
 **[HIGH] FINDING: SecureCall can send plaintext when native crypto is unavailable or encryption returns null**
-File: `/Users/gio/Desktop/repos/stealth/client_android/app/src/main/java/com/securecall/app/net/WebSocketService.kt:348`
+File: `~/Desktop/repos/stealth/client_android/app/src/main/java/com/securecall/app/net/WebSocketService.kt:348`
 Description: Cross-repo release blocker: SecureCall falls back to raw data when crypto is unavailable, violating the platform-wide XChaCha20-Poly1305 requirement.
 Fix: Fail closed instead of sending plaintext.
 Linear: NEW
 
 **[HIGH] FINDING: SecureChat accepts malformed sx_ IDs**
-File: `/Users/gio/Desktop/repos/securechat/domain/src/main/java/com/stealthx/domain/keyexchange/KeyExchangeManager.kt:71`
+File: `~/Desktop/repos/securechat/domain/src/main/java/com/stealthx/domain/keyexchange/KeyExchangeManager.kt:71`
 Description: Cross-repo ID blocker: SecureChat accepts malformed `sx_` IDs, so platform identity consistency is not enforceable.
 Fix: Add shared exact validator `^sx_[1-9A-HJ-NP-Za-km-z]{9}$`.
 Linear: NEW
@@ -1879,7 +1879,7 @@ Next:
 IFR BuilderRegistry On-Chain Registration geprüft.
 
 Ergebnis:
-- BuilderRegistry Contract liegt lokal in `/Users/gio/Desktop/repos/inferno/contracts/BuilderRegistry.sol`.
+- BuilderRegistry Contract liegt lokal in `~/Desktop/repos/inferno/contracts/BuilderRegistry.sol`.
 - Mainnet-Adresse bleibt `0xdfe6636DA47F8949330697e1dC5391267CEf0EE3`.
 - `registerBuilder(address wallet, string name, string url, string category)` ist `onlyOwner`; die Registrierung muss durch IFR Governance/Timelock signiert werden.
 - Chameleon-Repo enthält keinen Governance-Key und keinen registrierten Builder-Wallet-Wert; deshalb wurde keine On-Chain-Transaktion gefaked oder aus dem App-Repo heraus gesendet.
@@ -2553,9 +2553,9 @@ Build: ✅ | S7 ✅ | S4 ✅
 ### STATUS: DONE
 ### EMPFÄNGER: CC|GIO
 
-**Chameleon App Icon aus `/Users/gio/Desktop/icons` platziert**
+**Chameleon App Icon aus `~/Desktop/icons` platziert**
 
-- Quelle: `/Users/gio/Desktop/icons/Chameleon-Icon.png` (1024x1024)
+- Quelle: `~/Desktop/icons/Chameleon-Icon.png` (1024x1024)
 - Ziel:
   - `app/src/main/res/drawable/ic_launcher_bitmap.png` (432x432 adaptive foreground)
   - `app/src/main/res/mipmap-*/ic_launcher.png`
@@ -2605,7 +2605,7 @@ Build: ✅ | S7 ✅ | S4 ✅
 ## 2026-06-11 Codex — Release APK published
 - Version: `0.1.1-alpha` (`versionCode 2`).
 - Release build: `./gradlew assembleRelease` ✅ BUILD SUCCESSFUL.
-- Desktop artifact: `/Users/gio/Desktop/Chameleon-LATEST.apk` (11 MB).
+- Desktop artifact: `~/Desktop/Chameleon-LATEST.apk` (11 MB).
 - GitHub release created: `v0.1.1-alpha-chameleon`.
 ## 2026-06-11 22:17 UTC — Codex Chameleon Site/Wiki Refresh
 
@@ -2626,7 +2626,7 @@ Build: ✅ | S7 ✅ | S4 ✅
 - UI/Doku von Lock/Stake auf Hold-Modell aktualisiert.
 - Release-Pipeline-Fix: `isMinifyEnabled=false`, `isShrinkResources=false`, weil R8 bei `:app:minifyReleaseWithR8` reproduzierbar hing. Tests/Release bauen damit sauber.
 - Verification: `testDebugUnitTest assembleDebug` gruen, `testDebugUnitTest assembleRelease` gruen, finaler `assembleRelease` gruen.
-- Desktop-Artefakt: `/Users/gio/Desktop/Chameleon-LATEST.apk` aktualisiert.
+- Desktop-Artefakt: `~/Desktop/Chameleon-LATEST.apk` aktualisiert.
 - Device refresh: S4, S7, S10 frisch installiert; text-only launch smoke ohne Crash.
 
 ## 2026-06-12 16:01 PT — Codex Final Chameleon Audit Pass
@@ -2638,7 +2638,7 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Intro Claim Fix:
   - Alter Text `An encrypted messenger with no central server` aus `IntroScreen.kt` entfernt.
   - Neuer Text: `SecureChat-compatible privacy controls for encrypted workflows.`
-  - Releasebuild erfolgreich, `/Users/gio/Desktop/Chameleon-LATEST.apk` neu erzeugt und auf S4/S7/S10 installiert.
+  - Releasebuild erfolgreich, `~/Desktop/Chameleon-LATEST.apk` neu erzeugt und auf S4/S7/S10 installiert.
   - Tab S4 Introtext per uiautomator geprüft: keine `central server`/`encrypted messenger` Alt-Claims sichtbar.
 - Stability:
   - Monkey Stabilitätslauf je Gerät: 180 Events, keine Chameleon Fatal Exceptions/ANRs.
@@ -2654,7 +2654,7 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Fix: Settings liest `versionName` jetzt dynamisch aus `PackageManager`, damit kuenftige Builds keinen stale About-Text behalten.
 - Verification:
   - `./gradlew --no-daemon --max-workers=1 testDebugUnitTest assembleRelease` ✅ BUILD SUCCESSFUL.
-  - `/Users/gio/Desktop/Chameleon-LATEST.apk` ersetzt; SHA256 `9de34b30edfb19ee12b269cb87894073f01342df111c68e5e50af7c915403d1c`.
+  - `~/Desktop/Chameleon-LATEST.apk` ersetzt; SHA256 `9de34b30edfb19ee12b269cb87894073f01342df111c68e5e50af7c915403d1c`.
   - APK auf S4, S7, S10 installiert.
   - GitHub Release `v0.1.1-alpha-chameleon` Asset `Chameleon-LATEST.apk` neu hochgeladen.
 - Post-install Smoke: S4/S7/S10 melden `versionName=0.1.1-alpha`; je 80 Monkey-Events ohne Chameleon Fatal Exception/ANR.
@@ -2702,7 +2702,7 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Verification:
   - Android source scan over `app data domain presentation shared features stealthx-access` has no `IFR/Ifr/WalletConnect/MetaMask/Uniswap` or old wallet/lock identifier hits.
   - `./gradlew --no-daemon --max-workers=1 testDebugUnitTest assembleRelease` succeeded.
-  - Desktop artifact refreshed: `/Users/gio/Desktop/Chameleon-LATEST.apk` (19 MB, 2026-06-19 14:58 PDT).
+  - Desktop artifact refreshed: `~/Desktop/Chameleon-LATEST.apk` (19 MB, 2026-06-19 14:58 PDT).
 - Device note: no ADB install or logcat actions were run to avoid interfering with the separate `woizz` device work.
 - Next: install and smoke-test on S10/S7/S4 once device ownership is clear.
 
@@ -2735,7 +2735,7 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Verification:
   - Hard source scan over `app data domain presentation shared features stealthx-access gradle/libs.versions.toml` has no hits for `IFR/Ifr/ifr`, `Wallet`, `WalletConnect`, `MetaMask`, `Uniswap`, `web3/Web3`, `2,000`, `6,000`, or old upgrade phrases.
   - `./gradlew --no-daemon --max-workers=1 testDebugUnitTest assembleRelease` succeeded.
-  - Desktop artifact refreshed: `/Users/gio/Desktop/Chameleon-LATEST.apk` (19 MB, 2026-06-19 16:33 PDT).
+  - Desktop artifact refreshed: `~/Desktop/Chameleon-LATEST.apk` (19 MB, 2026-06-19 16:33 PDT).
   - Targeted APK string scan found no visible old IFR/Wallet/Connect/Uniswap phrases; raw short `IIFr`/`ifre` byte hits are non-UI false positives.
 - Device note: no ADB/device action was run to avoid interfering with separate `woizz` work.
 - Later milestone: build Chameleon AAB only after Chameleon is functionally complete and fully verified; do not produce AAB before that pass.
@@ -2744,7 +2744,7 @@ Build: ✅ | S7 ✅ | S4 ✅
 
 - User reported that S7 still showed Chameleon IFR-token content.
 - Root cause was a stale installed APK on S7 `ce10160adc00152604`: before reinstall, `com.stealthx.chameleon` had `lastUpdateTime=2026-06-15 09:30:25`.
-- Installed refreshed `/Users/gio/Desktop/Chameleon-LATEST.apk` on S7; `adb install -r` succeeded and package metadata changed to `lastUpdateTime=2026-06-20 02:53:22` device time.
+- Installed refreshed `~/Desktop/Chameleon-LATEST.apk` on S7; `adb install -r` succeeded and package metadata changed to `lastUpdateTime=2026-06-20 02:53:22` device time.
 - Navigated Chameleon on S7 through Intro -> Setup -> Dashboard -> Settings.
 - UIAutomator Settings dump after the reinstall showed the current app-side model only:
   - Current Tier / FREE.
@@ -2772,10 +2772,10 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Build verification:
   - `./gradlew --no-daemon --no-watch-fs --max-workers=1 testDebugUnitTest :app:assembleRelease :app:bundleRelease` succeeded.
 - Desktop artifacts refreshed:
-  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.1-alpha-vC2.apk`
-  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.1-alpha-vC2.aab`
-  - `/Users/gio/Desktop/Chameleon-LATEST.apk`
-  - `/Users/gio/Desktop/Chameleon-LATEST.aab`
+  - `~/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.1-alpha-vC2.apk`
+  - `~/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.1-alpha-vC2.aab`
+  - `~/Desktop/Chameleon-LATEST.apk`
+  - `~/Desktop/Chameleon-LATEST.aab`
 - GitHub release `v0.1.1-alpha-chameleon` assets were updated with `Chameleon-LATEST.apk` and `Chameleon-LATEST.aab`.
 - Verified Chameleon GitHub APK URL returned HTTP 200.
 - Device QA:
@@ -2791,14 +2791,14 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Chameleon should ship as one public APK/AAB; paid tiers are unlocked after checkout with an activation code/subscription state.
 - Website copy was adjusted to state: one APK covers Free, Pro, and Elite; paid plans unlock with an activation code after checkout.
 - Google Play placeholder remains disabled until Play listing is live.
-- Current Google Play upload target remains `/Users/gio/Desktop/Chameleon-LATEST.aab`.
+- Current Google Play upload target remains `~/Desktop/Chameleon-LATEST.aab`.
 - Next: keep app-side IFR/wallet mechanisms out of Android code; continue functional QA before any new production upload.
 
 ## 2026-06-20 15:11 PDT — CODEX TERMINAL FIX/RELEASE
 
 - Exported Chameleon launcher icons to the Desktop:
-  - `/Users/gio/Desktop/Chameleon-App-Icon.png`
-  - `/Users/gio/Desktop/Chameleon-App-Icon-Round.png`
+  - `~/Desktop/Chameleon-App-Icon.png`
+  - `~/Desktop/Chameleon-App-Icon-Round.png`
   - Both are 192x192 PNG from `mipmap-xxxhdpi`.
 - Android 15 edge-to-edge compatibility pass:
   - `MainActivity` now calls `enableEdgeToEdge()`.
@@ -2811,10 +2811,10 @@ Build: ✅ | S7 ✅ | S4 ✅
 - Build verification succeeded:
   - `./gradlew --no-daemon --no-watch-fs --max-workers=1 testDebugUnitTest :app:assembleRelease :app:bundleRelease`
 - Desktop artifacts refreshed:
-  - `/Users/gio/Desktop/Chameleon-LATEST.apk`
-  - `/Users/gio/Desktop/Chameleon-LATEST.aab`
-  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.2-alpha-vC3.apk`
-  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.2-alpha-vC3.aab`
+  - `~/Desktop/Chameleon-LATEST.apk`
+  - `~/Desktop/Chameleon-LATEST.aab`
+  - `~/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.2-alpha-vC3.apk`
+  - `~/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.2-alpha-vC3.aab`
 - Verified APK metadata:
   - package `com.stealthx.chameleon`
   - versionCode `3`
@@ -2843,10 +2843,10 @@ External release:
 - Build verification succeeded:
   - `./gradlew --no-daemon --no-watch-fs --max-workers=1 testDebugUnitTest :app:assembleRelease :app:bundleRelease`
 - Desktop artifacts refreshed:
-  - `/Users/gio/Desktop/Chameleon-LATEST.apk`
-  - `/Users/gio/Desktop/Chameleon-LATEST.aab`
-  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.3-alpha-vC4.apk`
-  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.3-alpha-vC4.aab`
+  - `~/Desktop/Chameleon-LATEST.apk`
+  - `~/Desktop/Chameleon-LATEST.aab`
+  - `~/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.3-alpha-vC4.apk`
+  - `~/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.3-alpha-vC4.aab`
 - Verified APK/AAB metadata:
   - package `com.stealthx.chameleon`
   - versionCode `4`
@@ -2881,10 +2881,10 @@ External release:
 - Build verification succeeded:
   - `./gradlew --no-daemon --no-watch-fs --max-workers=1 testDebugUnitTest :app:assembleRelease :app:bundleRelease`
 - Desktop artifacts refreshed:
-  - `/Users/gio/Desktop/Chameleon-LATEST.apk`
-  - `/Users/gio/Desktop/Chameleon-LATEST.aab`
-  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.4-alpha-vC5.apk`
-  - `/Users/gio/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.4-alpha-vC5.aab`
+  - `~/Desktop/Chameleon-LATEST.apk`
+  - `~/Desktop/Chameleon-LATEST.aab`
+  - `~/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.4-alpha-vC5.apk`
+  - `~/Desktop/StealthX-Release-2026-06-20/Chameleon-v0.1.4-alpha-vC5.aab`
 - Verified APK/AAB metadata:
   - package `chameleon24.app`
   - versionCode `5`
@@ -2914,7 +2914,7 @@ External release:
 - Latest known saved Chameleon state remains:
   - Code commit `1cb7b11 fix: align Chameleon package name for Play upload`
   - Bridge verification commit `55d61de docs: record Chameleon v0.1.4 release verification`
-  - Desktop upload artifact `/Users/gio/Desktop/Chameleon-LATEST.aab`
+  - Desktop upload artifact `~/Desktop/Chameleon-LATEST.aab`
   - package `chameleon24.app`
   - versionCode `5`
   - versionName `0.1.4-alpha`
@@ -2925,7 +2925,7 @@ External release:
   - IFR/wallet verification stays website-side for Stripe discount.
   - One public APK/AAB; paid plans unlock after checkout with activation code/subscription state.
 - Additional Desktop handoff written:
-  - `/Users/gio/Desktop/STEALTHX_RESTART_STATUS_2026-06-21.md`
+  - `~/Desktop/STEALTHX_RESTART_STATUS_2026-06-21.md`
 - Next startup check:
   - Run `git status --short` and `git log -3 --oneline` in this repo after reboot.
 
@@ -2945,7 +2945,7 @@ Verification:
 - `./gradlew --no-daemon --max-workers=1 app:bundleRelease` succeeded.
 
 Desktop artifact refreshed:
-- `/Users/gio/Desktop/Chameleon-LATEST.aab`
+- `~/Desktop/Chameleon-LATEST.aab`
   - SHA256 `ba298d1b05ee2b2c4efc78636ad6835e0e771b4ad33233d8b38a62f10bcc87ed`
 
 ## 2026-06-21 15:30 PDT - CODEX TERMINAL TEST-TIER BUILDS/S10 INSTALL
@@ -3037,7 +3037,7 @@ Open next steps:
   der uneingeschraenkten Zugriff auf kostenpflichtige Inhalte gibt. Ein solcher Review-Code ist
   aktuell nicht vorhanden. `Kein eingeschraenkter Zugriff` wurde bewusst nicht falsch angegeben.
 - Englische Store-Texte vorbereitet. Medien erstellt unter
-  `/Users/gio/Desktop/Chameleon-PlayStore-Screenshots/`: vier echte 1440x2560-S7-Aufnahmen sowie
+  `~/Desktop/Chameleon-PlayStore-Screenshots/`: vier echte 1440x2560-S7-Aufnahmen sowie
   eine 1024x500-Vorstellungsgrafik. Upload ist noch nicht gespeichert.
 - Nicht verteilbaren Build-Typ `storeScreenshot` mit eigener Package-ID
   `chameleon24.app.screenshots` ergaenzt. Nur dieser Build deaktiviert `FLAG_SECURE`; regulaere
@@ -3137,7 +3137,7 @@ Open next steps:
   kein `BIND_ACCESSIBILITY_SERVICE`, kein `SYSTEM_ALERT_WINDOW` und kein
   `FOREGROUND_SERVICE_LOCATION`.
 - Artefakt:
-  `/Users/gio/Desktop/Chameleon-LATEST.aab`, SHA-256
+  `~/Desktop/Chameleon-LATEST.aab`, SHA-256
   `866e406e207b3a035e1a50a32a6f8e54d20e373f8e9b2b0c0d5af321b651fc6d`.
 - Der aktive interne Legacy-Track `5 (0.1.4-alpha)` verursachte die zwei
   Accessibility-Validierungsfehler und wurde pausiert. Danach waren alle Release-Fehler
@@ -3203,7 +3203,7 @@ Open next steps:
   Google Play Console. Kein Produktions-Rollout.
 
 Open next steps:
-- `/Users/gio/Desktop/Chameleon-LATEST.aab` in den geschlossenen Test hochladen.
+- `~/Desktop/Chameleon-LATEST.aab` in den geschlossenen Test hochladen.
 - Play-Validierung und Einreichungsstatus dokumentieren.
 
 ## 2026-07-24 02:45 EEST — CODEX TERMINAL — VERSIONCODE 10 READY
@@ -3215,10 +3215,10 @@ Open next steps:
   `test lintRelease assembleRelease bundleRelease`; 1.228 Tasks,
   `BUILD SUCCESSFUL` in 5m04s.
 - APK: `chameleon24.app`, Ziel-SDK 35, Vendetta-Labs-Releasezertifikat
-  verifiziert. `/Users/gio/Desktop/Chameleon-LATEST.apk`, 20.155.540 Bytes,
+  verifiziert. `~/Desktop/Chameleon-LATEST.apk`, 20.155.540 Bytes,
   SHA-256 `94cf81a90c8299af530d94b8db7117f8766751b181cd9c6f1de37f279c1be4da`.
 - AAB-Signatur verifiziert.
-  `/Users/gio/Desktop/Chameleon-LATEST.aab`, 20.181.031 Bytes,
+  `~/Desktop/Chameleon-LATEST.aab`, 20.181.031 Bytes,
   SHA-256 `457b17e98255f3cce4c044e8333ddd2e003bd05bbb2e636a4c80c8e01e76d27c`.
 - Commits `82ec9ca` und `2118ffd` auf `origin/main`.
 - GitHub Release:
@@ -3295,7 +3295,7 @@ Open next steps:
 - The product/tier binding, deterministic Sodium test initialization and mismatch tests were
   ported onto fresh current-main branch `fix/entitlement-product-tier-binding`; unknown products
   and forged product/tier combinations fail closed.
-- `ANDROID_HOME=/Users/gio/Library/Android/sdk ./gradlew :stealthx-crypto:test --no-daemon`
+- `ANDROID_HOME=~/Library/Android/sdk ./gradlew :stealthx-crypto:test --no-daemon`
   PASS (`BUILD SUCCESSFUL`, 32 actionable tasks). No Android wallet/IFR code, deployment,
   runtime secret or payment activation changed.
 - Product decision: IFR-holder discounts have no per-wallet reuse limit. Browser verification
@@ -3359,7 +3359,7 @@ Open next steps:
   - Python `yaml.safe_load` on all three YAML files: OK.
   - `./gradlew verifyNoAppIfrWalletCode verifyNoClientSidePaidUnlock --no-daemon`:
     BUILD SUCCESSFUL, 2/2 tasks executed.
-  - `ANDROID_HOME=/Users/gio/Library/Android/sdk ./gradlew check --dry-run`: both guard
+  - `ANDROID_HOME=~/Library/Android/sdk ./gradlew check --dry-run`: both guard
     tasks present in the `check` task graph.
   - `git diff --check`: clean.
 - Full `./gradlew check` (lint + all tests) was not run locally; it executes in CI.
@@ -3625,7 +3625,7 @@ Open next steps:
 - Listener lifecycle and deep-link confirmation fixes are included. Cross-device overlay/messenger remain intentionally disabled/launch-gated until authenticated pairing and interoperability are physically proven.
 - S10 disconnected before Chameleon installation; S7/S4 were occupied by Woizz and were not touched. No physical device result is claimed for this candidate.
 - Public page browser check PASS with no horizontal overflow; release copy now points to `releases/latest/download/Chameleon-LATEST.apk` and displays v0.1.13.
-- Kimi K3 independently reviewed the ecosystem block; Sol integrated and retested the findings. Artifacts are under `/Users/gio/Desktop/aab apk/presale-2026-08-27/`.
+- Kimi K3 independently reviewed the ecosystem block; Sol integrated and retested the findings. Artifacts are under `~/Desktop/aab apk/presale-2026-08-27/`.
 - Open gates: authenticated two-device overlay/messenger matrix, Google closed-test duration/review, release-asset publication/site deployment, Stripe + Greek tax block on explicit standby.
 
 ## 2026-08-27 04:36 EEST — CODEX TERMINAL — RELEASE HANDOFF — PR OPEN
@@ -3732,3 +3732,12 @@ Open next steps:
 - Kimi K3 was unavailable due weekly quota (HTTP 403); Sol completed review and tests.
 
 `LOCAL CODE/TEST GATES PASS / S7 SMOKE PASS / REVIEW AND MULTI-DEVICE E2E GATES OPEN`
+
+## 2026-10-03 — CLAUDE CODE — IFR REVIEW RULE AND PATH ANONYMIZATION (docs only)
+
+- `.coderabbit.yaml`: the stale `lockedBalance` regression rule is replaced by the current hold model
+  (IFR token `balanceOf`, see ECOSYSTEM.md); the repository no longer contains IFRLock logic.
+- Absolute local home paths in public docs replaced with `~/` (BRIDGE.md, SETTINGS_AUDIT_2026-06-21.md).
+- `docs/AUDIT_PACKAGE/BUILDER_REGISTRY.md` already reflects the current state; no change needed.
+- Open owner question: ECOSYSTEM.md says any positive IFR balance qualifies, while SecureCall code and
+  stealth docs use 2,000 / 6,000 IFR hold thresholds.
