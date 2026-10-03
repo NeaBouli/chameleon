@@ -103,7 +103,12 @@ interface FeatureProvider {
 7. Response: {success, tier, lockedAmount, walletBound}
 ```
 
-### Thresholds
+### Thresholds (retired)
+
+> Historical. Superseded by the hold model: any positive IFR balance qualifies for the
+> seller-set checkout discount, with no token-amount tier threshold. PRO/ELITE access comes
+> only from signed activation credentials. See `docs/AUDIT_PACKAGE/IFR_INTEGRATION_SECURITY.md`.
+
 | | SecureCall | Chameleon |
 |---|---|---|
 | Pro | 1,000 IFR (9 dec) | 2,000 IFR (9 dec) |

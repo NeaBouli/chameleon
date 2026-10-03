@@ -33,7 +33,7 @@ reviews:
         - Coroutines: kein Compose-State aus IO-Dispatcher, kein runBlocking im Main-Thread
         - Room/SQLCipher: kein raw query ohne Parameter-Binding
         - TierGate: Elite-Features nur per TierGate.requiresElite() am Sink, nicht nur im UI
-        - IFR-Verifizierung: lockedBalance (nicht lockedAmount) — Regression-Check
+        - IFR-Berechtigung: Hold-Modell (balanceOf auf dem IFR-Token, siehe ECOSYSTEM.md); dieses Repo enthält keine IFRLock-Logik mehr
         - Secrets: keine hardcodierten Keys oder API-Tokens
 
     - path: "**/crypto/**/*.kt"

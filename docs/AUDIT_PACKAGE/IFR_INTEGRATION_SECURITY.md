@@ -38,3 +38,10 @@ part of any current Chameleon build and must not be reintroduced as a mobile unl
 - Private signing keys and payment/fiscal secrets remain server-side.
 - Android feature access fails closed when a credential is absent, invalid, expired or
   revoked.
+
+## Launch Gate: Minimum-Balance Review
+
+Because any positive balance qualifies, a dust amount of IFR would pass the check. The discount is
+seller-funded, so before the checkout is enabled the seller must decide and document one of: a
+minimum balance, a per-wallet and per-order limit, or acceptance of the dust risk. Until then the
+discounted checkout stays disabled.

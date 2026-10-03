@@ -38,6 +38,6 @@ Installed Internal APK:
 
 Desktop artifacts:
 
-- `/Users/gio/Desktop/Chameleon-LATEST.aab` SHA256 `94853cdbcf13f7ef4fe87d5c591e1fd43de0af96b7701532ac7d2cd898fb92f8`
-- `/Users/gio/Desktop/Chameleon-Release-LATEST.apk` SHA256 `57b5d557cdde7955e138711b58ecb405899c95ba9c60d32b96b3485f6c4b8218`
-- `/Users/gio/Desktop/Chameleon-Internal-LATEST.apk` SHA256 `4792222890d3e30217053cf03e5d24e6a2e48c4a54047cdf749828673134ee87`
+- `~/Desktop/Chameleon-LATEST.aab` SHA256 `94853cdbcf13f7ef4fe87d5c591e1fd43de0af96b7701532ac7d2cd898fb92f8`
+- `~/Desktop/Chameleon-Release-LATEST.apk` SHA256 `57b5d557cdde7955e138711b58ecb405899c95ba9c60d32b96b3485f6c4b8218`
+- `~/Desktop/Chameleon-Internal-LATEST.apk` SHA256 `4792222890d3e30217053cf03e5d24e6a2e48c4a54047cdf749828673134ee87`
