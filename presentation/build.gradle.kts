@@ -54,6 +54,14 @@ dependencies {
     testRuntimeOnly(libs.junit.platform.launcher)
     testImplementation(libs.mockk)
     testImplementation(libs.coroutines.test)
+    // lazysodium-android 5.2.0 ships Java 21 bytecode, which the JDK 17 unit-test VM cannot load
+    // (MockK then fails to instrument ChameleonCrypto). Unit tests use the JVM build instead.
+    testRuntimeOnly(libs.lazysodium.java)
+    testRuntimeOnly(libs.jna)
+}
+
+configurations.matching { it.name.endsWith("UnitTestRuntimeClasspath") }.configureEach {
+    exclude(group = "com.goterl", module = "lazysodium-android")
 }
 
 tasks.withType<Test> { useJUnitPlatform() }

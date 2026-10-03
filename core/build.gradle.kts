@@ -38,4 +38,10 @@ dependencies {
     testImplementation(libs.robolectric)
     testRuntimeOnly(libs.lazysodium.java)
 }
+// lazysodium-android 5.2.0 ships Java 21 bytecode and duplicates the lazysodium-java classes;
+// JVM unit tests use lazysodium-java only (see presentation/build.gradle.kts).
+configurations.matching { it.name.endsWith("UnitTestRuntimeClasspath") }.configureEach {
+    exclude(group = "com.goterl", module = "lazysodium-android")
+}
+
 tasks.withType<Test> { useJUnitPlatform() }
