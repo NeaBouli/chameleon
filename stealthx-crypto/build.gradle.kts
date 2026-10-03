@@ -42,6 +42,8 @@ dependencies {
     // packaged as a proper .so file that Android's linker can load (JAR variant fails on device).
     implementation(libs.lazysodium.android) {
         exclude(group = "net.java.dev.jna", module = "jna")
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
+        exclude(group = "androidx.core", module = "core-ktx")
     }
     // JNA as AAR: contains libjnidispatch.so in jni/<abi>/ — required by lazysodium on Android
     implementation("net.java.dev.jna:jna:${libs.versions.jna.get()}@aar")
