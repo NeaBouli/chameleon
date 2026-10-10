@@ -31,6 +31,8 @@ object StealthXIdentity {
     private const val INVITE_RECEIVER_URL = "https://stealthx.tech/invite.html"
     private const val MAX_INVITE_LINK = 512
     private val INVITE_KEYS = setOf("x", "e", "s", "c", "h")
+    // Same rule as the shared receiver (website/js/invite-receiver.js HANDLE_RAW).
+    private val INVITE_HANDLE = Regex("(?:%40|@)[A-Za-z0-9_]{3,20}")
     private val INVITE_LINK = Regex("stealthx://add/sx_[1-9A-HJ-NP-Za-km-z]{9}\\?[A-Za-z0-9_=&%@-]+")
     private const val KEY_PUBLIC_KEY = "public_key"
     private const val KEY_CUSTOM_HANDLE = "custom_handle"
@@ -95,10 +97,14 @@ object StealthXIdentity {
 
     private fun isSignedBundleShape(link: String): Boolean {
         if (link.length > MAX_INVITE_LINK || !INVITE_LINK.matches(link)) return false
-        val keys = link.substringAfter('?').split('&').map { it.substringBefore('=') }
+        val pairs = link.substringAfter('?').split('&')
+        val keys = pairs.map { it.substringBefore('=') }
+        // A stored handle the receiver would reject must not produce a silently dead invite.
+        val handle = pairs.firstOrNull { it.startsWith("h=") }?.substringAfter('=')
         return keys.size == keys.toSet().size &&
             keys.all { it in INVITE_KEYS } &&
-            keys.containsAll(listOf("x", "e", "s", "c"))
+            keys.containsAll(listOf("x", "e", "s", "c")) &&
+            (handle == null || INVITE_HANDLE.matches(handle))
     }
 
     fun setCustomHandle(context: Context, handle: String): Result<Unit> {
