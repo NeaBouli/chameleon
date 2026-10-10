@@ -28,6 +28,10 @@ data class StealthXId(
 object StealthXIdentity {
     private const val PREFS_NAME = "stealthx_identity"
     private const val KEY_RAW_ID = "raw_id"
+    private const val INVITE_RECEIVER_URL = "https://stealthx.tech/invite.html"
+    private const val MAX_INVITE_LINK = 512
+    private val INVITE_KEYS = setOf("x", "e", "s", "c", "h")
+    private val INVITE_LINK = Regex("stealthx://add/sx_[1-9A-HJ-NP-Za-km-z]{9}\\?[A-Za-z0-9_=&%@-]+")
     private const val KEY_PUBLIC_KEY = "public_key"
     private const val KEY_CUSTOM_HANDLE = "custom_handle"
     private const val KEY_CREATED_AT = "created_at"
@@ -76,9 +80,25 @@ object StealthXIdentity {
         }
     }
 
-    fun createInviteUrl(context: Context): String {
-        val encoded = URLEncoder.encode(createQrContent(context), "UTF-8")
-        return "https://stealthx.tech/invite/?app=chameleon&link=$encoded"
+    fun createInviteUrl(context: Context): String = buildInviteUrl(createQrContent(context))
+
+    /**
+     * Wraps an already signed stealthx://add/ deep link for sharing. The link travels byte-for-byte,
+     * URL-encoded once, in the fragment of the shared receiver page so it never reaches a server
+     * request. /invite.html is used on purpose: the exact /invite/ path belongs to SecureCall's
+     * verified app link. Anything that does not match the signed bundle shape fails closed.
+     */
+    internal fun buildInviteUrl(deepLink: String): String {
+        require(isSignedBundleShape(deepLink)) { "Not a signed contact bundle" }
+        return "$INVITE_RECEIVER_URL#app=chameleon&link=${URLEncoder.encode(deepLink, "UTF-8")}"
+    }
+
+    private fun isSignedBundleShape(link: String): Boolean {
+        if (link.length > MAX_INVITE_LINK || !INVITE_LINK.matches(link)) return false
+        val keys = link.substringAfter('?').split('&').map { it.substringBefore('=') }
+        return keys.size == keys.toSet().size &&
+            keys.all { it in INVITE_KEYS } &&
+            keys.containsAll(listOf("x", "e", "s", "c"))
     }
 
     fun setCustomHandle(context: Context, handle: String): Result<Unit> {
