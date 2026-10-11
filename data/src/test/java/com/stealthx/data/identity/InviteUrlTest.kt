@@ -68,6 +68,15 @@ class InviteUrlTest {
     }
 
     @Test
+    @DisplayName("valid handle forms are accepted")
+    fun `valid handles accepted`() {
+        for (h in listOf("%40abc", "@abc", "%40" + "a".repeat(20), "%40demo_user")) {
+            val link = "$privateLink&h=$h"
+            assertEquals(link, decodedFragmentLink(StealthXIdentity.buildInviteUrl(link)))
+        }
+    }
+
+    @Test
     @DisplayName("malformed, pending, duplicate or unexpected input fails closed")
     fun `invalid input rejected`() {
         val bad = listOf(
@@ -82,7 +91,13 @@ class InviteUrlTest {
             "$privateLink#frag",
             "$privateLink bad",
             "$privateLink\n",
-            "$privateLink&h=%40" + "a".repeat(600)
+            "$privateLink&h=%40" + "a".repeat(600),
+            // Handles the receiver rejects must not yield a silently dead invite.
+            "$privateLink&h=%40ab",
+            "$privateLink&h=%40" + "a".repeat(21),
+            "$privateLink&h=demo_user",
+            "$privateLink&h=%40demo-user",
+            "$privateLink&h="
         )
         for (link in bad) {
             assertThrows(IllegalArgumentException::class.java, { StealthXIdentity.buildInviteUrl(link) }, link.take(40))
