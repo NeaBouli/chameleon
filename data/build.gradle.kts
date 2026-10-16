@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.android.legacy.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
 android {
@@ -21,13 +21,6 @@ android {
             "STEALTHX_ENTITLEMENT_PUBLIC_KEY_BASE64 must be an unpadded 32-byte base64url key"
         }
         buildConfigField("String", "ENTITLEMENT_PUBLIC_KEY_BASE64", "\"$entitlementKey\"")
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments["room.schemaLocation"] = "$projectDir/schemas"
-                arguments["room.incremental"]    = "true"
-                arguments["room.expandProjection"] = "true"
-            }
-        }
     }
 
     buildFeatures { buildConfig = true }
@@ -44,7 +37,7 @@ dependencies {
     implementation(project(":shared"))
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.sqlcipher)
     implementation(libs.sqlite.ktx)
     implementation(libs.androidx.security.crypto)
@@ -52,7 +45,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     testImplementation(libs.junit5.api)
     testRuntimeOnly(libs.junit5.engine)
     testRuntimeOnly(libs.junit.platform.launcher)
@@ -68,3 +61,8 @@ configurations.matching { it.name.endsWith("UnitTestRuntimeClasspath") }.configu
 }
 
 tasks.withType<Test> { useJUnitPlatform() }
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    arg("room.incremental", "true")
+}
