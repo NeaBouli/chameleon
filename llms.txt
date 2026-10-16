@@ -21,6 +21,15 @@
 - The planned IFR holder discount is browser-only before purchase and currently disabled pending payment and Greek fiscal approval
 - Any positive IFR balance qualifies for the seller-displayed discount; there is no token-amount tier threshold
 
+## Pricing And Availability
+- One-time purchase with a lifetime licence only; no recurring charges
+- Chameleon Pro: 9 EUR incl. VAT (one-time)
+- Chameleon Elite: 19 EUR incl. VAT (one-time)
+- Custom StealthX ID, one-time by length: 10 or more characters 1 EUR, 5-9 characters 2 EUR, 3-4 characters 5 EUR; each incl. VAT
+- Slogan: Buy once, use forever.
+- Every published price is an end price including VAT
+- Sales are not open yet: the VLABS shop has not gone live, so nothing is purchasable from this site and no checkout or payment link exists
+
 ## Links
 - Website: https://chameleon.stealthx.tech/
 - FAQ: https://chameleon.stealthx.tech/faq.html
