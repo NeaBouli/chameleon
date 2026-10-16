@@ -203,9 +203,10 @@
   .tier-features { list-style:none; }
   .tier-features li { font-size:14px; color:var(--text-dim); padding:5px 0; display:flex; gap:8px; }
   .tier-features li::before { content:'✓'; color:var(--green); font-weight:700; flex-shrink:0; }
-  .tier-card.suite-card { grid-column:1 / -1; border-color:var(--gold) !important; background:linear-gradient(135deg,rgba(255,184,0,.10),rgba(132,80,215,.05)) !important; color:var(--text) !important; }
-  .suite-card-layout { display:grid; grid-template-columns:minmax(220px,.9fr) 1fr minmax(160px,.45fr); gap:1.5rem; align-items:center; }
-  .value-badge { font-size:11px; font-weight:800; letter-spacing:1px; background:var(--gold); color:#000; display:inline-block; padding:4px 11px; border-radius:4px; margin-bottom:.8rem; text-transform:uppercase; }
+  .tier-price { font-size:2rem; font-weight:800; color:var(--text); margin-bottom:.4rem; }
+  .tier-price .vat-note { font-size:12px; font-weight:700; letter-spacing:.5px; color:var(--muted); text-transform:uppercase; }
+  .sales-notice { background:rgba(255,184,0,.06); border:1px solid rgba(255,184,0,.28); border-radius:12px; padding:1.25rem 1.5rem; margin-bottom:2rem; color:var(--text-dim); font-size:14px; line-height:1.7; }
+  .sales-notice strong { color:var(--gold); }
   .ifr-box { margin:1.5rem auto 0; background:rgba(132,80,215,.05); border:1px solid rgba(132,80,215,.22); border-radius:12px; padding:1.5rem; box-shadow:0 18px 48px rgba(15,23,42,.06); }
   .ifr-grid { display:grid; grid-template-columns:minmax(0,.95fr) minmax(0,1.2fr); gap:1rem; align-items:stretch; }
   .ifr-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.25rem; }
@@ -279,7 +280,6 @@
     section { padding:3rem 1rem; }
     .stats-bar { gap:1.5rem; }
     .integration-grid { grid-template-columns:1fr; }
-    .suite-card-layout,
     .ifr-grid,
     .ifr-wallet-actions,
     .ifr-actions { grid-template-columns:1fr; }
@@ -743,26 +743,6 @@
         <li>Threat detection remains on the roadmap</li>
       </ul>
     </div>
-    <div class="tier-card featured suite-card">
-      <div class="suite-card-layout">
-        <div>
-          <div class="value-badge">Best Value</div>
-          <div class="tier-name" style="color:var(--gold)">StealthX Suite</div>
-          <div class="tier-lock">Suite checkout launch-gated</div>
-        </div>
-        <ul class="tier-features">
-          <li>SecureCall Premium (lifetime)</li>
-          <li>SecureChat Elite (lifetime)</li>
-          <li>Chameleon Elite (lifetime)</li>
-          <li>All future StealthX products</li>
-          <li>Suite fulfillment is not enabled yet</li>
-        </ul>
-        <div>
-          <span class="btn btn-disabled" style="display:block;width:100%;text-align:center;">Unavailable</span>
-          <div class="ifr-token-logo"><img src="https://ifrunit.tech/assets/ifr_icon_256.png" alt="IFR token logo" width="96" height="96" loading="lazy"></div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <div class="ifr-box">
@@ -798,46 +778,60 @@
 
 <hr class="divider">
 
-<!-- LIFETIME PRICING -->
+<!-- ONE-TIME PRICING (PRICE MODEL A) -->
 <section id="lifetime">
-  <div class="section-label">Lifetime</div>
-  <h2 class="section-title">Planned access options.</h2>
-  <p class="section-sub">Prices and availability are not active until launch approval.</p>
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title">One-time purchase. Lifetime licence.</h2>
+  <p class="section-sub">Buy once, use forever. Every price below is an end price that already includes VAT (&ldquo;incl. VAT&rdquo;). One-time payment, lifetime licence, no recurring charges.</p>
+
+  <div class="sales-notice" role="note">
+    <strong>Sales are not open yet.</strong> Nothing can be bought on this site right now: the VLABS shop has not gone live, so there is no checkout and no payment link here. The prices below are the published end prices and only become purchasable once sales open.
+  </div>
 
   <div class="tier-grid">
     <div class="tier-card featured">
-      <div style="font-size:11px;font-weight:700;letter-spacing:1px;background:var(--green);color:#000;display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:0.8rem;">PLANNED</div>
-      <div class="tier-name" style="color:var(--green);">Chameleon Pro Lifetime</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:1rem;">Price and availability are not active.</p>
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;background:var(--green);color:#000;display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:0.8rem;">ONE-TIME</div>
+      <div class="tier-name" style="color:var(--green);">Chameleon Pro</div>
+      <div class="tier-price">9 &euro; <span class="vat-note">incl. VAT</span></div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:1rem;">One-time price &mdash; buy once, use forever.</p>
       <ul class="tier-features">
         <li>Everything in Pro</li>
-        <li>No subscription &mdash; pay once</li>
+        <li>One-time purchase, lifetime licence</li>
+        <li>Buy once, use forever.</li>
         <li>Lifetime updates included</li>
-        <li>Early adopter pricing</li>
       </ul>
       <br>
-      <button type="button" disabled class="btn btn-disabled" style="display:block;width:100%;">Launch-gated</button>
+      <span class="btn btn-disabled" style="display:block;width:100%;text-align:center;">Sales not open yet</span>
     </div>
     <div class="tier-card featured">
-      <div style="font-size:11px;font-weight:700;letter-spacing:1px;background:var(--gold);color:#000;display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:0.8rem;">PLANNED</div>
-      <div class="tier-name" style="color:var(--gold);">Chameleon Elite Lifetime</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:1rem;">Price and availability are not active.</p>
+      <div style="font-size:11px;font-weight:700;letter-spacing:1px;background:var(--gold);color:#000;display:inline-block;padding:3px 10px;border-radius:4px;margin-bottom:0.8rem;">ONE-TIME</div>
+      <div class="tier-name" style="color:var(--gold);">Chameleon Elite</div>
+      <div class="tier-price">19 &euro; <span class="vat-note">incl. VAT</span></div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:1rem;">One-time price &mdash; buy once, use forever.</p>
       <ul class="tier-features">
         <li>Everything in Elite</li>
-        <li>No subscription &mdash; pay once</li>
+        <li>One-time purchase, lifetime licence</li>
+        <li>Buy once, use forever.</li>
         <li>Lifetime updates included</li>
-        <li>Early adopter pricing</li>
       </ul>
       <br>
-      <button type="button" disabled class="btn btn-disabled" style="display:block;width:100%;">Launch-gated</button>
+      <span class="btn btn-disabled" style="display:block;width:100%;text-align:center;">Sales not open yet</span>
     </div>
   </div>
 
-  <div style="margin-top:2rem;background:rgba(255,184,0,0.05);border:1px solid rgba(255,184,0,0.2);border-radius:12px;padding:2rem;text-align:center;">
-    <h3 style="font-size:1.3rem;color:var(--gold);margin-bottom:0.5rem;">StealthX Suite &mdash; planned</h3>
-    <p style="color:var(--text-dim);font-size:14px;margin-bottom:1rem;">SecureChat Elite + Chameleon Elite + SecureCall Premium. Everything. Forever.</p>
-    <p style="color:var(--muted);font-size:13px;margin-bottom:1.5rem;">Suite checkout is launch-gated.</p>
-    <button type="button" disabled class="btn btn-disabled">Launch-gated</button>
+  <div class="tier-grid" style="grid-template-columns:minmax(260px,380px);margin-top:1.5rem;">
+    <div class="tier-card">
+      <div class="tier-name" style="color:var(--cyan);">Custom StealthX ID</div>
+      <div class="tier-price">1 / 2 / 5 &euro; <span class="vat-note">incl. VAT</span></div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:1rem;">One-time price by ID length &mdash; buy once, use forever.</p>
+      <ul class="tier-features">
+        <li>10 or more characters &mdash; 1 &euro; incl. VAT</li>
+        <li>5&ndash;9 characters &mdash; 2 &euro; incl. VAT</li>
+        <li>3&ndash;4 characters &mdash; 5 &euro; incl. VAT</li>
+      </ul>
+      <br>
+      <span class="btn btn-disabled" style="display:block;width:100%;text-align:center;">Sales not open yet</span>
+    </div>
   </div>
 
   <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:1.5rem;">No wallet verification or paid activation is available from this site.</p>
@@ -849,7 +843,7 @@
 <section id="download" style="text-align:center;">
   <div class="section-label">Deploy</div>
   <h2 class="section-title">Get Chameleon.</h2>
-  <p class="section-sub" style="margin:0 auto 2rem;">Chameleon Android APK v0.1.9-alpha is currently published on GitHub. Version 0.1.13-alpha is available only to selected Google Play closed testers. One APK covers Free, Pro, and Elite; paid plans unlock with a server-signed activation code after checkout. Cross-device capabilities remain launch-gated.</p>
+  <p class="section-sub" style="margin:0 auto 2rem;">Chameleon Android APK v0.1.9-alpha is currently published on GitHub. Version 0.1.13-alpha is available only to selected Google Play closed testers. One APK covers Free, Pro, and Elite; paid access is a one-time lifetime licence and unlocks with a server-signed activation code once sales open. Cross-device capabilities remain launch-gated.</p>
 
   <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:2rem;">
     <a href="https://github.com/NeaBouli/chameleon/releases/latest/download/Chameleon-LATEST.apk" class="btn btn-primary">Download published APK (v0.1.9-alpha)</a>
@@ -900,10 +894,12 @@
     <div class="footer-bottom">
       <p>&copy; 2026 Vendetta Labs — Greece &nbsp;|&nbsp; Chameleon is part of the <a href="https://stealthx.tech">StealthX Platform</a></p>
       <p>Source-Available &middot; <a href="https://github.com/NeaBouli/chameleon">github.com/NeaBouli/chameleon</a></p>
+      <p>Support &middot; <span class="js-mail" data-u="troppus" data-d="xhtlaets|hcet"></span></p>
     </div>
   </div>
 </footer>
 
+<script src="js/mail-assemble.js" defer></script>
 <script type="module" src="js/ifr-checkout.js"></script>
 <script>
 // Chameleon encryption animation
